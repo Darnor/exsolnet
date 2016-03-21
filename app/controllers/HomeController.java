@@ -10,10 +10,6 @@ import views.html.*;
 
 import javax.inject.Inject;
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.util.List;
-
-import static play.libs.Json.toJson;
 
 /**
  * This controller contains an action to handle HTTP requests

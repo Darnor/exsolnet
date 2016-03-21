@@ -8,8 +8,8 @@ CREATE TABLE exercise (
   title     VARCHAR(255),
   content   VARCHAR(255),
   time      DATE,
-  points    INT,
-  userID_FK INT,
+  points    INTEGER,
+  userID_FK INTEGER,
   CONSTRAINT pk_exercise PRIMARY KEY (id)
 );
 
@@ -18,7 +18,8 @@ CREATE TABLE user (
   username    VARCHAR(255),
   email       VARCHAR(255),
   isModerator BOOLEAN,
-  points      INT,
+  points      INTEGER,
+  userid_FK   BIGINT REFERENCES exercise(id),
   CONSTRAINT pk_user PRIMARY KEY (id)
 );
 
