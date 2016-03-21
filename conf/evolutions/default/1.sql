@@ -13,19 +13,19 @@ CREATE TABLE exercise (
   CONSTRAINT pk_exercise PRIMARY KEY (id)
 );
 
-CREATE TABLE user (
+CREATE TABLE account (
   id          SERIAL NOT NULL,
   username    VARCHAR(255),
   email       VARCHAR(255),
   isModerator BOOLEAN,
   points      INTEGER,
   userid_FK   BIGINT REFERENCES exercise(id),
-  CONSTRAINT pk_user PRIMARY KEY (id)
+  CONSTRAINT pk_account PRIMARY KEY (id)
 );
 
 
 # --- !Downs
 
 DROP TABLE IF EXISTS exercise CASCADE;
-DROP TABLE IF EXISTS user CASCADE;
+DROP TABLE IF EXISTS account CASCADE;
 
