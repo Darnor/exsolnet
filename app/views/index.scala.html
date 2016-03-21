@@ -1,0 +1,26 @@
+@import java.util
+@(exercises: util.List[Exercise], user: String)
+    @main("Welcome to Exsolnet") {
+        <ul id="exercises">
+        @exercises.map { e =>
+            <li>@e.getTitle -- @e.getContent</li>
+        }
+        </ul>
+
+        @if(user == null) {
+            <form method="POST" action="@routes.HomeController.login()">
+                <input type="text" name="email"/>
+                <button>Login</button>
+            </form>
+        } else {
+            <form method="POST" action="@routes.HomeController.addExercise()">
+                <input type="text" name="title"/>
+                <input type="text" name="content"/>
+                <button>Add Exercise</button>
+            </form>
+            <form method="POST" action="@routes.HomeController.logout()">
+                <p>@user</p>
+                <button>Logout</button>
+            </form>
+        }
+    }
