@@ -34,12 +34,12 @@ public class HomeController extends Controller {
         Form<User> userForm = formFactory.form(User.class);
         User user = userForm.bindFromRequest().get();
         session("connected", user.getEmail());
-        return redirect("/");
+        return redirect(routes.HomeController.index());
     }
 
     public Result logout() {
         session().clear();
-        return redirect("/");
+        return redirect(routes.HomeController.index());
     }
 
     public Result addExercise() {
@@ -47,7 +47,7 @@ public class HomeController extends Controller {
         Exercise exercise = exerciseForm.bindFromRequest().get();
         exercise.setTime(new Date(System.currentTimeMillis()));
         Exercise.create(exercise);
-        return redirect("/");
+        return redirect(routes.HomeController.index());
     }
 
 }
