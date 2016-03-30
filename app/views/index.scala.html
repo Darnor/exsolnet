@@ -1,26 +1,30 @@
 @import java.util
 @(exercises: util.List[Exercise], user: String)
-    @main("Welcome to Exsolnet") {
+@main("Welcome to Exsolnet") {
+
+    <div style="border-bottom: 2px solid black ; width: 300px ; padding: 10px; margin: 10px">
+        <h1>Aufgaben Übersicht</h1>
         <ul id="exercises">
         @exercises.map { e =>
             <li>@e.getTitle -- @e.getContent</li>
         }
         </ul>
+    </div>
 
-        @if(user == null) {
-            <form method="POST" action="@routes.HomeController.login()">
-                <input type="text" name="email"/>
-                <button>Login</button>
-            </form>
-        } else {
-            <form method="POST" action="@routes.HomeController.addExercise()">
-                <input type="text" name="title"/>
-                <input type="text" name="content"/>
-                <button>Add Exercise</button>
-            </form>
-            <form method="POST" action="@routes.HomeController.logout()">
-                <p>@user</p>
-                <button>Logout</button>
-            </form>
-        }
+    @if(user == null) {
+        <form method="POST" action="@routes.HomeController.login()">
+            <input placeholder="Benutzername" type="text" name="email"/>
+            <button>Login</button>
+        </form>
+    } else {
+        <form method="POST" action="@routes.HomeController.addExercise()">
+            <input placeholder="Titel" type="text" name="title"/>
+            <input placeholder="Inhalt" type="text" name="content"/>
+            <button>Speichern</button>
+        </form>
+        <form method="POST" action="@routes.HomeController.logout()">
+            <label>@user</label>
+            <button>Logout</button>
+        </form>
     }
+}

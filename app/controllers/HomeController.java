@@ -18,7 +18,6 @@ import java.sql.Date;
 
 public class HomeController extends Controller {
 
-
     @Inject
     FormFactory formFactory;
 
@@ -47,7 +46,7 @@ public class HomeController extends Controller {
         Exercise exercise = exerciseForm.bindFromRequest().get();
         exercise.setTime(new Date(System.currentTimeMillis()));
         Exercise.create(exercise);
+
         return redirect(routes.HomeController.index());
     }
-
 }
