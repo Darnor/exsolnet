@@ -1,0 +1,79 @@
+@import java.util
+@(currentPage: Int, exercises: util.List[Exercise], currentOrderBy: String, currentFilter: String, pageSize: Int, totalExercises: Int)
+
+
+@****************************************
+* Helper generating navigation links    *
+****************************************@
+@link(newPage: Int,newOrderBy: String) = @{
+    routes.ExerciseController.list(newPage, newOrderBy, currentFilter)
+
+}
+
+    @**********************************
+    * Helper generating table headers *
+    ***********************************@
+@header(orderBy: String, title: String) = {
+    <th class="col@orderBy header @if(currentOrderBy == orderBy) @{if(currentOrderBy == orderBy) "headerSortDown" else "headerSortUp"}">
+        <a href="@link(0,orderBy)">@title</a>
+    </th>
+}
+
+@main("Welcome to Exsolnet"){
+
+    @helper.form(action=routes.ExerciseController.list()) {
+        <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Titelfilter"/>
+        <input type="submit" id="searchsubmit" value="Suche" class="btn primary"/>
+    }
+
+    <table class="computers zebra-striped">
+        <thead>
+            <tr>
+                @header("title", "Titel")
+                @header("content", "Inhalt")
+                @header("time", "Datum")
+            </tr>
+        </thead>
+        <tbody>
+
+        @exercises.map {exercise =>
+            <tr>
+                <td><a href="">@exercise.getTitle</a></td>
+                <td>
+                @exercise.getContent
+                </td>
+                <td>
+                @exercise.getTime
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+    <div id="pagination" class="pagination">
+        <ul>
+
+            @if(currentPage>0){
+            <li class="prev">
+                <a href="@link(currentPage-1,currentOrderBy)">&larr; Vorherige</a>
+            </li>
+            }else {
+                <li class="prev disabled">
+                    <a>&larr; Vorherige</a>
+                </li>
+            }
+            <li class="current">
+                <a>Zeige @(currentPage*pageSize + 1) bis @(currentPage*pageSize + exercises.size) von @totalExercises an</a>
+            </li>
+            @if((currentPage+1)*pageSize<totalExercises) {
+                <li class="prev">
+                    <a href="@link(currentPage+1, currentOrderBy)">&larr; Nächste</a>
+                </li>
+            }else{
+             <li class="prev disabled">
+                <a>&larr; Nächste</a>
+            </li>
+}
+        </ul>
+    </div>
+}

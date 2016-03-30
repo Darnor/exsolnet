@@ -8,10 +8,13 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 import views.html.editExercise;
+import views.html.exerciseList;
 import views.html.index;
 
 import javax.inject.Inject;
 import java.sql.Date;
+import java.util.Comparator;
+import java.util.List;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -24,11 +27,13 @@ public class ExerciseController extends Controller {
     FormFactory formFactory;
 
     public Result index() {
-        if(session("connected") != null){
-            return ok(index.render(Exercise.find.all(), session("connected")));
-        }else{
-            return ok(index.render(Exercise.find.all(), null));
-        }
+        return ok(exerciseList.render(0,Exercise.find.all(),"title","",5,Exercise.find.all().size()));
+    }
+
+    public Result list(int page, String orderBy, String filter){
+        int pageSize = 5;
+        java.util.List<Exercise> exercises = Exercise.find.where().contains("title",filter).orderBy(orderBy).findPagedList(page,pageSize).getList();
+        return ok(exerciseList.render(page,exercises,orderBy,filter,pageSize,Exercise.find.all().size()));
     }
 
     public Result edit(long id) {
@@ -45,6 +50,7 @@ public class ExerciseController extends Controller {
         exercise.setId(id);
         Exercise.update(exercise);
 
-        return redirect(routes.HomeController.index());
+        return redirect(routes.ExerciseController.list(0,"title",""));
+        //return redirect(routes.HomeController.index());
     }
 }

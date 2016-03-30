@@ -79,4 +79,8 @@ public class Exercise extends Model {
     }
 
     public static Finder<Long, Exercise> find = new Finder<Long,Exercise>(Exercise.class);
+
+    public static void list(){
+
+    }
 }
