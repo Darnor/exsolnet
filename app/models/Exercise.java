@@ -74,5 +74,9 @@ public class Exercise extends Model {
         exercise.save();
     }
 
+    public static void update(Exercise exercise){
+        exercise.update();
+    }
+
     public static Finder<Long, Exercise> find = new Finder<Long,Exercise>(Exercise.class);
 }

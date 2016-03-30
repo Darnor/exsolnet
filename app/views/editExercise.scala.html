@@ -1,0 +1,13 @@
+@import java.util
+@(exercise: Exercise, user: String)
+@main("Welcome to Exsolnet") {
+
+    <div style="border-bottom: 2px solid black ; width: 300px ; padding: 10px; margin: 10px">
+        <h1>Aufgaben editieren</h1>
+        <form method="POST" action="@routes.ExerciseController.update(exercise.getId)">
+            <input placeholder="Titel" type="text" name="title" value="@exercise.getTitle"/>
+            <input placeholder="Inhalt" type="text" name="content" value="@exercise.getContent"/>
+            <button>Speichern</button>
+        </form>
+    </div>
+}
