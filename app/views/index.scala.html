@@ -17,8 +17,8 @@
 
     @if(user == null) {
         <form method="POST" action="@routes.HomeController.login()">
-            <input placeholder="Benutzername" type="text" name="email"/>
-            <button>Login</button>
+            <input placeholder="Benutzername" type="text" name="email" id="username"/>
+            <button id="btn_login">Login</button>
         </form>
     } else {
         <form method="POST" action="@routes.HomeController.addExercise()">
@@ -27,7 +27,7 @@
             <button>Speichern</button>
         </form>
         <form method="POST" action="@routes.HomeController.logout()">
-            <label>@user</label>
+            <label id="lbl_username">@user</label>
             <button>Logout</button>
         </form>
     }
