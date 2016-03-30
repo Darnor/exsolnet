@@ -15,5 +15,7 @@ libraryDependencies ++= Seq(
 )
 
 libraryDependencies += "org.postgresql" % "postgresql" % "9.4.1208"
+libraryDependencies += "org.apache.maven.plugins" %% "maven-surefire-report-plugin" % "2.17"
+
 
 
