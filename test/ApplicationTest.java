@@ -14,7 +14,9 @@ import org.junit.*;
 
 import play.test.*;
 import play.twirl.api.Content;
+import services.SessionService;
 
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -50,9 +52,13 @@ public class ApplicationTest extends WithApplication{
     }
 
     @Test
-    public void testController(){
-        ExerciseRepository mockedrepo = mock(ExerciseRepository.class);
-        Model.Finder<Long,Exercise> mockedfinder = mock(Model.Finder.class);
+    public void testHomeController(){
+        ExerciseRepository execiseRepositoryMock = mock(ExerciseRepository.class);
+        Model.Finder<Long,Exercise> exerciseFinderMock = mock(Model.Finder.class);
+        SessionService sessionServiceMock = mock(SessionService.class);
+
+
+        when(sessionServiceMock.getSession(anyString())).thenReturn("TestUser");
 
         ArrayList<Exercise> testList = new ArrayList<Exercise>();
         Exercise ex = new Exercise();
@@ -61,11 +67,12 @@ public class ApplicationTest extends WithApplication{
         ex.setId(0l);
         testList.add(ex);
 
-        when(mockedfinder.all()).thenReturn(testList);
-        mockedrepo.find=mockedfinder;
+        when(exerciseFinderMock.all()).thenReturn(testList);
+        execiseRepositoryMock.find=exerciseFinderMock;
 
 
-        Result result = new HomeController().index();
+        HomeController homeController = new HomeController(execiseRepositoryMock, sessionServiceMock);
+        Result result = homeController.index();
         assertEquals(200, result.status());
     }
 
