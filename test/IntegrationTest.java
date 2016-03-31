@@ -13,7 +13,7 @@ public class IntegrationTest {
 
     @Test
     public void test() {
-        running(testServer(3333, fakeApplication()), HTMLUNIT, browser -> {
+        running(testServer(3333, fakeApplication()), FIREFOX, browser -> {
             browser.goTo("http://localhost:3333/");
             assertTrue(browser.pageSource().contains("Aufgaben"));
             browser.fill("#username").with("Franz");
