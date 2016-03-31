@@ -6,6 +6,7 @@ import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.*;
 
+import repositories.ExerciseRepository;
 import views.html.*;
 
 import javax.inject.Inject;
@@ -21,12 +22,19 @@ public class HomeController extends Controller {
     @Inject
     FormFactory formFactory;
 
+    @Inject
+    ExerciseRepository exerciseRepository;
+
+    public HomeController(){
+
+    }
+
+    public HomeController(ExerciseRepository exerciseRepository){
+        this.exerciseRepository = exerciseRepository;
+    }
+
     public Result index() {
-        if(session("connected") != null){
-            return ok(index.render(Exercise.find.all(), session("connected")));
-        }else{
-            return ok(index.render(Exercise.find.all(), null));
-        }
+            return ok(index.render(exerciseRepository.find.all(), "Mario"));
     }
 
     public Result login() {
@@ -45,7 +53,7 @@ public class HomeController extends Controller {
         Form<Exercise> exerciseForm = formFactory.form(Exercise.class);
         Exercise exercise = exerciseForm.bindFromRequest().get();
         exercise.setTime(new Date(System.currentTimeMillis()));
-        Exercise.create(exercise);
+        exerciseRepository.create(exercise);
 
         return redirect(routes.HomeController.index());
     }

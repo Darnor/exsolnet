@@ -60,20 +60,4 @@ public class Exercise extends Post {
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
-
-    public static Finder<Long, Exercise> getFind() {
-        return find;
-    }
-
-    public static void setFind(Finder<Long, Exercise> find) {
-        Exercise.find = find;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
 }

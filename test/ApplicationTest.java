@@ -1,24 +1,24 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.fasterxml.jackson.databind.JsonNode;
+import com.avaje.ebean.Model;
+import controllers.HomeController;
+import play.Application;
+import play.inject.guice.GuiceApplicationBuilder;
+import play.mvc.Http;
+import play.mvc.Result;
+import repositories.ExerciseRepository;
 import models.Exercise;
 import org.junit.*;
 
-import play.mvc.*;
 import play.test.*;
-import play.data.DynamicForm;
-import play.data.validation.ValidationError;
-import play.data.validation.Constraints.RequiredValidator;
-import play.i18n.Lang;
-import play.libs.F;
-import play.libs.F.*;
 import play.twirl.api.Content;
 
-import static play.test.Helpers.*;
+import static org.mockito.Mockito.mock;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.when;
+import static play.inject.Bindings.bind;
 
 
 /**
@@ -27,7 +27,13 @@ import static org.junit.Assert.*;
  * If you are interested in mocking a whole application, see the wiki for more details.
  *
  */
-public class ApplicationTest {
+public class ApplicationTest extends WithApplication{
+
+    @Override
+    protected Application provideApplication() {
+        return new GuiceApplicationBuilder()
+                .build();
+    }
 
     @Test
     public void simpleCheck() {
@@ -42,6 +48,28 @@ public class ApplicationTest {
         assertEquals("text/html", html.contentType());
         assertTrue(html.body().contains("Franz"));
     }
+
+    @Test
+    public void testController(){
+        ExerciseRepository mockedrepo = mock(ExerciseRepository.class);
+        Model.Finder<Long,Exercise> mockedfinder = mock(Model.Finder.class);
+
+        ArrayList<Exercise> testList = new ArrayList<Exercise>();
+        Exercise ex = new Exercise();
+        ex.setTitle("test");
+        ex.setContent("test");
+        ex.setId(0l);
+        testList.add(ex);
+
+        when(mockedfinder.all()).thenReturn(testList);
+        mockedrepo.find=mockedfinder;
+
+
+        Result result = new HomeController().index();
+        assertEquals(200, result.status());
+    }
+
+
 
 
 }
