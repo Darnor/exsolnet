@@ -25,6 +25,9 @@ public class Exercise extends Model {
     private String content;
 
     @Basic
+    private String contenttemp;
+
+    @Basic
     private Date time;
 
     @Basic

@@ -14,7 +14,9 @@ libraryDependencies ++= Seq(
   evolutions
 )
 
+
 libraryDependencies += "org.postgresql" % "postgresql" % "9.4.1208"
+libraryDependencies += evolutions
 
 jacoco.settings
 
