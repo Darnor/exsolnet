@@ -10,7 +10,7 @@ import java.util.List;
  * Created by mario on 21.03.16.
  */
 @Entity
-@Table(name="user")
+@Table(name="exoluser")
 public class User extends Model{
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
@@ -39,6 +39,30 @@ public class User extends Model{
 
     @OneToMany(mappedBy = "user")
     private List<Tracking> trackings;
+
+    public List<Exercise> getExercises() {
+        return exercises;
+    }
+
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
+    }
+
+    public List<Solution> getSolutions() {
+        return solutions;
+    }
+
+    public void setSolutions(List<Solution> solutions) {
+        this.solutions = solutions;
+    }
+
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+    }
 
     public List<Report> getReports() {
         return reports;

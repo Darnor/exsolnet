@@ -57,13 +57,13 @@ create table track (
   constraint pk_track primary key (id))
 ;
 
-create table user (
+create table exoluser (
   id                        bigserial not null,
   email                     varchar(255),
   password                  varchar(255),
   points                    integer,
   is_moderator              boolean,
-  constraint pk_user primary key (id))
+  constraint pk_exoluser primary key (id))
 ;
 
 create table vote (
@@ -81,15 +81,15 @@ create table exercise_tag (
   tag_id                         bigint not null,
   constraint pk_exercise_tag primary key (exercise_id, tag_id))
 ;
-alter table comment add constraint fk_comment_user_1 foreign key (user_id) references user (id);
+alter table comment add constraint fk_comment_user_1 foreign key (user_id) references exoluser (id);
 create index ix_comment_user_1 on comment (user_id);
 alter table comment add constraint fk_comment_solution_2 foreign key (solution_id) references solution (id);
 create index ix_comment_solution_2 on comment (solution_id);
 alter table comment add constraint fk_comment_exercise_3 foreign key (exercise_id) references exercise (id);
 create index ix_comment_exercise_3 on comment (exercise_id);
-alter table exercise add constraint fk_exercise_user_4 foreign key (user_id) references user (id);
+alter table exercise add constraint fk_exercise_user_4 foreign key (user_id) references exoluser (id);
 create index ix_exercise_user_4 on exercise (user_id);
-alter table report add constraint fk_report_user_5 foreign key (user_id) references user (id);
+alter table report add constraint fk_report_user_5 foreign key (user_id) references exoluser (id);
 create index ix_report_user_5 on report (user_id);
 alter table report add constraint fk_report_solution_6 foreign key (solution_id) references solution (id);
 create index ix_report_solution_6 on report (solution_id);
@@ -99,17 +99,17 @@ alter table report add constraint fk_report_comment_8 foreign key (comment_id) r
 create index ix_report_comment_8 on report (comment_id);
 alter table solution add constraint fk_solution_exercise_9 foreign key (exercise_id) references exercise (id);
 create index ix_solution_exercise_9 on solution (exercise_id);
-alter table solution add constraint fk_solution_user_10 foreign key (user_id) references user (id);
+alter table solution add constraint fk_solution_user_10 foreign key (user_id) references exoluser (id);
 create index ix_solution_user_10 on solution (user_id);
 alter table track add constraint fk_track_tag_11 foreign key (tag_id) references tag (id);
 create index ix_track_tag_11 on track (tag_id);
-alter table track add constraint fk_track_user_12 foreign key (user_id) references user (id);
+alter table track add constraint fk_track_user_12 foreign key (user_id) references exoluser (id);
 create index ix_track_user_12 on track (user_id);
 alter table vote add constraint fk_vote_solution_13 foreign key (solution_id) references solution (id);
 create index ix_vote_solution_13 on vote (solution_id);
 alter table vote add constraint fk_vote_exercise_14 foreign key (exercise_id) references exercise (id);
 create index ix_vote_exercise_14 on vote (exercise_id);
-alter table vote add constraint fk_vote_user_15 foreign key (user_id) references user (id);
+alter table vote add constraint fk_vote_user_15 foreign key (user_id) references exoluser (id);
 create index ix_vote_user_15 on vote (user_id);
 
 
@@ -134,7 +134,7 @@ drop table if exists tag cascade;
 
 drop table if exists track cascade;
 
-drop table if exists user cascade;
+drop table if exists exoluser cascade;
 
 drop table if exists vote cascade;
 
