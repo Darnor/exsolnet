@@ -3,42 +3,70 @@ package models;
 import com.avaje.ebean.Model;
 import play.data.validation.Constraints;
 
-import javax.persistence.Basic;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * Created by mario on 21.03.16.
  */
 
 @Entity
-public class Exercise extends Model {
-
-    @Id
-    private Long id;
+@Table(name = "exercise")
+public class Exercise extends Post {
 
     @Constraints.Required
     private String title;
 
-    @Basic
-    private String content;
+    @OneToMany(mappedBy = "exercise")
+    private List<Solution> solutions;
 
-    @Basic
-    private String contenttemp;
 
-    @Basic
-    private Date time;
+    @OneToMany(mappedBy = "exercise")
+    private List<Vote> votes;
 
-    @Basic
-    private int points;
 
-    public Long getId() {
-        return id;
+    @ManyToMany
+    @JoinTable(
+            name = "exercise_tag",
+            joinColumns = @JoinColumn(name = "exercise_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id", referencedColumnName = "id"))
+    private List<Tag> tags;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "exercise")
+    private List<Report> reports;
+
+    @OneToMany(mappedBy = "exercise")
+    private List<Comment> comments;
+
+    public static void create(Exercise exercise) {
+        exercise.save();
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public static void update(Exercise exercise) {
+        exercise.update();
+    }
+
+    public static Finder<Long, Exercise> find = new Finder<Long, Exercise>(Exercise.class);
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public static Finder<Long, Exercise> getFind() {
+        return find;
+    }
+
+    public static void setFind(Finder<Long, Exercise> find) {
+        Exercise.find = find;
     }
 
     public String getTitle() {
@@ -47,43 +75,5 @@ public class Exercise extends Model {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Date getTime() {
-        return time;
-    }
-
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    public static void create(Exercise exercise){
-        exercise.save();
-    }
-
-    public static void update(Exercise exercise){
-        exercise.update();
-    }
-
-    public static Finder<Long, Exercise> find = new Finder<Long,Exercise>(Exercise.class);
-
-    public static void list(){
-
     }
 }
