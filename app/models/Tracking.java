@@ -19,7 +19,7 @@ public class Tracking extends Model{
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private ExsolnetUser user;
+    private User user;
 
 
 

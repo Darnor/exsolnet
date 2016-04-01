@@ -1,8 +1,10 @@
 package models;
 
+import com.avaje.ebean.Model;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -33,7 +35,7 @@ public class Exercise extends Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private ExsolnetUser user;
+    private User user;
 
     @OneToMany(mappedBy = "exercise")
     private List<Report> reports;
@@ -65,11 +67,11 @@ public class Exercise extends Post {
         this.votes = votes;
     }
 
-    public ExsolnetUser getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(ExsolnetUser user) {
+    public void setUser(User user) {
         this.user = user;
     }
 

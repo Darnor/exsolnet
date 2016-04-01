@@ -24,6 +24,6 @@ public class Vote extends Model {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private ExsolnetUser user;
+    private User user;
 
    }

@@ -10,7 +10,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="exoluser")
-public class ExsolnetUser extends Model{
+public class User extends Model{
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
