@@ -17,7 +17,7 @@ public class Solution  extends  Post{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private ExsolnetUser user;
 
     @OneToMany(mappedBy = "solution")
     private List<Report> reports;

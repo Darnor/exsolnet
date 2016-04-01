@@ -3,7 +3,6 @@ package models;
 import com.avaje.ebean.Model;
 
 import javax.persistence.*;
-import java.util.List;
 
 /**
  * Created by Claudia on 31.03.2016.
@@ -18,7 +17,7 @@ public class Report extends Model {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private ExsolnetUser user;
 
     @ManyToOne
     @JoinColumn(name = "solution_id")
@@ -49,11 +48,11 @@ public class Report extends Model {
         this.message = message;
     }
 
-    public User getUser() {
+    public ExsolnetUser getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(ExsolnetUser user) {
         this.user = user;
     }
 

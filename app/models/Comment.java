@@ -17,7 +17,7 @@ public class Comment extends Model{
 
     @ManyToOne
     @JoinColumn(name="user_id")
-    private User user;
+    private ExsolnetUser user;
 
     @OneToMany(mappedBy = "comment")
     private List<Report> reports;

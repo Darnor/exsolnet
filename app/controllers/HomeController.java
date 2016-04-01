@@ -1,7 +1,7 @@
 package controllers;
 
 import models.Exercise;
-import models.User;
+import models.ExsolnetUser;
 import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.*;
@@ -44,8 +44,8 @@ public class HomeController extends Controller {
     }
 
     public Result login() {
-        Form<User> userForm = formFactory.form(User.class);
-        User user = userForm.bindFromRequest().get();
+        Form<ExsolnetUser> userForm = formFactory.form(ExsolnetUser.class);
+        ExsolnetUser user = userForm.bindFromRequest().get();
         session("connected", user.getEmail());
         return redirect(routes.HomeController.index());
     }
