@@ -43,15 +43,53 @@ public class Exercise extends Post {
     @OneToMany(mappedBy = "exercise")
     private List<Comment> comments;
 
-    public static void create(Exercise exercise) {
-        exercise.save();
+    public String getTitle() {
+        return title;
     }
 
-    public static void update(Exercise exercise) {
-        exercise.update();
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public static Finder<Long, Exercise> find = new Finder<Long, Exercise>(Exercise.class);
+    public List<Solution> getSolutions() {
+        return solutions;
+    }
+
+    public void setSolutions(List<Solution> solutions) {
+        this.solutions = solutions;
+    }
+
+    public List<Vote> getVotes() {
+        return votes;
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 
     public List<Tag> getTags() {
         return tags;
