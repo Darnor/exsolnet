@@ -14,9 +14,7 @@ libraryDependencies ++= Seq(
   evolutions
 )
 
-
 libraryDependencies += "org.postgresql" % "postgresql" % "9.4.1208"
-libraryDependencies += evolutions
 
 libraryDependencies += "org.mockito" % "mockito-core" % "1.10.19"
 
