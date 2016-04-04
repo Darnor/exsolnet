@@ -21,6 +21,7 @@ import static org.mockito.Mockito.mock;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 import static play.inject.Bindings.bind;
+import static play.test.Helpers.contentAsString;
 
 
 /**
@@ -38,12 +39,6 @@ public class ApplicationTest extends WithApplication{
     }
 
     @Test
-    public void simpleCheck() {
-        int a = 1 + 1;
-        assertEquals(2, a);
-    }
-
-    @Test
     public void renderTemplate() {
         ArrayList<Exercise> list = new ArrayList<>();
         Content html = views.html.index.render(list, "Franz");
@@ -58,11 +53,11 @@ public class ApplicationTest extends WithApplication{
         SessionService sessionServiceMock = mock(SessionService.class);
 
 
-        when(sessionServiceMock.getSession(anyString())).thenReturn("TestUser");
+        when(sessionServiceMock.getUsername(anyString())).thenReturn("TestUser");
 
-        ArrayList<Exercise> testList = new ArrayList<Exercise>();
+        ArrayList<Exercise> testList = new ArrayList<>();
         Exercise ex = new Exercise();
-        ex.setTitle("test");
+        ex.setTitle("testexercise");
         ex.setContent("test");
         ex.setId(0l);
         testList.add(ex);
@@ -73,7 +68,7 @@ public class ApplicationTest extends WithApplication{
 
         HomeController homeController = new HomeController(execiseRepositoryMock, sessionServiceMock);
         Result result = homeController.index();
-        assertEquals(200, result.status());
+        assertTrue(contentAsString(result).contains("testexercise"));
     }
 
 

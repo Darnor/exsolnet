@@ -14,7 +14,7 @@ public class SessionService {
 
     }
 
-    public String getSession(String key){
+    public String getUsername(String key){
         return session(key);
     }
 }

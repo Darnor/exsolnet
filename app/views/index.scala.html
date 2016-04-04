@@ -7,9 +7,11 @@
         <ul id="exercises">
         @exercises.map { e =>
             <li>@e.getTitle -- @e.getContent -- @e.getId
+                @if(user!=null){
                 <form method="GET" action="@routes.ExerciseController.edit(e.getId)">
                     <button>Edit</button>
                 </form>
+                }
             </li>
         }
         </ul>
