@@ -21,6 +21,7 @@ public class Tracking extends Model{
     @JoinColumn(name = "user_id")
     private User user;
 
-
-
+    public Tag getTag() {
+        return tag;
+    }
 }

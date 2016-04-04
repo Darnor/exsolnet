@@ -13,6 +13,7 @@ import java.util.List;
 public class Tag extends Model {
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+
     private String name;
     private Boolean isMainTag;
 
@@ -23,6 +24,20 @@ public class Tag extends Model {
     @JoinColumn(name = "tag")
     private List<Tracking> trackings;
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Exercise> getExercises() {
+        return exercises;
+    }
+
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
+    }
 
    }

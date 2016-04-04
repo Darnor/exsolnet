@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.Model;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +30,9 @@ public class Comment extends Model{
     @ManyToOne
     @JoinColumn(name="exercise_id")
     private Exercise exercise;
+
+    @Basic
+    private Date time;
 
 
 

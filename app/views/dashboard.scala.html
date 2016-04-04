@@ -1,0 +1,11 @@
+@import java.util
+@(username: String, tags: util.List[Tag], comments: util.List[Comment])
+
+@main(username + "'s Dashboard"){
+    <h1>Your tracked tags</h1>
+    <ul>
+    @tags.map{ tag =>
+      <li>@tag.getName() (0/0)</li>
+    }
+    </ul>
+}
