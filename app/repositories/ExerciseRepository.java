@@ -24,5 +24,5 @@ public class ExerciseRepository {
         exercise.update();
     }
 
-    public Model.Finder<Long, Exercise> find = new Model.Finder<Long,Exercise>(Exercise.class);
+    public static Model.Finder<Long, Exercise> find = new Model.Finder<Long,Exercise>(Exercise.class);
 }
