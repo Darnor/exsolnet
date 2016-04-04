@@ -1,6 +1,8 @@
 package services;
 
 import com.google.inject.Inject;
+import models.User;
+import repositories.UserRepository;
 
 import static play.mvc.Controller.session;
 
@@ -12,8 +14,11 @@ public class SessionService {
     public static final String KEY_USERNAME = "connected";
 
     @Inject
-    public SessionService(){
+    private UserRepository userRepo;
 
+    @Inject
+    public SessionService(){
+        //noop
     }
 
     public String getUsername(){
@@ -22,6 +27,13 @@ public class SessionService {
 
     public String get(String key){
         return session(key);
+    }
+
+    public User getCurrentUser(){
+        //TODO: use actual database when registration is implemented
+        User fake = new User();
+        fake.setEmail(getUsername());
+        return fake;
     }
 
     public void set(String key, String value){

@@ -63,8 +63,7 @@ public class ApplicationTest extends WithApplication{
         testList.add(ex);
 
         when(exerciseFinderMock.all()).thenReturn(testList);
-        execiseRepositoryMock.find=exerciseFinderMock;
-
+        when(execiseRepositoryMock.find()).thenReturn(exerciseFinderMock);
 
         HomeController homeController = new HomeController(execiseRepositoryMock, sessionServiceMock);
         Result result = homeController.index();

@@ -11,9 +11,11 @@ import models.Exercise;
 
 @Singleton
 public class ExerciseRepository {
+    private static final Model.Finder<Long, Exercise> find = new Model.Finder<>(Exercise.class);
+
     @Inject
     public ExerciseRepository(){
-
+        //noop
     }
 
     public void create(Exercise exercise){
@@ -24,5 +26,8 @@ public class ExerciseRepository {
         exercise.update();
     }
 
-    public static Model.Finder<Long, Exercise> find = new Model.Finder<Long,Exercise>(Exercise.class);
+    public Model.Finder<Long, Exercise> find(){
+        return find;
+    }
+
 }

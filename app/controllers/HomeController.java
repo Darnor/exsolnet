@@ -39,7 +39,7 @@ public class HomeController extends Controller {
     }
 
     public Result index() {
-            return ok(index.render(exerciseRepository.find.all(), sessionService.get(SessionService.KEY_USERNAME)));
+            return ok(index.render(exerciseRepository.find().all(), sessionService.get(SessionService.KEY_USERNAME)));
     }
 
     public Result login() {
