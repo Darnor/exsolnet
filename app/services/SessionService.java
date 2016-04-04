@@ -9,12 +9,26 @@ import static play.mvc.Controller.session;
  */
 public class SessionService {
 
+    public static final String KEY_USERNAME = "connected";
+
     @Inject
     public SessionService(){
 
     }
 
-    public String getUsername(String key){
+    public String getUsername(){
+        return session(KEY_USERNAME);
+    }
+
+    public String get(String key){
         return session(key);
+    }
+
+    public void set(String key, String value){
+        session(key, value);
+    }
+
+    public void clear(){
+        session().clear();
     }
 }

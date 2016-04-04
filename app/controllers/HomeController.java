@@ -39,18 +39,18 @@ public class HomeController extends Controller {
     }
 
     public Result index() {
-            return ok(index.render(exerciseRepository.find.all(), sessionService.getUsername("connected")));
+            return ok(index.render(exerciseRepository.find.all(), sessionService.get(SessionService.KEY_USERNAME)));
     }
 
     public Result login() {
         Form<User> userForm = formFactory.form(User.class);
         User user = userForm.bindFromRequest().get();
-        session("connected", user.getEmail());
+        sessionService.set(SessionService.KEY_USERNAME, user.getEmail());
         return redirect(routes.HomeController.index());
     }
 
     public Result logout() {
-        session().clear();
+        sessionService.clear();
         return redirect(routes.HomeController.index());
     }
 
