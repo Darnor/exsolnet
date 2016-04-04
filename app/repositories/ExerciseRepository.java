@@ -16,13 +16,13 @@ public class ExerciseRepository {
 
     }
 
-    public static void create(Exercise exercise){
+    public void create(Exercise exercise){
         exercise.save();
     }
 
-    public static void update(Exercise exercise){
+    public void update(Exercise exercise){
         exercise.update();
     }
 
-    public static Model.Finder<Long, Exercise> find = new Model.Finder<Long,Exercise>(Exercise.class);
+    public Model.Finder<Long, Exercise> find = new Model.Finder<Long,Exercise>(Exercise.class);
 }

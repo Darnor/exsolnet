@@ -38,7 +38,6 @@ public class HomeController extends Controller {
         this.exerciseRepository = exerciseRepository;
     }
 
-
     public Result index() {
             return ok(index.render(exerciseRepository.find.all(), sessionService.getSession("connected")));
     }
