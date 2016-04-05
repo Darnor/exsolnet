@@ -17,20 +17,11 @@
         </ul>
     </div>
 
-    @if(user == null) {
-        <form method="POST" action="@routes.HomeController.login()">
-            <input placeholder="Benutzername" type="text" name="email" id="username"/>
-            <button id="btn_login">Login</button>
-        </form>
-    } else {
+    @if(user != null) {
         <form method="POST" action="@routes.HomeController.addExercise()">
             <input placeholder="Titel" type="text" name="title"/>
             <input placeholder="Inhalt" type="text" name="content"/>
             <button>Speichern</button>
-        </form>
-        <form method="POST" action="@routes.HomeController.logout()">
-            <label id="lbl_username">@user</label>
-            <button>Logout</button>
         </form>
     }
 }

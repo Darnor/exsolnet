@@ -1,6 +1,7 @@
 package services;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import models.User;
 import repositories.UserRepository;
 
@@ -9,6 +10,7 @@ import static play.mvc.Controller.session;
 /**
  * Created by mario on 31.03.16.
  */
+@Singleton
 public class SessionService {
 
     public static final String KEY_USERNAME = "connected";
@@ -25,8 +27,12 @@ public class SessionService {
         return session(KEY_USERNAME);
     }
 
-    public String get(String key){
-        return session(key);
+    public boolean isLoggedin(){
+        return session(KEY_USERNAME) != null;
+    }
+
+    public String get(){
+        return session(KEY_USERNAME);
     }
 
     public User getCurrentUser(){
@@ -36,8 +42,8 @@ public class SessionService {
         return fake;
     }
 
-    public void set(String key, String value){
-        session(key, value);
+    public void set(String value){
+        session(KEY_USERNAME, value);
     }
 
     public void clear(){

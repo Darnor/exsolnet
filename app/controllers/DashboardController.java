@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import models.Comment;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import repositories.CommentRepository;
 import repositories.TagRepository;
 import services.SessionService;

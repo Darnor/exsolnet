@@ -1,0 +1,14 @@
+@(user: String)
+@main("Login") {
+    @if(user == null) {
+        <h1>Login</h1>
+        <form method="POST" action="@routes.LoginController.login()">
+            <input placeholder="Benutzername" type="text" name="email" id="email"/>
+            <input placeholder="Passwort" type="password" name="password" id="password"/>
+            <button id="btn_login">Login</button>
+        </form>
+    }else{
+        <p>@user</p>
+        <button onclick="@routes.LoginController.logout()" >Logout</button>
+    }
+}

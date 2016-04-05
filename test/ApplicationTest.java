@@ -17,13 +17,10 @@ import play.twirl.api.Content;
 import services.SessionService;
 
 import static org.hamcrest.core.StringContains.containsString;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
-import static play.inject.Bindings.bind;
 import static play.test.Helpers.contentAsString;
-
 
 /**
  *
@@ -70,8 +67,6 @@ public class ApplicationTest extends WithApplication{
         Result result = homeController.index();
         assertThat(contentAsString(result), containsString("testexercise"));
     }
-
-
 
 
 }

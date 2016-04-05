@@ -18,7 +18,6 @@ import javax.inject.Inject;
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
  */
-
 public class ExerciseController extends Controller {
 
     @Inject
@@ -55,7 +54,6 @@ public class ExerciseController extends Controller {
         Exercise exercise = exerciseForm.bindFromRequest().get();
         exercise.setId(id);
         exerciseRepository.update(exercise);
-
-        return redirect(routes.HomeController.index());
+        return redirect(routes.ExerciseController.list(0,"title",""));
     }
 }
