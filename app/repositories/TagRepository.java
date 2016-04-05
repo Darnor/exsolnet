@@ -28,4 +28,11 @@ public class TagRepository {
     public Model.Finder<Long, Tag>find(){
         return find;
     }
+
+    public long getNofCompletedExercises(Tag tag, User currentUser) {
+        return tag.getExercises().stream().mapToLong(exercise ->
+            exercise.getSolutions().stream().filter(solution -> solution.getUser().equals(currentUser)).count()
+        ).sum();
+    }
+
 }

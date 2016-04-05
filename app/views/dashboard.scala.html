@@ -1,11 +1,11 @@
 @import java.util
-@(username: String, tags: util.List[Tag], comments: util.List[Comment])
+@(username: String, tags: util.List[DashboardController.TagEntry], comments: util.List[Comment])
 
 @main(username + "'s Dashboard"){
     <h1>Your tracked tags</h1>
     <ul>
         @tags.map{ tag =>
-          <li>@tag.getName() (0/@tag.getExercises.size())</li>
+          <li>@tag.name (@tag.progress/@tag.total)</li>
         }
     </ul>
 

@@ -2,23 +2,21 @@ package controllers;
 
 import com.google.inject.Inject;
 import models.Comment;
-import models.Tag;
+import play.mvc.Controller;
 import play.mvc.Result;
 import repositories.CommentRepository;
 import repositories.TagRepository;
 import services.SessionService;
 import views.html.dashboard;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static play.mvc.Results.ok;
+import java.util.stream.Collectors;
 
 /**
  * This controller contains an action to handle HTTP requests
  * to the users dashboard
  */
-public class DashboardController {
+public class DashboardController extends Controller{
     @Inject
     SessionService sessionService;
 
@@ -51,7 +49,25 @@ public class DashboardController {
         return commentRepo.getRecentComments(sessionService.getCurrentUser());
     }
 
-    private List<Tag> getSubscribedTags() {
-        return tagRepo.getTrackedTags(sessionService.getCurrentUser());
+    private List<TagEntry> getSubscribedTags() {
+        return tagRepo.getTrackedTags(sessionService.getCurrentUser()).stream().map(tag ->
+            new TagEntry(
+                    tag.getName(),
+                    tag.getExercises().size(),
+                    tagRepo.getNofCompletedExercises(tag, sessionService.getCurrentUser())
+            )
+        ).collect(Collectors.toList());
+    }
+
+    public static class TagEntry{
+        public final String name;
+        public final long progress;
+        public final long total;
+
+        public TagEntry(String name, long progress, long total) {
+            this.name = name;
+            this.progress = progress;
+            this.total = total;
+        }
     }
 }
