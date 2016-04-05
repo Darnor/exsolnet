@@ -17,7 +17,7 @@ public class TagRepository {
     private static final Model.Finder<Long, Tag> find = new Model.Finder<>(Tag.class);
 
     @Inject
-    public TagRepository(){
+    public TagRepository() {
         //noop
     }
 
