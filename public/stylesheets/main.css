@@ -11,6 +11,7 @@
 #navigation {
     display: flex;
     justify-content: flex-start;
+    flex-wrap: nowrap;
     max-width: 1024px;
     margin-left:auto;
     margin-right:auto;
@@ -27,7 +28,6 @@
 
 #navigation a:last-child{
     margin-left: auto;
-    color: red;
 }
 
 #navigation a:hover {
@@ -35,7 +35,6 @@
 }
 
 .body{
-    margin-top: 5rem;
     max-width: 1024px;
     margin-left:auto;
     margin-right:auto;
@@ -45,4 +44,15 @@
 body {
     margin: 0;
     background-color: #EEEEEE;
+}
+
+
+@media (max-width: 800px){
+    #navigation {
+        flex-direction: column;
+    }
+
+    #navigation a:last-child{
+        margin-left: 0;
+    }
 }
