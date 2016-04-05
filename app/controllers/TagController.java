@@ -8,6 +8,8 @@ import repositories.TagRepository;
 import services.SessionService;
 import views.html.tagList;
 
+import java.util.List;
+
 import static play.mvc.Results.ok;
 
 /**
@@ -21,12 +23,12 @@ public class TagController {
     @Inject
     SessionService sessionService;
 
-    public Result processCreate(String name) {
-        return ok(tagList.render(sessionService.getUsername(), tagRepository.find().all()));
+    public Result processCreate(List<String> tagStrings) {
+        return ok();
     }
 
     public Result processTrack(Tag tag) {
-        return ok(tagList.render(sessionService.getUsername(), tagRepository.find().all()));
+        return ok();
     }
 
     public Result renderTagList() {
