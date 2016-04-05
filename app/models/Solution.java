@@ -27,4 +27,12 @@ public class Solution  extends  Post{
 
     @OneToMany(mappedBy = "solution")
     private List<Vote> votes;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

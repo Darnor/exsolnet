@@ -29,8 +29,11 @@
         <thead>
             <tr>
                 @header("title", "Titel")
-                @header("content", "Inhalt")
+                @header("tags", "Tags")
+                @header("solutions", "Lösungen")
+                @header("rating", "Bewertung")
                 @header("time", "Datum")
+                @header("solved", "Gelöst")
             </tr>
         </thead>
         <tbody>
@@ -39,10 +42,21 @@
             <tr>
                 <td><a href="">@exercise.getTitle</a></td>
                 <td>
-                @exercise.getContent
+                @for(tag <- exercise.getTags){
+                    @tag.getName,
+                }
+                </td>
+                <td>
+                @exercise.getSolutions.size
+                </td>
+                <td>
+                @exercise.getPoints
                 </td>
                 <td>
                 @exercise.getTime
+                </td>
+                <td>
+                @*exercise.getSolutions.find(s => s.getUser.getEmail.equals(username))*@
                 </td>
             </tr>
         }
