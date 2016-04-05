@@ -1,5 +1,5 @@
 @import java.util
-@(currentPage: Int, exercises: util.List[Exercise], currentOrderBy: String, currentFilter: String, pageSize: Int, totalExercises: Int)
+@(currentPage: com.avaje.ebean.PagedList[Exercise], currentOrderBy: String, currentFilter: String)
 
 
 @****************************************
@@ -7,12 +7,11 @@
 ****************************************@
 @link(newPage: Int,newOrderBy: String) = @{
     routes.ExerciseController.list(newPage, newOrderBy, currentFilter)
-
 }
 
-    @**********************************
-    * Helper generating table headers *
-    ***********************************@
+@**********************************
+* Helper generating table headers *
+***********************************@
 @header(orderBy: String, title: String) = {
     <th class="col@orderBy header @if(currentOrderBy == orderBy) @{if(currentOrderBy == orderBy) "headerSortDown" else "headerSortUp"}">
         <a href="@link(0,orderBy)">@title</a>
@@ -26,7 +25,7 @@
         <input type="submit" id="searchsubmit" value="Suche" class="btn primary"/>
     }
 
-    <table class="computers zebra-striped">
+    <table class="exercises zebra-striped">
         <thead>
             <tr>
                 @header("title", "Titel")
@@ -36,7 +35,7 @@
         </thead>
         <tbody>
 
-        @exercises.map {exercise =>
+        @for(exercise <- currentPage.getList){
             <tr>
                 <td><a href="">@exercise.getTitle</a></td>
                 <td>
@@ -52,10 +51,9 @@
 
     <div id="pagination" class="pagination">
         <ul>
-
-            @if(currentPage>0){
+            @if(currentPage.hasPrev){
             <li class="prev">
-                <a href="@link(currentPage-1,currentOrderBy)">&larr; Vorherige</a>
+                <a href="@link(currentPage.getPageIndex-1,currentOrderBy)">&larr; Vorherige</a>
             </li>
             }else {
                 <li class="prev disabled">
@@ -63,11 +61,11 @@
                 </li>
             }
             <li class="current">
-                <a>Zeige @(currentPage*pageSize + 1) bis @(currentPage*pageSize + exercises.size) von @totalExercises an</a>
+                <p>Zeige @(currentPage.getPageIndex*currentPage.getPageSize+1) bis @(currentPage.getPageIndex*currentPage.getPageSize+currentPage.getList.size()) von @currentPage.getTotalRowCount an</p>
             </li>
-            @if((currentPage+1)*pageSize<totalExercises) {
+            @if(currentPage.hasNext) {
                 <li class="prev">
-                    <a href="@link(currentPage+1, currentOrderBy)">&larr; Nächste</a>
+                    <a href="@link(currentPage.getPageIndex+1, currentOrderBy)">&larr; Nächste</a>
                 </li>
             }else{
              <li class="prev disabled">
