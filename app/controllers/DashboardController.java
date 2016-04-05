@@ -25,8 +25,23 @@ public class DashboardController {
     @Inject
     TagRepository tagRepo;
 
+
     @Inject
     CommentRepository commentRepo;
+
+
+    //setters used for mocking
+    public void setCommentRepo(CommentRepository commentRepo) {
+        this.commentRepo = commentRepo;
+    }
+
+    public void setTagRepo(TagRepository tagRepo) {
+        this.tagRepo = tagRepo;
+    }
+
+    public void setSessionService(SessionService sessionService) {
+        this.sessionService = sessionService;
+    }
 
     public Result renderDashboard(){
         return ok(dashboard.render(sessionService.getUsername(), getSubscribedTags(), getRecentComments()));

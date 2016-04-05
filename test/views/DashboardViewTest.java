@@ -25,7 +25,7 @@ public class DashboardViewTest {
         t2.setName("Two");
         list.add(t1);
         list.add(t2);
-        Content html = views.html.dashboard.render("Franz", list, null);
+        Content html = views.html.dashboard.render("Franz", list, new ArrayList<>());
         assertEquals("text/html", html.contentType());
         assertThat(html.body(), containsString("Franz"));
         assertThat(html.body(), containsString("<li>One (0/0)</li>"));

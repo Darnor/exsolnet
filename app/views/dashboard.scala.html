@@ -4,8 +4,15 @@
 @main(username + "'s Dashboard"){
     <h1>Your tracked tags</h1>
     <ul>
-    @tags.map{ tag =>
-      <li>@tag.getName() (0/0)</li>
-    }
+        @tags.map{ tag =>
+          <li>@tag.getName() (0/@tag.getExercises.size())</li>
+        }
+    </ul>
+
+    <h1>Recent comments on your posts</h1>
+    <ul>
+        @comments.map{ comment =>
+          <li>@comment.getContent()</li>
+        }
     </ul>
 }
