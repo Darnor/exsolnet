@@ -51,7 +51,7 @@ public class ApplicationTest extends WithApplication{
         SessionService sessionServiceMock = mock(SessionService.class);
 
 
-        when(sessionServiceMock.get(SessionService.KEY_USERNAME)).thenReturn("TestUser");
+        when(sessionServiceMock.getUsername()).thenReturn("TestUser");
 
         ArrayList<Exercise> testList = new ArrayList<>();
         Exercise ex = new Exercise();

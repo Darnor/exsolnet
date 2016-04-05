@@ -8,7 +8,9 @@
             <button id="btn_login">Login</button>
         </form>
     }else{
-        <p>@user</p>
-        <button onclick="@routes.LoginController.logout()" >Logout</button>
+        <form method="POST" action="@routes.LoginController.logout()">
+            <label id="lbl_username">@user</label>
+            <button>Logout</button>
+        </form>
     }
 }

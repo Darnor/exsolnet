@@ -9,6 +9,7 @@ import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 
+import services.SessionService;
 import views.html.editExercise;
 import views.html.exerciseList;
 
@@ -24,6 +25,9 @@ public class ExerciseController extends Controller {
     FormFactory formFactory;
 
     @Inject
+    SessionService sessionService;
+
+    @Inject
     ExerciseRepository exerciseRepository;
 
     public Result renderOverview(){
@@ -36,17 +40,16 @@ public class ExerciseController extends Controller {
     }
 
     public Result list(int page, String orderBy, String titleFilter, String tagFilter){
+        if(!sessionService.isLoggedin()){
+            return LoginController.redirectIfNotLoggedIn();
+        }
         int pageSize = 5;
         PagedList<Exercise> exercises = exerciseRepository.getPagedList(page,orderBy,titleFilter,tagFilter,pageSize);
         return ok(exerciseList.render(exercises,orderBy,titleFilter,tagFilter));
     }
 
     public Result edit(long id) {
-        if(session("connected") != null){
-            return ok(editExercise.render(exerciseRepository.find().byId(id), session("connected")));
-        }else{
-            return ok(editExercise.render(exerciseRepository.find().byId(id), null));
-        }
+            return ok(editExercise.render(exerciseRepository.find().byId(id), sessionService.getUsername()));
     }
 
     public Result update(long id) {

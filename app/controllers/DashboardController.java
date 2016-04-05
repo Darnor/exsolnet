@@ -43,6 +43,9 @@ public class DashboardController extends Controller{
     }
 
     public Result renderDashboard(){
+        if(!sessionService.isLoggedin()){
+            return LoginController.redirectIfNotLoggedIn();
+        }
         return ok(dashboard.render(sessionService.getUsername(), getSubscribedTags(), getRecentComments()));
     }
 

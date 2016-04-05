@@ -40,9 +40,9 @@ public class HomeController extends Controller {
 
     public Result index() {
             if(!sessionService.isLoggedin()){
-                return redirect(routes.LoginController.renderLogin());
+                return LoginController.redirectIfNotLoggedIn();
             }
-            return ok(index.render(exerciseRepository.find().all(), sessionService.get()));
+            return ok(index.render(exerciseRepository.find().all(), sessionService.getUsername()));
     }
 
     public Result login() {

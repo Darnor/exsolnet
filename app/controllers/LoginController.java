@@ -24,7 +24,7 @@ public class LoginController extends Controller {
     FormFactory formFactory;
 
     public Result renderLogin(){
-            return ok(views.html.login.render(session("connected")));
+            return ok(views.html.login.render(sessionService.getUsername()));
     }
 
     public Result login() {
@@ -33,13 +33,17 @@ public class LoginController extends Controller {
         if(userRepository.authenticate(user.getEmail(), user.getPassword()) != null){
             sessionService.set(user.getEmail());
         }
-        return redirect(routes.HomeController.index());
+        return redirect(routes.DashboardController.renderDashboard());
     }
 
     public Result logout() {
         if(sessionService.isLoggedin()){
             sessionService.clear();
         }
-        return redirect(routes.HomeController.index());
+        return redirect(routes.DashboardController.renderDashboard());
+    }
+
+    public static Result redirectIfNotLoggedIn(){
+        return redirect(routes.LoginController.renderLogin());
     }
 }
