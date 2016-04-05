@@ -1,6 +1,7 @@
 package controllers;
 
 import com.avaje.ebean.PagedList;
+import play.mvc.Results;
 import repositories.ExerciseRepository;
 import models.Exercise;
 import play.data.Form;
@@ -27,17 +28,18 @@ public class ExerciseController extends Controller {
     ExerciseRepository exerciseRepository;
 
     public Result renderOverview(){
-        return list(0,"title","");
+        return list(0,"title","","");
     }
 
-    public Result index() {
-        return list(0,"title","");
+    public Result renderDetails(long id){
+        //TODO
+        return notFound();
     }
 
-    public Result list(int page, String orderBy, String tagFilter){
+    public Result list(int page, String orderBy, String titleFilter, String tagFilter){
         int pageSize = 5;
-        PagedList<Exercise> exercises = exerciseRepository.getPagedList(page,orderBy,tagFilter,"",pageSize);
-        return ok(exerciseList.render(exercises,orderBy,tagFilter));
+        PagedList<Exercise> exercises = exerciseRepository.getPagedList(page,orderBy,titleFilter,tagFilter,pageSize);
+        return ok(exerciseList.render(exercises,orderBy,titleFilter,tagFilter));
     }
 
     public Result edit(long id) {
@@ -54,7 +56,6 @@ public class ExerciseController extends Controller {
         exercise.setId(id);
         exerciseRepository.update(exercise);
 
-        return redirect(routes.ExerciseController.list(0,"title",""));
-        //return redirect(routes.HomeController.index());
+        return redirect(routes.HomeController.index());
     }
 }

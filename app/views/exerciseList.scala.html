@@ -1,12 +1,12 @@
 @import java.util
-@(currentPage: com.avaje.ebean.PagedList[Exercise], currentOrderBy: String, currentFilter: String)
+@(currentPage: com.avaje.ebean.PagedList[Exercise], currentOrderBy: String, currentTitleFilter: String, currentTagFilter: String)
 
 
 @****************************************
 * Helper generating navigation links    *
 ****************************************@
 @link(newPage: Int,newOrderBy: String) = @{
-    routes.ExerciseController.list(newPage, newOrderBy, currentFilter)
+    routes.ExerciseController.list(newPage, newOrderBy, currentTitleFilter, currentTagFilter)
 }
 
 @**********************************
@@ -21,7 +21,8 @@
 @main("Welcome to Exsolnet"){
 
     @helper.form(action=routes.ExerciseController.list()) {
-        <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Titelfilter"/>
+        <input type="search" id="searchbox" name="title" value="@currentTitleFilter" placeholder="Titel-Filter"/>
+        <input type="search" id="searchbox" name="tags" value="@currentTagFilter" placeholder="Tag-Filter"/>
         <input type="submit" id="searchsubmit" value="Suche" class="btn primary"/>
     }
 
@@ -40,7 +41,10 @@
 
         @for(exercise <- currentPage.getList){
             <tr>
-                <td><a href="">@exercise.getTitle</a></td>
+                <td>
+                    <a href="@routes.ExerciseController.renderDetails(exercise.getId)">@exercise.getTitle</a>
+                    <p>von </p><a>@exercise.getUser</a>
+                </td>
                 <td>
                 @for(tag <- exercise.getTags){
                     @tag.getName,

@@ -3,8 +3,9 @@
 # ~~~~
 
 GET         /                       controllers.HomeController.index
+GET         /exercises              controllers.ExerciseController.list(page:Int ?= 0, sort ?= "title", title ?= "", tags ?="")
 GET         /exercises              controllers.ExerciseController.renderOverview
-GET         /exercises              controllers.ExerciseController.list(p:Int ?= 0, s ?= "title", f ?= "")
+GET         /exercises/:id          controllers.ExerciseController.renderDetails(id: Long)
 GET         /exercises/:id/edit     controllers.ExerciseController.edit(id: Long)
 POST        /exercises/:id/update   controllers.ExerciseController.update(id: Long)
 POST        /addexercise            controllers.HomeController.addExercise
