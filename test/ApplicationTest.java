@@ -16,6 +16,7 @@ import play.test.*;
 import play.twirl.api.Content;
 import services.SessionService;
 
+import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.junit.Assert.*;
@@ -43,7 +44,7 @@ public class ApplicationTest extends WithApplication{
         ArrayList<Exercise> list = new ArrayList<>();
         Content html = views.html.index.render(list, "Franz");
         assertEquals("text/html", html.contentType());
-        assertTrue(html.body().contains("Franz"));
+        assertThat(html.body(), containsString("Franz"));
     }
 
     @Test
@@ -67,7 +68,7 @@ public class ApplicationTest extends WithApplication{
 
         HomeController homeController = new HomeController(execiseRepositoryMock, sessionServiceMock);
         Result result = homeController.index();
-        assertTrue(contentAsString(result).contains("testexercise"));
+        assertThat(contentAsString(result), containsString("testexercise"));
     }
 
 
