@@ -32,13 +32,12 @@ public class ExerciseController extends Controller {
 
     public Result index() {
         return list(0,"title","");
-        //return ok(exerciseList.render(0,exerciseRepository.find().all(),"title","",5,exerciseRepository.find().all().size()));
     }
 
-    public Result list(int page, String orderBy, String filter){
+    public Result list(int page, String orderBy, String tagFilter){
         int pageSize = 5;
-        PagedList<Exercise> exercises = exerciseRepository.find().where().contains("title", filter).orderBy(orderBy).findPagedList(page, pageSize);
-        return ok(exerciseList.render(exercises,orderBy,filter));
+        PagedList<Exercise> exercises = exerciseRepository.getPagedList(page,orderBy,tagFilter,"",pageSize);
+        return ok(exerciseList.render(exercises,orderBy,tagFilter));
     }
 
     public Result edit(long id) {
