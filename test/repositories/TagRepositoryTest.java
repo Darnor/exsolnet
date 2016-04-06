@@ -7,9 +7,7 @@ import models.User;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static models.Exercise.ExerciseBuilder.anExercise;
 import static models.Solution.SolutionBuilder.aSolution;
@@ -20,14 +18,18 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by tourn on 5.4.16.
  */
-public class TagRepositoryTest {
+public class TagRepositoryTest extends AbstractRepositoryTest{
 
     private TagRepository tagRepo;
 
     @Before
     public void setUp(){
         tagRepo = new TagRepository();
+    }
 
+    @Test
+    public void testTagsAreThere(){
+        assertEquals(1, tagRepo.find().all().size());
     }
 
     @Test
