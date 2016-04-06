@@ -6,7 +6,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static play.test.Helpers.*;
 
-@Ignore
+@Ignore("Just here for reference")
 public class IntegrationTest {
 
     @Test
