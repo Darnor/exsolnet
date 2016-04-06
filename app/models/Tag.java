@@ -15,6 +15,9 @@ public class Tag extends Model {
     private Long id;
 
     private String name;
+
+
+
     private Boolean isMainTag;
 
     @ManyToMany(mappedBy = "tags")
@@ -24,6 +27,13 @@ public class Tag extends Model {
     @JoinColumn(name = "tag")
     private List<Tracking> trackings;
 
+    public Boolean isMainTag() {
+        return isMainTag;
+    }
+
+    public void setMainTag(Boolean mainTag) {
+        isMainTag = mainTag;
+    }
     public String getName() {
         return name;
     }

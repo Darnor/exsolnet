@@ -6,8 +6,11 @@
         <h1>Aufgaben editieren</h1>
         <form method="POST" action="@routes.ExerciseController.update(exercise.getId)">
             <input placeholder="Titel" type="text" name="title" value="@exercise.getTitle"/>
-            <input placeholder="Titel" type="text" name="maintag" value="@routes.ExerciseController.findMainTags(exercise.getId)"/>
-            <input placeholder="Titel" type="text" name="maintag" value="@routes.ExerciseController.findNonTags(exercise.getId)"/>
+
+
+            <input placeholder="MainTags" type="text" name="maintag" value="@exercise.getTags.filter(x => x.isMainTag).map(x => x.getName).mkString(",")"/>
+
+
             <input placeholder="Inhalt" type="text" name="content" value="@exercise.getContent"/>
             <button>Speichern</button>
         </form>

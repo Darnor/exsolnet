@@ -2,6 +2,7 @@ package controllers;
 
 import com.avaje.ebean.PagedList;
 
+import models.Tag;
 import repositories.ExerciseRepository;
 import models.Exercise;
 import play.data.Form;
@@ -14,6 +15,9 @@ import views.html.editExercise;
 import views.html.exerciseList;
 
 import javax.inject.Inject;
+import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -38,6 +42,7 @@ public class ExerciseController extends Controller {
         //TODO
         return notFound();
     }
+
 
     public Result list(int page, String orderBy, String titleFilter, String tagFilter){
         if(!sessionService.isLoggedin()){
