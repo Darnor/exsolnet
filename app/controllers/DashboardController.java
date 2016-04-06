@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import models.Comment;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.Security;
 import repositories.CommentRepository;
 import repositories.TagRepository;
 import services.SessionService;
@@ -14,8 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * This controller contains an action to handle HTTP requests
- * to the users dashboard
+ * Controller for DashboardView
  */
 public class DashboardController extends Controller{
     @Inject
@@ -24,24 +22,14 @@ public class DashboardController extends Controller{
     @Inject
     TagRepository tagRepo;
 
-
     @Inject
     CommentRepository commentRepo;
 
 
-    //setters used for mocking
-    public void setCommentRepo(CommentRepository commentRepo) {
-        this.commentRepo = commentRepo;
-    }
-
-    public void setTagRepo(TagRepository tagRepo) {
-        this.tagRepo = tagRepo;
-    }
-
-    public void setSessionService(SessionService sessionService) {
-        this.sessionService = sessionService;
-    }
-
+    /**
+     * Render the dashboard route
+     * @return the result
+     */
     public Result renderDashboard(){
         if(!sessionService.isLoggedin()){
             return LoginController.redirectIfNotLoggedIn();
@@ -49,10 +37,16 @@ public class DashboardController extends Controller{
         return ok(dashboard.render(sessionService.getCurrentUserEmail(), getSubscribedTags(), getRecentComments()));
     }
 
+    /**
+     * @return a list of recent comments on posts made by the user
+     */
     private List<Comment> getRecentComments() {
         return commentRepo.getRecentComments(sessionService.getCurrentUser());
     }
 
+    /**
+     * @return a list of tags subscribed by the user, including information on how many exercises they answered
+     */
     private List<TagEntry> getSubscribedTags() {
         return tagRepo.getTrackedTags(sessionService.getCurrentUser()).stream().map(tag ->
             new TagEntry(
@@ -63,6 +57,9 @@ public class DashboardController extends Controller{
         ).collect(Collectors.toList());
     }
 
+    /**
+     * A entry for the tag enumeration, used by the dashboard model
+     */
     public static class TagEntry{
         public final String name;
         public final long progress;
