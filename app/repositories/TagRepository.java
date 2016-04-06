@@ -24,6 +24,15 @@ public class TagRepository {
         //noop
     }
 
+    public void create(Tag tag){
+        tag.save();
+    }
+
+    public void update(Tag tag){
+        tag.update();
+    }
+
+
     public List<Tag> getTrackedTags(User user){
         return user.getTrackings().stream().map(tracking -> tracking.getTag() ).collect(Collectors.toList());
     }

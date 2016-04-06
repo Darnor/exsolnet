@@ -24,18 +24,39 @@ public class TagController {
     @Inject
     SessionService sessionService;
 
-    public Result processCreate(List<String> tagStrings) {
+    /**
+     *
+     * @param tagNames
+     * @return
+     */
+    public Result processCreate(List<String> tagNames) {
+        for (String tagName : tagNames) {
+        }
         return ok();
     }
 
+    /**
+     *
+     * @param tag
+     * @return
+     */
     public Result processTrack(Tag tag) {
         return ok();
     }
 
+    /**
+     *
+     * @return
+     */
     public Result renderTagList() {
         return ok(tagList.render(sessionService.getCurrentUserEmail(), tagRepository.find().all()));
     }
 
+    /**
+     *
+     * @param query
+     * @return
+     */
     public Result suggestTags(String query) {
         List<Tag> tagList = tagRepository.getSuggestedTags(query);
         return ok(Json.toJson(tagList));
