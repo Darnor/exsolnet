@@ -57,6 +57,6 @@ public class ExerciseController extends Controller {
         Exercise exercise = exerciseForm.bindFromRequest().get();
         exercise.setId(id);
         exerciseRepository.update(exercise);
-        return redirect(routes.HomeController.index());
+        return redirect(routes.ExerciseController.renderOverview());
     }
 }

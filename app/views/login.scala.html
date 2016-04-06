@@ -1,5 +1,5 @@
 @(user: String)
-@main("Login") {
+@main("User") {
     @if(user == null) {
         <h1>Login</h1>
         <form method="POST" action="@routes.LoginController.login()">

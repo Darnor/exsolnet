@@ -2,13 +2,12 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET         /                       controllers.HomeController.index
+GET         /                       controllers.DashboardController.renderDashboard
 GET         /exercises              controllers.ExerciseController.list(page:Int ?= 0, sort ?= "title", title ?= "", tags ?="")
 GET         /exercises              controllers.ExerciseController.renderOverview
 GET         /exercises/:id          controllers.ExerciseController.renderDetails(id: Long)
 GET         /exercises/:id/edit     controllers.ExerciseController.edit(id: Long)
 POST        /exercises/:id/update   controllers.ExerciseController.update(id: Long)
-POST        /addexercise            controllers.HomeController.addExercise
 GET         /dashboard              controllers.DashboardController.renderDashboard
 GET         /tags                   controllers.TagController.renderTagList
 
