@@ -3,6 +3,7 @@ package controllers;
 import javax.inject.Inject;
 
 import models.Tag;
+import play.libs.Json;
 import play.mvc.Result;
 import repositories.TagRepository;
 import services.SessionService;
@@ -36,6 +37,7 @@ public class TagController {
     }
 
     public Result suggestTags(String query) {
-        return ok(tagList.render(sessionService.getCurrentUserEmail(), tagRepository.find().all()));
+        List<Tag> tagList = tagRepository.getSuggestedTags(query);
+        return ok(Json.toJson(tagList));
     }
 }

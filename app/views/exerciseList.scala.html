@@ -19,10 +19,11 @@
 }
 
 @main("Welcome to Exsolnet"){
-
+    <script src="@routes.Assets.versioned("javascripts/jquery.tokeninput.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("javascripts/exerciselist.js")" type="text/javascript"></script>
     @helper.form(action=routes.ExerciseController.list()) {
         <input type="search" id="searchbox" name="title" value="@currentTitleFilter" placeholder="Titel-Filter"/>
-        <input type="search" id="searchbox" name="tags" value="@currentTagFilter" placeholder="Tag-Filter"/>
+        <input type="search" id="tag-filter-list" name="tags" value="@currentTagFilter" placeholder="Tag-Filter"/>
         <input type="submit" id="searchsubmit" value="Suche" class="btn primary"/>
     }
 

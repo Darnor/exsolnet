@@ -6,8 +6,11 @@ import com.google.inject.Singleton;
 import models.Tag;
 import models.User;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static models.Tag.TagBuilder.aTag;
 
 /**
  * Created by tourn on 4.4.16.
@@ -33,6 +36,10 @@ public class TagRepository {
         return tag.getExercises().stream().mapToLong(exercise ->
             exercise.getSolutions().stream().filter(solution -> solution.getUser().equals(currentUser)).count()
         ).sum();
+    }
+
+    public List<Tag> getSuggestedTags(String query){
+        return this.find().where().startsWith("name",query).findList();
     }
 
 }

@@ -10,6 +10,7 @@ GET         /exercises/:id/edit     controllers.ExerciseController.edit(id: Long
 POST        /exercises/:id/update   controllers.ExerciseController.update(id: Long)
 GET         /dashboard              controllers.DashboardController.renderDashboard
 GET         /tags                   controllers.TagController.renderTagList
+GET         /tags/query             controllers.TagController.suggestTags(q ?= "")
 
 GET         /login                       controllers.LoginController.renderLogin
 POST        /login                       controllers.LoginController.login

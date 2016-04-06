@@ -1,7 +1,7 @@
 package controllers;
 
 import com.avaje.ebean.PagedList;
-import play.mvc.Results;
+
 import repositories.ExerciseRepository;
 import models.Exercise;
 import play.data.Form;
