@@ -42,7 +42,7 @@ public class User extends Model{
     /**
       * Gets the Exercises of the User.
       *
-      * @return List<Exercise> the Exercises of the User.
+      * @return Exercises of the User.
       */
     public List<Exercise> getExercises() {
         return exercises;
@@ -53,7 +53,6 @@ public class User extends Model{
       * 
       * @param Exercises of the User.
       */
-    
     public void setExercises(List<Exercise> exercises) {
         this.exercises = exercises;
     }
@@ -67,79 +66,174 @@ public class User extends Model{
         return solutions;
     }
 
+    /**
+      * Sets the Solutions of the User.
+      * 
+      * @param Solutions of the User.
+      */
     public void setSolutions(List<Solution> solutions) {
         this.solutions = solutions;
     }
 
+    /**
+      * Gets the Votes of the User.
+      *
+      * @return the Votes of the User.
+      */
     public List<Vote> getVotes() {
         return votes;
     }
 
+    /**
+      * Sets the Votes of the User.
+      * 
+      * @param Votes of the User.
+      */
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
     }
 
+    /**
+      * Gets the Reports of the User.
+      *
+      * @return the Reports of the User.
+      */
     public List<Report> getReports() {
         return reports;
     }
 
+    /**
+      * Sets the Reports of the User.
+      * 
+      * @param Reports of the User.
+      */
     public void setReports(List<Report> reports) {
         this.reports = reports;
     }
 
+    /**
+      * Sets the Email of the User.
+      * 
+      * @param Email of the User.
+      */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+      * Sets the Id of the User.
+      * 
+      * @param Id of the User.
+      */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+      * Gets the Points of the User.
+      *
+      * @return the Points of the User.
+      */
     public int getPoints() {
         return points;
     }
 
+    /**
+      * Sets the Points of the User.
+      * 
+      * @param Points of the User.
+      */
     public void setPoints(int points) {
         this.points = points;
     }
 
+    /**
+      * Gets the ModeratorBoolean of the User.
+      *
+      * @return the ModeratorBoolean of the User.
+      */
     public Boolean getModerator() {
         return isModerator;
     }
 
+    /**
+      * Sets the ModeratorBoolean of the User.
+      * 
+      * @param ModeratorBoolean of the User.
+      */
     public void setModerator(Boolean moderator) {
         isModerator = moderator;
     }
 
-
+    /**
+      * Gets the Trackings of the User.
+      *
+      * @return the Trackings of the User.
+      */
     public List<Tracking> getTrackings() {
         return trackings;
     }
 
+    /**
+      * Sets the Trackings of the User.
+      * 
+      * @param Trackings of the User.
+      */
+    
     public void setTrackings(List<Tracking> trackings) {
         this.trackings = trackings;
     }
 
+    /**
+      * Gets the Comments of the User.
+      *
+      * @return the Comments of the User.
+      */
     public List<Comment> getComments() {
         return comments;
     }
 
+    /**
+      * Sets the Comments of the User.
+      * 
+      * @param Comments of the User.
+      */
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
 
+    /**
+      * Gets the Email of the User.
+      *
+      * @return the Email of the User.
+      */
     public String getEmail() {
         return email;
     }
 
+    /**
+      * Sets the Password of the User.
+      * 
+      * @param Password of the User.
+      */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+      * Gets the Password of the User.
+      *
+      * @return the Password of the User.
+      */
     public String getPassword() {
         return password;
     }
 
+    /**
+      * Gets the Id of the User.
+      *
+      * @return the Id of the User.
+      */
     public Long getId() {
         return id;
     }

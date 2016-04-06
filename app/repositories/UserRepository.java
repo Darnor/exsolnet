@@ -25,7 +25,7 @@ public class UserRepository {
      * @return user
      */
     public User authenticate(String email, String password) {
-        User user = find.where().eq("email", email).findUnique();
+        User user = findUserWithThisEmail(email);
         if (user == null) {
             //create user if non existing
             user = anUser().withEmail(email).build();
@@ -34,6 +34,22 @@ public class UserRepository {
         return user;
     }
 
+    /**
+     * Queries database, and returns User holding given email address
+     * @param email
+     * @return User
+     */
+    public User findUserWithThisEmail(String email) {
+        return find.where().eq("email", email).findUnique();
+    }
+
+    /**
+     * Return Finder Object for DB's queries.
+     *
+     * CARE: should not be used! may be removed on next version
+     *
+     * @return Finder for User Models
+     */
     public Model.Finder<Long, User> find() {
         return find;
     }

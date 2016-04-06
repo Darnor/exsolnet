@@ -22,15 +22,15 @@ public class UserRepositoryTest extends AbstractRepositoryTest {
     @Test
     public void checkIfAuthenticateCreatesNewUserWhenNonExisting(){
         String testemail = "nonexistinghans";
-        assertTrue(userRepository.find().where().eq("email", testemail).findUnique() == null);
+        assertTrue(userRepository.findUserWithThisEmail(testemail) == null);
         userRepository.authenticate(testemail, null);
-        assertTrue(userRepository.find().where().eq("email", testemail).findUnique() != null);
+        assertTrue(userRepository.findUserWithThisEmail(testemail) != null);
     }
 
     @Test
     public void checkIfAuthenticateReturnsUserExisting(){
         String testemail = "Hans";
-        assertTrue(userRepository.find().where().eq("email", testemail).findUnique() != null);
+        assertTrue(userRepository.findUserWithThisEmail(testemail) != null);
         User user = userRepository.authenticate(testemail, null);
         assertEquals(testemail,user.getEmail());
         assertEquals("java.lang.Long", user.getId().getClass().getName());
