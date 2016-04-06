@@ -10,6 +10,8 @@ import repositories.UserRepository;
 import services.SessionService;
 import views.html.tagList;
 
+import java.util.List;
+
 import static play.mvc.Results.ok;
 
 /**
