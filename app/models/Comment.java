@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import scala.annotation.meta.setter;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -37,6 +38,7 @@ public class Comment extends Model{
     public String getContent() {
         return content;
     }
+
 
     public void setId(Long id) {
         this.id = id;
@@ -111,6 +113,7 @@ public class Comment extends Model{
             this.exercise = exercise;
             return this;
         }
+
 
         public CommentBuilder withTime(Date time) {
             this.time = time;

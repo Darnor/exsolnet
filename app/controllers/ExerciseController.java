@@ -60,3 +60,4 @@ public class ExerciseController extends Controller {
         return redirect(routes.ExerciseController.renderOverview());
     }
 }
+
