@@ -1,18 +1,36 @@
 @import java.util
-@(username: String, tags: util.List[Tag], tracks: util.List[Tracking])
+@(username: String, tags: util.List[Tag], tracks: util.List[Tracking], currentOrderBy: Int, tagNameFilter: String)
+
+@****************************************
+* Helper generating navigation links    *
+****************************************@
+@link(newOrderBy: Int) = @{
+    routes.TagController.renderTagList(newOrderBy, tagNameFilter)
+}
+
+    @**********************************
+    * Helper generating table headers *
+    ***********************************@
+@header(orderBy: Int, title: String) = {
+    <th class="col@orderBy header @if(currentOrderBy == orderBy) @{if(currentOrderBy == orderBy) "headerSortDown" else "headerSortUp"}">
+        <a href="@link(orderBy)">@title</a>
+    </th>
+}
 
 @main("Welcome to Exsolnet"){
 
     <h1>Tags</h1>
-    <input type="search" id="searchbox" name="tags" placeholder="Tag-Filter"/>
-    <input type="submit" id="searchsubmit" value="Suche" class="btn primary"/>
+    @helper.form(action=routes.TagController.renderTagList(currentOrderBy, tagNameFilter)) {
+        <input type="search" id="searchbox" name="tags" value="@tagNameFilter" placeholder="Tag-Filter"/>
+        <input type="submit" id="searchsubmit" value="Suche" class="btn primary"/>
+    }
 
-    <table class="exercises zebra-striped">
+    <table class="tags zebra-striped">
         <thead>
             <tr>
-                <td>Name</td>
-                <td>Aufgaben</td>
-                <td>Subscription</td>
+                @header(0, "Name")
+                @header(1, "Aufgaben")
+                @header(2, "Subscription")
             </tr>
         </thead>
         <tbody>
@@ -26,7 +44,7 @@
                 @tag.getExercises.size()
                 </td>
                 <td>
-                @tracks.contains(tag)
+                    <input id="subscription" type="checkbox" @if(tracks.contains(tag)) { checked="checked" } name="subscription" />
                 </td>
             </tr>
         }
