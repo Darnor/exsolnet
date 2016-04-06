@@ -1,11 +1,35 @@
 @import java.util
-@(username: String, tags: util.List[Tag])
+@(username: String, tags: util.List[Tag], tracks: util.List[Tracking])
 
-@main(username + "'s Dashboard"){
-    <h1>Your tracked tags</h1>
-    <ul>
-    @tags.map{ tag =>
-      <li>@tag.getName() (0/0)</li>
-    }
-    </ul>
+@main("Welcome to Exsolnet"){
+
+    <h1>Tags</h1>
+    <input type="search" id="searchbox" name="tags" placeholder="Tag-Filter"/>
+    <input type="submit" id="searchsubmit" value="Suche" class="btn primary"/>
+
+    <table class="exercises zebra-striped">
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Aufgaben</td>
+                <td>Subscription</td>
+            </tr>
+        </thead>
+        <tbody>
+
+        @tags.map{ tag =>
+            <tr>
+                <td>
+                @tag.getName
+                </td>
+                <td>
+                @tag.getExercises.size()
+                </td>
+                <td>
+                @tracks.contains(tag)
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
 }

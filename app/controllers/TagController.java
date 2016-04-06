@@ -6,6 +6,7 @@ import models.Tag;
 import play.libs.Json;
 import play.mvc.Result;
 import repositories.TagRepository;
+import repositories.UserRepository;
 import services.SessionService;
 import views.html.tagList;
 
@@ -36,7 +37,10 @@ public class TagController {
      * @return
      */
     public Result renderTagList() {
-        return ok(tagList.render(sessionService.getCurrentUserEmail(), tagRepository.find().all()));
+        if(!sessionService.isLoggedin()){
+            return LoginController.redirectIfNotLoggedIn();
+        }
+        return ok(tagList.render(sessionService.getCurrentUserEmail(), tagRepository.find().all(), sessionService.getCurrentUser().getTrackings()));
     }
 
     /**
