@@ -1,7 +1,7 @@
 package controllers;
 
 import com.avaje.ebean.PagedList;
-import play.mvc.Results;
+
 import repositories.ExerciseRepository;
 import models.Exercise;
 import play.data.Form;
@@ -49,7 +49,7 @@ public class ExerciseController extends Controller {
     }
 
     public Result edit(long id) {
-            return ok(editExercise.render(exerciseRepository.find().byId(id), sessionService.getUsername()));
+            return ok(editExercise.render(exerciseRepository.find().byId(id), sessionService.getCurrentUserEmail()));
     }
 
     public Result update(long id) {
