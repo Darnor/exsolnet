@@ -9,8 +9,6 @@ import repositories.TagRepository;
 import services.SessionService;
 import views.html.tagList;
 
-import java.util.List;
-
 import static play.mvc.Results.ok;
 
 /**
@@ -23,17 +21,6 @@ public class TagController {
 
     @Inject
     SessionService sessionService;
-
-    /**
-     *
-     * @param tagNames
-     * @return
-     */
-    public Result processCreate(List<String> tagNames) {
-        for (String tagName : tagNames) {
-        }
-        return ok();
-    }
 
     /**
      *
