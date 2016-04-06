@@ -51,8 +51,8 @@ public class DashboardController extends Controller{
         return tagRepo.getTrackedTags(sessionService.getCurrentUser()).stream().map(tag ->
             new TagEntry(
                     tag.getName(),
-                    tag.getExercises().size(),
-                    tagRepo.getNofCompletedExercises(tag, sessionService.getCurrentUser())
+                    tagRepo.getNofCompletedExercises(tag, sessionService.getCurrentUser()),
+                    tag.getExercises().size()
             )
         ).collect(Collectors.toList());
     }
