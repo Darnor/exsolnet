@@ -1,15 +1,15 @@
 @import java.util
 @(username: String, tags: util.List[DashboardController.TagEntry], comments: util.List[Comment])
 
-@main(username + "'s Dashboard"){
-    <h1>Your tracked tags</h1>
+@main("Dashboard von " + username){
+    <h1>Deine gefolgten Tags</h1>
     <ul>
         @tags.map{ tag =>
           <li>@tag.name (@tag.progress/@tag.total)</li>
         }
     </ul>
 
-    <h1>Recent comments on your posts</h1>
+    <h1>Neue Kommentare auf deine Beiträge</h1>
     <ul>
         @comments.map{ comment =>
           <li>@comment.getContent()</li>
