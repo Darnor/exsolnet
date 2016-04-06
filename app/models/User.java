@@ -39,14 +39,30 @@ public class User extends Model{
     @OneToMany(mappedBy = "user")
     private List<Tracking> trackings;
 
+    /**
+      * Gets the Exercises of the User.
+      *
+      * @return List<Exercise> the Exercises of the User.
+      */
     public List<Exercise> getExercises() {
         return exercises;
     }
 
+    /**
+      * Sets the Exercises of the User.
+      * 
+      * @param Exercises of the User.
+      */
+    
     public void setExercises(List<Exercise> exercises) {
         this.exercises = exercises;
     }
 
+    /**
+      * Gets the Solutions of the User.
+      *
+      * @return the Solutions of the User.
+      */
     public List<Solution> getSolutions() {
         return solutions;
     }

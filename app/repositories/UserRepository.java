@@ -22,9 +22,9 @@ public class UserRepository {
      *
      * @param email    Mail address of User, who wants to login
      * @param password Password of User, who wants to login
+     * @return user
      */
     public User authenticate(String email, String password) {
-        //TODO: use actual database when registration is implemented
         User user = find.where().eq("email", email).findUnique();
         if (user == null) {
             //create user if non existing
