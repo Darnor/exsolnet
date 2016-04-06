@@ -24,7 +24,7 @@ public class LoginController extends Controller {
     FormFactory formFactory;
 
     public Result renderLogin(){
-            return ok(views.html.login.render(sessionService.getUsername()));
+            return ok(views.html.login.render(sessionService.getCurrentUserEmail()));
     }
 
     public Result login() {

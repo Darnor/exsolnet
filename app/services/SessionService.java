@@ -15,19 +15,23 @@ public class SessionService {
     public static final String KEY_USERNAME = "connected";
 
     @Inject
-    private UserRepository userRepo;
+    private UserRepository userRepository;
 
     @Inject
     public SessionService(){
         //noop
     }
 
-    public String getUsername(){
+    /**
+     *
+     * @return
+     */
+    public String getCurrentUserEmail(){
         return session(KEY_USERNAME);
     }
 
     public boolean isLoggedin(){
-        return getUsername() != null;
+        return getCurrentUserEmail() != null;
     }
 
     public String get(String key){
@@ -35,10 +39,7 @@ public class SessionService {
     }
 
     public User getCurrentUser(){
-        //TODO: use actual database when registration is implemented
-        User fake = new User();
-        fake.setEmail(getUsername());
-        return fake;
+        return userRepository.find().where().eq("email", getCurrentUserEmail()).findUnique();
     }
 
     public void set(String value){

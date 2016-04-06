@@ -32,10 +32,10 @@ public class TagController {
     }
 
     public Result renderTagList() {
-        return ok(tagList.render(sessionService.getUsername(), tagRepository.find().all()));
+        return ok(tagList.render(sessionService.getCurrentUserEmail(), tagRepository.find().all()));
     }
 
     public Result suggestTags(String query) {
-        return ok(tagList.render(sessionService.getUsername(), tagRepository.find().all()));
+        return ok(tagList.render(sessionService.getCurrentUserEmail(), tagRepository.find().all()));
     }
 }
