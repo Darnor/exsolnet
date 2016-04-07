@@ -5,13 +5,10 @@
     <div style="border-bottom: 2px solid black ; width: 300px ; padding: 10px; margin: 10px">
         <h1>Aufgaben editieren</h1>
         <form method="POST" action="@routes.ExerciseController.update(exercise.getId)">
-            <input placeholder="Titel" type="text" name="title" value="@exercise.getTitle"/>
-
-
-            <input placeholder="MainTags" type="text" name="maintag" value="@exercise.getTags.filter(x => x.isMainTag).map(x => x.getName).mkString(",")"/>
-
-
-            <input placeholder="Inhalt" type="text" name="content" value="@exercise.getContent"/>
+           <p>Title</p> <input placeholder="Titel" type="text" name="title" value="@exercise.getTitle"/>
+           <p>Haupt Tags</p> <input placeholder="Haupt Tags" type="text" name="maintag" value="@exercise.getTags.filter(x => x.isMainTag).map(x => x.getName).mkString(",")"/>
+           <p>Andere Tags</p> <input placeholder="Andere Tags" type="text" name="othertag" value="@exercise.getTags.filter(x => !x.isMainTag).map(x => x.getName).mkString(",")"/>
+           <p>Inhalt</p> <input placeholder="Inhalt" type="text" name="content" value="@exercise.getContent"/>
             <button>Speichern</button>
         </form>
     </div>
