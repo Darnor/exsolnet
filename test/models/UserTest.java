@@ -18,13 +18,13 @@ public class UserTest extends AbstractModelTest {
         String testemail = "nonexistinghans";
         assertNull(User.findUser(testemail));
         User.authenticate(testemail, null);
-        assertNotNull(User.findUser(testemail) != null);
+        assertNotNull(User.findUser(testemail));
     }
 
     @Test
     public void checkIfAuthenticateReturnsUserExisting(){
         String testemail = "Hans";
-        assertNull(User.findUser(testemail) != null);
+        assertNotNull(User.findUser(testemail));
         User user = User.authenticate(testemail, null);
         assertEquals(testemail,user.getEmail());
         assertNotNull(user.getId());
