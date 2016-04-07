@@ -52,6 +52,11 @@ public class ExerciseRepository {
         return this.find().where().contains("title", titleFilter).orderBy(orderBy).findPagedList(pageNr, pageSize);
     }
 
+    /**
+     * the data of the exercise with the given id
+     * @param id the id of the exercise
+     * @return the exercise from the db with the fiven id, null if it doesnt exist, nullpointer exception if id is null
+     */
     public Exercise findExerciseData(Long id) {
         return this.find().where().eq("id", id).findUnique();
     }
