@@ -1,8 +1,8 @@
 INSERT INTO tag VALUES (8000, 'Basic Knowledge', true);
-INSERT INTO tag VALUES (8001, 'ZZZ boring', true);
-INSERT INTO tag VALUES (8002, 'AAA nice', true);
-INSERT INTO tag VALUES (8003, 'ABC', false);
-INSERT INTO tag VALUES (8004, 'AAC', false);
+INSERT INTO tag VALUES (8001, 'Mathematics', true);
+INSERT INTO tag VALUES (8002, 'Algorhithms', true);
+INSERT INTO tag VALUES (8003, 'Web Engineering', false);
+INSERT INTO tag VALUES (8004, 'Software Engineering', false);
 INSERT INTO exoluser VALUES (8000, 'Franz', NULL, 12, NULL);
 INSERT INTO exoluser VALUES (8001, 'Hans', NULL, -5, NULL);
 INSERT INTO exercise VALUES (8000, 'Whats 1+2?', NULL, 5, 'Basic Math', 8000);

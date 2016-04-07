@@ -49,11 +49,11 @@ public class TagController {
 
     /**
      * @param tags List containing tags
-     * @param trackings List containing the trackings for the current user
+     * @param trackedTags List containing the trackings for the current user
      * @param orderBy sort column
      * @return the sorted List depending on orderBy
      */
-    private List<Tag> sortTagList(List<Tag> tags, List<Tracking> trackings, int orderBy) {
+    private List<Tag> sortTagList(List<Tag> tags, List<Tag> trackedTags, int orderBy) {
         tags.sort((t1, t2) -> {
             switch(Math.abs(orderBy)) {
                case 1:
@@ -63,7 +63,7 @@ public class TagController {
                     int t2ExSize = t2.getExercises().size();
                     return t1ExSize > t2ExSize ? 1 : t1ExSize < t2ExSize ? -1 : 0;
                default:
-                    return trackings.contains(t1) ? 1 : trackings.contains(t2) ? -1 : 0;
+                    return trackedTags.contains(t1) ? 1 : trackedTags.contains(t2) ? -1 : 0;
             }
         });
 
@@ -83,10 +83,9 @@ public class TagController {
         if(!sessionService.isLoggedin()){
             return LoginController.redirectIfNotLoggedIn();
         }
-
-        List<Tracking> trackings = sessionService.getCurrentUser().getTrackings();
-        List<Tag> tags = sortTagList(filterTagList(tagRepository.find().all(), tagNameFilter), trackings, orderBy);
-        return ok(tagList.render(sessionService.getCurrentUserEmail(), tags, trackings, orderBy, tagNameFilter));
+        List<Tag> trackedTags = tagRepository.getTrackedTags(sessionService.getCurrentUser());
+        List<Tag> tags = sortTagList(filterTagList(tagRepository.find().all(), tagNameFilter), trackedTags, orderBy);
+        return ok(tagList.render(sessionService.getCurrentUserEmail(), tags, trackedTags, orderBy, tagNameFilter));
     }
 
     /**
