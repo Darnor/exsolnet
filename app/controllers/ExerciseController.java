@@ -55,6 +55,7 @@ public class ExerciseController extends Controller {
         int pageSize = 5;
         String orderBy = exerciseRepository.getOrderByAttributeString(order);
         PagedList<Exercise> exercises = exerciseRepository.getPagedList(page,orderBy,titleFilter,tagFilter,pageSize);
+        System.out.println(exercises.getDisplayXtoYofZ("a","b"));
         return ok(exerciseList.render(exercises,order,titleFilter,tagFilter));
     }
 

@@ -80,6 +80,7 @@
             }
             <li class="current">
                 <p>Zeige @(currentPage.getPageIndex*currentPage.getPageSize+1) bis @(currentPage.getPageIndex*currentPage.getPageSize+currentPage.getList.size()) von @currentPage.getTotalRowCount an</p>
+                <p>@currentPage.getDisplayXtoYofZ(" - "," / ")</p>
             </li>
             @if(currentPage.hasNext) {
                 <li class="prev">

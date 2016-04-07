@@ -72,7 +72,7 @@ public class ExerciseRepository {
         tableHeaderMap.put(2, "solutionCount");
         tableHeaderMap.put(3, "points");
         tableHeaderMap.put(4, "time");
-        tableHeaderMap.put(5, "title");
+        tableHeaderMap.put(5, "title"); //TODO
     }
 
 }
