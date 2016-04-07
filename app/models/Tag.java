@@ -87,36 +87,4 @@ public class Tag extends Model {
     public static Tag findTagByName(String name) {
         return find().where().eq("name", name).findUnique();
     }
-    public static class TagBuilder {
-        private String name;
-        private List<Exercise> exercises;
-
-        private TagBuilder() {
-        }
-
-        public static TagBuilder aTag() {
-            return new TagBuilder();
-        }
-
-        public TagBuilder withName(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public TagBuilder withExercises(List<Exercise> exercises) {
-            this.exercises = exercises;
-            return this;
-        }
-
-        public TagBuilder but() {
-            return aTag().withName(name).withExercises(exercises);
-        }
-
-        public Tag build() {
-            Tag tag = new Tag();
-            tag.setName(name);
-            tag.setExercises(exercises);
-            return tag;
-        }
-    }
 }
