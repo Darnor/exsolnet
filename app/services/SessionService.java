@@ -1,9 +1,7 @@
 package services;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import models.User;
-import repositories.UserRepository;
 
 import static play.mvc.Controller.session;
 
@@ -13,9 +11,6 @@ import static play.mvc.Controller.session;
 public class SessionService {
 
     public static final String KEY_USERNAME = "connected";
-
-    @Inject
-    private UserRepository userRepository;
 
     @Inject
     public SessionService(){
@@ -55,7 +50,7 @@ public class SessionService {
         if(!isLoggedin()){
             return null;
         }
-        return userRepository.find().where().eq("email", getCurrentUserEmail()).findUnique();
+        return User.find().where().eq("email", getCurrentUserEmail()).findUnique();
     }
 
     /**

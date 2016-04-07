@@ -3,6 +3,7 @@ package views;
 import controllers.DashboardController;
 import models.Comment;
 import models.User;
+import models.builders.CommentBuilder;
 import org.junit.Test;
 import play.twirl.api.Content;
 
@@ -10,8 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static models.Comment.CommentBuilder.aComment;
-import static models.User.UserBuilder.anUser;
+import static models.builders.CommentBuilder.aComment;
+import static models.builders.UserBuilder.anUser;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
@@ -44,7 +45,7 @@ public class DashboardViewTest {
     public void commentsAreRendered() {
         List<Comment> comments = new ArrayList<>();
         User commenter = anUser().withEmail("Hans").build();
-        Comment.CommentBuilder comment = aComment().withUser(commenter);
+        CommentBuilder comment = aComment().withUser(commenter);
         comments.add(comment.but().withContent("Comment 1").build());
         comments.add(comment.but().withContent("Comment 2").build());
         comments.add(comment.but().withContent("Comment 3").build());

@@ -1,12 +1,15 @@
 package models;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.PagedList;
 import com.avaje.ebean.annotation.Formula;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by mario on 21.03.16.
@@ -106,99 +109,58 @@ public class Exercise extends Post {
         this.tags = tags;
     }
 
-    public static class ExerciseBuilder {
-        private String title;
-        private List<Solution> solutions;
-        private List<Vote> votes;
-        private List<Tag> tags;
-        private User user;
-        private List<Report> reports;
-        private List<Comment> comments;
-        private Long id;
-        private String content;
-        private Date time;
-        private int points;
+    public static void create(Exercise exercise) {
+        exercise.save();
+    }
 
-        private ExerciseBuilder() {
-        }
+    public static void update(Exercise exercise) {
+        exercise.update();
+    }
 
-        public static ExerciseBuilder anExercise() {
-            return new ExerciseBuilder();
-        }
+    public static Model.Finder<Long, Exercise> find() {
+        return new Finder<Long, Exercise>(Exercise.class);
+    }
 
-        public ExerciseBuilder withTitle(String title) {
-            this.title = title;
-            return this;
-        }
+    /**
+     * Returns a Paged List
+     *
+     * @param pageNr      the page number
+     * @param orderBy     TODO
+     * @param titleFilter the string which is used for filter/query the title
+     * @param tagFilter   TODO
+     * @param pageSize    the count of exercises for one page
+     * @return the PagedList for the actual page and filters/orders
+     */
+    public static PagedList<Exercise> getPagedList(int pageNr, String orderBy, String titleFilter, String tagFilter, int pageSize) {
+        //TODO: including tagFilter
+        return find().where().contains("title", titleFilter).orderBy(orderBy).findPagedList(pageNr, pageSize);
+    }
 
-        public ExerciseBuilder withSolutions(List<Solution> solutions) {
-            this.solutions = solutions;
-            return this;
-        }
+    /**
+     * the data of the exercise with the given id
+     * @param id the id of the exercise
+     * @return the exercise from the db with the fiven id, null if it doesnt exist, nullpointer exception if id is null
+     */
+    public static Exercise findExerciseData(Long id) {
+        return find().where().eq("id", id).findUnique();
+    }
 
-        public ExerciseBuilder withVotes(List<Vote> votes) {
-            this.votes = votes;
-            return this;
+    public static String getOrderByAttributeString(int order){
+        String result = tableHeaderMap.get(Math.abs(order));
+        if(order<0){
+            result += " desc";
         }
+        return result;
+    }
 
-        public ExerciseBuilder withTags(List<Tag> tags) {
-            this.tags = tags;
-            return this;
-        }
-
-        public ExerciseBuilder withUser(User user) {
-            this.user = user;
-            return this;
-        }
-
-        public ExerciseBuilder withReports(List<Report> reports) {
-            this.reports = reports;
-            return this;
-        }
-
-        public ExerciseBuilder withComments(List<Comment> comments) {
-            this.comments = comments;
-            return this;
-        }
-
-        public ExerciseBuilder withId(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public ExerciseBuilder withContent(String content) {
-            this.content = content;
-            return this;
-        }
-
-        public ExerciseBuilder withTime(Date time) {
-            this.time = time;
-            return this;
-        }
-
-        public ExerciseBuilder withPoints(int points) {
-            this.points = points;
-            return this;
-        }
-
-        public ExerciseBuilder but() {
-            return anExercise().withTitle(title).withSolutions(solutions).withVotes(votes).withTags(tags).withUser(user).withReports(reports).withComments(comments).withId(id).withContent(content).withTime(time).withPoints(points);
-        }
-
-        public Exercise build() {
-            Exercise exercise = new Exercise();
-            exercise.setTitle(title);
-            exercise.setSolutions(solutions);
-            exercise.setVotes(votes);
-            exercise.setTags(tags);
-            exercise.setUser(user);
-            exercise.setReports(reports);
-            exercise.setComments(comments);
-            exercise.setId(id);
-            exercise.setContent(content);
-            exercise.setTime(time);
-            exercise.setPoints(points);
-            return exercise;
-        }
+    private static final Map<Integer, String> tableHeaderMap;
+    static
+    {
+        tableHeaderMap = new HashMap<Integer, String>();
+        tableHeaderMap.put(1, "title");
+        tableHeaderMap.put(2, "solutionCount");
+        tableHeaderMap.put(3, "points");
+        tableHeaderMap.put(4, "time");
+        tableHeaderMap.put(5, "title"); //TODO
     }
 }

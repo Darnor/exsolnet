@@ -4,6 +4,9 @@ import com.avaje.ebean.Model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static models.builders.UserBuilder.anUser;
 
 /**
  * Created by mario on 21.03.16.
@@ -238,92 +241,47 @@ public class User extends Model{
         return id;
     }
 
-    public static class UserBuilder {
-        private Long id;
-        private String email;
-        private String password;
-        private int points;
-        private List<Exercise> exercises;
-        private List<Solution> solutions;
-        private List<Report> reports;
-        private List<Comment> comments;
-        private List<Vote> votes;
-        private List<Tracking> trackings;
+    public List<Tag> getTrackedTags() {
+        return getTrackings().stream().map(tracking -> tracking.getTag()).collect(Collectors.toList());
+    }
 
-        private UserBuilder() {
+    /**
+     * Authenticates the user depending on email and password combination.
+     * Password is ignored for now, should in later stages be hashed and compared with value in database
+     * <p>
+     * CARE: password not used in this implementation
+     *
+     * @param email    Mail address of User, who wants to login
+     * @param password Password of User, who wants to login
+     * @return user
+     */
+    public static User authenticate(String email, String password) {
+        User user = findUser(email);
+        if (user == null) {
+            //create user if non existing
+            user = anUser().withEmail(email).build();
+            user.save();
         }
+        return user;
+    }
 
-        public static UserBuilder anUser() {
-            return new UserBuilder();
-        }
+    /**
+     * Queries database, and returns User holding given email address
+     * @param email
+     * @return User
+     */
+    public static User findUser(String email) {
+        return find().where().eq("email", email).findUnique();
+    }
 
-        public UserBuilder withId(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public UserBuilder withEmail(String email) {
-            this.email = email;
-            return this;
-        }
-
-        public UserBuilder withPassword(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public UserBuilder withPoints(int points) {
-            this.points = points;
-            return this;
-        }
-
-        public UserBuilder withExercises(List<Exercise> exercises) {
-            this.exercises = exercises;
-            return this;
-        }
-
-        public UserBuilder withSolutions(List<Solution> solutions) {
-            this.solutions = solutions;
-            return this;
-        }
-
-        public UserBuilder withReports(List<Report> reports) {
-            this.reports = reports;
-            return this;
-        }
-
-        public UserBuilder withComments(List<Comment> comments) {
-            this.comments = comments;
-            return this;
-        }
-
-        public UserBuilder withVotes(List<Vote> votes) {
-            this.votes = votes;
-            return this;
-        }
-
-        public UserBuilder withTrackings(List<Tracking> trackings) {
-            this.trackings = trackings;
-            return this;
-        }
-
-        public UserBuilder but() {
-            return anUser().withId(id).withEmail(email).withPassword(password).withPoints(points).withExercises(exercises).withSolutions(solutions).withReports(reports).withComments(comments).withVotes(votes).withTrackings(trackings);
-        }
-
-        public User build() {
-            User user = new User();
-            user.setId(id);
-            user.setEmail(email);
-            user.setPassword(password);
-            user.setPoints(points);
-            user.setExercises(exercises);
-            user.setSolutions(solutions);
-            user.setReports(reports);
-            user.setComments(comments);
-            user.setVotes(votes);
-            user.setTrackings(trackings);
-            return user;
-        }
+    /**
+     * Return Finder Object for DB's queries.
+     *
+     * CARE: should not be used! may be removed on next version
+     *
+     * @return Finder for User Models
+     */
+    public static Model.Finder<Long, User> find() {
+        return new Finder<>(User.class);
     }
 }

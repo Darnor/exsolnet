@@ -2,25 +2,20 @@ package controllers;
 
 import com.avaje.ebean.PagedList;
 
-import com.avaje.ebean.enhance.agent.SysoutMessageOutput;
 import models.Tag;
+import models.builders.ExerciseBuilder;
 import play.data.DynamicForm;
-import repositories.ExerciseRepository;
 import models.Exercise;
-import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import repositories.TagRepository;
 import services.SessionService;
 import views.html.editExercise;
 import views.html.exerciseList;
 
 import javax.inject.Inject;
 import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -34,16 +29,6 @@ public class ExerciseController extends Controller {
     @Inject
     SessionService sessionService;
 
-    @Inject
-    ExerciseRepository exerciseRepository;
-
-    @Inject
-    TagRepository tagRepository;
-
-    public Result renderOverview() {
-        return list(0, 1, "", "");
-    }
-
     /**
      * render if create Exercise. Creates new blank exercise with id -1.
      * id -1 is important. And passes session of current user.
@@ -51,7 +36,11 @@ public class ExerciseController extends Controller {
      * @return Result of new Exercise
      */
     public Result renderCreate() {
-        return ok(editExercise.render(Exercise.ExerciseBuilder.anExercise().withId(-1L).build(), sessionService.getCurrentUserEmail()));
+        return ok(editExercise.render(ExerciseBuilder.anExercise().withId(-1L).build(), sessionService.getCurrentUserEmail()));
+    }
+
+    public Result renderOverview(){
+        return list(0,1,"","");
     }
 
     public Result renderDetails(long id) {
@@ -64,8 +53,8 @@ public class ExerciseController extends Controller {
             return LoginController.redirectIfNotLoggedIn();
         }
         int pageSize = 5;
-        String orderBy = exerciseRepository.getOrderByAttributeString(order);
-        PagedList<Exercise> exercises = exerciseRepository.getPagedList(page,orderBy,titleFilter,tagFilter,pageSize);
+        String orderBy = Exercise.getOrderByAttributeString(order);
+        PagedList<Exercise> exercises = Exercise.getPagedList(page,orderBy,titleFilter,tagFilter,pageSize);
         return ok(exerciseList.render(exercises,order,titleFilter,tagFilter));
     }
 
@@ -75,7 +64,7 @@ public class ExerciseController extends Controller {
      * @return redered exercise
      */
     public Result edit(long id) {
-        return ok(editExercise.render(exerciseRepository.find().byId(id), sessionService.getCurrentUserEmail()));
+        return ok(editExercise.render(Exercise.find().byId(id), sessionService.getCurrentUserEmail()));
     }
 
     /**
@@ -93,16 +82,15 @@ public class ExerciseController extends Controller {
 
         //create
         if (exerciseId == -1) {
-            exercise = Exercise.ExerciseBuilder.anExercise().build();
-            exerciseRepository.create(exercise);
+            exercise = ExerciseBuilder.anExercise().build();
+            Exercise.create(exercise);
             id = exercise.getId();
         } else {
             //edit
             id = exerciseId;
-            exercise = exerciseRepository.findExerciseData(id);
+            exercise = Exercise.findExerciseData(id);
         }
 
-        //setting data from form
         exercise.setTitle(requestData.get("title"));
         exercise.setContent(requestData.get("content"));
 
@@ -142,7 +130,7 @@ public class ExerciseController extends Controller {
                             tag.setMainTag(false);
                             tag.setName(t);
                             tag.addExercise(exercise);
-                            tagRepository.create(tag);
+                            Tag.create(tag);
                             exercise.addTag(tag);
                         }
                         //add tag to exercise and exercise to tag
@@ -160,8 +148,7 @@ public class ExerciseController extends Controller {
         // delete all tags from exercise which no longer exist
         exercise.getTags().removeIf(t -> !main.contains(t.getName()) && !other.contains(t.getName()));
 
-        //update exercise
-        exerciseRepository.update(exercise);
+        Exercise.update(exercise);
         //redirect to exercise list
         return redirect(routes.ExerciseController.renderOverview());
     }
@@ -173,7 +160,7 @@ public class ExerciseController extends Controller {
      */
     private Tag getOtherTagByName(String t) {
         try {
-            Tag tag = tagRepository.findTagByName(t);
+            Tag tag = Tag.findTagByName(t);
             if (tag == null || tag.isMainTag())
                 return null;
             return tag;
@@ -188,16 +175,14 @@ public class ExerciseController extends Controller {
      * @return the maintag or null if it does not exist in db
      */
     private Tag getMainTagByName(String t) {
-
         try {
-            Tag tag = tagRepository.findTagByName(t);
+            Tag tag = Tag.findTagByName(t);
             if (tag == null || !tag.isMainTag())
                 return null;
             return tag;
         } catch (NullPointerException e) {
             return null;
         }
-
     }
 
     /**
@@ -209,10 +194,11 @@ public class ExerciseController extends Controller {
     private Boolean otherTagExistsInExercise(long id, String t) {
         try {
 
-            List<Tag> tags = exerciseRepository.findExerciseData(id).getTags();
+            List<Tag> tags = Exercise.findExerciseData(id).getTags();
             for (Tag tag : tags) {
-                if (tag.getName().equals(t) && !tag.isMainTag())
+                if (tag.getName().equals(t) && !tag.isMainTag()) {
                     return true;
+                }
             }
             return false;
         } catch (NullPointerException e) {
@@ -228,8 +214,7 @@ public class ExerciseController extends Controller {
      */
     private Boolean mainTagExistsInExercise(long id, String t) {
         try {
-
-            List<Tag> tags = exerciseRepository.findExerciseData(id).getTags();
+            List<Tag> tags = Exercise.findExerciseData(id).getTags();
             for (Tag tag : tags) {
                 if (tag.getName().equals(t) && tag.isMainTag())
                     return true;

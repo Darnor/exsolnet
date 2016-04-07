@@ -35,6 +35,10 @@ public class Comment extends Model{
     @Basic
     private Date time = new Date();
 
+
+    private static final int NOF_RECENT_COMMENTS = 5;
+
+
     public String getContent() {
         return content;
     }
@@ -68,72 +72,17 @@ public class Comment extends Model{
         this.time = time;
     }
 
-    public static class CommentBuilder {
-        private Long id;
-        private String content;
-        private User user;
-        private List<Report> reports;
-        private Solution solution;
-        private Exercise exercise;
-        private Date time;
 
-        private CommentBuilder() {
-        }
-
-        public static CommentBuilder aComment() {
-            return new CommentBuilder();
-        }
-
-        public CommentBuilder withId(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public CommentBuilder withContent(String content) {
-            this.content = content;
-            return this;
-        }
-
-        public CommentBuilder withUser(User user) {
-            this.user = user;
-            return this;
-        }
-
-        public CommentBuilder withReports(List<Report> reports) {
-            this.reports = reports;
-            return this;
-        }
-
-        public CommentBuilder withSolution(Solution solution) {
-            this.solution = solution;
-            return this;
-        }
-
-        public CommentBuilder withExercise(Exercise exercise) {
-            this.exercise = exercise;
-            return this;
-        }
-
-
-        public CommentBuilder withTime(Date time) {
-            this.time = time;
-            return this;
-        }
-
-        public CommentBuilder but() {
-            return aComment().withId(id).withContent(content).withUser(user).withReports(reports).withSolution(solution).withExercise(exercise).withTime(time);
-        }
-
-        public Comment build() {
-            Comment comment = new Comment();
-            comment.setId(id);
-            comment.setContent(content);
-            comment.setUser(user);
-            comment.setReports(reports);
-            comment.setSolution(solution);
-            comment.setExercise(exercise);
-            comment.setTime(time);
-            return comment;
-        }
+    public static List<Comment> getRecentComments(User user) {
+        return find().where()
+                .eq("user", user)
+                .orderBy("time desc")
+                .setMaxRows(NOF_RECENT_COMMENTS)
+                .findList();
     }
+
+    public static Model.Finder<Long, Comment> find(){
+        return new Model.Finder<>(Comment.class);
+    }
+
 }

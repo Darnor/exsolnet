@@ -6,16 +6,12 @@ import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
-import repositories.UserRepository;
 import services.SessionService;
 
 /**
  * Created by mario on 05.04.16.
  */
 public class LoginController extends Controller {
-
-    @Inject
-    UserRepository userRepository;
 
     @Inject
     SessionService sessionService;
@@ -41,7 +37,7 @@ public class LoginController extends Controller {
     public Result login() {
         Form<User> userForm = formFactory.form(User.class);
         User user = userForm.bindFromRequest().get();
-        if(userRepository.authenticate(user.getEmail(), user.getPassword()) != null){
+        if(User.authenticate(user.getEmail(), user.getPassword()) != null){
             sessionService.set(user.getEmail());
         }
         return redirect(routes.DashboardController.renderDashboard());

@@ -57,6 +57,7 @@ public class Tag extends Model {
     }
 
     public List<Exercise> getExercises() {
+
         return exercises;
     }
 
@@ -72,36 +73,34 @@ public class Tag extends Model {
         exercises.add(exercise);
     }
 
-    public static class TagBuilder {
-        private String name;
-        private List<Exercise> exercises;
+    public static void create(Tag tag) {
+        tag.save();
+    }
 
-        private TagBuilder() {
-        }
+    public static void update(Tag tag) {
+        tag.update();
+    }
 
-        public static TagBuilder aTag() {
-            return new TagBuilder();
-        }
+    public static Model.Finder<Long, Tag> find() {
+        return new Finder<Long, Tag>(Tag.class);
+    }
 
-        public TagBuilder withName(String name) {
-            this.name = name;
-            return this;
-        }
+    public long getNofCompletedExercises(User currentUser) {
+        return getExercises().stream().mapToLong(exercise ->
+                exercise.getSolutions().stream().filter(solution -> solution.getUser().equals(currentUser)).count()
+        ).sum();
+    }
 
-        public TagBuilder withExercises(List<Exercise> exercises) {
-            this.exercises = exercises;
-            return this;
-        }
+    public static List<Tag> getSuggestedTags(String query) {
+        return find().where().istartsWith("name", query).findList();
+    }
 
-        public TagBuilder but() {
-            return aTag().withName(name).withExercises(exercises);
-        }
-
-        public Tag build() {
-            Tag tag = new Tag();
-            tag.setName(name);
-            tag.setExercises(exercises);
-            return tag;
-        }
+    /**
+     * returns the tag searched by name
+     * @param name the name of the tag, tag name sould be unique
+     * @return the tag or null if it doesnt exist
+     */
+    public static Tag findTagByName(String name) {
+        return find().where().eq("name", name).findUnique();
     }
 }
