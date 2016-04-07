@@ -9,12 +9,12 @@ GET         /exercises/:id          controllers.ExerciseController.renderDetails
 GET         /exercises/:id/edit     controllers.ExerciseController.edit(id: Long)
 POST        /exercises/:id/update   controllers.ExerciseController.update(id: Long)
 GET         /dashboard              controllers.DashboardController.renderDashboard
+GET         /tags                   controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= null)
 GET         /tags                   controllers.TagController.renderOverview
-GET         /tags                   controllers.TagController.renderTagList(sort:Int ?= 0, tags ?= null)
 GET         /tags/query             controllers.TagController.suggestTags(q ?= "")
+GET         /login                  controllers.LoginController.renderLogin
+POST        /login                  controllers.LoginController.login
+POST        /logout                 controllers.LoginController.logout
 
-GET         /login                       controllers.LoginController.renderLogin
-POST        /login                       controllers.LoginController.login
-POST        /logout                      controllers.LoginController.logout
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)

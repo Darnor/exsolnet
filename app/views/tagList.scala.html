@@ -1,5 +1,5 @@
 @import java.util
-@(username: String, tags: util.List[Tag], tracks: util.List[Tracking], currentOrderBy: Int, tagNameFilter: String)
+@(username: String, tags: util.List[Tag], trackings: util.List[Tracking], currentOrderBy: Int, tagNameFilter: String)
 
 @****************************************
 * Helper generating navigation links    *
@@ -8,19 +8,20 @@
     routes.TagController.renderTagList(newOrderBy, tagNameFilter)
 }
 
-    @**********************************
-    * Helper generating table headers *
-    ***********************************@
+@**********************************
+* Helper generating table headers *
+***********************************@
 @header(orderBy: Int, title: String) = {
     <th class="col@orderBy header @if(currentOrderBy == orderBy) @{if(currentOrderBy == orderBy) "headerSortDown" else "headerSortUp"}">
-        <a href="@link(orderBy)">@title</a>
+        <a href="@link(if (currentOrderBy == orderBy) -orderBy else orderBy )">@title</a>
     </th>
 }
 
 @main("Welcome to Exsolnet"){
 
     <h1>Tags</h1>
-    @helper.form(action=routes.TagController.renderTagList(currentOrderBy, tagNameFilter)) {
+    @helper.form(action=routes.TagController.renderTagList()) {
+        <input type="hidden" name="sort" value="@currentOrderBy" />
         <input type="search" id="searchbox" name="tags" value="@tagNameFilter" placeholder="Tag-Filter"/>
         <input type="submit" id="searchsubmit" value="Suche" class="btn primary"/>
     }
@@ -28,9 +29,9 @@
     <table class="tags zebra-striped">
         <thead>
             <tr>
-                @header(0, "Name")
-                @header(1, "Aufgaben")
-                @header(2, "Subscription")
+                @header(1, "Name")
+                @header(2, "Aufgaben")
+                @header(3, "Subscription")
             </tr>
         </thead>
         <tbody>
@@ -44,7 +45,7 @@
                 @tag.getExercises.size()
                 </td>
                 <td>
-                    <input id="subscription" type="checkbox" @if(tracks.contains(tag)) { checked="checked" } name="subscription" />
+                    <input id="subscription" type="checkbox" @if(trackings.contains(tag)) { checked="checked" } name="subscription" />
                 </td>
             </tr>
         }
