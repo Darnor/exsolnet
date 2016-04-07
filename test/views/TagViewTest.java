@@ -1,13 +1,11 @@
 package views;
 
+import models.AbstractModelTest;
 import models.Tag;
 import models.User;
 import org.junit.Before;
 import org.junit.Test;
 import play.twirl.api.Content;
-import models.AbstractModelTest;
-import models.TagRepository;
-import models.UserRepository;
 import views.html.tagList;
 
 import static org.hamcrest.core.StringContains.containsString;
