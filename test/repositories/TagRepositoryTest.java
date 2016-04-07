@@ -29,7 +29,7 @@ public class TagRepositoryTest extends AbstractRepositoryTest{
 
     @Test
     public void testTagsAreThere(){
-        assertEquals(1, tagRepo.find().all().size());
+        assertEquals(5, tagRepo.find().all().size());
     }
 
     @Test
