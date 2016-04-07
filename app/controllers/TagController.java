@@ -34,7 +34,7 @@ public class TagController {
     }
 
     public Result renderOverview() {
-        return renderTagList(0, null);
+        return renderTagList(1, null);
     }
 
     /**
