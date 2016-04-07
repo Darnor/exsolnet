@@ -2,6 +2,7 @@ package controllers;
 
 import com.avaje.ebean.PagedList;
 
+import com.avaje.ebean.enhance.agent.SysoutMessageOutput;
 import models.Tag;
 import play.data.DynamicForm;
 import repositories.ExerciseRepository;
@@ -38,7 +39,7 @@ public class ExerciseController extends Controller {
 
 
     @Inject
-    TagRepository  tagRepository;
+    TagRepository tagRepository;
 
     public Result renderOverview() {
         return list(0, "title", "", "");
@@ -77,43 +78,32 @@ public class ExerciseController extends Controller {
 
 
         main.forEach(t -> {
-                    if (getMainTagByName(id, t) == null) {
+                    if (!mainTagExistsInExercise(id, t)) {
+                        Tag mainTag = getMainTagByName(t);
+                        if (mainTag == null) {
+                            throw new IllegalArgumentException("not allowed to create main tags.").
+                        }
+                        exercise.addTag(mainTag);
 
-                        Tag tag = new Tag();
-                        tag.setMainTag(true);
-                        tag.setName(t);
-
-                        exercise.addTag(tag);
-                        tagRepository.create(tag);
-
-                    } else if (getOtherTagByName(id, t) != null) {
-                        exercise.getTags().forEach(t2 -> {
-                            if (t2.getName().equals(t)) {
-                                t2.setMainTag(true);
-                            }
-                        });
                     }
+
                 }
         );
 
         other.forEach(t -> {
+                    if (!otherTagExistsInExercise(id, t)) {
+                        Tag tag = getOtherTagByName(t);
+                        if (tag == null) {
+                            tag = new Tag();
+                            tag.setMainTag(false);
+                            tag.setName(t);
 
-                    if (getOtherTagByName(id, t) == null) {
-
-                        Tag tag = new Tag();
-                        tag.setMainTag(false);
-                        tag.setName(t);
-                        exercise.addTag(tag);
-                        tagRepository.create(tag);
-
-                    } else {
-                        if (getMainTagByName(id, t) != null) {
-                            exercise.getTags().forEach(t2 -> {
-                                if (t2.getName().equals(t)) {
-                                    t2.setMainTag(false);
-                                }
-                            });
+                            exercise.addTag(tag);
+                            tagRepository.create(tag);
                         }
+
+                        exercise.addTag(tag);
+
                     }
                 }
         );
@@ -124,28 +114,40 @@ public class ExerciseController extends Controller {
         return redirect(routes.ExerciseController.renderOverview());
     }
 
-    private Tag getOtherTagByName(long id, String t) {
+    private Tag getOtherTagByName(String t) {
+        Tag tag = tagRepository.findTagByName(t);
+        if (tag.isMainTag()) return null;
+        return tag;
+    }
+
+    private Tag getMainTagByName(String t) {
+        Tag tag = tagRepository.findTagByName(t);
+        if (!tag.isMainTag()) return null;
+        return tag;
+    }
+
+    private Boolean otherTagExistsInExercise(long id, String t) {
+
         List<Tag> tags = exerciseRepository.findExerciseData(id).getTags();
         for (Tag tag : tags) {
 
-
             if (tag.getName().equals(t) && !tag.isMainTag()) {
-                return tag;
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
-    private Tag getMainTagByName(long id, String t) {
+    private Boolean mainTagExistsInExercise(long id, String t) {
         List<Tag> tags = exerciseRepository.findExerciseData(id).getTags();
         for (Tag tag : tags) {
 
 
             if (tag.getName().equals(t) && tag.isMainTag()) {
-                return tag;
+                return true;
             }
         }
-        return null;
+        return false;
     }
 }
 

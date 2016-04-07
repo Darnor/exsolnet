@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.Model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -16,6 +17,9 @@ public class Tag extends Model {
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
+
+    //TODO UNIQUE
+    @NotNull
     private String name;
 
     private Boolean isMainTag;

@@ -3,6 +3,7 @@ package repositories;
 import com.avaje.ebean.Model;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import models.Exercise;
 import models.Tag;
 import models.User;
 
@@ -51,4 +52,7 @@ public class TagRepository {
         return this.find().where().startsWith("name",query).findList();
     }
 
+    public Tag findTagByName(String name) {
+        return this.find().where().eq("name", name).findUnique();
+    }
 }
