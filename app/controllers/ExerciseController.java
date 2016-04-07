@@ -37,6 +37,7 @@ public class ExerciseController extends Controller {
     @Inject
     ExerciseRepository exerciseRepository;
 
+    @Inject
     TagRepository tagRepository;
 
     public Result renderOverview() {
@@ -114,9 +115,11 @@ public class ExerciseController extends Controller {
                             tag.setMainTag(false);
                             tag.setName(t);
                             tag.addExercise(exercise);
-                            exercise.addTag(tag);
                             tagRepository.create(tag);
+                            exercise.addTag(tag);
+
                         }
+                        tag.addExercise(exercise);
                         exercise.addTag(tag);
                     }
                 }
