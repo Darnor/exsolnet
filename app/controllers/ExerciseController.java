@@ -2,25 +2,19 @@ package controllers;
 
 import com.avaje.ebean.PagedList;
 
-import com.avaje.ebean.enhance.agent.SysoutMessageOutput;
 import models.Tag;
 import play.data.DynamicForm;
-import repositories.ExerciseRepository;
 import models.Exercise;
-import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import repositories.TagRepository;
 import services.SessionService;
 import views.html.editExercise;
 import views.html.exerciseList;
 
 import javax.inject.Inject;
 import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 /**
  * This controller contains an action to handle HTTP requests

@@ -1,9 +1,7 @@
 package services;
 
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import models.User;
-import repositories.UserRepository;
 
 import static play.mvc.Controller.session;
 

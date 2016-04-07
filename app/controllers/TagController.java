@@ -2,13 +2,9 @@ package controllers;
 
 import javax.inject.Inject;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import models.Tag;
-import models.Tracking;
-import models.User;
 import play.libs.Json;
 import play.mvc.Result;
-import repositories.TagRepository;
 import services.SessionService;
 import views.html.tagList;
 

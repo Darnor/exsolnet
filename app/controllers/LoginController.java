@@ -6,7 +6,6 @@ import play.data.Form;
 import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
-import repositories.UserRepository;
 import services.SessionService;
 
 /**

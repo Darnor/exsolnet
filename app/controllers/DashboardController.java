@@ -2,11 +2,8 @@ package controllers;
 
 import com.google.inject.Inject;
 import models.Comment;
-import models.Tag;
 import play.mvc.Controller;
 import play.mvc.Result;
-import repositories.CommentRepository;
-import repositories.TagRepository;
 import services.SessionService;
 import views.html.dashboard;
 
