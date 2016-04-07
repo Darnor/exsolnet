@@ -5,9 +5,10 @@
 GET         /                       controllers.DashboardController.renderDashboard
 GET         /exercises              controllers.ExerciseController.list(page:Int ?= 0, sort:Int ?=1, title ?= "", tags ?="")
 GET         /exercises              controllers.ExerciseController.renderOverview
+GET         /exercises/create       controllers.ExerciseController.renderCreate
 GET         /exercises/:id          controllers.ExerciseController.renderDetails(id: Long)
-GET         /exercises/:id/edit     controllers.ExerciseController.edit(id: Long)
 POST        /exercises/:id/update   controllers.ExerciseController.update(id: Long)
+GET        /exercises/:id/edit     controllers.ExerciseController.edit(id: Long)
 GET         /dashboard              controllers.DashboardController.renderDashboard
 GET         /tags                   controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= null)
 GET         /tags                   controllers.TagController.renderOverview

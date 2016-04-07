@@ -10,11 +10,12 @@ import java.util.List;
  * Created by Claudia on 31.03.2016.
  */
 @Entity
-@Table(name="tag")
+@Table(name = "tag")
 public class Tag extends Model {
 
 
-    @Id @GeneratedValue(strategy= GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
 
@@ -38,6 +39,7 @@ public class Tag extends Model {
     public void setId(Long id) {
         this.id = id;
     }
+
     public Boolean isMainTag() {
         return isMainTag;
     }
@@ -45,6 +47,7 @@ public class Tag extends Model {
     public void setMainTag(Boolean mainTag) {
         isMainTag = mainTag;
     }
+
     public String getName() {
         return name;
     }
@@ -59,6 +62,14 @@ public class Tag extends Model {
 
     public void setExercises(List<Exercise> exercises) {
         this.exercises = exercises;
+    }
+
+    public void removeExercise(Long id) {
+        exercises.removeIf(e -> e.getId() == id);
+    }
+
+    public void addExercise(Exercise exercise) {
+        exercises.add(exercise);
     }
 
     public static class TagBuilder {
