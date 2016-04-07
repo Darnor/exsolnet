@@ -1,4 +1,4 @@
-package repositories;
+package models;
 
 import com.avaje.ebean.Ebean;
 import org.apache.commons.io.FileUtils;
@@ -12,7 +12,7 @@ import java.io.IOException;
 /**
  * Created by tourn on 6.4.16.
  */
-public abstract class AbstractRepositoryTest {
+public abstract class AbstractModelTest {
     protected static Application app;
 
     @BeforeClass
