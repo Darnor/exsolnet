@@ -20,7 +20,8 @@
 @main("Welcome to Exsolnet"){
 
     <h1>Tags</h1>
-    @helper.form(action=routes.TagController.renderTagList(currentOrderBy, tagNameFilter)) {
+    @helper.form(action=routes.TagController.renderTagList()) {
+        <input type="hidden" name="sort" value="@currentOrderBy" />
         <input type="search" id="searchbox" name="tags" value="@tagNameFilter" placeholder="Tag-Filter"/>
         <input type="submit" id="searchsubmit" value="Suche" class="btn primary"/>
     }
