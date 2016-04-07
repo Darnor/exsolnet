@@ -53,6 +53,11 @@ public class TagRepository {
         return this.find().where().istartsWith("name", query).findList();
     }
 
+    /**
+     * returns the tag searched by name
+     * @param name the name of the tag, tag name sould be unique
+     * @return the tag or null if it doesnt existö
+     */
     public Tag findTagByName(String name) {
         return this.find().where().eq("name", name).findUnique();
     }
