@@ -37,12 +37,10 @@ public class ExerciseController extends Controller {
     @Inject
     ExerciseRepository exerciseRepository;
 
-
-    @Inject
     TagRepository tagRepository;
 
-    public Result renderOverview() {
-        return list(0, "title", "", "");
+    public Result renderOverview(){
+        return list(0,1,"","");
     }
 
     public Result renderDetails(long id) {
@@ -50,14 +48,14 @@ public class ExerciseController extends Controller {
         return notFound();
     }
 
-
-    public Result list(int page, String orderBy, String titleFilter, String tagFilter) {
-        if (!sessionService.isLoggedin()) {
+    public Result list(int page, int order, String titleFilter, String tagFilter){
+        if(!sessionService.isLoggedin()){
             return LoginController.redirectIfNotLoggedIn();
         }
         int pageSize = 5;
-        PagedList<Exercise> exercises = exerciseRepository.getPagedList(page, orderBy, titleFilter, tagFilter, pageSize);
-        return ok(exerciseList.render(exercises, orderBy, titleFilter, tagFilter));
+        String orderBy = exerciseRepository.getOrderByAttributeString(order);
+        PagedList<Exercise> exercises = exerciseRepository.getPagedList(page,orderBy,titleFilter,tagFilter,pageSize);
+        return ok(exerciseList.render(exercises,order,titleFilter,tagFilter));
     }
 
     public Result edit(long id) {
@@ -114,7 +112,7 @@ public class ExerciseController extends Controller {
         exerciseRepository.update(exercise);
         return redirect(routes.ExerciseController.renderOverview());
     }
-
+    
     private Tag getOtherTagByName(String t) {
         Tag tag = tagRepository.findTagByName(t);
         if (tag==null || tag.isMainTag()) return null;

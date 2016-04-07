@@ -50,7 +50,7 @@ public class TagRepository {
     }
 
     public List<Tag> getSuggestedTags(String query) {
-        return this.find().where().startsWith("name", query).findList();
+        return this.find().where().istartsWith("name", query).findList();
     }
 
     public Tag findTagByName(String name) {

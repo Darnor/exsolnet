@@ -1,11 +1,16 @@
 package repositories;
 
+import com.avaje.ebean.Ebean;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.PagedList;
+import com.avaje.ebean.Query;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import models.Exercise;
 import models.Tag;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by mario on 31.03.16.
@@ -51,6 +56,24 @@ public class ExerciseRepository {
         return this.find().where().eq("id", id).findUnique();
     }
 
+    public String getOrderByAttributeString(int order){
+        String result = tableHeaderMap.get(Math.abs(order));
+        if(order<0){
+            result += " desc";
+        }
+        return result;
+    }
+
+    private static final Map<Integer, String> tableHeaderMap;
+    static
+    {
+        tableHeaderMap = new HashMap<Integer, String>();
+        tableHeaderMap.put(1, "title");
+        tableHeaderMap.put(2, "solutionCount");
+        tableHeaderMap.put(3, "points");
+        tableHeaderMap.put(4, "time");
+        tableHeaderMap.put(5, "title");
+    }
 
 }
 

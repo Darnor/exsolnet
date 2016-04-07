@@ -2,6 +2,7 @@ package controllers;
 
 import javax.inject.Inject;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import models.Tag;
 import models.Tracking;
 import play.libs.Json;
@@ -10,6 +11,7 @@ import repositories.TagRepository;
 import services.SessionService;
 import views.html.tagList;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -95,6 +97,17 @@ public class TagController {
      */
     public Result suggestTags(String query) {
         List<Tag> tagList = tagRepository.getSuggestedTags(query);
-        return ok(Json.toJson(tagList));
+        List<TagEntry> list = new ArrayList<TagEntry>();
+        for(Tag tag : tagList){
+            list.add(new TagEntry(tag.getName()));
+        }
+        return ok(Json.toJson(list));
+    }
+
+    public static class TagEntry{
+        public final String name;
+        public TagEntry(String name) {
+            this.name = name;
+        }
     }
 }
