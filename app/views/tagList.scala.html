@@ -11,9 +11,9 @@
 @**********************************
 * Helper generating table headers *
 ***********************************@
-@header(orderBy: Int, title: String) = {
-    <th class="col@orderBy header @if(currentOrderBy == orderBy) @{if(currentOrderBy == orderBy) "headerSortDown" else "headerSortUp"}">
-        <a href="@link(if (currentOrderBy == orderBy) -orderBy else orderBy )">@title</a>
+@header(columnId: Int, title: String) = {
+    <th class="col@columnId header @if(Math.abs(currentOrderBy) == columnId) @{if(currentOrderBy == columnId) "headerSortDown" else "headerSortUp"}">
+        <a href="@link(if (currentOrderBy == columnId) -columnId else columnId )">@title</a>
     </th>
 }
 
