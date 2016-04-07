@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.Formula;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
@@ -17,6 +18,9 @@ public class Exercise extends Post {
 
     @Constraints.Required
     private String title;
+
+    @Formula(select = "(select count(*) from solution _s where _s.exercise_id=${ta}.id)")
+    private int solutionCount;
 
     @OneToMany(mappedBy = "exercise")
     private List<Solution> solutions;
