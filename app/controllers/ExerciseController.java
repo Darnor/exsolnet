@@ -81,7 +81,8 @@ public class ExerciseController extends Controller {
                     if (!mainTagExistsInExercise(id, t)) {
                         Tag mainTag = getMainTagByName(t);
                         if (mainTag == null) {
-                            throw new IllegalArgumentException("not allowed to create main tags.").
+                            throw new IllegalArgumentException("not allowed to create main tags.");
+
                         }
                         exercise.addTag(mainTag);
 
