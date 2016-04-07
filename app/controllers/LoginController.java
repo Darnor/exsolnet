@@ -23,10 +23,21 @@ public class LoginController extends Controller {
     @Inject
     FormFactory formFactory;
 
+    /**
+     * Renders login and logout fields, depending if user is logged in
+     * @return Result
+     */
     public Result renderLogin(){
             return ok(views.html.login.render(sessionService.getCurrentUserEmail()));
     }
 
+    /**
+     * Parses the body and puts including Form values into User Object
+     * Authenticates the user based on email and password.
+     * Sets the session on the user's email
+     * redirect to dashboard
+     * @return Result
+     */
     public Result login() {
         Form<User> userForm = formFactory.form(User.class);
         User user = userForm.bindFromRequest().get();
@@ -36,6 +47,11 @@ public class LoginController extends Controller {
         return redirect(routes.DashboardController.renderDashboard());
     }
 
+    /**
+     * clears the current session
+     * logout the user
+     * @return Result
+     */
     public Result logout() {
         if(sessionService.isLoggedin()){
             sessionService.clear();
@@ -43,6 +59,10 @@ public class LoginController extends Controller {
         return redirect(routes.DashboardController.renderDashboard());
     }
 
+    /**
+     * static function which redirect to login screen
+     * @return Result
+     */
     public static Result redirectIfNotLoggedIn(){
         return redirect(routes.LoginController.renderLogin());
     }
