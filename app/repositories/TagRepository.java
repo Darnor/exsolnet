@@ -7,6 +7,7 @@ import models.Exercise;
 import models.Tag;
 import models.User;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,31 +26,31 @@ public class TagRepository {
         //noop
     }
 
-    public void create(Tag tag){
+    public void create(Tag tag) {
         tag.save();
     }
 
-    public void update(Tag tag){
+    public void update(Tag tag) {
         tag.update();
     }
 
 
-    public List<Tag> getTrackedTags(User user){
-        return user.getTrackings().stream().map(tracking -> tracking.getTag() ).collect(Collectors.toList());
+    public List<Tag> getTrackedTags(User user) {
+        return user.getTrackings().stream().map(tracking -> tracking.getTag()).collect(Collectors.toList());
     }
 
-    public Model.Finder<Long, Tag>find(){
+    public Model.Finder<Long, Tag> find() {
         return find;
     }
 
     public long getNofCompletedExercises(Tag tag, User currentUser) {
         return tag.getExercises().stream().mapToLong(exercise ->
-            exercise.getSolutions().stream().filter(solution -> solution.getUser().equals(currentUser)).count()
+                exercise.getSolutions().stream().filter(solution -> solution.getUser().equals(currentUser)).count()
         ).sum();
     }
 
-    public List<Tag> getSuggestedTags(String query){
-        return this.find().where().startsWith("name",query).findList();
+    public List<Tag> getSuggestedTags(String query) {
+        return this.find().where().startsWith("name", query).findList();
     }
 
     public Tag findTagByName(String name) {

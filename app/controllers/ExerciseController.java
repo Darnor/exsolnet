@@ -117,13 +117,13 @@ public class ExerciseController extends Controller {
 
     private Tag getOtherTagByName(String t) {
         Tag tag = tagRepository.findTagByName(t);
-        if (tag.isMainTag()) return null;
+        if (tag==null || tag.isMainTag()) return null;
         return tag;
     }
 
     private Tag getMainTagByName(String t) {
         Tag tag = tagRepository.findTagByName(t);
-        if (!tag.isMainTag()) return null;
+        if (tag==null || !tag.isMainTag()) return null;
         return tag;
     }
 
