@@ -61,9 +61,9 @@ public class TagController {
                case 2:
                     int t1ExSize = t1.getExercises().size();
                     int t2ExSize = t2.getExercises().size();
-                    return t1ExSize > t2ExSize ? 1 : t1ExSize < t2ExSize ? -1 : 0;
+                    return t1ExSize > t2ExSize ? -1 : t1ExSize < t2ExSize ? 1 : 0;
                default:
-                    return trackedTags.contains(t1) ? 1 : trackedTags.contains(t2) ? -1 : 0;
+                    return trackedTags.contains(t1) ? -1 : trackedTags.contains(t2) ? 1 : 0;
             }
         });
 
