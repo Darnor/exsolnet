@@ -34,11 +34,6 @@ public class ExerciseController extends Controller {
     @Inject
     SessionService sessionService;
 
-    @Inject
-    ExerciseRepository exerciseRepository;
-
-    TagRepository tagRepository;
-
     public Result renderOverview(){
         return list(0,1,"","");
     }
@@ -53,14 +48,14 @@ public class ExerciseController extends Controller {
             return LoginController.redirectIfNotLoggedIn();
         }
         int pageSize = 5;
-        String orderBy = exerciseRepository.getOrderByAttributeString(order);
-        PagedList<Exercise> exercises = exerciseRepository.getPagedList(page,orderBy,titleFilter,tagFilter,pageSize);
+        String orderBy = Exercise.getOrderByAttributeString(order);
+        PagedList<Exercise> exercises = Exercise.getPagedList(page,orderBy,titleFilter,tagFilter,pageSize);
         System.out.println(exercises.getDisplayXtoYofZ("a","b"));
         return ok(exerciseList.render(exercises,order,titleFilter,tagFilter));
     }
 
     public Result edit(long id) {
-        return ok(editExercise.render(exerciseRepository.find().byId(id), sessionService.getCurrentUserEmail()));
+        return ok(editExercise.render(Exercise.find().byId(id), sessionService.getCurrentUserEmail()));
     }
 
     public Result update(long id) {
@@ -68,7 +63,7 @@ public class ExerciseController extends Controller {
         DynamicForm requestData = formFactory.form().bindFromRequest();
 
 
-        Exercise exercise = exerciseRepository.findExerciseData(id);
+        Exercise exercise = Exercise.findExerciseData(id);
         exercise.setTitle(requestData.get("title"));
         exercise.setContent(requestData.get("content"));
 
@@ -99,7 +94,7 @@ public class ExerciseController extends Controller {
                             tag.setName(t);
 
                             exercise.addTag(tag);
-                            tagRepository.create(tag);
+                            Tag.create(tag);
                         }
 
                         exercise.addTag(tag);
@@ -110,25 +105,25 @@ public class ExerciseController extends Controller {
 
         exercise.getTags().removeIf(t -> !main.contains(t.getName()) && !other.contains(t.getName()));
 
-        exerciseRepository.update(exercise);
+        Exercise.update(exercise);
         return redirect(routes.ExerciseController.renderOverview());
     }
     
     private Tag getOtherTagByName(String t) {
-        Tag tag = tagRepository.findTagByName(t);
+        Tag tag = Tag.findTagByName(t);
         if (tag==null || tag.isMainTag()) return null;
         return tag;
     }
 
     private Tag getMainTagByName(String t) {
-        Tag tag = tagRepository.findTagByName(t);
+        Tag tag = Tag.findTagByName(t);
         if (tag==null || !tag.isMainTag()) return null;
         return tag;
     }
 
     private Boolean otherTagExistsInExercise(long id, String t) {
 
-        List<Tag> tags = exerciseRepository.findExerciseData(id).getTags();
+        List<Tag> tags = Exercise.findExerciseData(id).getTags();
         for (Tag tag : tags) {
 
             if (tag.getName().equals(t) && !tag.isMainTag()) {
@@ -139,7 +134,7 @@ public class ExerciseController extends Controller {
     }
 
     private Boolean mainTagExistsInExercise(long id, String t) {
-        List<Tag> tags = exerciseRepository.findExerciseData(id).getTags();
+        List<Tag> tags = Exercise.findExerciseData(id).getTags();
         for (Tag tag : tags) {
 
 

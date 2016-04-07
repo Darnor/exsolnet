@@ -15,9 +15,6 @@ public class SessionService {
     public static final String KEY_USERNAME = "connected";
 
     @Inject
-    private UserRepository userRepository;
-
-    @Inject
     public SessionService(){
         //noop
     }
@@ -55,7 +52,7 @@ public class SessionService {
         if(!isLoggedin()){
             return null;
         }
-        return userRepository.find().where().eq("email", getCurrentUserEmail()).findUnique();
+        return User.find().where().eq("email", getCurrentUserEmail()).findUnique();
     }
 
     /**

@@ -15,9 +15,6 @@ import services.SessionService;
 public class LoginController extends Controller {
 
     @Inject
-    UserRepository userRepository;
-
-    @Inject
     SessionService sessionService;
 
     @Inject
@@ -41,7 +38,7 @@ public class LoginController extends Controller {
     public Result login() {
         Form<User> userForm = formFactory.form(User.class);
         User user = userForm.bindFromRequest().get();
-        if(userRepository.authenticate(user.getEmail(), user.getPassword()) != null){
+        if(User.authenticate(user.getEmail(), user.getPassword()) != null){
             sessionService.set(user.getEmail());
         }
         return redirect(routes.DashboardController.renderDashboard());

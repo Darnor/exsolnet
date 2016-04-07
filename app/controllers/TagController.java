@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import com.fasterxml.jackson.databind.JsonNode;
 import models.Tag;
 import models.Tracking;
+import models.User;
 import play.libs.Json;
 import play.mvc.Result;
 import repositories.TagRepository;
@@ -22,9 +23,6 @@ import static play.mvc.Results.ok;
  * Created by revy on 05.04.16.
  */
 public class TagController {
-
-    @Inject
-    TagRepository tagRepository;
 
     @Inject
     SessionService sessionService;
@@ -85,8 +83,8 @@ public class TagController {
         if(!sessionService.isLoggedin()){
             return LoginController.redirectIfNotLoggedIn();
         }
-        List<Tag> trackedTags = tagRepository.getTrackedTags(sessionService.getCurrentUser());
-        List<Tag> tags = sortTagList(filterTagList(tagRepository.find().all(), tagNameFilter), trackedTags, orderBy);
+        List<Tag> trackedTags = sessionService.getCurrentUser().getTrackedTags();
+        List<Tag> tags = sortTagList(filterTagList(Tag.find().all(), tagNameFilter), trackedTags, orderBy);
         return ok(tagList.render(sessionService.getCurrentUserEmail(), tags, trackedTags, orderBy, tagNameFilter));
     }
 
@@ -96,7 +94,7 @@ public class TagController {
      * @return
      */
     public Result suggestTags(String query) {
-        List<Tag> tagList = tagRepository.getSuggestedTags(query);
+        List<Tag> tagList = Tag.getSuggestedTags(query);
         List<TagEntry> list = new ArrayList<TagEntry>();
         for(Tag tag : tagList){
             list.add(new TagEntry(tag.getName()));
