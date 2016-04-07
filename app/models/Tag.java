@@ -54,6 +54,7 @@ public class Tag extends Model {
     }
 
     public List<Exercise> getExercises() {
+
         return exercises;
     }
 
@@ -61,6 +62,31 @@ public class Tag extends Model {
         this.exercises = exercises;
     }
 
+    public static void create(Tag tag) {
+        tag.save();
+    }
+
+    public static void update(Tag tag) {
+        tag.update();
+    }
+
+    public static Model.Finder<Long, Tag> find() {
+        return new Finder<Long, Tag>(Tag.class);
+    }
+
+    public long getNofCompletedExercises(User currentUser) {
+        return getExercises().stream().mapToLong(exercise ->
+                exercise.getSolutions().stream().filter(solution -> solution.getUser().equals(currentUser)).count()
+        ).sum();
+    }
+
+    public static List<Tag> getSuggestedTags(String query) {
+        return find().where().istartsWith("name", query).findList();
+    }
+
+    public static Tag findTagByName(String name) {
+        return find().where().eq("name", name).findUnique();
+    }
     public static class TagBuilder {
         private String name;
         private List<Exercise> exercises;

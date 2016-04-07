@@ -35,6 +35,10 @@ public class Comment extends Model{
     @Basic
     private Date time = new Date();
 
+
+    private static final int NOF_RECENT_COMMENTS = 5;
+
+
     public String getContent() {
         return content;
     }
@@ -66,6 +70,19 @@ public class Comment extends Model{
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+
+    public static List<Comment> getRecentComments(User user) {
+        return find().where()
+                .eq("user", user)
+                .orderBy("time desc")
+                .setMaxRows(NOF_RECENT_COMMENTS)
+                .findList();
+    }
+
+    public static Model.Finder<Long, Comment> find(){
+        return new Model.Finder<>(Comment.class);
     }
 
     public static class CommentBuilder {

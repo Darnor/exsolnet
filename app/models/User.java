@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by mario on 21.03.16.
@@ -238,6 +239,49 @@ public class User extends Model{
         return id;
     }
 
+    public List<Tag> getTrackedTags() {
+        return getTrackings().stream().map(tracking -> tracking.getTag()).collect(Collectors.toList());
+    }
+
+    /**
+     * Authenticates the user depending on email and password combination.
+     * Password is ignored for now, should in later stages be hashed and compared with value in database
+     * <p>
+     * CARE: password not used in this implementation
+     *
+     * @param email    Mail address of User, who wants to login
+     * @param password Password of User, who wants to login
+     * @return user
+     */
+    public static User authenticate(String email, String password) {
+        User user = findUser(email);
+        if (user == null) {
+            //create user if non existing
+            user = anUser().withEmail(email).build();
+            user.save();
+        }
+        return user;
+    }
+
+    /**
+     * Queries database, and returns User holding given email address
+     * @param email
+     * @return User
+     */
+    public static User findUser(String email) {
+        return find().where().eq("email", email).findUnique();
+    }
+
+    /**
+     * Return Finder Object for DB's queries.
+     *
+     * CARE: should not be used! may be removed on next version
+     *
+     * @return Finder for User Models
+     */
+    public static Model.Finder<Long, User> find() {
+        return new Finder<>(User.class);
+    }
     public static class UserBuilder {
         private Long id;
         private String email;
