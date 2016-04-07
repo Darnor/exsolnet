@@ -43,6 +43,9 @@ public class Exercise extends Post {
     @OneToMany(mappedBy = "exercise")
     private List<Comment> comments;
 
+    public void addTag(Tag tag){
+        tags.add(tag);
+    }
     public String getTitle() {
         return title;
     }
