@@ -5,6 +5,7 @@ import javax.inject.Inject;
 import models.Tag;
 import play.libs.Json;
 import play.mvc.Result;
+import play.mvc.Security;
 import services.SessionService;
 import views.html.tagList;
 
@@ -18,10 +19,8 @@ import static play.mvc.Results.ok;
 /**
  * Created by revy on 05.04.16.
  */
+@Security.Authenticated(Secured.class)
 public class TagController {
-
-    @Inject
-    SessionService sessionService;
 
     public Result processTrack(Tag tag) {
         return ok();
@@ -76,12 +75,10 @@ public class TagController {
      * @return renders the tags site
      */
     public Result renderTagList(int orderBy, String tagNameFilter) {
-        if(!sessionService.isLoggedin()){
-            return LoginController.redirectIfNotLoggedIn();
-        }
-        List<Tag> trackedTags = sessionService.getCurrentUser().getTrackedTags();
+        List<Tag> trackedTags = SessionService.getCurrentUser().getTrackedTags();
         List<Tag> tags = sortTagList(filterTagList(Tag.find().all(), tagNameFilter), trackedTags, orderBy);
-        return ok(tagList.render(sessionService.getCurrentUserEmail(), tags, trackedTags, orderBy, tagNameFilter));
+
+        return ok(tagList.render(SessionService.getCurrentUserEmail(), tags, trackedTags, orderBy, tagNameFilter));
     }
 
     /**

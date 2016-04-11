@@ -4,9 +4,7 @@ import org.junit.Test;
 
 
 import static junit.framework.TestCase.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by mario on 06.04.16.
@@ -24,9 +22,13 @@ public class UserTest extends AbstractModelTest {
     @Test
     public void checkIfAuthenticateReturnsUserExisting(){
         String testemail = "Hans";
-        assertNotNull(User.findUser(testemail));
+        User existingUser = User.findUser(testemail);
+        assertNotNull(existingUser);
+        Long userId = existingUser.getId();
+
         User user = User.authenticate(testemail, null);
+
         assertEquals(testemail,user.getEmail());
-        assertNotNull(user.getId());
+        assertEquals(userId, user.getId());
     }
 }

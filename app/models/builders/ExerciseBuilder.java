@@ -2,11 +2,11 @@ package models.builders;
 
 import models.*;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Created by tourn on 7.4.16.
+ * Created by tourn on 11.4.16.
  */
 public class ExerciseBuilder {
     private String title;
@@ -18,7 +18,7 @@ public class ExerciseBuilder {
     private List<Comment> comments;
     private Long id;
     private String content;
-    private Date time;
+    private LocalDateTime time = LocalDateTime.now();
     private int points;
 
     private ExerciseBuilder() {
@@ -73,7 +73,7 @@ public class ExerciseBuilder {
         return this;
     }
 
-    public ExerciseBuilder withTime(Date time) {
+    public ExerciseBuilder withTime(LocalDateTime time) {
         this.time = time;
         return this;
     }

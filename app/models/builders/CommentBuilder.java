@@ -2,11 +2,11 @@ package models.builders;
 
 import models.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Created by tourn on 7.4.16.
+ * Created by tourn on 11.4.16.
  */
 public class CommentBuilder {
     private Long id;
@@ -15,7 +15,7 @@ public class CommentBuilder {
     private List<Report> reports;
     private Solution solution;
     private Exercise exercise;
-    private Date time = new Date();
+    private LocalDateTime time = LocalDateTime.now();
 
     private CommentBuilder() {
     }
@@ -54,7 +54,7 @@ public class CommentBuilder {
         return this;
     }
 
-    public CommentBuilder withTime(Date time) {
+    public CommentBuilder withTime(LocalDateTime time) {
         this.time = time;
         return this;
     }

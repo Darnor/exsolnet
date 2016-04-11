@@ -12,16 +12,11 @@ public class SessionService {
 
     public static final String KEY_USERNAME = "connected";
 
-    @Inject
-    public SessionService(){
-        //noop
-    }
-
     /**
      * returns the email of current user session
      * @return String email address
      */
-    public String getCurrentUserEmail(){
+    public static String getCurrentUserEmail(){
         return session(KEY_USERNAME);
     }
 
@@ -29,7 +24,7 @@ public class SessionService {
      * checks if the user is logged in
      * @return boolean
      */
-    public boolean isLoggedin(){
+    public static boolean isLoggedin(){
         return getCurrentUserEmail() != null;
     }
 
@@ -38,7 +33,7 @@ public class SessionService {
      * @param key
      * @return String
      */
-    public String get(String key){
+    public static String get(String key){
         return session(key);
     }
 
@@ -46,7 +41,7 @@ public class SessionService {
      * returns the user object of current user, null if no user is logged in
      * @return
      */
-    public User getCurrentUser(){
+    public static User getCurrentUser(){
         if(!isLoggedin()){
             return null;
         }
@@ -57,14 +52,14 @@ public class SessionService {
      *  sets a key value pair into session hashmap, key "connected" stores the current loggedin User's email
      * @param value
      */
-    public void set(String value){
+    public static void set(String value){
         session(KEY_USERNAME, value);
     }
 
     /**
      * clear's the session hashmap, user will be logged out
      */
-    public void clear(){
+    public static void clear(){
         session().clear();
     }
 }

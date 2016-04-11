@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import models.Comment;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import services.SessionService;
 import views.html.dashboard;
 
@@ -13,36 +14,32 @@ import java.util.stream.Collectors;
 /**
  * Controller for DashboardView
  */
+@Security.Authenticated(Secured.class)
 public class DashboardController extends Controller{
-    @Inject
-    SessionService sessionService;
 
     /**
      * Render the dashboard route
      * @return the result
      */
     public Result renderDashboard(){
-        if(!sessionService.isLoggedin()){
-            return LoginController.redirectIfNotLoggedIn();
-        }
-        return ok(dashboard.render(sessionService.getCurrentUserEmail(), getSubscribedTags(), getRecentComments()));
+        return ok(dashboard.render(SessionService.getCurrentUserEmail(), getSubscribedTags(), getRecentComments()));
     }
 
     /**
      * @return a list of recent comments on posts made by the user
      */
     private List<Comment> getRecentComments() {
-        return Comment.getRecentComments(sessionService.getCurrentUser());
+        return Comment.getRecentComments(SessionService.getCurrentUser());
     }
 
     /**
      * @return a list of tags subscribed by the user, including information on how many exercises they answered
      */
     private List<TagEntry> getSubscribedTags() {
-        return sessionService.getCurrentUser().getTrackedTags().stream().map(tag ->
+        return SessionService.getCurrentUser().getTrackedTags().stream().map(tag ->
             new TagEntry(
                     tag.getName(),
-                    tag.getNofCompletedExercises(sessionService.getCurrentUser()),
+                    tag.getNofCompletedExercises(SessionService.getCurrentUser()),
                     tag.getExercises().size()
             )
         ).collect(Collectors.toList());

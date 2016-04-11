@@ -3,6 +3,8 @@ package models;
 import com.avaje.ebean.Model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,7 +16,12 @@ public class Report extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Lob
     private String message;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime date;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
