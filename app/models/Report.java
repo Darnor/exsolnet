@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class Report extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     @Lob
     private String message;
@@ -38,7 +38,7 @@ public class Report extends Model {
     private Comment comment;
 
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 

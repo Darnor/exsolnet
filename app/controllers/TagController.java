@@ -75,6 +75,9 @@ public class TagController {
     }
 
     /**
+     * return a sorted list depending on the orderBy value
+     * per default the list is sorted by the first column aka the tag name
+     *
      * @param tags List containing tags
      * @param trackedTags List containing the trackings for the current user
      * @param orderBy sort column
@@ -83,14 +86,14 @@ public class TagController {
     private List<Tag> sortTagList(List<Tag> tags, List<Tag> trackedTags, int orderBy) {
         tags.sort((t1, t2) -> {
             switch(Math.abs(orderBy)) {
-               case 1:
-                    return t1.getName().compareToIgnoreCase(t2.getName());
-               case 2:
+                case 2:
                     int t1ExSize = t1.getExercises().size();
                     int t2ExSize = t2.getExercises().size();
                     return t1ExSize - t2ExSize;
-               default:
+                case 3:
                     return trackedTags.contains(t1) ? -1 : trackedTags.contains(t2) ? 1 : 0;
+                default:
+                    return t1.getName().compareToIgnoreCase(t1.getName());
             }
         });
 

@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name="vote")
 public class Vote extends Model {
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    private long id;
     private int value;
 
     @ManyToOne
@@ -26,43 +26,38 @@ public class Vote extends Model {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Long getId() {
-        return id;
+    public Vote(User user, Solution solution, Exercise exercise) {
+        this.user = user;
+        this.solution = solution;
+        this.exercise = exercise;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void downVote() {
+        value = (value == 1) ? 0 : -1;
+    }
+
+    public void upVote() {
+        value = (value == -1) ? 0 : 1;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public int getValue() {
         return value;
     }
 
-    public void setValue(int value) {
-        this.value = value;
-    }
-
     public Solution getSolution() {
         return solution;
-    }
-
-    public void setSolution(Solution solution) {
-        this.solution = solution;
     }
 
     public Exercise getExercise() {
         return exercise;
     }
 
-    public void setExercise(Exercise exercise) {
-        this.exercise = exercise;
-    }
-
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

@@ -96,10 +96,7 @@ public class ExerciseBuilder {
         exercise.setUser(user);
         exercise.setReports(reports);
         exercise.setComments(comments);
-        exercise.setId(id);
         exercise.setContent(content);
-        exercise.setTime(time);
-        exercise.setPoints(points);
         return exercise;
     }
 }

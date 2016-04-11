@@ -26,7 +26,10 @@ public class User extends Model{
 
     private String password;
 
+    @NotNull
     private long points;
+
+    @NotNull
     private boolean isModerator;
 
     @OneToMany(mappedBy = "user")
@@ -50,7 +53,6 @@ public class User extends Model{
     public User(String email, String password) {
         this.email = email;
         this.password = password;
-        this.points = 0;
         this.isModerator = false;
         this.exercises = new ArrayList<>();
         this.solutions = new ArrayList<>();

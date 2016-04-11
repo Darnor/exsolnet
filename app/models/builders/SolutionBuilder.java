@@ -1,5 +1,6 @@
 package models.builders;
 
+import models.Exercise;
 import models.Solution;
 import models.User;
 
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
  */
 public class SolutionBuilder {
     private User user;
-    private long id;
+    private Exercise exercise;
     private String content;
     private LocalDateTime time = LocalDateTime.now();
     private int points;
@@ -27,18 +28,13 @@ public class SolutionBuilder {
         return this;
     }
 
-    public SolutionBuilder withId(Long id) {
-        this.id = id;
+    public SolutionBuilder withExercise(Exercise exercise) {
+        this.exercise = exercise;
         return this;
     }
 
     public SolutionBuilder withContent(String content) {
         this.content = content;
-        return this;
-    }
-
-    public SolutionBuilder withTime(LocalDateTime time) {
-        this.time = time;
         return this;
     }
 
@@ -48,16 +44,12 @@ public class SolutionBuilder {
     }
 
     public SolutionBuilder but() {
-        return aSolution().withUser(user).withId(id).withContent(content).withTime(time).withPoints(points);
+        return aSolution().withUser(user).withContent(content).withPoints(points);
     }
 
     public Solution build() {
-        Solution solution = new Solution();
-        solution.setUser(user);
-        solution.setId(id);
+        Solution solution = new Solution(user, exercise);
         solution.setContent(content);
-        solution.setTime(time);
-        solution.setPoints(points);
         return solution;
     }
 }

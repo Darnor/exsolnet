@@ -22,6 +22,7 @@ public class Tag extends Model {
     @NotNull
     private String name;
 
+    @NotNull
     private boolean isMainTag;
 
     @ManyToMany(mappedBy = "tags")
@@ -189,7 +190,6 @@ public class Tag extends Model {
         Tag tag = (Tag) o;
 
         return name.equals(tag.name);
-
     }
 
     @Override

@@ -64,14 +64,10 @@ public class CommentBuilder {
     }
 
     public Comment build() {
-        Comment comment = new Comment();
-        comment.setId(id);
+        Comment comment = new Comment(user);
         comment.setContent(content);
-        comment.setUser(user);
-        comment.setReports(reports);
         comment.setSolution(solution);
         comment.setExercise(exercise);
-        comment.setTime(time);
         return comment;
     }
 }

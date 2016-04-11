@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.Model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -19,17 +20,15 @@ public class Post extends Model {
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
     private LocalDateTime time = LocalDateTime.now();
 
     @Basic
+    @NotNull
     private long points;
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getContent() {
@@ -44,22 +43,18 @@ public class Post extends Model {
         return time;
     }
 
-    public void setTime(LocalDateTime time) {
-        this.time = time;
-    }
-
     public long getPoints() {
         return points;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Post post = (Post) o;
 
