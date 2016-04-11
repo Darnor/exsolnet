@@ -107,8 +107,14 @@ public class Tag extends Model {
         ).sum();
     }
 
-    public static List<Tag> getSuggestedTags(String query) {
-        return find().where().istartsWith("name", query).findList();
+    /**
+     * returns list of suggested tags (other and main)
+     *
+     * @param tagName tag that starts with tagName
+     * @return list of all tags that start with tagName
+     */
+    public static List<Tag> getSuggestedTags(String tagName) {
+        return find().where().istartsWith("name", tagName).findList();
     }
 
     /**
