@@ -1,12 +1,10 @@
-package models;
+package models.builders.models;
 
-import com.avaje.ebean.Model;
 import com.avaje.ebean.PagedList;
 import com.avaje.ebean.annotation.Formula;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,7 +115,7 @@ public class Exercise extends Post {
         exercise.update();
     }
 
-    public static Model.Finder<Long, Exercise> find() {
+    public static Finder<Long, Exercise> find() {
         return new Finder<Long, Exercise>(Exercise.class);
     }
 
@@ -162,64 +160,5 @@ public class Exercise extends Post {
         tableHeaderMap.put(3, "points");
         tableHeaderMap.put(4, "time");
         tableHeaderMap.put(5, "title"); //TODO
-    }
-
-
-    /**
-     * Remove the tag from the exercise and the exercise from the tag if it
-     * doesnt exist in the list
-     * @param tags the tag list to be searched
-     */
-    public void removeTagIfNotInList(List<String> tags) {
-        this.tags.forEach(t -> {
-            if (!tags.contains(t.getName())) {
-                t.removeExercise(getId());
-            }
-        });
-        this.tags.removeIf(t -> !tags.contains(t.getName()));
-    }
-
-    /**
-     * add exercise to tag list
-     * add tag to exercise
-     * @param tag the tag to be bind
-     */
-    public void bindTag(Tag tag) {
-        tag.addExercise(this);
-        addTag(tag);
-    }
-
-    /**
-     * tells if the normal tag already is saved in the current exercise in the db
-     *
-     * @param id the exercise id
-     * @param t  the name of the tag
-     * @return true if it exists, false if its not yet saved
-     */
-    public static Boolean otherTagExistsInExercise(long id, String t) {
-
-        List<Tag> tags = findExerciseData(id).getTags();
-        for (Tag tag : tags) {
-            if (tag.getName().equals(t) && !tag.isMainTag()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * tells if the maintag is saved in the current exercise in the db
-     *
-     * @param id the id of the exercise
-     * @param t  the name of the id
-     * @return true if the maintag exists, false if it doesnt exist
-     */
-    public static Boolean mainTagExistsInExercise(long id, String t) {
-        List<Tag> tags = findExerciseData(id).getTags();
-        for (Tag tag : tags) {
-            if (tag.getName().equals(t) && tag.isMainTag())
-                return true;
-        }
-        return false;
     }
 }

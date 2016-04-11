@@ -61,12 +61,107 @@ public class ExerciseController extends Controller {
      * @return redered exercise
      */
     public Result edit(long id) {
-       Exercise exercise =  Exercise.find().byId(id);
+        Exercise exercise = Exercise.find().byId(id);
 
-        if(exercise == null)
+        if (exercise == null)
             return notFound();
 
         return ok(editExercise.render(exercise, SessionService.getCurrentUserEmail()));
+    }
+
+    /**
+     * Returns a exercise.
+     * If id exists. Get exercise from db. If if -1 create new Exercise and return
+     *
+     * @param exerciseId the id of the exercise or -1 if new
+     * @return the exercise
+     */
+    private Exercise getExerciseToUpdate(Long exerciseId) {
+        Exercise exercise;
+
+        //create
+        if (exerciseId == -1) {
+            exercise = ExerciseBuilder.anExercise().build();
+            Exercise.create(exercise);
+        } else {
+            //get
+            exercise = Exercise.findExerciseData(exerciseId);
+        }
+        return exercise;
+    }
+
+
+    private void saveMaintagInExercise(Exercise exercise, List<String> main) {
+        main.forEach(t -> {
+                    // maintag is not yet saves
+                    if (!Exercise.mainTagExistsInExercise(exercise.getId(), t)) {
+                        // get maintag from db
+                        Tag mainTag =   Tag.findMainTagByName(t);
+
+                        //main tag does not exist in db
+                        if (mainTag == null) {
+                            throw new IllegalArgumentException("not allowed to create main tags.");
+                        }
+                        // add maintag to exercise and exercise to maintag
+                        exercise.bindTag(mainTag);
+                    }
+                }
+        );
+    }
+
+    private void saveOtherTagInExercise(Exercise exercise, List<String> other) {
+        other.forEach(t -> {
+                    if (Exercise.mainTagExistsInExercise(exercise.getId(), t))
+                        throw new IllegalArgumentException("not allowed to add maintag to othertag.");
+
+                    // tag is not yet in exercise
+                    if (!Exercise.otherTagExistsInExercise(exercise.getId(), t)) {
+                        //get tag from db or create and add tag to exercise and exercise to tag
+                        exercise.bindTag(Tag.getOtherTagByNameOrCreate(t));
+                    }
+                }
+        );
+    }
+
+    /**
+     * Updated tag in exercise by new tag list
+     * @param exercise the exercise to be updated
+     * @param main the main tags
+     * @param other the other tags
+     */
+    private void updateTagInExercise(Exercise exercise, List<String> main, List<String> other) {
+        saveMaintagInExercise(exercise, main);
+        saveOtherTagInExercise(exercise, other);
+
+        List<String> tags = new ArrayList<String>();
+        tags.addAll(main);
+        tags.addAll(other);
+
+        exercise.removeTagIfNotInList(tags);
+    }
+
+    /**
+     * Greate a List from a String with delimeter
+     * @param data the string
+     * @param delimeter the delimeter
+     * @return a list from a string or a new list if string is null
+     */
+    private List<String> getListFromString(String data, String delimeter) {
+        return data != null && !data.equals("") ? Arrays.asList(data.split(delimeter)) : new ArrayList<String>();
+    }
+
+    /**
+     * Set exercise data for update
+     * @param exercise the exercise to be set
+     * @param requestData the data from the form
+     * @throws IllegalArgumentException
+     */
+    private void setExerciseDataFromUpdateView(Exercise exercise, DynamicForm requestData) throws IllegalArgumentException {
+        exercise.setTitle(requestData.get("title"));
+        exercise.setContent(requestData.get("content"));
+        List<String> main = getListFromString(requestData.get("maintag"), ",");
+        List<String> other = getListFromString(requestData.get("othertag"), ",");
+        updateTagInExercise(exercise, main, other);
     }
 
     /**
@@ -79,163 +174,14 @@ public class ExerciseController extends Controller {
     public Result update(long exerciseId) {
         //getting data from form
         DynamicForm requestData = formFactory.form().bindFromRequest();
-
-        Exercise exercise;
-        Long id;
-
-        //create
-        if (exerciseId == -1) {
-            exercise = ExerciseBuilder.anExercise().build();
-            Exercise.create(exercise);
-            id = exercise.getId();
-        } else {
-            //edit
-            id = exerciseId;
-            exercise = Exercise.findExerciseData(id);
-        }
-
-        exercise.setTitle(requestData.get("title"));
-        exercise.setContent(requestData.get("content"));
-
-        //extract tag information
-        String maintagString = requestData.get("maintag");
-        String othertagString = requestData.get("othertag");
-        // create a list out of the string. delimiter = ,
-        List<String> main = maintagString != null && !maintagString.equals("") ? Arrays.asList(maintagString.split(",")) : new ArrayList<String>();
-        List<String> other = othertagString != null && !othertagString.equals("") ? Arrays.asList(othertagString.split(",")) : new ArrayList<String>();
-
-        if(main.size()==0){
-            return notFound("Exercise does not contain a maintag");
-        }
-        //save maintags
-        main.forEach(t -> {
-                    // maintag is not yet saves
-                    if (!mainTagExistsInExercise(id, t)) {
-                        // get maintag from db
-                        Tag mainTag = getMainTagByName(t);
-                        //main tag does not exist in db
-                        if (mainTag == null) {
-                            throw new IllegalArgumentException("not allowed to create main tags.");
-                        }
-                        // add maintag to exercise and exercise to maintag
-                        mainTag.addExercise(exercise);
-                        exercise.addTag(mainTag);
-
-                    }
-                }
-        );
-        //save normal tags
-        other.forEach(t -> {
-                    if (mainTagExistsInExercise(id, t))
-                        throw new IllegalArgumentException("not allowed to add maintag to othertag.");
-
-                    // tag is not yet in exercise
-                    if (!otherTagExistsInExercise(id, t)) {
-                        //get tag from db
-                        Tag tag = getOtherTagByName(t);
-                        //tag has to be created
-                        if (tag == null) {
-                            tag = new Tag();
-                            tag.setMainTag(false);
-                            tag.setName(t);
-                            tag.addExercise(exercise);
-                            Tag.create(tag);
-                            exercise.addTag(tag);
-                        }
-                        //add tag to exercise and exercise to tag
-                        tag.addExercise(exercise);
-                        exercise.addTag(tag);
-                    }
-                }
-        );
-        //remove exercise out of tag list if tag no longer exists
-        exercise.getTags().forEach(t -> {
-            if (main.contains(t.getName()) && !other.contains(t.getName())) {
-                t.removeExercise(exercise.getId());
-            }
-        });
-        // delete all tags from exercise which no longer exist
-        exercise.getTags().removeIf(t -> !main.contains(t.getName()) && !other.contains(t.getName()));
-
+        Exercise exercise = getExerciseToUpdate(exerciseId);
+        setExerciseDataFromUpdateView(exercise, requestData);
         Exercise.update(exercise);
         //redirect to exercise list
         return redirect(routes.ExerciseController.renderOverview());
     }
 
-    /**
-     * gets other tag from db by name
-     *
-     * @param t the name
-     * @return the tag or null if it does not exist
-     */
-    private Tag getOtherTagByName(String t) {
-        try {
-            Tag tag = Tag.findTagByName(t);
-            if (tag == null || tag.isMainTag())
-                return null;
-            return tag;
-        } catch (NullPointerException e) {
-            return null;
-        }
-    }
 
-    /**
-     * gets main tag from db by name
-     *
-     * @param t the name
-     * @return the maintag or null if it does not exist in db
-     */
-    private Tag getMainTagByName(String t) {
-        try {
-            Tag tag = Tag.findTagByName(t);
-            if (tag == null || !tag.isMainTag())
-                return null;
-            return tag;
-        } catch (NullPointerException e) {
-            return null;
-        }
-    }
 
-    /**
-     * tells if the normal tag already is saved in the current exercise in the db
-     *
-     * @param id the exercise id
-     * @param t  the name of the tag
-     * @return true if it exists, false if its not yet saved
-     */
-    private Boolean otherTagExistsInExercise(long id, String t) {
-        try {
-
-            List<Tag> tags = Exercise.findExerciseData(id).getTags();
-            for (Tag tag : tags) {
-                if (tag.getName().equals(t) && !tag.isMainTag()) {
-                    return true;
-                }
-            }
-            return false;
-        } catch (NullPointerException e) {
-            return false;
-        }
-    }
-
-    /**
-     * tells if the maintag is saved in the current exercise in the db
-     *
-     * @param id the id of the exercise
-     * @param t  the name of the id
-     * @return true if the maintag exists, false if it doesnt exist
-     */
-    private Boolean mainTagExistsInExercise(long id, String t) {
-        try {
-            List<Tag> tags = Exercise.findExerciseData(id).getTags();
-            for (Tag tag : tags) {
-                if (tag.getName().equals(t) && tag.isMainTag())
-                    return true;
-            }
-            return false;
-        } catch (NullPointerException e) {
-            return false;
-        }
-    }
 }
 

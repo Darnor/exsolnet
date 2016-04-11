@@ -1,0 +1,47 @@
+package models.builders.models;
+
+import com.avaje.ebean.Model;
+
+import javax.persistence.*;
+
+/**
+ * Created by Claudia on 31.03.2016.
+ */
+@Entity
+@Table(name="track")
+public class Tracking extends Model{
+    @Id @GeneratedValue(strategy= GenerationType.AUTO)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "tag_id")
+    private Tag tag;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setTag(Tag tag) {
+        this.tag = tag;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Tag getTag() {
+        return tag;
+    }
+}
