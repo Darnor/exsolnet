@@ -259,7 +259,8 @@ public class User extends Model{
         User user = findUser(email);
         if (user == null) {
             //create user if non existing
-            user = anUser().withEmail(email).build();
+            user = new User();
+            user.setEmail(email);
             user.save();
         }
         return user;
