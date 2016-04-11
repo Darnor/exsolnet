@@ -31,7 +31,7 @@ INSERT INTO exoluser VALUES (8006, 'Silwyna', NULL, -4, false);
 INSERT INTO exoluser VALUES (8007, 'Angela', NULL, 3, false);
 INSERT INTO exoluser VALUES (8008, 'Tony', NULL, 5, false);
 INSERT INTO exoluser VALUES (8009, 'Sandro', NULL, -3, false);
-INSERT INTO exoluser VALUES (8010, 'Simon', NULL, 6, false);
+INSERT INTO exoluser VALUES (8010, 'Mario', NULL, 6, false);
 INSERT INTO exoluser VALUES (8012, 'Lorem Ipsum', NULL, 0, false);
 INSERT INTO exoluser VALUES (8011, 'Marco', NULL, -10, false);
 INSERT INTO exoluser VALUES (8001, 'Hans', NULL, -17, false);
@@ -238,6 +238,6 @@ INSERT INTO vote VALUES (8018, -1, 8017, NULL, 8000);
 ---Report
 INSERT INTO report VALUES (8000, 'Spam', '2016-04-11 08:23:42', 8000, NULL, 8012, NULL);
 INSERT INTO report VALUES (8001, 'Spam', '2016-04-11 09:13:09', 8000, 8012, NULL, NULL);
-INSERT INTO report VALUES (8002, 'Spam', '2016-04-11 10:53:42', 8000, NULL, NULL, 8005);
+INSERT INTO report VALUES (8002, 'Spam', '2016-04-11 10:53:, 8000, NULL, NULL, 8005);
 
 
