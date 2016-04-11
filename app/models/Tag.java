@@ -122,6 +122,11 @@ public class Tag extends Model {
         this.setMainTag(isMainTag);
     }
 
+    //default
+    public Tag(){
+        //do nothing
+    }
+
     /**
      * returns list of suggested tags which are main tags
      *
