@@ -4,6 +4,18 @@
 
 (function ($) {
 
+    $(document).ready(function () {
+        $('body').on('keyup', 'input', 'change' , function () {
+
+            if ($("#title").attr("value") != "" && $("#content").attr("value") != "" && $("ul:first > li:first > p").length > 0) {
+                $("#save").removeAttr('disabled');
+            }
+            else {
+                $("#save").attr('disabled', 'disabled');
+            }
+        })
+    });
+
     function createTagFilter(id) {
         var result = [];
         var tagString = $(id).attr('rel');

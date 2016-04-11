@@ -107,8 +107,13 @@ public class TagController {
      * @return Result -> list of non main tags
      */
     public Result suggestOtherTags(String tagName) {
+
         List<Tag> tagList = Tag.getSuggestedOtherTags(tagName);
+        Tag t = new Tag();
+        t.setName(tagName);
+        tagList.add(0,t);
         return suggestTagsByList(tagList);
+
     }
     /**
      * return json list with suggested tags with given list

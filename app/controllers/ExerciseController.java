@@ -104,6 +104,9 @@ public class ExerciseController extends Controller {
         List<String> main = maintagString != null && !maintagString.equals("") ? Arrays.asList(maintagString.split(",")) : new ArrayList<String>();
         List<String> other = othertagString != null && !othertagString.equals("") ? Arrays.asList(othertagString.split(",")) : new ArrayList<String>();
 
+        if(main.size()==0){
+            return notFound("Exercise does not contain a maintag");
+        }
         //save maintags
         main.forEach(t -> {
                     // maintag is not yet saves

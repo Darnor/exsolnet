@@ -6,12 +6,24 @@
 
     <div style="border-bottom: 2px solid black ; width: 300px ; padding: 10px; margin: 10px">
         <h1>Aufgaben editieren</h1>
+
+        @if(flash.containsKey("success")){
+            <div class="alert alert-success">
+            @flash.get("success")
+            </div>
+        }
+        @if(flash.containsKey("error")){
+            <div class="alert alert-error">
+            @flash.get("error")
+            </div>
+        }
+
         <form method="POST" action="@routes.ExerciseController.update(exercise.getId)">
-           <p>Title</p> <input placeholder="Titel" type="text" name="title" value="@exercise.getTitle"/>
+           <p>Title</p> <input id="title" placeholder="Titel" type="text" name="title" value="@exercise.getTitle"/>
            <p>Haupt Tags</p> <input placeholder="Haupt Tags" type="search" id="maintag-filter-list" type="text" name="maintag" rel="@exercise.getTags.filter(x => x.isMainTag).map(x => x.getName).mkString(",")"/>
             <p>Andere Tags</p> <input placeholder="Andere Tags" type="search" id="othertag-filter-list" type="text" name="othertag" rel="@exercise.getTags.filter(x => !x.isMainTag).map(x => x.getName).mkString(",")"/>
             <p>Inhalt</p> <input placeholder="Inhalt" type="text" name="content" value="@exercise.getContent"/>
-            <button>Speichern</button>
+            <button id="save">Speichern</button>
         </form>
     </div>
 }
