@@ -107,6 +107,7 @@ public class Tag extends Model {
 
     /**
      * returns list of suggested tags (other and main)
+     * case-insensitiv
      *
      * @param tagName tag that starts with tagName
      * @return list of all tags that start with tagName

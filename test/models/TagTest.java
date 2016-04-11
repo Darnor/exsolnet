@@ -58,4 +58,17 @@ public class TagTest extends AbstractModelTest {
         Tag tag = aTag().withName("A").withExercises(Arrays.asList(e1, e2, e3)).build();
         assertEquals(2, tag.getNofCompletedExercises(userA));
     }
+
+    @Test
+    public void testGetSuggestedTags(){
+        java.util.List<Tag> suggestedTags = Tag.getSuggestedTags("a");
+        assertEquals(7, suggestedTags.size());
+        assertEquals("An1I", suggestedTags.get(0).getName());
+    }
+
+    @Test
+    public void testGetSuggestedTagsNotExists(){
+        java.util.List<Tag> suggestedTags = Tag.getSuggestedTags("b");
+        assertEquals(0, suggestedTags.size());
+    }
 }
