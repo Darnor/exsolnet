@@ -50,7 +50,7 @@ public class ExerciseController extends Controller {
     public Result list(int page, int order, String titleFilter, String tagFilter) {
         int pageSize = 5;
         String orderBy = Exercise.getOrderByAttributeString(order);
-        PagedList<Exercise> exercises = Exercise.getPagedList(page, orderBy, titleFilter, tagFilter, pageSize);
+        PagedList<Exercise> exercises = Exercise.getPagedList(page, orderBy, titleFilter, tagFilter.split(","), pageSize);
         return ok(exerciseList.render(exercises, order, titleFilter, tagFilter));
     }
 

@@ -1,7 +1,7 @@
 package models;
 
-import com.avaje.ebean.Model;
-import com.avaje.ebean.PagedList;
+import com.avaje.ebean.*;
+import com.avaje.ebean.Query;
 import com.avaje.ebean.annotation.Formula;
 import play.data.validation.Constraints;
 
@@ -122,18 +122,22 @@ public class Exercise extends Post {
     }
 
     /**
-     * Returns a Paged List
+     * Returns a Paged List with the given filters and order
      *
      * @param pageNr      the page number
-     * @param orderBy     TODO
+     * @param orderBy     the sorted attributname
      * @param titleFilter the string which is used for filter/query the title
-     * @param tagFilter   TODO
+     * @param tagFilter   the string-array which contains the tags for filtering
      * @param pageSize    the count of exercises for one page
      * @return the PagedList for the actual page and filters/orders
      */
-    public static PagedList<Exercise> getPagedList(int pageNr, String orderBy, String titleFilter, String tagFilter, int pageSize) {
-        //TODO: including tagFilter
-        return find().where().contains("title", titleFilter).orderBy(orderBy).findPagedList(pageNr, pageSize);
+    public static PagedList<Exercise> getPagedList(int pageNr, String orderBy, String titleFilter, String[] tagFilter, int pageSize) {
+        Query<Exercise> query = Ebean.createQuery(Exercise.class);
+        query.where().contains("title",titleFilter);
+        if(!tagFilter[0].equals("")){
+            query.where().in("tags.name",tagFilter);
+        }
+        return query.orderBy(orderBy).findPagedList(pageNr, pageSize);
     }
 
     /**
@@ -153,6 +157,9 @@ public class Exercise extends Post {
         return result;
     }
 
+    /**
+     * Map the Id of the html exercise-table to their Model-Attribute-name
+     */
     private static final Map<Integer, String> tableHeaderMap;
     static
     {

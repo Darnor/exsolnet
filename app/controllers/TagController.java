@@ -82,12 +82,12 @@ public class TagController {
     }
 
     /**
-     *
-     * @param query
-     * @return
+     * suggests all tags (main and other) which starts with the tagName.
+     * @param tagName suggest tags for tagName
+     * @return Result -> list of all T
      */
-    public Result suggestTags(String query) {
-        List<Tag> tagList = Tag.getSuggestedTags(query);
+    public Result suggestTags(String tagName) {
+        List<Tag> tagList = Tag.getSuggestedTags(tagName);
         return suggestTagsByList(tagList);
     }
 
