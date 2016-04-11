@@ -7,6 +7,7 @@ import play.data.validation.Constraints;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,7 +136,7 @@ public class Exercise extends Post {
         Query<Exercise> query = Ebean.createQuery(Exercise.class);
         query.where().contains("title",titleFilter);
         if(!tagFilter[0].equals("")){
-            query.where().in("tags.name",tagFilter);
+            query.where().in("tags.name", Arrays.asList(tagFilter));
         }
         return query.orderBy(orderBy).findPagedList(pageNr, pageSize);
     }
@@ -149,6 +150,11 @@ public class Exercise extends Post {
         return find().where().eq("id", id).findUnique();
     }
 
+    /**
+     * Converts the order-Id to the orderBy string
+     * @param order the orderID from the HTML-table
+     * @return the order-by-attribute-string
+     */
     public static String getOrderByAttributeString(int order){
         String result = tableHeaderMap.get(Math.abs(order));
         if(order<0){
