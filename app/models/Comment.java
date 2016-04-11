@@ -76,6 +76,10 @@ public class Comment extends Model{
     }
 
 
+    /**
+     * @param user
+     * @return a list of recent comments that have been added to user's posts
+     */
     public static List<Comment> getRecentComments(User user) {
         return find().where()
                 .eq("user", user)
