@@ -1,7 +1,5 @@
 package controllers;
 
-import javax.persistence.OptimisticLockException;
-
 import models.Tag;
 import models.Tracking;
 import models.User;
@@ -12,6 +10,7 @@ import play.mvc.Security;
 import services.SessionService;
 import views.html.tagList;
 
+import javax.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -85,11 +84,11 @@ public class TagController {
         tags.sort((t1, t2) -> {
             switch(Math.abs(orderBy)) {
                case 1:
-                    return t1.getName().toLowerCase().compareTo(t2.getName().toLowerCase());
+                    return t1.getName().compareToIgnoreCase(t2.getName());
                case 2:
                     int t1ExSize = t1.getExercises().size();
                     int t2ExSize = t2.getExercises().size();
-                    return t1ExSize > t2ExSize ? -1 : t1ExSize < t2ExSize ? 1 : 0;
+                    return t1ExSize - t2ExSize;
                default:
                     return trackedTags.contains(t1) ? -1 : trackedTags.contains(t2) ? 1 : 0;
             }

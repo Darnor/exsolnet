@@ -1,7 +1,6 @@
 package models;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.List;
 
 /**
@@ -10,7 +9,8 @@ import java.util.List;
 @Entity
 @Table(name="solution")
 public class Solution  extends  Post{
-    private Boolean official;
+    @Basic
+    private Boolean official = false;
 
     @ManyToOne
     @JoinColumn(name = "exercise_id")
@@ -36,4 +36,6 @@ public class Solution  extends  Post{
     public void setUser(User user) {
         this.user = user;
     }
+
+
 }

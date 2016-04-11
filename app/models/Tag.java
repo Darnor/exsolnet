@@ -30,6 +30,23 @@ public class Tag extends Model {
     @JoinColumn(name = "tag")
     private List<Tracking> trackings;
 
+    /**
+     * Constructor for new Tag for one exercise
+     *
+     * @param name      the name of the tag
+     * @param isMainTag is main tag or not
+     */
+    public Tag(String name, Boolean isMainTag) {
+        this.name = name;
+        this.setMainTag(isMainTag);
+    }
+
+    //default
+    public Tag(){
+        //do nothing
+    }
+
+
 
     public Long getId() {
         return id;
@@ -96,7 +113,7 @@ public class Tag extends Model {
     }
 
     public static Model.Finder<Long, Tag> find() {
-        return new Finder<Long, Tag>(Tag.class);
+        return new Finder<>(Tag.class);
     }
 
     public long getNofCompletedExercises(User currentUser) {
@@ -117,22 +134,6 @@ public class Tag extends Model {
     }
 
     /**
-     * Constructor for new Tag for one exercise
-     *
-     * @param name      the name of the tag
-     * @param isMainTag is main tag or not
-     */
-    public Tag(String name, Boolean isMainTag) {
-        this.name = name;
-        this.setMainTag(isMainTag);
-    }
-
-    //default
-    public Tag(){
-        //do nothing
-    }
-
-    /**
      * returns list of suggested tags which are main tags
      *
      * @param tagName tag that starts with tagName
@@ -140,8 +141,9 @@ public class Tag extends Model {
      */
     public static List<Tag> getSuggestedMainTags(String tagName) {
         List<Tag> list = find().where().eq("isMainTag", true).istartsWith("name", tagName).findList();
-        if (list.size() == 0)
+        if (list.isEmpty()) {
             return find().where().eq("isMainTag", true).findList();
+        }
 
         return list;
     }
@@ -155,8 +157,9 @@ public class Tag extends Model {
     public static List<Tag> getSuggestedOtherTags(String tagName) {
 
         List<Tag> list = find().where().eq("isMainTag", false).istartsWith("name", tagName).findList();
-        if (list.size() == 0)
+        if (list.isEmpty()){
             return find().where().eq("isMainTag", false).findList();
+        }
 
         return list;
     }
@@ -203,8 +206,12 @@ public class Tag extends Model {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Tag tag = (Tag) o;
 

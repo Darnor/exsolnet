@@ -1,12 +1,13 @@
 package models;
 
-import com.avaje.ebean.*;
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Model;
+import com.avaje.ebean.PagedList;
 import com.avaje.ebean.Query;
 import com.avaje.ebean.annotation.Formula;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +51,20 @@ public class Exercise extends Post {
 
     @OneToMany(mappedBy = "exercise")
     private List<Comment> comments;
+
+    /**
+     * Map the Id of the html exercise-table to their Model-Attribute-name
+     */
+    private static final Map<Integer, String> tableHeaderMap;
+    static
+    {
+        tableHeaderMap = new HashMap<>();
+        tableHeaderMap.put(1, "title");
+        tableHeaderMap.put(2, "solutionCount");
+        tableHeaderMap.put(3, "points");
+        tableHeaderMap.put(4, "time");
+        tableHeaderMap.put(5, "title"); //TODO
+    }
 
     public void addTag(Tag tag){
         tags.add(tag);
@@ -119,7 +134,7 @@ public class Exercise extends Post {
     }
 
     public static Model.Finder<Long, Exercise> find() {
-        return new Finder<Long, Exercise>(Exercise.class);
+        return new Finder<>(Exercise.class);
     }
 
     /**
@@ -161,20 +176,6 @@ public class Exercise extends Post {
             result += " desc";
         }
         return result;
-    }
-
-    /**
-     * Map the Id of the html exercise-table to their Model-Attribute-name
-     */
-    private static final Map<Integer, String> tableHeaderMap;
-    static
-    {
-        tableHeaderMap = new HashMap<Integer, String>();
-        tableHeaderMap.put(1, "title");
-        tableHeaderMap.put(2, "solutionCount");
-        tableHeaderMap.put(3, "points");
-        tableHeaderMap.put(4, "time");
-        tableHeaderMap.put(5, "title"); //TODO
     }
 
 

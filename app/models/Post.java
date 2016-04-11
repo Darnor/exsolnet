@@ -3,9 +3,7 @@ package models;
 import com.avaje.ebean.Model;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Created by Claudia on 31.03.2016.
@@ -58,5 +56,23 @@ public class Post extends Model {
         this.points = points;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
+        Post post = (Post) o;
+
+        return getId() != null ? getId().equals(post.getId()) : post.getId() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return getId() != null ? getId().hashCode() : 0;
+    }
 }

@@ -1,11 +1,9 @@
 package models;
 
 import com.avaje.ebean.Model;
-import scala.annotation.meta.setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 /**
