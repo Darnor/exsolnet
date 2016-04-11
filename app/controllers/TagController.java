@@ -109,8 +109,7 @@ public class TagController {
     public Result suggestOtherTags(String tagName) {
 
         List<Tag> tagList = Tag.getSuggestedOtherTags(tagName);
-        Tag t = new Tag();
-        t.setName(tagName);
+        Tag t = new Tag(tagName,false);
         tagList.add(0,t);
         return suggestTagsByList(tagList);
 
