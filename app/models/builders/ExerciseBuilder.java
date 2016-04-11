@@ -16,7 +16,7 @@ public class ExerciseBuilder {
     private User user;
     private List<Report> reports;
     private List<Comment> comments;
-    private Long id;
+    private long id;
     private String content;
     private LocalDateTime time = LocalDateTime.now();
     private int points;

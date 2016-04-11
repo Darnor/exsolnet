@@ -9,8 +9,8 @@ import java.util.List;
  * Created by tourn on 7.4.16.
  */
 public class TagBuilder {
-    private Long id;
     private String name;
+    private boolean isMainTag;
     private List<Exercise> exercises;
 
     private TagBuilder() {
@@ -20,8 +20,8 @@ public class TagBuilder {
         return new TagBuilder();
     }
 
-    public TagBuilder withId(Long id) {
-        this.id = id;
+    public TagBuilder withIsMainTag(boolean isMainTag) {
+        this.isMainTag = isMainTag;
         return this;
     }
 
@@ -36,14 +36,15 @@ public class TagBuilder {
     }
 
     public TagBuilder but() {
-        return aTag().withId(id).withName(name).withExercises(exercises);
+        return aTag().withName(name).withIsMainTag(isMainTag).withExercises(exercises);
     }
 
     public Tag build() {
-        Tag tag = new Tag();
-        tag.setId(id);
+        Tag tag = new Tag(name, isMainTag);
         tag.setName(name);
-        tag.setExercises(exercises);
+        for (Exercise exercise : exercises) {
+            tag.addExercise(exercise);
+        }
         return tag;
     }
 }

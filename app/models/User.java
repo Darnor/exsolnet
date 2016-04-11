@@ -5,6 +5,7 @@ import com.avaje.ebean.Model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,7 +66,15 @@ public class User extends Model{
       * @return Exercises of the User.
       */
     public List<Exercise> getExercises() {
-        return exercises;
+        return Collections.unmodifiableList(exercises);
+    }
+
+    public void addExercise(Exercise exercise) {
+        exercises.add(exercise);
+    }
+
+    public void removeExercise(Exercise exercise) {
+        exercises.remove(exercise);
     }
 
     /**
@@ -74,7 +83,15 @@ public class User extends Model{
       * @return the Solutions of the User.
       */
     public List<Solution> getSolutions() {
-        return solutions;
+        return Collections.unmodifiableList(solutions);
+    }
+
+    public void addSolution(Solution solution) {
+        solutions.add(solution);
+    }
+
+    public void removeSolution(Solution solution) {
+        solutions.remove(solution);
     }
 
     /**
@@ -83,7 +100,15 @@ public class User extends Model{
       * @return the Votes of the User.
       */
     public List<Vote> getVotes() {
-        return votes;
+        return Collections.unmodifiableList(votes);
+    }
+
+    public void addVote(Vote vote) {
+        votes.add(vote);
+    }
+
+    public void removeVote(Vote vote) {
+        votes.remove(vote);
     }
 
     /**
@@ -92,7 +117,49 @@ public class User extends Model{
       * @return the Reports of the User.
       */
     public List<Report> getReports() {
-        return reports;
+        return Collections.unmodifiableList(reports);
+    }
+
+    public void addReport(Report report) {
+        reports.add(report);
+    }
+
+    public void removeReport(Report report) {
+        reports.remove(report);
+    }
+
+    /**
+     * Gets the Trackings of the User.
+     *
+     * @return the Trackings of the User.
+     */
+    public Tracking getTrackingByTag(Tag tag) {
+        return trackings.stream().filter(t -> t.getTag().equals(tag)).findFirst().orElse(null);
+    }
+
+    public void addTracking(Tracking tracking) {
+        trackings.add(tracking);
+    }
+
+    public void removeTracking(Tracking tracking) {
+        trackings.remove(tracking);
+    }
+
+    /**
+     * Gets the Comments of the User.
+     *
+     * @return the Comments of the User.
+     */
+    public List<Comment> getComments() {
+        return Collections.unmodifiableList(comments);
+    }
+
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
     }
 
     /**
@@ -130,7 +197,7 @@ public class User extends Model{
       *
       * @return the ModeratorBoolean of the User.
       */
-    public Boolean getModerator() {
+    public boolean getIsModerator() {
         return isModerator;
     }
 
@@ -139,26 +206,8 @@ public class User extends Model{
       * 
       * @param moderator of the User.
       */
-    public void setModerator(boolean moderator) {
+    public void setIsModerator(boolean moderator) {
         isModerator = moderator;
-    }
-
-    /**
-      * Gets the Trackings of the User.
-      *
-      * @return the Trackings of the User.
-      */
-    public List<Tracking> getTrackings() {
-        return trackings;
-    }
-
-    /**
-      * Gets the Comments of the User.
-      *
-      * @return the Comments of the User.
-      */
-    public List<Comment> getComments() {
-        return comments;
     }
 
     /**
@@ -193,12 +242,12 @@ public class User extends Model{
       *
       * @return the Id of the User.
       */
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
     public List<Tag> getTrackedTags() {
-        return getTrackings().stream().map(Tracking::getTag).collect(Collectors.toList());
+        return trackings.stream().map(Tracking::getTag).collect(Collectors.toList());
     }
 
     /**

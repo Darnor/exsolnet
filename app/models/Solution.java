@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name="solution")
 public class Solution  extends  Post{
     @Basic
-    private Boolean official = false;
+    private boolean official = false;
 
     @ManyToOne
     @JoinColumn(name = "exercise_id")
@@ -36,6 +36,4 @@ public class Solution  extends  Post{
     public void setUser(User user) {
         this.user = user;
     }
-
-
 }

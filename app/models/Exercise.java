@@ -34,7 +34,6 @@ public class Exercise extends Post {
     @OneToMany(mappedBy = "exercise")
     private List<Vote> votes;
 
-
     @ManyToMany
     @JoinTable(
             name = "exercise_tag",
@@ -178,7 +177,6 @@ public class Exercise extends Post {
         return result;
     }
 
-
     /**
      * Remove the tag from the exercise and the exercise from the tag if it
      * doesnt exist in the list
@@ -187,7 +185,7 @@ public class Exercise extends Post {
     public void removeTagIfNotInList(List<String> tags) {
         this.tags.forEach(t -> {
             if (!tags.contains(t.getName())) {
-                t.removeExercise(getId());
+                t.removeExercise(this);
             }
         });
         this.tags.removeIf(t -> !tags.contains(t.getName()));

@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import models.builders.TagBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,13 +16,13 @@ public class Tag extends Model {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     @Column(unique = true)
     @NotNull
     private String name;
 
-    private Boolean isMainTag;
+    private boolean isMainTag;
 
     @ManyToMany(mappedBy = "tags")
     private List<Exercise> exercises;
@@ -30,38 +31,31 @@ public class Tag extends Model {
     @JoinColumn(name = "tag")
     private List<Tracking> trackings;
 
+    private static final String IS_MAIN_TAG = "isMainTag";
+    private static final String TAG_NAME = "name";
+
     /**
      * Constructor for new Tag for one exercise
      *
      * @param name      the name of the tag
      * @param isMainTag is main tag or not
      */
-    public Tag(String name, Boolean isMainTag) {
+    public Tag(String name, boolean isMainTag) {
+        this.id = 0;
         this.name = name;
-        this.setMainTag(isMainTag);
+        this.isMainTag = isMainTag;
     }
 
-    //default
-    public Tag(){
-        //do nothing
-    }
-
-
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Boolean isMainTag() {
+    public boolean isMainTag() {
         return isMainTag;
     }
 
-    public void setMainTag(Boolean mainTag) {
-        isMainTag = mainTag;
+    public void setIsMainTag(boolean isMainTag) {
+        this.isMainTag = isMainTag;
     }
 
     public String getName() {
@@ -76,12 +70,8 @@ public class Tag extends Model {
         return exercises;
     }
 
-    public void setExercises(List<Exercise> exercises) {
-        this.exercises = exercises;
-    }
-
-    public void removeExercise(Long id) {
-        exercises.removeIf(e -> e.getId() == id);
+    public void removeExercise(Exercise exercise) {
+        exercises.remove(exercise);
     }
 
     public void addExercise(Exercise exercise) {
@@ -94,18 +84,6 @@ public class Tag extends Model {
      */
     public static void create(Tag tag) {
         tag.save();
-    }
-
-    /**
-     * Creates new tag by name and maintag
-     * @param name name of tag
-     * @param isMainTag is maintag or not
-     * @return new tag already created
-     */
-    public static Tag create(String name, Boolean isMainTag){
-        Tag tag = new Tag(name, false);
-        Tag.create(tag);
-        return tag;
     }
 
     public static void update(Tag tag) {
@@ -130,7 +108,7 @@ public class Tag extends Model {
      * @return list of all tags that start with tagName
      */
     public static List<Tag> getSuggestedTags(String tagName) {
-        return find().where().istartsWith("name", tagName).findList();
+        return find().where().istartsWith(TAG_NAME, tagName).findList();
     }
 
     /**
@@ -140,12 +118,8 @@ public class Tag extends Model {
      * @return list of main tags that start with tagName
      */
     public static List<Tag> getSuggestedMainTags(String tagName) {
-        List<Tag> list = find().where().eq("isMainTag", true).istartsWith("name", tagName).findList();
-        if (list.isEmpty()) {
-            return find().where().eq("isMainTag", true).findList();
-        }
-
-        return list;
+        List<Tag> list = find().where().eq(IS_MAIN_TAG, true).istartsWith(TAG_NAME, tagName).findList();
+        return list.isEmpty() ? find().where().eq(IS_MAIN_TAG, true).findList() : list;
     }
 
     /**
@@ -155,13 +129,8 @@ public class Tag extends Model {
      * @return list of other tags that start with tagName
      */
     public static List<Tag> getSuggestedOtherTags(String tagName) {
-
-        List<Tag> list = find().where().eq("isMainTag", false).istartsWith("name", tagName).findList();
-        if (list.isEmpty()){
-            return find().where().eq("isMainTag", false).findList();
-        }
-
-        return list;
+        List<Tag> list = find().where().eq(IS_MAIN_TAG, false).istartsWith(TAG_NAME, tagName).findList();
+        return list.isEmpty() ? find().where().eq(IS_MAIN_TAG, false).findList() : list;
     }
 
     /**
@@ -171,7 +140,7 @@ public class Tag extends Model {
      * @return the tag or null if it doesnt exist
      */
     public static Tag findTagByName(String name) {
-        return find().where().eq("name", name).findUnique();
+        return find().where().eq(TAG_NAME, name).findUnique();
     }
 
     /**
@@ -181,7 +150,7 @@ public class Tag extends Model {
      * @return the maintag or null if it does not exist in db
      */
     public static Tag findMainTagByName(String name)    {
-        return find().where().eq("name",name).eq("isMainTag",true).findUnique();
+        return find().where().eq(TAG_NAME, name).eq(IS_MAIN_TAG, true).findUnique();
     }
 
     /**
@@ -191,17 +160,21 @@ public class Tag extends Model {
      * @return the tag or null if it does not exist
      */
     public static Tag findOtherTagByName(String name)    {
-        return find().where().eq("name",name).eq("isMainTag",false).findUnique();
+        return find().where().eq(TAG_NAME, name).eq(IS_MAIN_TAG, false).findUnique();
     }
 
     /**
      * get other tag or create if it does not exist
-     * @param t the tag name
+     * @param tagName the tag name
      * @return the tag
      */
-    public static Tag getOtherTagByNameOrCreate(String t) {
-        Tag tag = findOtherTagByName(t);
-        return tag != null ? tag : create(t, false);
+    public static Tag getOtherTagByNameOrCreate(String tagName) {
+        Tag tag = findOtherTagByName(tagName);
+        if (tag == null) {
+            tag = TagBuilder.aTag().withName(tagName).build();
+            create(tag);
+        }
+        return tag;
     }
 
     @Override

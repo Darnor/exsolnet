@@ -9,7 +9,7 @@ import java.util.List;
  * Created by tourn on 11.4.16.
  */
 public class CommentBuilder {
-    private Long id;
+    private long id;
     private String content;
     private User user;
     private List<Report> reports;

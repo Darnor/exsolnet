@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
  */
 public class SolutionBuilder {
     private User user;
-    private Long id;
+    private long id;
     private String content;
     private LocalDateTime time = LocalDateTime.now();
     private int points;

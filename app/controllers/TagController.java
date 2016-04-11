@@ -35,22 +35,22 @@ public class TagController {
     public Result processTrack(String tagName) {
         User currentUser = SessionService.getCurrentUser();
         Tag tag = Tag.findTagByName(tagName);
-        Tracking tracking = currentUser.getTrackings().stream().filter(t -> t.getTag().equals(tag)).findFirst().orElse(null);
+        Tracking tracking = currentUser.getTrackingByTag(tag);
         if (tracking == null) {
             tracking = TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build();
-            currentUser.getTrackings().add(tracking);
+            currentUser.addTracking(tracking);
             try {
                 tracking.save();
             } catch (OptimisticLockException ex) {
-                currentUser.getTrackings().remove(tracking);
+                currentUser.removeTracking(tracking);
                 throw ex;
             }
         } else {
-            currentUser.getTrackings().remove(tracking);
+            currentUser.removeTracking(tracking);
             try {
                 tracking.delete();
             } catch (OptimisticLockException ex) {
-                currentUser.getTrackings().add(tracking);
+                currentUser.addTracking(tracking);
                 throw ex;
             }
         }
@@ -159,7 +159,7 @@ public class TagController {
         }
         return ok(Json.toJson(list));
     }
-    public static class TagEntry{
+    public class TagEntry{
         public final String name;
         public TagEntry(String name) {
             this.name = name;

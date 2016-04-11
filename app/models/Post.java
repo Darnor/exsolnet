@@ -13,7 +13,7 @@ public class Post extends Model {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     @Lob
     private String content;
@@ -22,13 +22,13 @@ public class Post extends Model {
     private LocalDateTime time = LocalDateTime.now();
 
     @Basic
-    private int points;
+    private long points;
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -48,7 +48,7 @@ public class Post extends Model {
         this.time = time;
     }
 
-    public int getPoints() {
+    public long getPoints() {
         return points;
     }
 
@@ -58,21 +58,17 @@ public class Post extends Model {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         Post post = (Post) o;
 
-        return getId() != null ? getId().equals(post.getId()) : post.getId() == null;
+        return id == post.id;
 
     }
 
     @Override
     public int hashCode() {
-        return getId() != null ? getId().hashCode() : 0;
+        return (int) (id ^ (id >>> 32));
     }
 }

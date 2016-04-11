@@ -13,7 +13,7 @@ import java.util.List;
 @Table(name="comment")
 public class Comment extends Model{
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     @Lob
     private String content;
