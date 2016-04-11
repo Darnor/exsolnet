@@ -38,6 +38,11 @@ public class ExerciseController extends Controller {
         return ok(editExercise.render(ExerciseBuilder.anExercise().withId(-1L).build(), SessionService.getCurrentUserEmail()));
     }
 
+    /**
+     * render the Default ExerciseOverview View
+     *
+     * @return Result of the Default ExerciseOverview View
+     */
     public Result renderOverview() {
         return list(0, 1, "", "");
     }
@@ -47,6 +52,15 @@ public class ExerciseController extends Controller {
         return notFound();
     }
 
+    /**
+     * render the ExerciseOverview View with given Parameters
+     *
+     * @param page the Pagenumber of the list
+     * @param order the id of the Table-Header
+     * @param titleFilter string which the title of an exercise should contains
+     * @param tagFilter string of tags for filter splittet by ','
+     * @return Result View of the filtered ExerciseList
+     */
     public Result list(int page, int order, String titleFilter, String tagFilter) {
         int pageSize = 5;
         String orderBy = Exercise.getOrderByAttributeString(order);
