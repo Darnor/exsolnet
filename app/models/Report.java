@@ -21,7 +21,7 @@ public class Report extends Model {
     private String message;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime date;
+    private LocalDateTime time;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
