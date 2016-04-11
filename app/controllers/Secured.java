@@ -7,9 +7,6 @@ import services.SessionService;
 
 public class Secured extends Security.Authenticator {
 
-    @Inject
-    SessionService sessionService;
-
     /**
      * takes the pending requests context and checks if a user is logged in,
      * return User if logged in, else returns null
@@ -18,7 +15,7 @@ public class Secured extends Security.Authenticator {
      */
     @Override
     public String getUsername(Context ctx) {
-        return sessionService.getCurrentUserEmail();
+        return SessionService.getCurrentUserEmail();
     }
 
     /**

@@ -28,9 +28,6 @@ public class ExerciseController extends Controller {
     @Inject
     FormFactory formFactory;
 
-    @Inject
-    SessionService sessionService;
-
     /**
      * render if create Exercise. Creates new blank exercise with id -1.
      * id -1 is important. And passes session of current user.
@@ -38,7 +35,7 @@ public class ExerciseController extends Controller {
      * @return Result of new Exercise
      */
     public Result renderCreate() {
-        return ok(editExercise.render(ExerciseBuilder.anExercise().withId(-1L).build(), sessionService.getCurrentUserEmail()));
+        return ok(editExercise.render(ExerciseBuilder.anExercise().withId(-1L).build(), SessionService.getCurrentUserEmail()));
     }
 
     public Result renderOverview(){
@@ -63,7 +60,7 @@ public class ExerciseController extends Controller {
      * @return redered exercise
      */
     public Result edit(long id) {
-        return ok(editExercise.render(Exercise.find().byId(id), sessionService.getCurrentUserEmail()));
+        return ok(editExercise.render(Exercise.find().byId(id), SessionService.getCurrentUserEmail()));
     }
 
     /**

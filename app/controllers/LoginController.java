@@ -14,9 +14,6 @@ import services.SessionService;
 public class LoginController extends Controller {
 
     @Inject
-    SessionService sessionService;
-
-    @Inject
     FormFactory formFactory;
 
     /**
@@ -24,7 +21,7 @@ public class LoginController extends Controller {
      * @return Result
      */
     public Result renderLogin(){
-            return ok(views.html.login.render(sessionService.getCurrentUserEmail()));
+            return ok(views.html.login.render(SessionService.getCurrentUserEmail()));
     }
 
     /**
@@ -38,7 +35,7 @@ public class LoginController extends Controller {
         Form<User> userForm = formFactory.form(User.class);
         User user = userForm.bindFromRequest().get();
         if(User.authenticate(user.getEmail(), user.getPassword()) != null){
-            sessionService.set(user.getEmail());
+            SessionService.set(user.getEmail());
         }
         return redirect(routes.DashboardController.renderDashboard());
     }
@@ -49,17 +46,9 @@ public class LoginController extends Controller {
      * @return Result
      */
     public Result logout() {
-        if(sessionService.isLoggedin()){
-            sessionService.clear();
+        if(SessionService.isLoggedin()){
+            SessionService.clear();
         }
         return redirect(routes.DashboardController.renderDashboard());
-    }
-
-    /**
-     * static function which redirect to login screen
-     * @return Result
-     */
-    public static Result redirectIfNotLoggedIn(){
-        return redirect(routes.LoginController.renderLogin());
     }
 }

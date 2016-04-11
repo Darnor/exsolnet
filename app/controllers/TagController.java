@@ -22,9 +22,6 @@ import static play.mvc.Results.ok;
 @Security.Authenticated(Secured.class)
 public class TagController {
 
-    @Inject
-    SessionService sessionService;
-
     public Result processTrack(Tag tag) {
         return ok();
     }
@@ -78,10 +75,10 @@ public class TagController {
      * @return renders the tags site
      */
     public Result renderTagList(int orderBy, String tagNameFilter) {
-        List<Tag> trackedTags = sessionService.getCurrentUser().getTrackedTags();
+        List<Tag> trackedTags = SessionService.getCurrentUser().getTrackedTags();
         List<Tag> tags = sortTagList(filterTagList(Tag.find().all(), tagNameFilter), trackedTags, orderBy);
 
-        return ok(tagList.render(sessionService.getCurrentUserEmail(), tags, trackedTags, orderBy, tagNameFilter));
+        return ok(tagList.render(SessionService.getCurrentUserEmail(), tags, trackedTags, orderBy, tagNameFilter));
     }
 
     /**
