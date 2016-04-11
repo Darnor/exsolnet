@@ -15,6 +15,7 @@ GET         /tags                   controllers.TagController.renderOverview
 GET         /tags/query             controllers.TagController.suggestTags(q ?= "")
 GET         /tags/maintag           controllers.TagController.suggestMainTags(q ?= "")
 GET         /tags/othertag          controllers.TagController.suggestOtherTags(q ?= "")
+POST        /tags/track             controllers.TagController.processTrack(tag)
 GET         /login                  controllers.LoginController.renderLogin
 POST        /login                  controllers.LoginController.login
 POST        /logout                 controllers.LoginController.logout

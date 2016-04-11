@@ -1,5 +1,5 @@
 @import java.util
-@(username: String, tags: util.List[Tag], trackings: util.List[Tag], currentOrderBy: Int, tagNameFilter: String)
+@(username: String, tags: util.List[Tag], trackedTags: util.List[Tag], currentOrderBy: Int, tagNameFilter: String)
 
 @****************************************
 * Helper generating navigation links    *
@@ -42,10 +42,13 @@
                 @tag.getName
                 </td>
                 <td>
-                @tag.getExercises.size()
+                @tag.getExercises.size
                 </td>
                 <td>
-                    <input id="subscription" type="checkbox" @if(trackings.contains(tag)) { checked="checked" } name="subscription" />
+                    @helper.form(action=routes.TagController.processTrack(tag.getName)) {
+                        <input type="hidden" name="tag" value="@tag.getName" />
+                        <input type="submit" @if(trackedTags.contains(tag)) { value="Untrack" } else { value="Track" } class="btn track"/>
+                    }
                 </td>
             </tr>
         }

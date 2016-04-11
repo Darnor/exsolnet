@@ -27,9 +27,9 @@ public class TagController {
         return true;
     }
 
-    public Result processTrack(Tag tag) {
+    public Result processTrack(String tagName) {
         User currentUser = SessionService.getCurrentUser();
-        currentUser.getTrackings().stream().filter(t -> t.getTag().equals(tag)).findFirst().orElse(null);
+        currentUser.getTrackings().stream().filter(t -> t.getTag().getName().equals(tagName)).findFirst().orElse(null);
 
         return ok();
     }
