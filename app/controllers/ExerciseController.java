@@ -66,7 +66,7 @@ public class ExerciseController extends Controller {
         if(exercise == null)
             return notFound();
 
-        return ok(editExercise.render(exercise, sessionService.getCurrentUserEmail()));
+        return ok(editExercise.render(exercise, SessionService.getCurrentUserEmail()));
     }
 
     /**
