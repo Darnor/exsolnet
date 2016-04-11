@@ -45,7 +45,7 @@ public class SessionService {
         if(!isLoggedin()){
             return null;
         }
-        return User.find().where().eq("email", getCurrentUserEmail()).findUnique();
+        return User.find().where().ieq("email", getCurrentUserEmail()).findUnique();
     }
 
     /**

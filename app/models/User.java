@@ -271,7 +271,7 @@ public class User extends Model{
      * @return User
      */
     public static User findUser(String email) {
-        return find().where().eq("email", email).findUnique();
+        return find().where().ieq("email", email).findUnique();
     }
 
     /**
