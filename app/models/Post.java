@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -16,11 +17,11 @@ public class Post extends Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Basic
+    @Lob
     private String content;
 
-    @Basic
-    private Date time;
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime time = LocalDateTime.now();
 
     @Basic
     private int points;
@@ -41,11 +42,11 @@ public class Post extends Model {
         this.content = content;
     }
 
-    public Date getTime() {
+    public LocalDateTime getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 

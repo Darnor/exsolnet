@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 import scala.annotation.meta.setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,8 @@ import java.util.List;
 public class Comment extends Model{
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+
+    @Lob
     private String content;
 
     @ManyToOne
@@ -32,8 +35,8 @@ public class Comment extends Model{
     @JoinColumn(name="exercise_id")
     private Exercise exercise;
 
-    @Basic
-    private Date time = new Date();
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime time = LocalDateTime.now();
 
 
     private static final int NOF_RECENT_COMMENTS = 5;
@@ -68,7 +71,7 @@ public class Comment extends Model{
         this.exercise = exercise;
     }
 
-    public void setTime(Date time) {
+    public void setTime(LocalDateTime time) {
         this.time = time;
     }
 

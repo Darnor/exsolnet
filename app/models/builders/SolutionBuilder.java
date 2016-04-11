@@ -3,16 +3,16 @@ package models.builders;
 import models.Solution;
 import models.User;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 /**
- * Created by tourn on 7.4.16.
+ * Created by tourn on 11.4.16.
  */
 public class SolutionBuilder {
     private User user;
     private Long id;
     private String content;
-    private Date time;
+    private LocalDateTime time = LocalDateTime.now();
     private int points;
 
     private SolutionBuilder() {
@@ -37,7 +37,7 @@ public class SolutionBuilder {
         return this;
     }
 
-    public SolutionBuilder withTime(Date time) {
+    public SolutionBuilder withTime(LocalDateTime time) {
         this.time = time;
         return this;
     }
