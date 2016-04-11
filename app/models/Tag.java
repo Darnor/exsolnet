@@ -19,7 +19,7 @@ public class Tag extends Model {
     private Long id;
 
 
-    //TODO UNIQUE
+    @Column(unique=true)
     @NotNull
     private String name;
 
