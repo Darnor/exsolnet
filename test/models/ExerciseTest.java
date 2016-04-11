@@ -35,7 +35,6 @@ public class ExerciseTest extends AbstractModelTest {
         PagedList<Exercise> page = Exercise.getPagedList(0, "points desc", "", new String[]{""}, 5);
         assertEquals(5, page.getList().size());
         assertEquals("Error Handling Design", page.getList().get(0).getTitle());
-        assertEquals("Basic Math", page.getList().get(1).getTitle());
     }
 
     @Test
