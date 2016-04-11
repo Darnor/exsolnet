@@ -2,16 +2,16 @@ package models.builders;
 
 import models.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by tourn on 7.4.16.
  */
 public class UserBuilder {
-    private Long id;
     private String email;
     private String password;
-    private int points;
+    private long points;
     private List<Exercise> exercises;
     private List<Solution> solutions;
     private List<Report> reports;
@@ -20,15 +20,16 @@ public class UserBuilder {
     private List<Tracking> trackings;
 
     private UserBuilder() {
+        exercises = new ArrayList<>();
+        solutions = new ArrayList<>();
+        reports = new ArrayList<>();
+        comments = new ArrayList<>();
+        votes = new ArrayList<>();
+        trackings = new ArrayList<>();
     }
 
     public static UserBuilder anUser() {
         return new UserBuilder();
-    }
-
-    public UserBuilder withId(Long id) {
-        this.id = id;
-        return this;
     }
 
     public UserBuilder withEmail(String email) {
@@ -41,7 +42,7 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder withPoints(int points) {
+    public UserBuilder withPoints(long points) {
         this.points = points;
         return this;
     }
@@ -77,21 +78,27 @@ public class UserBuilder {
     }
 
     public UserBuilder but() {
-        return anUser().withId(id).withEmail(email).withPassword(password).withPoints(points).withExercises(exercises).withSolutions(solutions).withReports(reports).withComments(comments).withVotes(votes).withTrackings(trackings);
+        return anUser().withEmail(email).withPassword(password).withPoints(points).withExercises(exercises).withSolutions(solutions).withReports(reports).withComments(comments).withVotes(votes).withTrackings(trackings);
     }
 
     public User build() {
-        User user = new User();
-        user.setId(id);
-        user.setEmail(email);
-        user.setPassword(password);
-        user.setPoints(points);
-        user.setExercises(exercises);
-        user.setSolutions(solutions);
-        user.setReports(reports);
-        user.setComments(comments);
-        user.setVotes(votes);
-        user.setTrackings(trackings);
+        User user = new User(email, password);
+        user.incrementPointsBy(points);
+        for (Exercise exercise : exercises) {
+            user.getExercises().add(exercise);
+        }
+        for (Solution solution : solutions) {
+            user.getSolutions().add(solution);
+        }
+        for (Report report : reports) {
+            user.getReports().add(report);
+        }
+        for (Vote vote : votes) {
+            user.getVotes().add(vote);
+        }
+        for (Tracking tracking : trackings) {
+            user.getTrackings().add(tracking);
+        }
         return user;
     }
 }

@@ -1,9 +1,11 @@
 package controllers;
 
-import javax.inject.Inject;
+import javax.persistence.OptimisticLockException;
 
 import models.Tag;
+import models.Tracking;
 import models.User;
+import models.builders.TrackingBuilder;
 import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -15,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static play.mvc.Controller.session;
 import static play.mvc.Results.ok;
 
 /**
@@ -23,19 +26,40 @@ import static play.mvc.Results.ok;
 @Security.Authenticated(Secured.class)
 public class TagController {
 
-    private boolean userTracksTag(User user, Tag tag) {
-        return true;
-    }
+    private static final String TAG_FILTER = "tagFilter";
+    private static final String TAG_ORDER = "tagOrder";
 
+    /**
+     * @param tagName String containing the Tag Name which needs to be tracked or if tracked untracked
+     * @return renders the tagList again
+     */
     public Result processTrack(String tagName) {
         User currentUser = SessionService.getCurrentUser();
-        currentUser.getTrackings().stream().filter(t -> t.getTag().getName().equals(tagName)).findFirst().orElse(null);
-
-        return ok();
+        Tag tag = Tag.findTagByName(tagName);
+        Tracking tracking = currentUser.getTrackings().stream().filter(t -> t.getTag().equals(tag)).findFirst().orElse(null);
+        if (tracking == null) {
+            tracking = TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build();
+            currentUser.getTrackings().add(tracking);
+            try {
+                tracking.save();
+            } catch (OptimisticLockException ex) {
+                currentUser.getTrackings().remove(tracking);
+                throw ex;
+            }
+        } else {
+            currentUser.getTrackings().remove(tracking);
+            try {
+                tracking.delete();
+            } catch (OptimisticLockException ex) {
+                currentUser.getTrackings().add(tracking);
+                throw ex;
+            }
+        }
+        return renderTagList(Integer.parseInt(session(TAG_ORDER)), session(TAG_FILTER));
     }
 
     public Result renderOverview() {
-        return renderTagList(1, null);
+        return renderTagList(1, "");
     }
 
     /**
@@ -44,10 +68,11 @@ public class TagController {
      * @return filterted tag list
      */
     private List<Tag> filterTagList(List<Tag> tags, String tagNameFilter) {
+        List<Tag> filteredTags = tags;
         if (tagNameFilter != null && tagNameFilter.length() > 0) {
-            tags = tags.stream().filter(t -> t.getName().toLowerCase().contains(tagNameFilter.toLowerCase())).collect(Collectors.toList());
+            filteredTags = tags.stream().filter(t -> t.getName().toLowerCase().contains(tagNameFilter.toLowerCase())).collect(Collectors.toList());
         }
-        return tags;
+        return filteredTags;
     }
 
     /**
@@ -85,7 +110,8 @@ public class TagController {
     public Result renderTagList(int orderBy, String tagNameFilter) {
         List<Tag> trackedTags = SessionService.getCurrentUser().getTrackedTags();
         List<Tag> tags = sortTagList(filterTagList(Tag.find().all(), tagNameFilter), trackedTags, orderBy);
-
+        session(TAG_FILTER, tagNameFilter);
+        session(TAG_ORDER, Integer.toString(orderBy));
         return ok(tagList.render(SessionService.getCurrentUserEmail(), tags, trackedTags, orderBy, tagNameFilter));
     }
 
@@ -128,7 +154,7 @@ public class TagController {
      * @return result of tags
      */
     public Result suggestTagsByList(List<Tag> tagList){
-        List<TagEntry> list = new ArrayList<TagEntry>();
+        List<TagEntry> list = new ArrayList<>();
         for(Tag tag : tagList){
             list.add(new TagEntry(tag.getName()));
         }

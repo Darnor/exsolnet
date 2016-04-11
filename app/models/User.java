@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +17,7 @@ import static models.builders.UserBuilder.anUser;
 @Table(name="exoluser")
 public class User extends Model{
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+    private long id;
 
     @Column(unique=true)
     @NotNull
@@ -24,8 +25,8 @@ public class User extends Model{
 
     private String password;
 
-    private int points;
-    private Boolean isModerator;
+    private long points;
+    private boolean isModerator;
 
     @OneToMany(mappedBy = "user")
     private List<Exercise> exercises;
@@ -45,6 +46,19 @@ public class User extends Model{
     @OneToMany(mappedBy = "user")
     private List<Tracking> trackings;
 
+    public User(String email, String password) {
+        this.email = email;
+        this.password = password;
+        this.points = 0;
+        this.isModerator = false;
+        this.exercises = new ArrayList<>();
+        this.solutions = new ArrayList<>();
+        this.reports = new ArrayList<>();
+        this.comments = new ArrayList<>();
+        this.votes = new ArrayList<>();
+        this.trackings = new ArrayList<>();
+    }
+
     /**
       * Gets the Exercises of the User.
       *
@@ -52,15 +66,6 @@ public class User extends Model{
       */
     public List<Exercise> getExercises() {
         return exercises;
-    }
-
-    /**
-      * Sets the Exercises of the User.
-      * 
-      * @param Exercises of the User.
-      */
-    public void setExercises(List<Exercise> exercises) {
-        this.exercises = exercises;
     }
 
     /**
@@ -73,30 +78,12 @@ public class User extends Model{
     }
 
     /**
-      * Sets the Solutions of the User.
-      * 
-      * @param Solutions of the User.
-      */
-    public void setSolutions(List<Solution> solutions) {
-        this.solutions = solutions;
-    }
-
-    /**
       * Gets the Votes of the User.
       *
       * @return the Votes of the User.
       */
     public List<Vote> getVotes() {
         return votes;
-    }
-
-    /**
-      * Sets the Votes of the User.
-      * 
-      * @param Votes of the User.
-      */
-    public void setVotes(List<Vote> votes) {
-        this.votes = votes;
     }
 
     /**
@@ -109,30 +96,15 @@ public class User extends Model{
     }
 
     /**
-      * Sets the Reports of the User.
-      * 
-      * @param Reports of the User.
-      */
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
-    }
-
-    /**
       * Sets the Email of the User.
-      * 
-      * @param Email of the User.
+      *
+      * @param email of the User.
       */
     public void setEmail(String email) {
+        if (email == null || email.length() == 0) {
+            throw new IllegalArgumentException("Email cannot be null and must be at east one character long.");
+        }
         this.email = email;
-    }
-
-    /**
-      * Sets the Id of the User.
-      * 
-      * @param Id of the User.
-      */
-    public void setId(Long id) {
-        this.id = id;
     }
 
     /**
@@ -140,17 +112,17 @@ public class User extends Model{
       *
       * @return the Points of the User.
       */
-    public int getPoints() {
+    public long getPoints() {
         return points;
     }
 
     /**
-      * Sets the Points of the User.
-      * 
-      * @param Points of the User.
-      */
-    public void setPoints(int points) {
-        this.points = points;
+     * In- or decrement points
+     *
+     * @param amount Points to be added (or subtracted if its negative)
+     */
+    public void incrementPointsBy(long amount) {
+        points += amount;
     }
 
     /**
@@ -165,9 +137,9 @@ public class User extends Model{
     /**
       * Sets the ModeratorBoolean of the User.
       * 
-      * @param ModeratorBoolean of the User.
+      * @param moderator of the User.
       */
-    public void setModerator(Boolean moderator) {
+    public void setModerator(boolean moderator) {
         isModerator = moderator;
     }
 
@@ -181,31 +153,12 @@ public class User extends Model{
     }
 
     /**
-      * Sets the Trackings of the User.
-      * 
-      * @param Trackings of the User.
-      */
-    
-    public void setTrackings(List<Tracking> trackings) {
-        this.trackings = trackings;
-    }
-
-    /**
       * Gets the Comments of the User.
       *
       * @return the Comments of the User.
       */
     public List<Comment> getComments() {
         return comments;
-    }
-
-    /**
-      * Sets the Comments of the User.
-      * 
-      * @param Comments of the User.
-      */
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
     }
 
     /**
@@ -220,7 +173,7 @@ public class User extends Model{
     /**
       * Sets the Password of the User.
       * 
-      * @param Password of the User.
+      * @param password of the User.
       */
     public void setPassword(String password) {
         this.password = password;
@@ -245,7 +198,7 @@ public class User extends Model{
     }
 
     public List<Tag> getTrackedTags() {
-        return getTrackings().stream().map(tracking -> tracking.getTag()).collect(Collectors.toList());
+        return getTrackings().stream().map(Tracking::getTag).collect(Collectors.toList());
     }
 
     /**
