@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.Model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,6 +18,8 @@ public class User extends Model{
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
+    @Column(unique=true)
+    @NotNull
     private String email;
 
     private String password;
@@ -283,5 +286,21 @@ public class User extends Model{
      */
     public static Model.Finder<Long, User> find() {
         return new Finder<>(User.class);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        return email.equals(user.email);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return email.hashCode();
     }
 }

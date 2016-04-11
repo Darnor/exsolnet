@@ -3,6 +3,7 @@ package controllers;
 import javax.inject.Inject;
 
 import models.Tag;
+import models.User;
 import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -22,7 +23,14 @@ import static play.mvc.Results.ok;
 @Security.Authenticated(Secured.class)
 public class TagController {
 
+    private boolean userTracksTag(User user, Tag tag) {
+        return true;
+    }
+
     public Result processTrack(Tag tag) {
+        User currentUser = SessionService.getCurrentUser();
+        currentUser.getTrackings().stream().filter(t -> t.getTag().equals(tag)).findFirst().orElse(null);
+
         return ok();
     }
 

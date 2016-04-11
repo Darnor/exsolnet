@@ -13,7 +13,6 @@ import java.util.List;
 @Table(name = "tag")
 public class Tag extends Model {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -57,7 +56,6 @@ public class Tag extends Model {
     }
 
     public List<Exercise> getExercises() {
-
         return exercises;
     }
 
@@ -200,5 +198,21 @@ public class Tag extends Model {
     public static Tag getOtherTagByNameOrCreate(String t) {
         Tag tag = findOtherTagByName(t);
         return tag != null ? tag : create(t, false);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Tag tag = (Tag) o;
+
+        return name.equals(tag.name);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
     }
 }

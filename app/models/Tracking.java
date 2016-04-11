@@ -21,27 +21,16 @@ public class Tracking extends Model{
     @JoinColumn(name = "user_id")
     private User user;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public void setTag(Tag tag) {
+    public Tracking(Tag tag, User user) {
         this.tag = tag;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
         this.user = user;
     }
 
     public Tag getTag() {
         return tag;
+    }
+
+    public User getUser() {
+        return user;
     }
 }
