@@ -5,6 +5,7 @@ import com.avaje.ebean.PagedList;
 import models.Tag;
 import models.builders.ExerciseBuilder;
 import play.data.DynamicForm;
+import play.mvc.Security;
 import models.Exercise;
 import play.data.FormFactory;
 import play.mvc.Controller;
@@ -21,6 +22,7 @@ import java.util.*;
  * This controller contains an action to handle HTTP requests
  * to the application's home page.
  */
+@Security.Authenticated(Secured.class)
 public class ExerciseController extends Controller {
 
     @Inject
@@ -49,9 +51,6 @@ public class ExerciseController extends Controller {
     }
 
     public Result list(int page, int order, String titleFilter, String tagFilter) {
-        if (!sessionService.isLoggedin()) {
-            return LoginController.redirectIfNotLoggedIn();
-        }
         int pageSize = 5;
         String orderBy = Exercise.getOrderByAttributeString(order);
         PagedList<Exercise> exercises = Exercise.getPagedList(page,orderBy,titleFilter,tagFilter,pageSize);

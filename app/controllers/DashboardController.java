@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import models.Comment;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import services.SessionService;
 import views.html.dashboard;
 
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 /**
  * Controller for DashboardView
  */
+@Security.Authenticated(Secured.class)
 public class DashboardController extends Controller{
     @Inject
     SessionService sessionService;
@@ -22,9 +24,6 @@ public class DashboardController extends Controller{
      * @return the result
      */
     public Result renderDashboard(){
-        if(!sessionService.isLoggedin()){
-            return LoginController.redirectIfNotLoggedIn();
-        }
         return ok(dashboard.render(sessionService.getCurrentUserEmail(), getSubscribedTags(), getRecentComments()));
     }
 
