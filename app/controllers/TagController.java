@@ -91,13 +91,40 @@ public class TagController {
      */
     public Result suggestTags(String query) {
         List<Tag> tagList = Tag.getSuggestedTags(query);
+        return suggestTagsByList(tagList);
+    }
+
+    /**
+     * suggests main tags
+     * @param tagName suggest tags for tagName
+     * @return Result -> list of main tags
+     */
+    public Result suggestMainTags(String tagName) {
+        List<Tag> tagList = Tag.getSuggestedMainTags(tagName);
+        return suggestTagsByList(tagList);
+    }
+
+    /**
+     * suggest non main tags
+     * @param tagName suggest tags for tagName
+     * @return Result -> list of non main tags
+     */
+    public Result suggestOtherTags(String tagName) {
+        List<Tag> tagList = Tag.getSuggestedOtherTags(tagName);
+        return suggestTagsByList(tagList);
+    }
+    /**
+     * return json list with suggested tags with given list
+     * @param tagList the list with suggested tags
+     * @return result of tags
+     */
+    public Result suggestTagsByList(List<Tag> tagList){
         List<TagEntry> list = new ArrayList<TagEntry>();
         for(Tag tag : tagList){
             list.add(new TagEntry(tag.getName()));
         }
         return ok(Json.toJson(list));
     }
-
     public static class TagEntry{
         public final String name;
         public TagEntry(String name) {

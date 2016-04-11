@@ -39,8 +39,8 @@ public class ExerciseController extends Controller {
         return ok(editExercise.render(ExerciseBuilder.anExercise().withId(-1L).build(), sessionService.getCurrentUserEmail()));
     }
 
-    public Result renderOverview(){
-        return list(0,1,"","");
+    public Result renderOverview() {
+        return list(0, 1, "", "");
     }
 
     public Result renderDetails(long id) {
@@ -54,22 +54,30 @@ public class ExerciseController extends Controller {
         }
         int pageSize = 5;
         String orderBy = Exercise.getOrderByAttributeString(order);
-        PagedList<Exercise> exercises = Exercise.getPagedList(page,orderBy,titleFilter,tagFilter,pageSize);
-        return ok(exerciseList.render(exercises,order,titleFilter,tagFilter));
+        PagedList<Exercise> exercises = Exercise.getPagedList(page, orderBy, titleFilter, tagFilter, pageSize);
+        return ok(exerciseList.render(exercises, order, titleFilter, tagFilter));
     }
 
     /**
      * shows exercise with given id
+     *
      * @param id exercise id that exists in db
      * @return redered exercise
      */
     public Result edit(long id) {
-        return ok(editExercise.render(Exercise.find().byId(id), sessionService.getCurrentUserEmail()));
+
+       Exercise exercise =  Exercise.find().byId(id);
+
+        if(exercise == null)
+            return notFound();
+
+        return ok(editExercise.render(exercise, sessionService.getCurrentUserEmail()));
     }
 
     /**
      * Updates an exercise.
      * If exercise does not exist it will be created.
+     *
      * @param exerciseId the id of the exercise to be updated. if -1 it will be created.
      * @return the result
      */
@@ -120,6 +128,9 @@ public class ExerciseController extends Controller {
         );
         //save normal tags
         other.forEach(t -> {
+                    if (mainTagExistsInExercise(id, t))
+                        throw new IllegalArgumentException("not allowed to add maintag to othertag.");
+
                     // tag is not yet in exercise
                     if (!otherTagExistsInExercise(id, t)) {
                         //get tag from db
@@ -155,6 +166,7 @@ public class ExerciseController extends Controller {
 
     /**
      * gets other tag from db by name
+     *
      * @param t the name
      * @return the tag or null if it does not exist
      */
@@ -171,6 +183,7 @@ public class ExerciseController extends Controller {
 
     /**
      * gets main tag from db by name
+     *
      * @param t the name
      * @return the maintag or null if it does not exist in db
      */
@@ -187,8 +200,9 @@ public class ExerciseController extends Controller {
 
     /**
      * tells if the normal tag already is saved in the current exercise in the db
+     *
      * @param id the exercise id
-     * @param t the name of the tag
+     * @param t  the name of the tag
      * @return true if it exists, false if its not yet saved
      */
     private Boolean otherTagExistsInExercise(long id, String t) {
@@ -207,9 +221,10 @@ public class ExerciseController extends Controller {
     }
 
     /**
-     *  tells if the maintag is saved in the current exercise in the db
+     * tells if the maintag is saved in the current exercise in the db
+     *
      * @param id the id of the exercise
-     * @param t the name of the id
+     * @param t  the name of the id
      * @return true if the maintag exists, false if it doesnt exist
      */
     private Boolean mainTagExistsInExercise(long id, String t) {

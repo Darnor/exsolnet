@@ -18,8 +18,7 @@ public class Tag extends Model {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
-    @Column(unique=true)
+    @Column(unique = true)
     @NotNull
     private String name;
 
@@ -96,7 +95,36 @@ public class Tag extends Model {
     }
 
     /**
+     * returns list of suggested tags which are main tags
+     *
+     * @param tagName tag that starts with tagName
+     * @return list of main tags that start with tagName
+     */
+    public static List<Tag> getSuggestedMainTags(String tagName) {
+        List<Tag> list = find().where().eq("isMainTag", true).istartsWith("name", tagName).findList();
+        if (list.size() == 0)
+            return find().where().eq("isMainTag", true).findList();
+
+        return list;    }
+
+    /**
+     * returns list of suggestet tags which are not main tags
+     *
+     * @param tagName tag that starts with tagName
+     * @return list of other tags that start with tagName
+     */
+    public static List<Tag> getSuggestedOtherTags(String tagName) {
+
+        List<Tag> list = find().where().eq("isMainTag", false).istartsWith("name", tagName).findList();
+        if (list.size() == 0)
+            return find().where().eq("isMainTag", false).findList();
+
+        return list;
+    }
+
+    /**
      * returns the tag searched by name
+     *
      * @param name the name of the tag, tag name sould be unique
      * @return the tag or null if it doesnt exist
      */
