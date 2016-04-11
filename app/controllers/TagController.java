@@ -24,6 +24,7 @@ import static play.mvc.Results.ok;
  * Created by revy on 05.04.16.
  */
 @Security.Authenticated(Secured.class)
+
 public class TagController {
 
     private static final String TAG_FILTER = "tagFilter";

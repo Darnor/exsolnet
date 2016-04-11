@@ -58,4 +58,54 @@ public class TagTest extends AbstractModelTest {
         Tag tag = aTag().withName("A").withExercises(Arrays.asList(e1, e2, e3)).build();
         assertEquals(2, tag.getNofCompletedExercises(userA));
     }
+
+    @Test
+    public void testGetSuggestedTags(){
+        assertEquals(1, Tag.getSuggestedTags("An1").size());
+        assertEquals("An1l", Tag.getSuggestedTags("An1").get(0).getName());
+        assertEquals(2, Tag.getSuggestedTags("An").size());
+    }
+
+    @Test
+    public void testGetSuggestedMainTags(){
+        assertEquals(1, Tag.getSuggestedMainTags("V").size());
+        assertEquals("VSS", Tag.getSuggestedMainTags("V").get(0).getName());
+    }
+
+    @Test
+    public void testGetSuggestedOtherTags(){
+        assertEquals(2, Tag.getSuggestedOtherTags("abl").size());
+        assertEquals("abl", Tag.getSuggestedOtherTags("abl").get(0).getName());
+        assertEquals("Ableiten", Tag.getSuggestedOtherTags("abl").get(1).getName());
+    }
+
+    @Test
+    public void testFindTagByName(){
+        assertEquals("An1I", Tag.findTagByName("An1I").getName());
+        assertEquals(true, Tag.findTagByName("An1I").isMainTag());
+        assertEquals(null, Tag.findTagByName("asdfsadf"));
+    }
+
+
+    @Test
+    public void testFindMainTagByName(){
+        assertEquals("An1l", Tag.findMainTagByName("An1I").getName());
+        assertEquals(true, Tag.findMainTagByName("An1I").isMainTag());
+        assertEquals(null, Tag.findMainTagByName("asdfsadf"));
+        assertEquals(null, Tag.findMainTagByName("Ableiten"));
+    }
+
+
+
+    @Test
+    public void testFindOtherTagByName(){
+        assertEquals("Ableiten", Tag.findOtherTagByName("Ableiten").getName());
+        assertEquals(false, Tag.findOtherTagByName("Ableiten").isMainTag());
+        assertEquals(null, Tag.findOtherTagByName("asdfsadf"));
+        assertEquals(null, Tag.findOtherTagByName("An1I"));
+    }
+
+
+
+
 }

@@ -7,10 +7,7 @@ import play.data.validation.Constraints;
 
 import javax.persistence.*;
 import java.sql.Date;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by mario on 21.03.16.
@@ -52,6 +49,8 @@ public class Exercise extends Post {
     private List<Comment> comments;
 
     public void addTag(Tag tag){
+        if(tags==null)
+            tags = new ArrayList<Tag>();
         tags.add(tag);
     }
     public String getTitle() {

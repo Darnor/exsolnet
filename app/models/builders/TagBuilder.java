@@ -12,6 +12,7 @@ public class TagBuilder {
     private Long id;
     private String name;
     private List<Exercise> exercises;
+    private Boolean isMaintag;
 
     private TagBuilder() {
     }
@@ -29,6 +30,12 @@ public class TagBuilder {
         this.name = name;
         return this;
     }
+
+    public TagBuilder withMaintag(Boolean isMaintag) {
+        this.isMaintag = isMaintag;
+        return this;
+    }
+
 
     public TagBuilder withExercises(List<Exercise> exercises) {
         this.exercises = exercises;

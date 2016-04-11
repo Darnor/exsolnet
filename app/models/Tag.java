@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,6 +69,8 @@ public class Tag extends Model {
     }
 
     public void addExercise(Exercise exercise) {
+        if(exercises == null)
+            exercises = new ArrayList<Exercise>();
         exercises.add(exercise);
     }
 

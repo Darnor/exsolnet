@@ -21,3 +21,6 @@ libraryDependencies += "org.mockito" % "mockito-core" % "1.10.19"
 
 jacoco.settings
 
+
+
+fork in run := true
