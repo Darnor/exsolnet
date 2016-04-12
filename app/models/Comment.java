@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -53,6 +54,18 @@ public class Comment extends Model{
 
     public long getId() {
         return id;
+    }
+
+    public List<Report> getReports() {
+        return Collections.unmodifiableList(reports);
+    }
+
+    public void addReport(Report report) {
+        reports.add(report);
+    }
+
+    public void removeReport(Report report) {
+        reports.remove(report);
     }
 
     public void setContent(String content) {

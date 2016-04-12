@@ -9,10 +9,7 @@ import play.data.validation.Constraints;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by mario on 21.03.16.
@@ -55,6 +52,10 @@ public class Exercise extends Post {
     private List<Comment> comments;
 
     private static final String TITLE_STR = "title";
+    private static final String ID_STR = "id";
+    private static final String SOLUTION_COUNT_STR = "solutionCount";
+    private static final String POINTS_STR = "points";
+    private static final String TIME_STR = "time";
 
     /**
      * Map the Id of the html exercise-table to their Model-Attribute-name
@@ -64,15 +65,17 @@ public class Exercise extends Post {
     {
         tableHeaderMap = new HashMap<>();
         tableHeaderMap.put(1, TITLE_STR);
-        tableHeaderMap.put(2, "solutionCount");
-        tableHeaderMap.put(3, "points");
-        tableHeaderMap.put(4, "time");
+        tableHeaderMap.put(2, SOLUTION_COUNT_STR);
+        tableHeaderMap.put(3, POINTS_STR);
+        tableHeaderMap.put(4, TIME_STR);
         tableHeaderMap.put(5, TITLE_STR); //TODO
     }
 
-    public void addTag(Tag tag){
-        tags.add(tag);
+    public Exercise(User user, String title) {
+        this.user = user;
+        this.title = title;
     }
+
     public String getTitle() {
         return title;
     }
@@ -82,51 +85,63 @@ public class Exercise extends Post {
     }
 
     public List<Solution> getSolutions() {
-        return solutions;
+        return Collections.unmodifiableList(solutions);
     }
 
-    public void setSolutions(List<Solution> solutions) {
-        this.solutions = solutions;
+    public void addSolution(Solution solution) {
+        solutions.add(solution);
+    }
+
+    public void removeSolution(Solution solution) {
+        solutions.remove(solution);
     }
 
     public List<Vote> getVotes() {
-        return votes;
+        return Collections.unmodifiableList(votes);
     }
 
-    public void setVotes(List<Vote> votes) {
-        this.votes = votes;
+    public void addVote(Vote vote) {
+        votes.add(vote);
+    }
+
+    public void removeVote(Vote vote) {
+        votes.remove(vote);
     }
 
     public User getUser() {
         return user;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public List<Report> getReports() {
-        return reports;
+        return Collections.unmodifiableList(reports);
     }
 
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
+    public void addReport(Report report) {
+        reports.add(report);
     }
 
     public List<Comment> getComments() {
-        return comments;
+        return Collections.unmodifiableList(comments);
     }
 
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
+    public void addComment(Comment comment) {
+        comments.add(comment);
+    }
+
+    public void removeComment(Comment comment) {
+        comments.remove(comment);
     }
 
     public List<Tag> getTags() {
-        return tags;
+        return Collections.unmodifiableList(tags);
     }
 
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
+    public void addTag(Tag tag) {
+        tags.add(tag);
+    }
+
+    public void removeTag(Tag tag) {
+        tags.remove(tag);
     }
 
     public static void create(Exercise exercise) {
@@ -166,7 +181,7 @@ public class Exercise extends Post {
      * @return the exercise from the db with the fiven id, null if it doesnt exist, nullpointer exception if id is null
      */
     public static Exercise findExerciseData(Long id) {
-        return find().where().eq("id", id).findUnique();
+        return find().where().eq(ID_STR, id).findUnique();
     }
 
     /**
@@ -238,34 +253,5 @@ public class Exercise extends Post {
                 return true;
         }
         return false;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-
-        Exercise exercise = (Exercise) o;
-
-        if (!title.equals(exercise.title)) {
-            return false;
-        }
-        return getId() == exercise.getId() && user.equals(exercise.user);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + title.hashCode();
-        result = 31 * result + user.hashCode();
-        return result;
     }
 }

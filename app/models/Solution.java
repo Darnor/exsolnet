@@ -41,29 +41,4 @@ public class Solution extends Post{
     public User getUser() {
         return user;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
-
-        Solution solution = (Solution) o;
-
-        return getId() == solution.getId() && user.equals(solution.user);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + user.hashCode();
-        return result;
-    }
 }

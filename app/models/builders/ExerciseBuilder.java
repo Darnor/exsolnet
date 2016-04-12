@@ -2,7 +2,7 @@ package models.builders;
 
 import models.*;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -16,12 +16,15 @@ public class ExerciseBuilder {
     private User user;
     private List<Report> reports;
     private List<Comment> comments;
-    private long id;
     private String content;
-    private LocalDateTime time = LocalDateTime.now();
-    private int points;
+    private long points;
 
     private ExerciseBuilder() {
+        solutions = new ArrayList<>();
+        votes = new ArrayList<>();
+        tags = new ArrayList<>();
+        reports = new ArrayList<>();
+        comments = new ArrayList<>();
     }
 
     public static ExerciseBuilder anExercise() {
@@ -63,40 +66,39 @@ public class ExerciseBuilder {
         return this;
     }
 
-    public ExerciseBuilder withId(Long id) {
-        this.id = id;
-        return this;
-    }
-
     public ExerciseBuilder withContent(String content) {
         this.content = content;
         return this;
     }
 
-    public ExerciseBuilder withTime(LocalDateTime time) {
-        this.time = time;
-        return this;
-    }
-
-    public ExerciseBuilder withPoints(int points) {
+    public ExerciseBuilder withPoints(long points) {
         this.points = points;
         return this;
     }
 
     public ExerciseBuilder but() {
-        return anExercise().withTitle(title).withSolutions(solutions).withVotes(votes).withTags(tags).withUser(user).withReports(reports).withComments(comments).withId(id).withContent(content).withTime(time).withPoints(points);
+        return anExercise().withTitle(title).withSolutions(solutions).withVotes(votes).withTags(tags).withUser(user).withReports(reports).withComments(comments).withContent(content).withPoints(points);
     }
 
     public Exercise build() {
-        Exercise exercise = new Exercise();
-        exercise.setTitle(title);
-        exercise.setSolutions(solutions);
-        exercise.setVotes(votes);
-        exercise.setTags(tags);
-        exercise.setUser(user);
-        exercise.setReports(reports);
-        exercise.setComments(comments);
+        Exercise exercise = new Exercise(user, title);
         exercise.setContent(content);
+        exercise.setPoints(points);
+        for (Solution solution : solutions) {
+            exercise.addSolution(solution);
+        }
+        for (Vote vote : votes) {
+            exercise.addVote(vote);
+        }
+        for (Tag tag : tags) {
+            exercise.addTag(tag);
+        }
+        for (Comment comment : comments) {
+            exercise.addComment(comment);
+        }
+        for (Report report : reports) {
+            exercise.addReport(report);
+        }
         return exercise;
     }
 }

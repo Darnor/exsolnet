@@ -27,6 +27,10 @@ public class Post extends Model {
     @NotNull
     private long points;
 
+    public Post() {
+        this.id = -1;
+    }
+
     public long getId() {
         return id;
     }
@@ -41,6 +45,10 @@ public class Post extends Model {
 
     public LocalDateTime getTime() {
         return time;
+    }
+
+    public void setPoints(long points) {
+        this.points = points;
     }
 
     public long getPoints() {
