@@ -59,7 +59,7 @@
                 @exercise.getPoints
                 </td>
                 <td>
-                @exercise.getTime
+                @exercise.getTime().format(java.time.format.DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm:ss"))@*"dd.MM.yy - hh:mm:ss"*@
                 </td>
                 @*<td class="text-center">
                 exercise.getSolutions.find(s => s.getUser.getEmail.equals(username))
