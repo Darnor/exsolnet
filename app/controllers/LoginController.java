@@ -18,11 +18,10 @@ public class LoginController extends Controller {
 
     /**
      * Renders login and logout fields, depending if user is logged in
-     *
      * @return Result
      */
-    public Result renderLogin() {
-        return ok(views.html.login.render(SessionService.getCurrentUserEmail()));
+    public Result renderLogin(){
+            return ok(views.html.login.render(SessionService.getCurrentUserEmail()));
     }
 
     /**
@@ -30,13 +29,12 @@ public class LoginController extends Controller {
      * Authenticates the user based on email and password.
      * Sets the session on the user's email
      * redirect to dashboard
-     *
      * @return Result
      */
     public Result login() {
         Form<User> userForm = formFactory.form(User.class);
         User user = userForm.bindFromRequest().get();
-        if (User.authenticate(user.getEmail(), user.getPassword()) != null) {
+        if(User.authenticate(user.getEmail(), user.getPassword()) != null){
             SessionService.set(user.getEmail());
         }
         return redirect(routes.DashboardController.renderDashboard());
@@ -45,11 +43,10 @@ public class LoginController extends Controller {
     /**
      * clears the current session
      * logout the user
-     *
      * @return Result
      */
     public Result logout() {
-        if (SessionService.isLoggedin()) {
+        if(SessionService.isLoggedin()){
             SessionService.clear();
         }
         return redirect(routes.DashboardController.renderDashboard());

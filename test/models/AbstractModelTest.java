@@ -32,13 +32,13 @@ public abstract class AbstractModelTest {
             System.out.println("Inserting default test data");
             String testData = FileUtils.readFileToString(app.getWrappedApplication().getFile("test/data.sql"));
             Ebean.execute(Ebean.createCallableSql(testData));
-        } catch (IOException e) {
+        } catch (IOException e){
             throw new RuntimeException("Problem cleaning database: ", e);
         }
     }
 
     @AfterClass
-    public static void shutDown() {
+    public static void shutDown(){
         Helpers.stop(app);
     }
 }

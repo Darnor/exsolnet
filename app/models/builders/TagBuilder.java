@@ -39,6 +39,7 @@ public class TagBuilder {
     }
 
 
+
     public TagBuilder withExercises(List<Exercise> exercises) {
         this.exercises = exercises;
         return this;

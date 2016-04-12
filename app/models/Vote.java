@@ -8,10 +8,9 @@ import javax.persistence.*;
  * Created by Claudia on 31.03.2016.
  */
 @Entity
-@Table(name = "vote")
+@Table(name="vote")
 public class Vote extends Model {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
     private int value;
 

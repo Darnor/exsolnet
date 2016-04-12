@@ -8,8 +8,8 @@ import java.util.List;
  * Created by Claudia on 31.03.2016.
  */
 @Entity
-@Table(name = "solution")
-public class Solution extends Post {
+@Table(name="solution")
+public class Solution extends Post{
     @Basic
     private Boolean official;
 
