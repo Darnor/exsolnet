@@ -196,9 +196,9 @@ public class Exercise extends Post {
      * add tag to exercise
      * @param tag the tag to be bind
      */
-    public void bindTag(Tag tag) {
-        tag.addExercise(this);
-        addTag(tag);
+    public static void bindTag(Exercise exercise, Tag tag) {
+        tag.addExercise(exercise);
+        exercise.addTag(tag);
     }
 
     /**

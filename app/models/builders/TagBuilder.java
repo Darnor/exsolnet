@@ -51,6 +51,7 @@ public class TagBuilder {
         tag.setId(id);
         tag.setName(name);
         tag.setExercises(exercises);
+        tag.setMainTag(isMaintag);
         return tag;
     }
 }

@@ -103,7 +103,7 @@ public class ExerciseController extends Controller {
                             throw new IllegalArgumentException("not allowed to create main tags.");
                         }
                         // add maintag to exercise and exercise to maintag
-                        exercise.bindTag(mainTag);
+                        Exercise.bindTag(exercise,mainTag);
                     }
                 }
         );
@@ -117,7 +117,7 @@ public class ExerciseController extends Controller {
                     // tag is not yet in exercise
                     if (!Exercise.otherTagExistsInExercise(exercise.getId(), t)) {
                         //get tag from db or create and add tag to exercise and exercise to tag
-                        exercise.bindTag(Tag.getOtherTagByNameOrCreate(t));
+                        Exercise.bindTag(exercise,Tag.getOtherTagByNameOrCreate(t));
                     }
                 }
         );

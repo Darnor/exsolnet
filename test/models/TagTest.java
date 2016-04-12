@@ -62,7 +62,7 @@ public class TagTest extends AbstractModelTest {
     @Test
     public void testGetSuggestedTags(){
         assertEquals(1, Tag.getSuggestedTags("An1").size());
-        assertEquals("An1l", Tag.getSuggestedTags("An1").get(0).getName());
+        assertEquals("An1I", Tag.getSuggestedTags("An1").get(0).getName());
         assertEquals(2, Tag.getSuggestedTags("An").size());
     }
 
@@ -74,9 +74,8 @@ public class TagTest extends AbstractModelTest {
 
     @Test
     public void testGetSuggestedOtherTags(){
-        assertEquals(2, Tag.getSuggestedOtherTags("abl").size());
-        assertEquals("abl", Tag.getSuggestedOtherTags("abl").get(0).getName());
-        assertEquals("Ableiten", Tag.getSuggestedOtherTags("abl").get(1).getName());
+        assertEquals(1, Tag.getSuggestedOtherTags("Abl").size());
+        assertEquals("Ableiten", Tag.getSuggestedOtherTags("Abl").get(0).getName());
     }
 
     @Test
@@ -89,7 +88,7 @@ public class TagTest extends AbstractModelTest {
 
     @Test
     public void testFindMainTagByName(){
-        assertEquals("An1l", Tag.findMainTagByName("An1I").getName());
+        assertEquals("An1I", Tag.findMainTagByName("An1I").getName());
         assertEquals(true, Tag.findMainTagByName("An1I").isMainTag());
         assertEquals(null, Tag.findMainTagByName("asdfsadf"));
         assertEquals(null, Tag.findMainTagByName("Ableiten"));

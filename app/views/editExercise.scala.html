@@ -22,7 +22,7 @@
            <p>Title</p> <input id="title" placeholder="Titel" type="text" name="title" value="@exercise.getTitle"/>
            <p>Haupt Tags</p> <input placeholder="Haupt Tags" type="search" id="maintag-filter-list" type="text" name="maintag" rel="@exercise.getTags.filter(x => x.isMainTag).map(x => x.getName).mkString(",")"/>
             <p>Andere Tags</p> <input placeholder="Andere Tags" type="search" id="othertag-filter-list" type="text" name="othertag" rel="@exercise.getTags.filter(x => !x.isMainTag).map(x => x.getName).mkString(",")"/>
-            <p>Inhalt</p> <input placeholder="Inhalt" type="text" name="content" value="@exercise.getContent"/>
+            <p>Inhalt</p> <input id="content" placeholder="Inhalt" type="text" name="content" value="@exercise.getContent"/>
             <button id="save">Speichern</button>
         </form>
     </div>

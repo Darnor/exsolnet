@@ -5,15 +5,15 @@
 (function ($) {
 
     $(document).ready(function () {
-        $('body').on('keyup', 'input', 'change' , function () {
+        $('body').on('keyup', 'input', 'change','click', function () {
 
-            if ($("#title").attr("value") != "" && $("#content").attr("value") != "" && $("ul:first > li:first > p").length > 0) {
+            if ($("#title").val() !== "" && $("#content").val() !== "" && $("ul:first > li:first > p").length > 0) {
                 $("#save").removeAttr('disabled');
             }
             else {
                 $("#save").attr('disabled', 'disabled');
             }
-        })
+        });
     });
 
     function createTagFilter(id) {
@@ -21,7 +21,7 @@
         var tagString = $(id).attr('rel');
         if (tagString.length > 0) {
             var tagArray = tagString.split(",");
-            for (var i in tagArray) {
+            for (var i in tagArray){
                 result.push({name: tagArray[i]});
             }
         }
