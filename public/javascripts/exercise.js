@@ -4,24 +4,26 @@
 
 (function ($) {
 
-    $(document).ready(function () {
-        $('body').on('keyup', 'input', 'change','click', function () {
+  
 
-            if ($("#title").val() !== "" && $("#content").val() !== "" && $("ul:first > li:first > p").length > 0) {
-                $("#save").removeAttr('disabled');
+  /*  $(document).ready(function () {
+        $('body').on('keyup', 'input', 'change', 'click', function () {
+            if ($("#title").val() !== "" && $("#content").val() !== "" && $("form >  ul:first > li > p").length > 0) {
+                if ($("#save").hasAttribute('disabled'))
+                    $("#save").removeAttr('disabled');
             }
             else {
                 $("#save").attr('disabled', 'disabled');
             }
         });
-    });
+    });*/
 
     function createTagFilter(id) {
         var result = [];
         var tagString = $(id).attr('rel');
         if (tagString.length > 0) {
             var tagArray = tagString.split(",");
-            for (var i in tagArray){
+            for (var i in tagArray) {
                 result.push({name: tagArray[i]});
             }
         }

@@ -214,6 +214,7 @@ public class Tag extends Model {
 
     }
 
+    //TODO FALSCH!!
     @Override
     public int hashCode() {
         return name.hashCode();

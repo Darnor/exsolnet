@@ -94,10 +94,10 @@ public class ExerciseTest extends AbstractModelTest {
         assertEquals("aa",exercise.getTags().get(0).getName());
         assertEquals("bb",exercise.getTags().get(1).getName());
     }
-    //@Test
+    @Test
     public void testBindTag(){
         Exercise exercise = ExerciseBuilder.anExercise().withId(999L).build();
-        Tag tag = TagBuilder.aTag().withId(333L).build();
+        Tag tag = TagBuilder.aTag().withId(333L).withName("bla").build();
         Exercise.bindTag(exercise,tag);
         assertEquals(1,exercise.getTags().size());
         assertEquals(1,tag.getExercises().size());
