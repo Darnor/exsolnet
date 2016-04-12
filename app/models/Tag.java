@@ -32,8 +32,8 @@ public class Tag extends Model {
     @JoinColumn(name = "tag")
     private List<Tracking> trackings;
 
-    private static final String IS_MAIN_TAG = "isMainTag";
-    private static final String TAG_NAME = "name";
+    private static final String IS_MAIN_TAG_STR = "isMainTag";
+    private static final String NAME_STR = "name";
 
     /**
      * Constructor for new Tag for one exercise
@@ -109,7 +109,7 @@ public class Tag extends Model {
      * @return list of all tags that start with tagName
      */
     public static List<Tag> getSuggestedTags(String tagName) {
-        return find().where().istartsWith(TAG_NAME, tagName).findList();
+        return find().where().istartsWith(NAME_STR, tagName).findList();
     }
 
     /**
@@ -119,8 +119,8 @@ public class Tag extends Model {
      * @return list of main tags that start with tagName
      */
     public static List<Tag> getSuggestedMainTags(String tagName) {
-        List<Tag> list = find().where().eq(IS_MAIN_TAG, true).istartsWith(TAG_NAME, tagName).findList();
-        return list.isEmpty() ? find().where().eq(IS_MAIN_TAG, true).findList() : list;
+        List<Tag> list = find().where().eq(IS_MAIN_TAG_STR, true).istartsWith(NAME_STR, tagName).findList();
+        return list.isEmpty() ? find().where().eq(IS_MAIN_TAG_STR, true).findList() : list;
     }
 
     /**
@@ -130,8 +130,8 @@ public class Tag extends Model {
      * @return list of other tags that start with tagName
      */
     public static List<Tag> getSuggestedOtherTags(String tagName) {
-        List<Tag> list = find().where().eq(IS_MAIN_TAG, false).istartsWith(TAG_NAME, tagName).findList();
-        return list.isEmpty() ? find().where().eq(IS_MAIN_TAG, false).findList() : list;
+        List<Tag> list = find().where().eq(IS_MAIN_TAG_STR, false).istartsWith(NAME_STR, tagName).findList();
+        return list.isEmpty() ? find().where().eq(IS_MAIN_TAG_STR, false).findList() : list;
     }
 
     /**
@@ -141,7 +141,7 @@ public class Tag extends Model {
      * @return the tag or null if it doesnt exist
      */
     public static Tag findTagByName(String name) {
-        return find().where().eq(TAG_NAME, name).findUnique();
+        return find().where().eq(NAME_STR, name).findUnique();
     }
 
     /**
@@ -151,7 +151,7 @@ public class Tag extends Model {
      * @return the maintag or null if it does not exist in db
      */
     public static Tag findMainTagByName(String name)    {
-        return find().where().eq(TAG_NAME, name).eq(IS_MAIN_TAG, true).findUnique();
+        return find().where().eq(NAME_STR, name).eq(IS_MAIN_TAG_STR, true).findUnique();
     }
 
     /**
@@ -161,7 +161,7 @@ public class Tag extends Model {
      * @return the tag or null if it does not exist
      */
     public static Tag findOtherTagByName(String name)    {
-        return find().where().eq(TAG_NAME, name).eq(IS_MAIN_TAG, false).findUnique();
+        return find().where().eq(NAME_STR, name).eq(IS_MAIN_TAG_STR, false).findUnique();
     }
 
     /**

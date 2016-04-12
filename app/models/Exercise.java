@@ -54,6 +54,8 @@ public class Exercise extends Post {
     @OneToMany(mappedBy = "exercise")
     private List<Comment> comments;
 
+    private static final String TITLE_STR = "title";
+
     /**
      * Map the Id of the html exercise-table to their Model-Attribute-name
      */
@@ -61,11 +63,11 @@ public class Exercise extends Post {
     static
     {
         tableHeaderMap = new HashMap<>();
-        tableHeaderMap.put(1, "title");
+        tableHeaderMap.put(1, TITLE_STR);
         tableHeaderMap.put(2, "solutionCount");
         tableHeaderMap.put(3, "points");
         tableHeaderMap.put(4, "time");
-        tableHeaderMap.put(5, "title"); //TODO
+        tableHeaderMap.put(5, TITLE_STR); //TODO
     }
 
     public void addTag(Tag tag){
@@ -151,7 +153,7 @@ public class Exercise extends Post {
      */
     public static PagedList<Exercise> getPagedList(int pageNr, String orderBy, String titleFilter, String[] tagFilter, int pageSize) {
         Query<Exercise> query = Ebean.createQuery(Exercise.class);
-        query.where().contains("title",titleFilter);
+        query.where().contains(TITLE_STR, titleFilter);
         if(!"".equals(tagFilter[0])){
             query.where().in("tags.name", Arrays.asList(tagFilter));
         }
@@ -236,5 +238,34 @@ public class Exercise extends Post {
                 return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
+
+        Exercise exercise = (Exercise) o;
+
+        if (!title.equals(exercise.title)) {
+            return false;
+        }
+        return getId() == exercise.getId() && user.equals(exercise.user);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + title.hashCode();
+        result = 31 * result + user.hashCode();
+        return result;
     }
 }
