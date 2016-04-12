@@ -23,12 +23,12 @@
 
     <script src="@routes.Assets.versioned("javascripts/jquery.tokeninput.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("javascripts/exerciselist.js")" type="text/javascript"></script>
-    @helper.form(action=routes.ExerciseController.list()) {
+    <form method="POST" action="@routes.ExerciseController.list()" class="form-horizontal">
         <input type="hidden" name="sort" value="@currentOrderBy" />
         <input type="search" class="form-control" id="searchbox" name="title" value="@currentTitleFilter" placeholder="Titel-Filter"/>
         <input type="search" class="form-control" id="tag-filter-list" name="tags" value="@currentTagFilter" placeholder="Tag-Filter"/>
         <input type="submit" class="btn btn-default" id="searchsubmit" value="Suche" class="btn primary"/>
-    }
+    </form>
 
     <table class="table table-striped">
         <thead class="thead-inverse">
@@ -37,7 +37,7 @@
                 @header(2, "Lösungen")
                 @header(3, "Bewertung")
                 @header(4, "Datum")
-                @header(5, "Gelöst")
+                @*header(5, "Gelöst")*@
             </tr>
         </thead>
         <tbody>
@@ -52,47 +52,48 @@
                         }
                     </p>
                 </td>
-                <td>
+                <td class="text-center">
                 @exercise.getSolutions.size
                 </td>
-                <td>
+                <td class="text-center">
                 @exercise.getPoints
                 </td>
                 <td>
                 @exercise.getTime
                 </td>
-                <td>
-                @*exercise.getSolutions.find(s => s.getUser.getEmail.equals(username))*@
-                </td>
+                @*<td class="text-center">
+                exercise.getSolutions.find(s => s.getUser.getEmail.equals(username))
+                </td>*@
             </tr>
         }
         </tbody>
     </table>
 
     <div id="pagination" class="pagination">
-        <ul>
+        <div class="prev">
             @if(currentPage.hasPrev){
-            <li class="prev">
-                <a href="@link(currentPage.getPageIndex-1,currentOrderBy)">&larr; Vorherige</a>
-            </li>
+                <div>
+                    <a href="@link(currentPage.getPageIndex-1,currentOrderBy)">&larr; Vorherige</a>
+                </div>
             }else {
-                <li class="prev disabled">
+                <div class="disabled">
                     <a>&larr; Vorherige</a>
-                </li>
+                </div>
             }
-            <li class="current">
-                <p>Zeige @(currentPage.getPageIndex*currentPage.getPageSize+1) bis @(currentPage.getPageIndex*currentPage.getPageSize+currentPage.getList.size()) von @currentPage.getTotalRowCount an</p>
-                <p>@currentPage.getDisplayXtoYofZ(" - "," / ")</p>
-            </li>
+        </div>
+        <div class="next">
             @if(currentPage.hasNext) {
-                <li class="prev">
-                    <a href="@link(currentPage.getPageIndex+1, currentOrderBy)">&larr; Nächste</a>
-                </li>
+                <div>
+                    <a href="@link(currentPage.getPageIndex+1, currentOrderBy)">Nächste &rarr;</a>
+                </div>
             }else{
-             <li class="prev disabled">
-                <a>&larr; Nächste</a>
-            </li>
-}
-        </ul>
+                <div class="disabled">
+                    <a>Nächste &rarr;</a>
+                </div>
+            }
+        </div>
+        <div class="current">
+            <p>Zeige @currentPage.getDisplayXtoYofZ(" bis "," von ") an</p>
+        </div>
     </div>
 }
