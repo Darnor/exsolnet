@@ -16,14 +16,14 @@ public class Tag extends Model {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(unique = true)
     @NotNull
     private String name;
 
     @NotNull
-    private boolean isMainTag;
+    private Boolean isMainTag;
 
     @ManyToMany(mappedBy = "tags")
     private List<Exercise> exercises;
@@ -42,16 +42,16 @@ public class Tag extends Model {
      * @param isMainTag is main tag or not
      */
     public Tag(String name, boolean isMainTag) {
-        this.id = 0;
+        this.id = null;
         this.name = name;
         this.isMainTag = isMainTag;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public boolean isMainTag() {
+    public Boolean isMainTag() {
         return isMainTag;
     }
 

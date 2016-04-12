@@ -86,16 +86,16 @@ public class ExerciseController extends Controller {
 
     /**
      * Returns a exercise.
-     * If id exists. Get exercise from db. If if -1 create new Exercise and return
+     * If id exists. Get exercise from db. If null create new Exercise and return
      *
-     * @param exerciseId the id of the exercise or -1 if new
+     * @param exerciseId the id of the exercise or null if new
      * @return the exercise
      */
     private Exercise getExerciseToUpdate(Long exerciseId) {
         Exercise exercise;
 
         //create
-        if (exerciseId == -1) {
+        if (exerciseId == null) {
             exercise = ExerciseBuilder.anExercise().build();
             Exercise.create(exercise);
         } else {

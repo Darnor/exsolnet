@@ -14,9 +14,9 @@ import java.util.List;
  */
 @Entity
 @Table(name="comment")
-public class Comment extends Model{
+public class Comment extends Model {
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Lob
     private String content;
@@ -43,16 +43,17 @@ public class Comment extends Model{
     private static final int NOF_RECENT_COMMENTS = 5;
 
     public Comment(User user) {
+        id = null;
         this.user = user;
-        reports = new ArrayList<>();
-        time = LocalDateTime.now();
+        this.reports = new ArrayList<>();
+        this.time = LocalDateTime.now();
     }
 
     public String getContent() {
         return content;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

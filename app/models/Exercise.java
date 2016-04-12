@@ -24,7 +24,7 @@ public class Exercise extends Post {
     private String title;
 
     @Formula(select = "(select count(*) from solution _s where _s.exercise_id=${ta}.id)")
-    private int solutionCount;
+    private Long solutionCount;
 
     @OneToMany(mappedBy = "exercise")
     private List<Solution> solutions;

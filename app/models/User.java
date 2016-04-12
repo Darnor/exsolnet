@@ -18,7 +18,7 @@ import static models.builders.UserBuilder.anUser;
 @Table(name="exoluser")
 public class User extends Model{
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @Column(unique=true)
     @NotNull
@@ -51,6 +51,7 @@ public class User extends Model{
     private List<Tracking> trackings;
 
     public User(String email, String password) {
+        this.id = null;
         this.email = email;
         this.password = password;
         this.isModerator = false;
@@ -181,7 +182,7 @@ public class User extends Model{
       *
       * @return the Points of the User.
       */
-    public long getPoints() {
+    public Long getPoints() {
         return points;
     }
 
@@ -199,7 +200,7 @@ public class User extends Model{
       *
       * @return the ModeratorBoolean of the User.
       */
-    public boolean getIsModerator() {
+    public Boolean getIsModerator() {
         return isModerator;
     }
 
@@ -244,7 +245,7 @@ public class User extends Model{
       *
       * @return the Id of the User.
       */
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -294,8 +295,12 @@ public class User extends Model{
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         User user = (User) o;
 

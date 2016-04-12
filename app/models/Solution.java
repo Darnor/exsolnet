@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name="solution")
 public class Solution extends Post{
     @Basic
-    private boolean official = false;
+    private Boolean official;
 
     @ManyToOne
     @JoinColumn(name = "exercise_id")
@@ -33,9 +33,10 @@ public class Solution extends Post{
     public Solution(User user, Exercise exercise) {
         this.user = user;
         this.exercise = exercise;
-        reports = new ArrayList<>();
-        comments = new ArrayList<>();
-        votes = new ArrayList<>();
+        this.official = false;
+        this.reports = new ArrayList<>();
+        this.comments = new ArrayList<>();
+        this.votes = new ArrayList<>();
     }
 
     public User getUser() {

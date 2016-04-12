@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name="track")
 public class Tracking extends Model{
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "tag_id")
@@ -22,8 +22,13 @@ public class Tracking extends Model{
     private User user;
 
     public Tracking(Tag tag, User user) {
+        this.id = null;
         this.tag = tag;
         this.user = user;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Tag getTag() {

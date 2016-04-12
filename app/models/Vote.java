@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name="vote")
 public class Vote extends Model {
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
-    private long id;
+    private Long id;
     private int value;
 
     @ManyToOne
@@ -27,6 +27,7 @@ public class Vote extends Model {
     private User user;
 
     public Vote(User user, Solution solution, Exercise exercise) {
+        this.id = null;
         this.user = user;
         this.solution = solution;
         this.exercise = exercise;
@@ -40,7 +41,7 @@ public class Vote extends Model {
         value = (value == -1) ? 0 : 1;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

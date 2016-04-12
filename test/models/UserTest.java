@@ -24,7 +24,7 @@ public class UserTest extends AbstractModelTest {
         String testemail = "Hans";
         User existingUser = User.findUser(testemail);
         assertNotNull(existingUser);
-        long userId = existingUser.getId();
+        Long userId = existingUser.getId();
 
         User user = User.authenticate(testemail, null);
 
