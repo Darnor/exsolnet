@@ -15,12 +15,13 @@ import static models.builders.UserBuilder.anUser;
  * Created by mario on 21.03.16.
  */
 @Entity
-@Table(name="exoluser")
-public class User extends Model{
-    @Id @GeneratedValue(strategy= GenerationType.AUTO)
+@Table(name = "exoluser")
+public class User extends Model {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(unique=true)
+    @Column(unique = true)
     @NotNull
     private String email;
 
@@ -64,10 +65,51 @@ public class User extends Model{
     }
 
     /**
-      * Gets the Exercises of the User.
-      *
-      * @return Exercises of the User.
-      */
+     * Authenticates the user depending on email and password combination.
+     * Password is ignored for now, should in later stages be hashed and compared with value in database
+     * <p>
+     * CARE: password not used in this implementation
+     *
+     * @param email    Mail address of User, who wants to login
+     * @param password Password of User, who wants to login
+     * @return user
+     */
+    public static User authenticate(String email, String password) {
+        User user = findUser(email);
+        if (user == null) {
+            //create user if non existing
+            user = anUser().withEmail(email).build();
+            user.save();
+        }
+        return user;
+    }
+
+    /**
+     * Queries database, and returns User holding given email address
+     *
+     * @param email
+     * @return User
+     */
+    public static User findUser(String email) {
+        return find().where().ieq("email", email).findUnique();
+    }
+
+    /**
+     * Return Finder Object for DB's queries.
+     * <p>
+     * CARE: should not be used! may be removed on next version
+     *
+     * @return Finder for User Models
+     */
+    public static Model.Finder<Long, User> find() {
+        return new Finder<>(User.class);
+    }
+
+    /**
+     * Gets the Exercises of the User.
+     *
+     * @return Exercises of the User.
+     */
     public List<Exercise> getExercises() {
         return Collections.unmodifiableList(exercises);
     }
@@ -81,10 +123,10 @@ public class User extends Model{
     }
 
     /**
-      * Gets the Solutions of the User.
-      *
-      * @return the Solutions of the User.
-      */
+     * Gets the Solutions of the User.
+     *
+     * @return the Solutions of the User.
+     */
     public List<Solution> getSolutions() {
         return Collections.unmodifiableList(solutions);
     }
@@ -98,10 +140,10 @@ public class User extends Model{
     }
 
     /**
-      * Gets the Votes of the User.
-      *
-      * @return the Votes of the User.
-      */
+     * Gets the Votes of the User.
+     *
+     * @return the Votes of the User.
+     */
     public List<Vote> getVotes() {
         return Collections.unmodifiableList(votes);
     }
@@ -115,10 +157,10 @@ public class User extends Model{
     }
 
     /**
-      * Gets the Reports of the User.
-      *
-      * @return the Reports of the User.
-      */
+     * Gets the Reports of the User.
+     *
+     * @return the Reports of the User.
+     */
     public List<Report> getReports() {
         return Collections.unmodifiableList(reports);
     }
@@ -166,22 +208,10 @@ public class User extends Model{
     }
 
     /**
-      * Sets the Email of the User.
-      *
-      * @param email of the User.
-      */
-    public void setEmail(String email) {
-        if (email == null || email.length() == 0) {
-            throw new IllegalArgumentException("Email cannot be null and must be at east one character long.");
-        }
-        this.email = email;
-    }
-
-    /**
-      * Gets the Points of the User.
-      *
-      * @return the Points of the User.
-      */
+     * Gets the Points of the User.
+     *
+     * @return the Points of the User.
+     */
     public Long getPoints() {
         return points;
     }
@@ -196,101 +226,73 @@ public class User extends Model{
     }
 
     /**
-      * Gets the ModeratorBoolean of the User.
-      *
-      * @return the ModeratorBoolean of the User.
-      */
+     * Gets the ModeratorBoolean of the User.
+     *
+     * @return the ModeratorBoolean of the User.
+     */
     public Boolean getIsModerator() {
         return isModerator;
     }
 
     /**
-      * Sets the ModeratorBoolean of the User.
-      * 
-      * @param moderator of the User.
-      */
+     * Sets the ModeratorBoolean of the User.
+     *
+     * @param moderator of the User.
+     */
     public void setIsModerator(boolean moderator) {
         isModerator = moderator;
     }
 
     /**
-      * Gets the Email of the User.
-      *
-      * @return the Email of the User.
-      */
+     * Gets the Email of the User.
+     *
+     * @return the Email of the User.
+     */
     public String getEmail() {
         return email;
     }
 
     /**
-      * Sets the Password of the User.
-      * 
-      * @param password of the User.
-      */
-    public void setPassword(String password) {
-        this.password = password;
+     * Sets the Email of the User.
+     *
+     * @param email of the User.
+     */
+    public void setEmail(String email) {
+        if (email == null || email.length() == 0) {
+            throw new IllegalArgumentException("Email cannot be null and must be at east one character long.");
+        }
+        this.email = email;
     }
 
     /**
-      * Gets the Password of the User.
-      *
-      * @return the Password of the User.
-      */
+     * Gets the Password of the User.
+     *
+     * @return the Password of the User.
+     */
     public String getPassword() {
         return password;
     }
 
     /**
-      * Gets the Id of the User.
-      *
-      * @return the Id of the User.
-      */
+     * Sets the Password of the User.
+     *
+     * @param password of the User.
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * Gets the Id of the User.
+     *
+     * @return the Id of the User.
+     */
     public Long getId() {
         return id;
     }
 
     public List<Tag> getTrackedTags() {
         return trackings.stream().map(Tracking::getTag).collect(Collectors.toList());
-    }
-
-    /**
-     * Authenticates the user depending on email and password combination.
-     * Password is ignored for now, should in later stages be hashed and compared with value in database
-     * <p>
-     * CARE: password not used in this implementation
-     *
-     * @param email    Mail address of User, who wants to login
-     * @param password Password of User, who wants to login
-     * @return user
-     */
-    public static User authenticate(String email, String password) {
-        User user = findUser(email);
-        if (user == null) {
-            //create user if non existing
-            user = anUser().withEmail(email).build();
-            user.save();
-        }
-        return user;
-    }
-
-    /**
-     * Queries database, and returns User holding given email address
-     * @param email
-     * @return User
-     */
-    public static User findUser(String email) {
-        return find().where().ieq("email", email).findUnique();
-    }
-
-    /**
-     * Return Finder Object for DB's queries.
-     *
-     * CARE: should not be used! may be removed on next version
-     *
-     * @return Finder for User Models
-     */
-    public static Model.Finder<Long, User> find() {
-        return new Finder<>(User.class);
     }
 
     @Override

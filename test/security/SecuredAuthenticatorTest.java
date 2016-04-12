@@ -3,13 +3,12 @@ package security;
 import com.google.common.collect.ImmutableMap;
 import controllers.routes;
 import org.junit.Test;
-import play.mvc.*;
+import play.mvc.Result;
 import services.SessionService;
 
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.StringContains.*;
+import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
-import static play.mvc.Controller.session;
 import static play.mvc.Http.Status.SEE_OTHER;
 import static play.test.Helpers.*;
 
@@ -20,7 +19,7 @@ import static play.test.Helpers.*;
 public class SecuredAuthenticatorTest {
 
     @Test
-    public void authenticateFailureOnExerciseController(){
+    public void authenticateFailureOnExerciseController() {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.ExerciseController.renderOverview())
@@ -31,7 +30,7 @@ public class SecuredAuthenticatorTest {
     }
 
     @Test
-    public void authenticateFailureOnDashboardController(){
+    public void authenticateFailureOnDashboardController() {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.DashboardController.renderDashboard())
@@ -42,7 +41,7 @@ public class SecuredAuthenticatorTest {
     }
 
     @Test
-    public void authenticateFailureOnTagController(){
+    public void authenticateFailureOnTagController() {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.TagController.renderOverview())
@@ -53,11 +52,11 @@ public class SecuredAuthenticatorTest {
     }
 
     @Test
-    public void grantAccesWhenAuthenticatedExerciseController(){
+    public void grantAccesWhenAuthenticatedExerciseController() {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.ExerciseController.renderOverview())
-                    .session("connected", "ursli")
+                            .session("connected", "ursli")
             );
             assertThat(result.status(), is(OK));
         });
@@ -65,14 +64,14 @@ public class SecuredAuthenticatorTest {
 
 
     @Test
-    public void authenticateWithUserFormData(){
+    public void authenticateWithUserFormData() {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.LoginController.login())
                             .bodyForm(ImmutableMap.of(
                                     "email", "ursli",
                                     "password", "urslispw"
-                                ))
+                            ))
             );
             assertThat(result.session().get(SessionService.KEY_USERNAME), is("ursli"));
             assertThat(result.status(), is(SEE_OTHER));

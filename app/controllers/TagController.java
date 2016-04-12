@@ -63,7 +63,7 @@ public class TagController {
     }
 
     /**
-     * @param tags list containing tags
+     * @param tags          list containing tags
      * @param tagNameFilter string to filter tags names by
      * @return filterted tag list
      */
@@ -79,14 +79,14 @@ public class TagController {
      * return a sorted list depending on the orderBy value
      * per default the list is sorted by the first column aka the tag name
      *
-     * @param tags List containing tags
+     * @param tags        List containing tags
      * @param trackedTags List containing the trackings for the current user
-     * @param orderBy sort column
+     * @param orderBy     sort column
      * @return the sorted List depending on orderBy
      */
     private List<Tag> sortTagList(List<Tag> tags, List<Tag> trackedTags, int orderBy) {
         tags.sort((t1, t2) -> {
-            switch(Math.abs(orderBy)) {
+            switch (Math.abs(orderBy)) {
                 case 2:
                     int t1ExSize = t1.getExercises().size();
                     int t2ExSize = t2.getExercises().size();
@@ -106,7 +106,7 @@ public class TagController {
     }
 
     /**
-     * @param orderBy colum to order the tags
+     * @param orderBy       colum to order the tags
      * @param tagNameFilter filter for the tags
      * @return renders the tags site
      */
@@ -120,6 +120,7 @@ public class TagController {
 
     /**
      * suggests all tags (main and other) which starts with the tagName.
+     *
      * @param tagName suggest tags for tagName
      * @return Result -> list of all T
      */
@@ -130,6 +131,7 @@ public class TagController {
 
     /**
      * suggests main tags
+     *
      * @param tagName suggest tags for tagName
      * @return Result -> list of main tags
      */
@@ -140,31 +142,36 @@ public class TagController {
 
     /**
      * suggest non main tags
+     *
      * @param tagName suggest tags for tagName
      * @return Result -> list of non main tags
      */
     public Result suggestOtherTags(String tagName) {
 
         List<Tag> tagList = Tag.getSuggestedOtherTags(tagName);
-        Tag t = new Tag(tagName,false);
-        tagList.add(0,t);
+        Tag t = new Tag(tagName, false);
+        tagList.add(0, t);
         return suggestTagsByList(tagList);
 
     }
+
     /**
      * return json list with suggested tags with given list
+     *
      * @param tagList the list with suggested tags
      * @return result of tags
      */
-    public Result suggestTagsByList(List<Tag> tagList){
+    public Result suggestTagsByList(List<Tag> tagList) {
         List<TagEntry> list = new ArrayList<>();
-        for(Tag tag : tagList){
+        for (Tag tag : tagList) {
             list.add(new TagEntry(tag.getName()));
         }
         return ok(Json.toJson(list));
     }
-    public class TagEntry{
+
+    public class TagEntry {
         public final String name;
+
         public TagEntry(String name) {
             this.name = name;
         }

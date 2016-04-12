@@ -13,7 +13,7 @@ import static org.hamcrest.core.StringContains.containsString;
 public class LoginViewTest {
 
     @Test
-    public void checkIfUserNameGetsRendered(){
+    public void checkIfUserNameGetsRendered() {
         Html html = login.render("Jhonny");
         assertThat(html.body(), containsString("Jhonny"));
     }

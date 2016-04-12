@@ -2,7 +2,6 @@ package models.builders;
 
 import models.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +57,7 @@ public class CommentBuilder {
         comment.setContent(content);
         comment.setSolution(solution);
         comment.setExercise(exercise);
-        for (Report report :reports) {
+        for (Report report : reports) {
             comment.addReport(report);
         }
         return comment;

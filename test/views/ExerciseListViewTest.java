@@ -3,7 +3,6 @@ package views;
 import com.avaje.ebean.PagedList;
 import models.AbstractModelTest;
 import models.Exercise;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import play.twirl.api.Content;
@@ -22,10 +21,10 @@ public class ExerciseListViewTest extends AbstractModelTest {
     static PagedList<Exercise> pageOne;
 
     @BeforeClass
-    public static void setUp(){
-        pagedExerciseList = Exercise.find().where().orderBy("title").findPagedList(0,2);
-        pageZero = Exercise.find().where().orderBy("title").findPagedList(0,10);
-        pageOne = Exercise.find().where().orderBy("title").findPagedList(1,10);
+    public static void setUp() {
+        pagedExerciseList = Exercise.find().where().orderBy("title").findPagedList(0, 2);
+        pageZero = Exercise.find().where().orderBy("title").findPagedList(0, 10);
+        pageOne = Exercise.find().where().orderBy("title").findPagedList(1, 10);
     }
 
     @Test

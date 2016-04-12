@@ -14,13 +14,14 @@ import java.util.stream.Collectors;
  * Controller for DashboardView
  */
 @Security.Authenticated(Secured.class)
-public class DashboardController extends Controller{
+public class DashboardController extends Controller {
 
     /**
      * Render the dashboard route
+     *
      * @return the result
      */
-    public Result renderDashboard(){
+    public Result renderDashboard() {
         return ok(dashboard.render(SessionService.getCurrentUserEmail(), getSubscribedTags(), getRecentComments()));
     }
 
@@ -36,18 +37,18 @@ public class DashboardController extends Controller{
      */
     private List<TagEntry> getSubscribedTags() {
         return SessionService.getCurrentUser().getTrackedTags().stream().map(tag ->
-            new TagEntry(
-                    tag.getName(),
-                    tag.getNofCompletedExercises(SessionService.getCurrentUser()),
-                    tag.getExercises().size()
-            )
+                new TagEntry(
+                        tag.getName(),
+                        tag.getNofCompletedExercises(SessionService.getCurrentUser()),
+                        tag.getExercises().size()
+                )
         ).collect(Collectors.toList());
     }
 
     /**
      * A entry for the tag enumeration, used by the dashboard model
      */
-    public static class TagEntry{
+    public static class TagEntry {
         public final String name;
         public final long progress;
         public final long total;

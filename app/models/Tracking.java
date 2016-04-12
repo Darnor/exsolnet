@@ -8,9 +8,10 @@ import javax.persistence.*;
  * Created by Claudia on 31.03.2016.
  */
 @Entity
-@Table(name="track")
-public class Tracking extends Model{
-    @Id @GeneratedValue(strategy= GenerationType.AUTO)
+@Table(name = "track")
+public class Tracking extends Model {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * Created by Claudia on 31.03.2016.
  */
 @Entity
-@Table(name="report")
+@Table(name = "report")
 public class Report extends Model {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,7 +34,7 @@ public class Report extends Model {
     private Exercise exercise;
 
     @ManyToOne
-   @JoinColumn(name = "comment_id")
+    @JoinColumn(name = "comment_id")
     private Comment comment;
 
     public Report(User user, String message) {

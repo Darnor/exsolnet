@@ -13,12 +13,12 @@
     justify-content: flex-start;
     flex-wrap: nowrap;
     max-width: 1024px;
-    margin-left:auto;
-    margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
     height: auto;
 }
 
-#navigation a{
+#navigation a {
     padding: 0.5rem;
     font-weight: bold;
     font-family: Helvetica;
@@ -26,7 +26,7 @@
     color: white;
 }
 
-#navigation a:last-child{
+#navigation a:last-child {
     margin-left: auto;
 }
 
@@ -34,11 +34,11 @@
     background-color: #9CCC65;
 }
 
-.body{
+.body {
     max-width: 1024px;
     margin-top: 1rem;
-    margin-left:auto;
-    margin-right:auto;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 body {
@@ -46,13 +46,12 @@ body {
     background-color: #EEEEEE;
 }
 
-
-@media (max-width: 800px){
+@media (max-width: 800px) {
     #navigation {
         flex-direction: column;
     }
 
-    #navigation a:last-child{
+    #navigation a:last-child {
         margin-left: 0;
     }
 }

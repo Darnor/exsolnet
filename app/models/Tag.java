@@ -15,26 +15,21 @@ import java.util.List;
 @Table(name = "tag")
 public class Tag extends Model {
 
+    private static final String IS_MAIN_TAG_STR = "isMainTag";
+    private static final String NAME_STR = "name";
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     @Column(unique = true)
     @NotNull
     private String name;
-
     @NotNull
     private Boolean isMainTag;
-
     @ManyToMany(mappedBy = "tags")
     private List<Exercise> exercises;
-
     @OneToMany
     @JoinColumn(name = "tag")
     private List<Tracking> trackings;
-
-    private static final String IS_MAIN_TAG_STR = "isMainTag";
-    private static final String NAME_STR = "name";
 
     /**
      * Constructor for new Tag for one exercise
@@ -49,69 +44,7 @@ public class Tag extends Model {
     }
 
     //default
-    public Tag(){
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Boolean isMainTag() {
-        return isMainTag;
-    }
-
-    public void setIsMainTag(boolean isMainTag) {
-        this.isMainTag = isMainTag;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Exercise> getExercises() {
-        return exercises;
-    }
-
-    public void removeExercise(Exercise exercise) {
-        exercises.remove(exercise);
-    }
-
-    public void removeExercise(Long id) {
-        exercises.removeIf(e -> e.getId().equals(id));
-    }
-
-    public List<Tracking> getTrackings() {
-        return trackings;
-    }
-
-    public void setTrackings(List<Tracking> trackings) {
-        this.trackings = trackings;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Boolean getMainTag() {
-        return isMainTag;
-    }
-
-    public void setMainTag(Boolean mainTag) {
-        isMainTag = mainTag;
-    }
-
-    public void setExercises(List<Exercise> exercises) {
-        this.exercises = exercises;
-    }
-
-    public void addExercise(Exercise exercise) {
-        if (exercises == null)
-            exercises = new ArrayList<Exercise>();
-        exercises.add(exercise);
+    public Tag() {
     }
 
     /**
@@ -129,12 +62,6 @@ public class Tag extends Model {
 
     public static Model.Finder<Long, Tag> find() {
         return new Finder<>(Tag.class);
-    }
-
-    public long getNofCompletedExercises(User currentUser) {
-        return getExercises().stream().mapToLong(exercise ->
-                exercise.getSolutions().stream().filter(solution -> solution.getUser().equals(currentUser)).count()
-        ).sum();
     }
 
     /**
@@ -213,6 +140,74 @@ public class Tag extends Model {
             create(tag);
         }
         return tag;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Boolean isMainTag() {
+        return isMainTag;
+    }
+
+    public void setIsMainTag(boolean isMainTag) {
+        this.isMainTag = isMainTag;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Exercise> getExercises() {
+        return exercises;
+    }
+
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
+    }
+
+    public void removeExercise(Exercise exercise) {
+        exercises.remove(exercise);
+    }
+
+    public void removeExercise(Long id) {
+        exercises.removeIf(e -> e.getId().equals(id));
+    }
+
+    public List<Tracking> getTrackings() {
+        return trackings;
+    }
+
+    public void setTrackings(List<Tracking> trackings) {
+        this.trackings = trackings;
+    }
+
+    public Boolean getMainTag() {
+        return isMainTag;
+    }
+
+    public void setMainTag(Boolean mainTag) {
+        isMainTag = mainTag;
+    }
+
+    public void addExercise(Exercise exercise) {
+        if (exercises == null)
+            exercises = new ArrayList<Exercise>();
+        exercises.add(exercise);
+    }
+
+    public long getNofCompletedExercises(User currentUser) {
+        return getExercises().stream().mapToLong(exercise ->
+                exercise.getSolutions().stream().filter(solution -> solution.getUser().equals(currentUser)).count()
+        ).sum();
     }
 
 }

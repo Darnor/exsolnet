@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 public class TagTest extends AbstractModelTest {
 
     @Test
-    public void testGetCompletedExercisesNoSolutions(){
+    public void testGetCompletedExercisesNoSolutions() {
         User userA = anUser().withEmail("Hans").build();
         Exercise e1 = anExercise().withTitle("Exercise 1").build();
         Exercise e2 = anExercise().withTitle("Exercise 2").build();
@@ -25,14 +25,14 @@ public class TagTest extends AbstractModelTest {
     }
 
     @Test
-    public void testGetCompletedExercisesNoExercises(){
+    public void testGetCompletedExercisesNoExercises() {
         User userA = anUser().withEmail("Hans").build();
         Tag tag = aTag().withName("A").withExercises(Arrays.asList()).build();
         assertEquals(0, tag.getNofCompletedExercises(userA));
     }
 
     @Test
-    public void testGetCompletedExercisesOnlySolution(){
+    public void testGetCompletedExercisesOnlySolution() {
         User userA = anUser().withEmail("Hans").build();
         Solution s1 = aSolution().withUser(userA).build();
         Solution s2 = aSolution().withUser(userA).build();
@@ -44,7 +44,7 @@ public class TagTest extends AbstractModelTest {
     }
 
     @Test
-    public void testGetCompletedExercisesSeveralSolutions(){
+    public void testGetCompletedExercisesSeveralSolutions() {
         User userA = anUser().withEmail("Hans").build();
         User userB = anUser().withEmail("Franz").build();
         Solution s11 = aSolution().withUser(userA).build();
@@ -60,7 +60,7 @@ public class TagTest extends AbstractModelTest {
     }
 
     @Test
-    public void testGetSuggestedTags(){
+    public void testGetSuggestedTags() {
         assertEquals(1, Tag.getSuggestedTags("An1").size());
         assertEquals("An1I", Tag.getSuggestedTags("An1").get(0).getName());
         assertEquals(2, Tag.getSuggestedTags("An").size());
@@ -71,19 +71,19 @@ public class TagTest extends AbstractModelTest {
     }
 
     @Test
-    public void testGetSuggestedMainTags(){
+    public void testGetSuggestedMainTags() {
         assertEquals(1, Tag.getSuggestedMainTags("V").size());
         assertEquals("VSS", Tag.getSuggestedMainTags("V").get(0).getName());
     }
 
     @Test
-    public void testGetSuggestedOtherTags(){
+    public void testGetSuggestedOtherTags() {
         assertEquals(1, Tag.getSuggestedOtherTags("Abl").size());
         assertEquals("Ableiten", Tag.getSuggestedOtherTags("Abl").get(0).getName());
     }
 
     @Test
-    public void testFindTagByName(){
+    public void testFindTagByName() {
         assertEquals("An1I", Tag.findTagByName("An1I").getName());
         assertEquals(true, Tag.findTagByName("An1I").isMainTag());
         assertEquals(null, Tag.findTagByName("asdfsadf"));
@@ -91,7 +91,7 @@ public class TagTest extends AbstractModelTest {
 
 
     @Test
-    public void testFindMainTagByName(){
+    public void testFindMainTagByName() {
         assertEquals("An1I", Tag.findMainTagByName("An1I").getName());
         assertEquals(true, Tag.findMainTagByName("An1I").isMainTag());
         assertEquals(null, Tag.findMainTagByName("asdfsadf"));
@@ -99,9 +99,8 @@ public class TagTest extends AbstractModelTest {
     }
 
 
-
     @Test
-    public void testFindOtherTagByName(){
+    public void testFindOtherTagByName() {
         assertEquals("Ableiten", Tag.findOtherTagByName("Ableiten").getName());
         assertEquals(false, Tag.findOtherTagByName("Ableiten").isMainTag());
         assertEquals(null, Tag.findOtherTagByName("asdfsadf"));
@@ -109,7 +108,7 @@ public class TagTest extends AbstractModelTest {
     }
 
     @Test
-    public void testGetSuggestedTagsNotExists(){
+    public void testGetSuggestedTagsNotExists() {
         java.util.List<Tag> suggestedTags = Tag.getSuggestedTags("b");
         assertEquals(0, suggestedTags.size());
     }

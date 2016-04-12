@@ -1,21 +1,21 @@
 @(user: String)
-    @main("User") {
-        @if(user == null) {
-            <form method="POST" action="@routes.LoginController.login()">
-                <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input class="form-control" name="email" id="email" placeholder="Email">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Password">
-                </div>
-                <button type="submit" id="btn_login" class="btn btn-default">Login</button>
-            </form>
-        } else {
-            <form method="POST" action="@routes.LoginController.logout()">
-                <label id="lbl_username">@user</label>
-                <button type="submit" id="btn_logout" class="btn btn-default">Logout</button>
-            </form>
-        }
+@main("User") {
+    @if(user == null) {
+        <form method="POST" action="@routes.LoginController.login()">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input class="form-control" name="email" id="email" placeholder="Email">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            </div>
+            <button type="submit" id="btn_login" class="btn btn-default">Login</button>
+        </form>
+    } else {
+        <form method="POST" action="@routes.LoginController.logout()">
+            <label id="lbl_username">@user</label>
+            <button type="submit" id="btn_logout" class="btn btn-default">Logout</button>
+        </form>
     }
+}

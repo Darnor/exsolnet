@@ -5,9 +5,7 @@ import org.junit.Test;
 import static integration.AbstractIntegrationTest.FRANZ;
 import static integration.AbstractIntegrationTest.as;
 import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static play.test.Helpers.*;
 
 /**
  * Created by tourn on 11.4.16.

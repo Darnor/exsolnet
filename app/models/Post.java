@@ -35,6 +35,10 @@ public class Post extends Model {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getContent() {
         return content;
     }
@@ -47,16 +51,12 @@ public class Post extends Model {
         return time;
     }
 
-    public void setPoints(long points) {
-        this.points = points;
-    }
-
     public long getPoints() {
         return points;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPoints(long points) {
+        this.points = points;
     }
 
     @Override
