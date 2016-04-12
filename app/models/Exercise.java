@@ -1,12 +1,13 @@
 package models;
 
-import com.avaje.ebean.*;
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.Model;
+import com.avaje.ebean.PagedList;
 import com.avaje.ebean.Query;
 import com.avaje.ebean.annotation.Formula;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.*;
 
 /**

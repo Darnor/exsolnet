@@ -1,22 +1,23 @@
 package controllers;
 
 import com.avaje.ebean.PagedList;
-
-import models.Tag;
-import models.builders.ExerciseBuilder;
-import play.data.DynamicForm;
-import play.mvc.Security;
 import models.Exercise;
+import models.Tag;
+import play.data.DynamicForm;
 import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
-
+import play.mvc.Security;
 import services.SessionService;
 import views.html.editExercise;
 import views.html.exerciseList;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static models.builders.ExerciseBuilder.anExercise;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -40,7 +41,7 @@ public class ExerciseController extends Controller {
      * @return Result of new Exercise
      */
     public Result renderCreate() {
-        return ok(editExercise.render(ExerciseBuilder.anExercise().build(), SessionService.getCurrentUserEmail()));
+        return ok(editExercise.render(anExercise().build(), SessionService.getCurrentUserEmail()));
     }
 
     /**
@@ -53,8 +54,7 @@ public class ExerciseController extends Controller {
     }
 
     public Result renderDetails(Long id) {
-        //TODO
-        return notFound();
+        return TODO;
     }
 
     /**
@@ -96,7 +96,7 @@ public class ExerciseController extends Controller {
 
         //create
         if (exerciseId == null) {
-            exercise = ExerciseBuilder.anExercise().build();
+            exercise = anExercise().build();
             Exercise.create(exercise);
         } else {
             //get
@@ -181,18 +181,30 @@ public class ExerciseController extends Controller {
 
     /**
      * Updates an exercise.
-     * If exercise does not exist it will be created.
      *
      * @param exerciseId the id of the exercise to be updated. if -1 it will be created.
      * @return the result
      */
-    public Result update(Long exerciseId) {
+    public Result processUpdate(Long exerciseId) {
         //getting data from form
         DynamicForm requestData = formFactory.form().bindFromRequest();
         Exercise exercise = getExerciseToUpdate(exerciseId);
         setExerciseDataFromUpdateView(exercise, requestData);
         Exercise.update(exercise);
         //redirect to exercise list
+        return redirect(routes.ExerciseController.renderOverview());
+    }
+
+    /**
+     * Creates an exercise
+     *
+     * @return the result
+     */
+    public Result processCreate() {
+        DynamicForm requestData = formFactory.form().bindFromRequest();
+        Exercise exercise = anExercise().withUser(SessionService.getCurrentUser()).build();
+        setExerciseDataFromUpdateView(exercise, requestData);
+        exercise.save();
         return redirect(routes.ExerciseController.renderOverview());
     }
 }

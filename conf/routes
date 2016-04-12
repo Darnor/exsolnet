@@ -7,7 +7,8 @@ GET         /exercises              controllers.ExerciseController.list(page:Int
 GET         /exercises              controllers.ExerciseController.renderOverview
 GET         /exercises/create       controllers.ExerciseController.renderCreate
 GET         /exercises/:id          controllers.ExerciseController.renderDetails(id: Long)
-POST        /exercises/:id/update   controllers.ExerciseController.update(id: Long)
+POST        /exercises/:id/update   controllers.ExerciseController.processUpdate(id: Long)
+POST        /exercises/create       controllers.ExerciseController.processCreate()
 GET         /exercises/:id/edit     controllers.ExerciseController.edit(id: Long)
 GET         /dashboard              controllers.DashboardController.renderDashboard
 GET         /tags                   controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
