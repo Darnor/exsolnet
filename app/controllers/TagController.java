@@ -43,11 +43,11 @@ public class TagController {
             try {
                 tracking.save();
             } catch (OptimisticLockException ex) {
-                currentUser.removeTracking(tracking);
+                currentUser.removeTracking(tracking.getId());
                 throw ex;
             }
         } else {
-            currentUser.removeTracking(tracking);
+            currentUser.removeTracking(tracking.getId());
             try {
                 tracking.delete();
             } catch (OptimisticLockException ex) {

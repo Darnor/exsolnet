@@ -50,6 +50,8 @@ public class User extends Model{
     @OneToMany(mappedBy = "user")
     private List<Tracking> trackings;
 
+    private static final String EMAIL_STR = "email";
+
     public User(String email, String password) {
         this.id = null;
         this.email = email;
@@ -76,8 +78,8 @@ public class User extends Model{
         exercises.add(exercise);
     }
 
-    public void removeExercise(Exercise exercise) {
-        exercises.remove(exercise);
+    public void removeExercise(long exerciseId) {
+        exercises.removeIf(e -> e.getId() == exerciseId);
     }
 
     /**
@@ -93,8 +95,8 @@ public class User extends Model{
         solutions.add(solution);
     }
 
-    public void removeSolution(Solution solution) {
-        solutions.remove(solution);
+    public void removeSolution(long solutionId) {
+        solutions.removeIf(s -> s.getId() == solutionId);
     }
 
     /**
@@ -110,8 +112,8 @@ public class User extends Model{
         votes.add(vote);
     }
 
-    public void removeVote(Vote vote) {
-        votes.remove(vote);
+    public void removeVote(long voteId) {
+        votes.removeIf(v -> v.getId() == voteId);
     }
 
     /**
@@ -127,8 +129,8 @@ public class User extends Model{
         reports.add(report);
     }
 
-    public void removeReport(Report report) {
-        reports.remove(report);
+    public void removeReport(long reportId) {
+        reports.removeIf(r -> r.getId() == reportId);
     }
 
     /**
@@ -144,8 +146,8 @@ public class User extends Model{
         trackings.add(tracking);
     }
 
-    public void removeTracking(Tracking tracking) {
-        trackings.remove(tracking);
+    public void removeTracking(long trackingId) {
+        trackings.removeIf(t -> t.getId() == trackingId);
     }
 
     /**
@@ -161,8 +163,8 @@ public class User extends Model{
         comments.add(comment);
     }
 
-    public void removeComment(Comment comment) {
-        comments.remove(comment);
+    public void removeComment(long commentId) {
+        comments.removeIf(c -> c.getId() == commentId);
     }
 
     /**
@@ -175,6 +177,15 @@ public class User extends Model{
             throw new IllegalArgumentException("Email cannot be null and must be at east one character long.");
         }
         this.email = email;
+    }
+
+    /**
+     * Gets the Email of the User.
+     *
+     * @return the Email of the User.
+     */
+    public String getEmail() {
+        return email;
     }
 
     /**
@@ -200,7 +211,7 @@ public class User extends Model{
       *
       * @return the ModeratorBoolean of the User.
       */
-    public Boolean getIsModerator() {
+    public boolean getIsModerator() {
         return isModerator;
     }
 
@@ -211,15 +222,6 @@ public class User extends Model{
       */
     public void setIsModerator(boolean moderator) {
         isModerator = moderator;
-    }
-
-    /**
-      * Gets the Email of the User.
-      *
-      * @return the Email of the User.
-      */
-    public String getEmail() {
-        return email;
     }
 
     /**
@@ -279,7 +281,7 @@ public class User extends Model{
      * @return User
      */
     public static User findUser(String email) {
-        return find().where().ieq("email", email).findUnique();
+        return find().where().ieq(EMAIL_STR, email).findUnique();
     }
 
     /**
@@ -291,25 +293,5 @@ public class User extends Model{
      */
     public static Model.Finder<Long, User> find() {
         return new Finder<>(User.class);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        User user = (User) o;
-
-        return email.equals(user.email);
-
-    }
-
-    @Override
-    public int hashCode() {
-        return email.hashCode();
     }
 }

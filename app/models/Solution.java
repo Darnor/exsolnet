@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name="solution")
 public class Solution extends Post{
     @Basic
-    private Boolean official;
+    private boolean official;
 
     @ManyToOne
     @JoinColumn(name = "exercise_id")

@@ -16,7 +16,7 @@ public class TagBuilder {
     private Long id;
 
     private TagBuilder() {
-        exercises = new ArrayList<Exercise>();
+        exercises = new ArrayList<>();
     }
 
     public static TagBuilder aTag() {
@@ -38,8 +38,6 @@ public class TagBuilder {
         return this;
     }
 
-
-
     public TagBuilder withExercises(List<Exercise> exercises) {
         this.exercises = exercises;
         return this;
@@ -50,10 +48,8 @@ public class TagBuilder {
     }
 
     public Tag build() {
-        Tag tag = new Tag();
+        Tag tag = new Tag(name, isMainTag);
         tag.setId(id);
-        tag.setName(name);
-        tag.setIsMainTag(isMainTag);
         for (Exercise exercise : exercises) {
             tag.addExercise(exercise);
         }

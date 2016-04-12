@@ -48,8 +48,8 @@ public class Tag extends Model {
         this.isMainTag = isMainTag;
     }
 
-    //default
-    public Tag(){
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {
@@ -76,12 +76,8 @@ public class Tag extends Model {
         return exercises;
     }
 
-    public void removeExercise(Exercise exercise) {
-        exercises.remove(exercise);
-    }
-
-    public void removeExercise(Long id) {
-        exercises.removeIf(e -> e.getId().equals(id));
+    public void removeExercise(Long exerciseId) {
+        exercises.removeIf(e -> e.getId().equals(exerciseId));
     }
 
     public List<Tracking> getTrackings() {
@@ -90,10 +86,6 @@ public class Tag extends Model {
 
     public void setTrackings(List<Tracking> trackings) {
         this.trackings = trackings;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Boolean getMainTag() {
