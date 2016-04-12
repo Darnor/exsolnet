@@ -38,7 +38,7 @@ public class Comment extends Model {
     private Exercise exercise;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime time;
+    private LocalDateTime time = LocalDateTime.now();
 
     private static final int NOF_RECENT_COMMENTS = 5;
 
@@ -79,6 +79,22 @@ public class Comment extends Model {
 
     public void setExercise(Exercise exercise) {
         this.exercise = exercise;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public Exercise getExercise() {
+        return exercise;
+    }
+
+    public Solution getSolution() {
+        return solution;
     }
 
     /**

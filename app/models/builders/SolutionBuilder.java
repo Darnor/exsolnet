@@ -9,9 +9,9 @@ import models.User;
  */
 public class SolutionBuilder {
     private User user;
-    private Exercise exercise;
     private String content;
     private int points;
+    private Exercise exercise;
 
     private SolutionBuilder() {
     }
@@ -41,12 +41,14 @@ public class SolutionBuilder {
     }
 
     public SolutionBuilder but() {
-        return aSolution().withUser(user).withContent(content).withPoints(points);
+        return aSolution().withUser(user).withContent(content).withPoints(points).withExercise(exercise);
     }
 
     public Solution build() {
         Solution solution = new Solution(user, exercise);
         solution.setContent(content);
+        solution.setPoints(points);
+        solution.setExercise(exercise);
         return solution;
     }
 }

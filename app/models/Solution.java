@@ -42,4 +42,12 @@ public class Solution extends Post{
     public User getUser() {
         return user;
     }
+
+    public Exercise getExercise() {
+        return exercise;
+    }
+
+    public void setExercise(Exercise exercise) {
+        this.exercise = exercise;
+    }
 }
