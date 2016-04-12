@@ -214,24 +214,5 @@ public class Tag extends Model {
         }
         return tag;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        Tag tag = (Tag) o;
-
-        return name.equals(tag.name);
-    }
-
-    //TODO FALSCH!!
-    @Override
-    public int hashCode() {
-        return name.hashCode();
-    }
+    
 }

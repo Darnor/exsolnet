@@ -76,10 +76,10 @@ public class ExerciseTest extends AbstractModelTest {
         list.add("aa");
         list.add("bb");
         List<Tag> tags = new ArrayList<Tag>();
-        Tag t1 = TagBuilder.aTag().withMaintag(true).withName("aa").withId(1L).build();
-        Tag t2 = TagBuilder.aTag().withMaintag(true).withName("cc").withId(2L).build();
-        Tag t3 = TagBuilder.aTag().withMaintag(false).withName("bb").withId(3L).build();
-        Tag t4 = TagBuilder.aTag().withMaintag(false).withName("dd").withId(4L).build();
+        Tag t1 = TagBuilder.aTag().withIsMainTag(true).withName("aa").withId(1L).build();
+        Tag t2 = TagBuilder.aTag().withIsMainTag(true).withName("cc").withId(2L).build();
+        Tag t3 = TagBuilder.aTag().withIsMainTag(false).withName("bb").withId(3L).build();
+        Tag t4 = TagBuilder.aTag().withIsMainTag(false).withName("dd").withId(4L).build();
         tags.add(t1);
         tags.add(t2);
         tags.add(t3);
