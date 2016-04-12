@@ -52,7 +52,7 @@ public class ExerciseController extends Controller {
         return list(0, 1, "", "");
     }
 
-    public Result renderDetails(long id) {
+    public Result renderDetails(Long id) {
         //TODO
         return notFound();
     }
@@ -186,7 +186,7 @@ public class ExerciseController extends Controller {
      * @param exerciseId the id of the exercise to be updated. if -1 it will be created.
      * @return the result
      */
-    public Result update(long exerciseId) {
+    public Result update(Long exerciseId) {
         //getting data from form
         DynamicForm requestData = formFactory.form().bindFromRequest();
         Exercise exercise = getExerciseToUpdate(exerciseId);
