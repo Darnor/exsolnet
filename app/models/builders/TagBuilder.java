@@ -3,6 +3,7 @@ package models.builders;
 import models.Exercise;
 import models.Tag;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,8 +14,10 @@ public class TagBuilder {
     private boolean isMainTag;
     private List<Exercise> exercises;
     private Boolean isMaintag;
+    private Long id;
 
     private TagBuilder() {
+        exercises = new ArrayList<Exercise>();
     }
 
     public static TagBuilder aTag() {
@@ -30,6 +33,12 @@ public class TagBuilder {
         this.name = name;
         return this;
     }
+
+    public TagBuilder withId(long id) {
+        this.id = id;
+        return this;
+    }
+
 
     public TagBuilder withMaintag(Boolean isMaintag) {
         this.isMaintag = isMaintag;
@@ -48,9 +57,7 @@ public class TagBuilder {
 
     public Tag build() {
         Tag tag = new Tag(name, isMainTag);
-        tag.setName(name);
-        tag.setExercises(exercises);
-        tag.setMainTag(isMaintag);
+        tag.setId(id);
         for (Exercise exercise : exercises) {
             tag.addExercise(exercise);
         }

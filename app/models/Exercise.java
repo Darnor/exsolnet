@@ -51,7 +51,6 @@ public class Exercise extends Post {
     public void addTag(Tag tag){
         if(tags==null)
             tags = new ArrayList<Tag>();
-        tag.addExercise(this);
         tags.add(tag);
     }
     public String getTitle() {

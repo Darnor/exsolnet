@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public class Post extends Model {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -52,6 +53,10 @@ public class Post extends Model {
 
     public long getPoints() {
         return points;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override

@@ -18,6 +18,7 @@ public class ExerciseBuilder {
     private List<Comment> comments;
     private String content;
     private long points;
+    private Long id;
 
     private ExerciseBuilder() {
         solutions = new ArrayList<>();
@@ -48,6 +49,11 @@ public class ExerciseBuilder {
 
     public ExerciseBuilder withTags(List<Tag> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    public ExerciseBuilder withId(Long id) {
+        this.id = id;
         return this;
     }
 
@@ -87,6 +93,7 @@ public class ExerciseBuilder {
         exercise.setTitle(title);
         exercise.setContent(content);
         exercise.setPoints(points);
+        exercise.setId(id);
 
         for (Solution solution : solutions) {
             exercise.addSolution(solution);
