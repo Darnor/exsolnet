@@ -59,7 +59,7 @@ public class ExerciseTest extends AbstractModelTest {
         Exercise exercise = ExerciseBuilder.anExercise().build();
         List<Exercise> exerciseList = new ArrayList<Exercise>();
         exerciseList.add(exercise);
-        Tag tag = TagBuilder.aTag().withName("tag").withMaintag(true).build();
+        Tag tag = TagBuilder.aTag().withName("tag").withId(1L).withIsMainTag(true).build();
         exercise.addTag(tag);
         assertEquals(1,exercise.getTags().size());
         assertEquals("tag",exercise.getTags().get(0).getName());

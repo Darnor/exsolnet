@@ -48,6 +48,10 @@ public class Tag extends Model {
         this.isMainTag = isMainTag;
     }
 
+    //default
+    public Tag(){
+    }
+
     public Long getId() {
         return id;
     }

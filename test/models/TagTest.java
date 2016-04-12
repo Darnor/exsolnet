@@ -108,11 +108,6 @@ public class TagTest extends AbstractModelTest {
         assertEquals(null, Tag.findOtherTagByName("An1I"));
     }
 
-
-
-
-
-
     @Test
     public void testGetSuggestedTagsNotExists(){
         java.util.List<Tag> suggestedTags = Tag.getSuggestedTags("b");

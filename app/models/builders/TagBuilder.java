@@ -13,7 +13,6 @@ public class TagBuilder {
     private String name;
     private boolean isMainTag;
     private List<Exercise> exercises;
-    private Boolean isMaintag;
     private Long id;
 
     private TagBuilder() {
@@ -40,11 +39,6 @@ public class TagBuilder {
     }
 
 
-    public TagBuilder withMaintag(Boolean isMaintag) {
-        this.isMaintag = isMaintag;
-        return this;
-    }
-
 
     public TagBuilder withExercises(List<Exercise> exercises) {
         this.exercises = exercises;
@@ -56,8 +50,10 @@ public class TagBuilder {
     }
 
     public Tag build() {
-        Tag tag = new Tag(name, isMainTag);
+        Tag tag = new Tag();
         tag.setId(id);
+        tag.setName(name);
+        tag.setIsMainTag(isMainTag);
         for (Exercise exercise : exercises) {
             tag.addExercise(exercise);
         }
