@@ -70,24 +70,24 @@
     </table>
 
     <div id="pagination" class="pagination">
-        <div class="prev">
+        <div>
             @if(currentPage.hasPrev){
-                <div>
+                <div class="prev">
                     <a href="@link(currentPage.getPageIndex-1,currentOrderBy)">&larr; Vorherige</a>
                 </div>
             }else {
-                <div class="disabled">
+                <div class="prev disabled">
                     <a>&larr; Vorherige</a>
                 </div>
             }
         </div>
-        <div class="next">
+        <div>
             @if(currentPage.hasNext) {
-                <div>
+                <div class="next">
                     <a href="@link(currentPage.getPageIndex+1, currentOrderBy)">Nächste &rarr;</a>
                 </div>
             }else{
-                <div class="disabled">
+                <div class="next disabled">
                     <a>Nächste &rarr;</a>
                 </div>
             }
