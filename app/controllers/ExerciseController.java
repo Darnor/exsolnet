@@ -28,6 +28,11 @@ public class ExerciseController extends Controller {
     @Inject
     FormFactory formFactory;
 
+    private static final String TITLE_STR = "title";
+    private static final String CONTENT_STR = "content";
+    private static final String MAIN_TAG_STR = "mainTag";
+    private static final String OTHER_TAG_STR = "otherTag";
+
     /**
      * render if create Exercise. Creates new blank exercise with id -1.
      * id -1 is important. And passes session of current user.
@@ -35,20 +40,34 @@ public class ExerciseController extends Controller {
      * @return Result of new Exercise
      */
     public Result renderCreate() {
-        return ok(editExercise.render(ExerciseBuilder.anExercise().withId(-1L).build(), SessionService.getCurrentUserEmail()));
+        return ok(editExercise.render(ExerciseBuilder.anExercise().build(), SessionService.getCurrentUserEmail()));
     }
 
+    /**
+     * render the Default ExerciseOverview View
+     *
+     * @return Result of the Default ExerciseOverview View
+     */
     public Result renderOverview() {
         return list(0, 1, "", "");
     }
 
-    public Result renderDetails(long id) {
+    public Result renderDetails(Long id) {
         //TODO
         return notFound();
     }
 
+    /**
+     * render the ExerciseOverview View with given Parameters
+     *
+     * @param page the Pagenumber of the list
+     * @param order the id of the Table-Header
+     * @param titleFilter string which the title of an exercise should contains
+     * @param tagFilter string of tags for filter splittet by ','
+     * @return Result View of the filtered ExerciseList
+     */
     public Result list(int page, int order, String titleFilter, String tagFilter) {
-        int pageSize = 5;
+        int pageSize = 10;
         String orderBy = Exercise.getOrderByAttributeString(order);
         PagedList<Exercise> exercises = Exercise.getPagedList(page, orderBy, titleFilter, tagFilter.split(","), pageSize);
         return ok(exerciseList.render(exercises, order, titleFilter, tagFilter));
@@ -62,25 +81,21 @@ public class ExerciseController extends Controller {
      */
     public Result edit(long id) {
         Exercise exercise = Exercise.find().byId(id);
-
-        if (exercise == null)
-            return notFound();
-
-        return ok(editExercise.render(exercise, SessionService.getCurrentUserEmail()));
+        return (exercise == null) ? notFound() : ok(editExercise.render(exercise, SessionService.getCurrentUserEmail()));
     }
 
     /**
      * Returns a exercise.
-     * If id exists. Get exercise from db. If if -1 create new Exercise and return
+     * If id exists. Get exercise from db. If null create new Exercise and return
      *
-     * @param exerciseId the id of the exercise or -1 if new
+     * @param exerciseId the id of the exercise or null if new
      * @return the exercise
      */
     private Exercise getExerciseToUpdate(Long exerciseId) {
         Exercise exercise;
 
         //create
-        if (exerciseId == -1) {
+        if (exerciseId == null) {
             exercise = ExerciseBuilder.anExercise().build();
             Exercise.create(exercise);
         } else {
@@ -133,7 +148,7 @@ public class ExerciseController extends Controller {
         saveMaintagInExercise(exercise, main);
         saveOtherTagInExercise(exercise, other);
 
-        List<String> tags = new ArrayList<String>();
+        List<String> tags = new ArrayList<>();
         tags.addAll(main);
         tags.addAll(other);
 
@@ -147,7 +162,7 @@ public class ExerciseController extends Controller {
      * @return a list from a string or a new list if string is null
      */
     private List<String> getListFromString(String data, String delimeter) {
-        return data != null && !data.equals("") ? Arrays.asList(data.split(delimeter)) : new ArrayList<String>();
+        return data != null && data.length() > 0 ? Arrays.asList(data.split(delimeter)) : new ArrayList<>();
     }
 
     /**
@@ -156,11 +171,11 @@ public class ExerciseController extends Controller {
      * @param requestData the data from the form
      * @throws IllegalArgumentException
      */
-    private void setExerciseDataFromUpdateView(Exercise exercise, DynamicForm requestData) throws IllegalArgumentException {
-        exercise.setTitle(requestData.get("title"));
-        exercise.setContent(requestData.get("content"));
-        List<String> main = getListFromString(requestData.get("maintag"), ",");
-        List<String> other = getListFromString(requestData.get("othertag"), ",");
+    private void setExerciseDataFromUpdateView(Exercise exercise, DynamicForm requestData) {
+        exercise.setTitle(requestData.get(TITLE_STR));
+        exercise.setContent(requestData.get(CONTENT_STR));
+        List<String> main = getListFromString(requestData.get(MAIN_TAG_STR), ",");
+        List<String> other = getListFromString(requestData.get(OTHER_TAG_STR), ",");
         updateTagInExercise(exercise, main, other);
     }
 
@@ -171,7 +186,7 @@ public class ExerciseController extends Controller {
      * @param exerciseId the id of the exercise to be updated. if -1 it will be created.
      * @return the result
      */
-    public Result update(long exerciseId) {
+    public Result update(Long exerciseId) {
         //getting data from form
         DynamicForm requestData = formFactory.form().bindFromRequest();
         Exercise exercise = getExerciseToUpdate(exerciseId);
@@ -180,8 +195,4 @@ public class ExerciseController extends Controller {
         //redirect to exercise list
         return redirect(routes.ExerciseController.renderOverview());
     }
-
-
-
 }
-

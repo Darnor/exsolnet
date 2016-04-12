@@ -22,8 +22,13 @@ public class Tracking extends Model{
     private User user;
 
     public Tracking(Tag tag, User user) {
+        this.id = null;
         this.tag = tag;
         this.user = user;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Tag getTag() {

@@ -1,7 +1,7 @@
 package models;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,7 +9,8 @@ import java.util.List;
  */
 @Entity
 @Table(name="solution")
-public class Solution  extends  Post{
+public class Solution extends Post{
+    @Basic
     private Boolean official;
 
     @ManyToOne
@@ -29,11 +30,16 @@ public class Solution  extends  Post{
     @OneToMany(mappedBy = "solution")
     private List<Vote> votes;
 
-    public User getUser() {
-        return user;
+    public Solution(User user, Exercise exercise) {
+        this.user = user;
+        this.exercise = exercise;
+        this.official = false;
+        this.reports = new ArrayList<>();
+        this.comments = new ArrayList<>();
+        this.votes = new ArrayList<>();
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public User getUser() {
+        return user;
     }
 }

@@ -85,19 +85,19 @@ public class UserBuilder {
         User user = new User(email, password);
         user.incrementPointsBy(points);
         for (Exercise exercise : exercises) {
-            user.getExercises().add(exercise);
+            user.addExercise(exercise);
         }
         for (Solution solution : solutions) {
-            user.getSolutions().add(solution);
+            user.addSolution(solution);
         }
         for (Report report : reports) {
-            user.getReports().add(report);
+            user.addReport(report);
         }
         for (Vote vote : votes) {
-            user.getVotes().add(vote);
+            user.addVote(vote);
         }
         for (Tracking tracking : trackings) {
-            user.getTrackings().add(tracking);
+            user.addTracking(tracking);
         }
         return user;
     }

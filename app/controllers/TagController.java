@@ -1,7 +1,5 @@
 package controllers;
 
-import javax.persistence.OptimisticLockException;
-
 import models.Tag;
 import models.Tracking;
 import models.User;
@@ -12,6 +10,7 @@ import play.mvc.Security;
 import services.SessionService;
 import views.html.tagList;
 
+import javax.persistence.OptimisticLockException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -37,22 +36,22 @@ public class TagController {
     public Result processTrack(String tagName) {
         User currentUser = SessionService.getCurrentUser();
         Tag tag = Tag.findTagByName(tagName);
-        Tracking tracking = currentUser.getTrackings().stream().filter(t -> t.getTag().equals(tag)).findFirst().orElse(null);
+        Tracking tracking = currentUser.getTrackingByTag(tag);
         if (tracking == null) {
             tracking = TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build();
-            currentUser.getTrackings().add(tracking);
+            currentUser.addTracking(tracking);
             try {
                 tracking.save();
             } catch (OptimisticLockException ex) {
-                currentUser.getTrackings().remove(tracking);
+                currentUser.removeTracking(tracking);
                 throw ex;
             }
         } else {
-            currentUser.getTrackings().remove(tracking);
+            currentUser.removeTracking(tracking);
             try {
                 tracking.delete();
             } catch (OptimisticLockException ex) {
-                currentUser.getTrackings().add(tracking);
+                currentUser.addTracking(tracking);
                 throw ex;
             }
         }
@@ -77,6 +76,9 @@ public class TagController {
     }
 
     /**
+     * return a sorted list depending on the orderBy value
+     * per default the list is sorted by the first column aka the tag name
+     *
      * @param tags List containing tags
      * @param trackedTags List containing the trackings for the current user
      * @param orderBy sort column
@@ -85,14 +87,14 @@ public class TagController {
     private List<Tag> sortTagList(List<Tag> tags, List<Tag> trackedTags, int orderBy) {
         tags.sort((t1, t2) -> {
             switch(Math.abs(orderBy)) {
-               case 1:
-                    return t1.getName().toLowerCase().compareTo(t2.getName().toLowerCase());
-               case 2:
+                case 2:
                     int t1ExSize = t1.getExercises().size();
                     int t2ExSize = t2.getExercises().size();
-                    return t1ExSize > t2ExSize ? -1 : t1ExSize < t2ExSize ? 1 : 0;
-               default:
+                    return t2ExSize - t1ExSize;
+                case 3:
                     return trackedTags.contains(t1) ? -1 : trackedTags.contains(t2) ? 1 : 0;
+                default:
+                    return t1.getName().compareToIgnoreCase(t2.getName());
             }
         });
 
@@ -161,7 +163,7 @@ public class TagController {
         }
         return ok(Json.toJson(list));
     }
-    public static class TagEntry{
+    public class TagEntry{
         public final String name;
         public TagEntry(String name) {
             this.name = name;

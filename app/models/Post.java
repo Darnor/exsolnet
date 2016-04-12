@@ -3,9 +3,8 @@ package models;
 import com.avaje.ebean.Model;
 
 import javax.persistence.*;
-import java.sql.Date;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * Created by Claudia on 31.03.2016.
@@ -21,17 +20,18 @@ public class Post extends Model {
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)
+    @NotNull
     private LocalDateTime time = LocalDateTime.now();
 
     @Basic
-    private int points;
+    private long points;
+
+    public Post() {
+        this.id = null;
+    }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getContent() {
@@ -46,17 +46,31 @@ public class Post extends Model {
         return time;
     }
 
-    public void setTime(LocalDateTime time) {
-        this.time = time;
-    }
-
-    public int getPoints() {
-        return points;
-    }
-
-    public void setPoints(int points) {
+    public void setPoints(long points) {
         this.points = points;
     }
 
+    public long getPoints() {
+        return points;
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Post post = (Post) o;
+
+        return id != null ? id.equals(post.id) : post.id == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return id != null ? id.hashCode() : 0;
+    }
 }

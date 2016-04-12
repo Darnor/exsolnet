@@ -52,12 +52,12 @@ public class VoteBuilder {
     }
 
     public Vote build() {
-        Vote vote = new Vote();
-        vote.setId(id);
-        vote.setValue(value);
-        vote.setSolution(solution);
-        vote.setExercise(exercise);
-        vote.setUser(user);
+        Vote vote = new Vote(user, solution, exercise);
+        if (value == 1) {
+            vote.upVote();
+        } else if (value == -1) {
+            vote.downVote();
+        }
         return vote;
     }
 }

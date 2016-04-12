@@ -64,6 +64,10 @@ public class TagTest extends AbstractModelTest {
         assertEquals(1, Tag.getSuggestedTags("An1").size());
         assertEquals("An1I", Tag.getSuggestedTags("An1").get(0).getName());
         assertEquals(2, Tag.getSuggestedTags("An").size());
+
+        java.util.List<Tag> suggestedTags = Tag.getSuggestedTags("a");
+        assertEquals(7, suggestedTags.size());
+        assertEquals("An1I", suggestedTags.get(0).getName());
     }
 
     @Test
@@ -107,4 +111,11 @@ public class TagTest extends AbstractModelTest {
 
 
 
+
+
+    @Test
+    public void testGetSuggestedTagsNotExists(){
+        java.util.List<Tag> suggestedTags = Tag.getSuggestedTags("b");
+        assertEquals(0, suggestedTags.size());
+    }
 }

@@ -1,6 +1,5 @@
 package controllers;
 
-import com.google.inject.Inject;
 import models.Comment;
 import play.mvc.Controller;
 import play.mvc.Result;

@@ -47,7 +47,7 @@
                 <td>
                     @helper.form(action=routes.TagController.processTrack(tag.getName)) {
                         <input type="hidden" name="tag" value="@tag.getName" />
-                        <input type="submit" @if(trackedTags.contains(tag)) { value="Untrack" } else { value="Track" } class="btn track"/>
+                        <input type="submit" @if(trackedTags.contains(tag)) { value="Nicht mehr folgen" } else { value="Folgen" } class="btn track"/>
                     }
                 </td>
             </tr>

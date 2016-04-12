@@ -51,6 +51,7 @@ public class Exercise extends Post {
     public void addTag(Tag tag){
         if(tags==null)
             tags = new ArrayList<Tag>();
+        tag.addExercise(this);
         tags.add(tag);
     }
     public String getTitle() {
@@ -233,5 +234,28 @@ public class Exercise extends Post {
                 return true;
         }
         return false;
+    }
+
+    public void addSolution(Solution solution) {
+        if(solutions==null)
+            solutions = new ArrayList<Solution>();
+        solutions.add(solution);
+    }
+
+    public void addVote(Vote vote) {
+        if(votes==null)
+            votes = new ArrayList<Vote>();
+        votes.add(vote);
+    }
+
+    public void addComment(Comment comment) {
+        if(comments==null)
+            comments = new ArrayList<Comment>();
+        comments.add(comment);    }
+
+    public void addReport(Report report) {
+        if(reports==null)
+            reports = new ArrayList<Report>();
+        reports.add(report);
     }
 }

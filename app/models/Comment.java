@@ -1,11 +1,12 @@
 package models;
 
 import com.avaje.ebean.Model;
-import scala.annotation.meta.setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  */
 @Entity
 @Table(name="comment")
-public class Comment extends Model{
+public class Comment extends Model {
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
@@ -22,6 +23,7 @@ public class Comment extends Model{
 
     @ManyToOne
     @JoinColumn(name="user_id")
+    @NotNull
     private User user;
 
     @OneToMany(mappedBy = "comment")
@@ -36,31 +38,39 @@ public class Comment extends Model{
     private Exercise exercise;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime time = LocalDateTime.now();
-
+    private LocalDateTime time;
 
     private static final int NOF_RECENT_COMMENTS = 5;
 
+    public Comment(User user) {
+        id = null;
+        this.user = user;
+        this.reports = new ArrayList<>();
+        this.time = LocalDateTime.now();
+    }
 
     public String getContent() {
         return content;
     }
 
+    public Long getId() {
+        return id;
+    }
 
-    public void setId(Long id) {
-        this.id = id;
+    public List<Report> getReports() {
+        return Collections.unmodifiableList(reports);
+    }
+
+    public void addReport(Report report) {
+        reports.add(report);
+    }
+
+    public void removeReport(Report report) {
+        reports.remove(report);
     }
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
     }
 
     public void setSolution(Solution solution) {
@@ -70,11 +80,6 @@ public class Comment extends Model{
     public void setExercise(Exercise exercise) {
         this.exercise = exercise;
     }
-
-    public void setTime(LocalDateTime time) {
-        this.time = time;
-    }
-
 
     /**
      * @param user

@@ -4,8 +4,6 @@ import com.avaje.ebean.Model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by Claudia on 31.03.2016.
@@ -39,6 +37,10 @@ public class Report extends Model {
    @JoinColumn(name = "comment_id")
     private Comment comment;
 
+    public Report(User user, String message) {
+        this.user = user;
+        this.message = message;
+    }
 
     public Long getId() {
         return id;
@@ -52,17 +54,7 @@ public class Report extends Model {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public User getUser() {
         return user;
     }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-
 }
