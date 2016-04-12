@@ -89,11 +89,11 @@ public class TagController {
                 case 2:
                     int t1ExSize = t1.getExercises().size();
                     int t2ExSize = t2.getExercises().size();
-                    return t1ExSize - t2ExSize;
+                    return t2ExSize - t1ExSize;
                 case 3:
                     return trackedTags.contains(t1) ? -1 : trackedTags.contains(t2) ? 1 : 0;
                 default:
-                    return t1.getName().compareToIgnoreCase(t1.getName());
+                    return t1.getName().compareToIgnoreCase(t2.getName());
             }
         });
 
