@@ -8,6 +8,7 @@ import com.avaje.ebean.annotation.Formula;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 
 /**
@@ -17,8 +18,8 @@ import java.util.*;
 @Entity
 @Table(name = "exercise")
 public class Exercise extends Post {
-
     @Constraints.Required
+    @NotNull
     private String title;
 
     @Formula(select = "(select count(*) from solution _s where _s.exercise_id=${ta}.id)")
@@ -41,6 +42,7 @@ public class Exercise extends Post {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 
     @OneToMany(mappedBy = "exercise")

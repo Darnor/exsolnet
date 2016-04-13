@@ -29,6 +29,34 @@ public class TagController {
     private static final String TAG_FILTER = "tagFilter";
     private static final String TAG_ORDER = "tagOrder";
 
+    private void createTrack(User user, Tracking tracking) {
+        try {
+            user.addTracking(tracking);
+            tracking.save();
+        } catch (OptimisticLockException ex) {
+            user.removeTracking(tracking.getId());
+            throw ex;
+        }
+    }
+
+    private void updateTrackingStatus(Tracking tracking) {
+        if (tracking.getTrackingStatus()) {
+            tracking.unTrack();
+        } else {
+            tracking.track();
+        }
+    }
+
+    private void updateTrack(Tracking tracking) {
+        try {
+            updateTrackingStatus(tracking);
+            tracking.update();
+        } catch (OptimisticLockException ex) {
+            updateTrackingStatus(tracking);
+            throw ex;
+        }
+    }
+
     /**
      * @param tagName String containing the Tag Name which needs to be tracked or if tracked untracked
      * @return renders the tagList again
@@ -37,23 +65,10 @@ public class TagController {
         User currentUser = SessionService.getCurrentUser();
         Tag tag = Tag.findTagByName(tagName);
         Tracking tracking = currentUser.getTrackingByTag(tag);
-        if (tracking == null) {
-            tracking = TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build();
-            currentUser.addTracking(tracking);
-            try {
-                tracking.save();
-            } catch (OptimisticLockException ex) {
-                currentUser.removeTracking(tracking.getId());
-                throw ex;
-            }
+        if (tracking == null || !tracking.getTrackingStatus()) {
+            createTrack(currentUser, TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build());
         } else {
-            currentUser.removeTracking(tracking.getId());
-            try {
-                tracking.delete();
-            } catch (OptimisticLockException ex) {
-                currentUser.addTracking(tracking);
-                throw ex;
-            }
+            updateTrack(tracking);
         }
         return renderTagList(Integer.parseInt(session(TAG_ORDER)), session(TAG_FILTER));
     }

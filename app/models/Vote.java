@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.Model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 /**
  * Created by Claudia on 31.03.2016.
@@ -10,8 +11,11 @@ import javax.persistence.*;
 @Entity
 @Table(name="vote")
 public class Vote extends Model {
-    @Id @GeneratedValue(strategy= GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
+
+    @NotNull
     private int value;
 
     @ManyToOne
@@ -24,6 +28,7 @@ public class Vote extends Model {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 
     public Vote(User user, Solution solution, Exercise exercise) {

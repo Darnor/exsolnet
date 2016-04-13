@@ -6,6 +6,7 @@ import models.builders.TagBuilder;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,7 +15,6 @@ import java.util.List;
 @Entity
 @Table(name = "tag")
 public class Tag extends Model {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -46,6 +46,8 @@ public class Tag extends Model {
         this.id = null;
         this.name = name;
         this.isMainTag = isMainTag;
+        this.exercises = new ArrayList<>();
+        this.trackings = new ArrayList<>();
     }
 
     public void setId(Long id) {
@@ -73,19 +75,23 @@ public class Tag extends Model {
     }
 
     public List<Exercise> getExercises() {
-        return exercises;
+        return Collections.unmodifiableList(exercises);
     }
 
     public void removeExercise(Long exerciseId) {
         exercises.removeIf(e -> e.getId().equals(exerciseId));
     }
 
-    public List<Tracking> getTrackings() {
-        return trackings;
+    public void addExercise(Exercise exercise) {
+        exercises.add(exercise);
     }
 
-    public void setTrackings(List<Tracking> trackings) {
-        this.trackings = trackings;
+    public List<Tracking> getTrackings() {
+        return Collections.unmodifiableList(trackings);
+    }
+
+    public void addTracking(Tracking tracking) {
+        trackings.add(tracking);
     }
 
     public Boolean getMainTag() {
@@ -94,16 +100,6 @@ public class Tag extends Model {
 
     public void setMainTag(Boolean mainTag) {
         isMainTag = mainTag;
-    }
-
-    public void setExercises(List<Exercise> exercises) {
-        this.exercises = exercises;
-    }
-
-    public void addExercise(Exercise exercise) {
-        if (exercises == null)
-            exercises = new ArrayList<Exercise>();
-        exercises.add(exercise);
     }
 
     /**

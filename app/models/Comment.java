@@ -15,10 +15,12 @@ import java.util.List;
 @Entity
 @Table(name="comment")
 public class Comment extends Model {
-    @Id @GeneratedValue(strategy= GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
     @Lob
+    @NotNull
     private String content;
 
     @ManyToOne
@@ -65,8 +67,8 @@ public class Comment extends Model {
         reports.add(report);
     }
 
-    public void removeReport(Report report) {
-        reports.remove(report);
+    public void removeReport(Long reportId) {
+        reports.removeIf(r -> r.getId().equals(reportId));
     }
 
     public void setContent(String content) {

@@ -24,6 +24,8 @@ public class User extends Model{
     @NotNull
     private String email;
 
+    // Currently not needed, must be in the final version.
+    //@NotNull
     private String password;
 
     @NotNull
@@ -78,8 +80,8 @@ public class User extends Model{
         exercises.add(exercise);
     }
 
-    public void removeExercise(long exerciseId) {
-        exercises.removeIf(e -> e.getId() == exerciseId);
+    public void removeExercise(Long exerciseId) {
+        exercises.removeIf(e -> e.getId().equals(exerciseId));
     }
 
     /**
@@ -95,8 +97,8 @@ public class User extends Model{
         solutions.add(solution);
     }
 
-    public void removeSolution(long solutionId) {
-        solutions.removeIf(s -> s.getId() == solutionId);
+    public void removeSolution(Long solutionId) {
+        solutions.removeIf(s -> s.getId().equals(solutionId));
     }
 
     /**
@@ -112,8 +114,8 @@ public class User extends Model{
         votes.add(vote);
     }
 
-    public void removeVote(long voteId) {
-        votes.removeIf(v -> v.getId() == voteId);
+    public void removeVote(Long voteId) {
+        votes.removeIf(v -> v.getId().equals(voteId));
     }
 
     /**
@@ -129,8 +131,8 @@ public class User extends Model{
         reports.add(report);
     }
 
-    public void removeReport(long reportId) {
-        reports.removeIf(r -> r.getId() == reportId);
+    public void removeReport(Long reportId) {
+        reports.removeIf(r -> r.getId().equals(reportId));
     }
 
     /**
@@ -146,8 +148,8 @@ public class User extends Model{
         trackings.add(tracking);
     }
 
-    public void removeTracking(long trackingId) {
-        trackings.removeIf(t -> t.getId() == trackingId);
+    public void removeTracking(Long trackingId){
+        trackings.removeIf(t -> t.getId().equals(trackingId));
     }
 
     /**
@@ -163,8 +165,8 @@ public class User extends Model{
         comments.add(comment);
     }
 
-    public void removeComment(long commentId) {
-        comments.removeIf(c -> c.getId() == commentId);
+    public void removeComment(Long commentId) {
+        comments.removeIf(c -> c.getId().equals(commentId));
     }
 
     /**
@@ -252,7 +254,7 @@ public class User extends Model{
     }
 
     public List<Tag> getTrackedTags() {
-        return trackings.stream().map(Tracking::getTag).collect(Collectors.toList());
+        return trackings.stream().filter(Tracking::getTrackingStatus).map(Tracking::getTag).collect(Collectors.toList());
     }
 
     /**

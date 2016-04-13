@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.Model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
@@ -16,6 +17,7 @@ public class Report extends Model {
     private Long id;
 
     @Lob
+    @NotNull
     private String message;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -23,6 +25,7 @@ public class Report extends Model {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 
     @ManyToOne
@@ -34,12 +37,13 @@ public class Report extends Model {
     private Exercise exercise;
 
     @ManyToOne
-   @JoinColumn(name = "comment_id")
+    @JoinColumn(name = "comment_id")
     private Comment comment;
 
     public Report(User user, String message) {
         this.user = user;
         this.message = message;
+        this.time = LocalDateTime.now();
     }
 
     public Long getId() {

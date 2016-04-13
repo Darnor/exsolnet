@@ -1,6 +1,7 @@
 package models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,14 +12,17 @@ import java.util.List;
 @Table(name="solution")
 public class Solution extends Post{
     @Basic
+    @NotNull
     private boolean official;
 
     @ManyToOne
     @JoinColumn(name = "exercise_id")
+    @NotNull
     private Exercise exercise;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @NotNull
     private User user;
 
     @OneToMany(mappedBy = "solution")

@@ -12,12 +12,12 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public class Post extends Model {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Lob
+    @NotNull
     private String content;
 
     @Temporal(TemporalType.TIMESTAMP)
