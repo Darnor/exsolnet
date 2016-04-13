@@ -3,7 +3,7 @@
 @import java.time.format.FormatStyle
 @(username: String, tags: util.List[DashboardController.TagEntry], comments: util.List[Comment])
 
-@main("Dashboard von " + username){
+@main("Dashboard von " + username, username){
     <h1>Deine gefolgten Tags</h1>
     <ul>
         @tags.map{ tag =>

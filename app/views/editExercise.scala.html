@@ -1,6 +1,5 @@
-@import java.util
-@(exercise: Exercise, user: String)
-@main("Welcome to Exsolnet") {
+@(exercise: Exercise, username: String)
+@main("Welcome to Exsolnet", username) {
     <script src="@routes.Assets.versioned("javascripts/jquery.tokeninput.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("javascripts/exercise.js")" type="text/javascript"></script>
 

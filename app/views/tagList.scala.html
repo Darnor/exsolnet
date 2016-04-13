@@ -17,17 +17,19 @@
     </th>
 }
 
-@main("Welcome to Exsolnet"){
+@main("Tags: Finde passende zu dir passende Tags", username){
 
     <h1>Tags</h1>
-    @helper.form(action=routes.TagController.renderTagList()) {
-        <input type="hidden" name="sort" value="@currentOrderBy" />
-        <input type="search" id="searchbox" name="tags" value="@tagNameFilter" placeholder="Tag-Filter"/>
-        <input type="submit" id="searchsubmit" value="Suche" class="btn primary"/>
-    }
+    <form action="@routes.TagController.renderTagList()" class="form-inline" role="form">
+        <div class="form-group">
+            <input type="hidden" name="sort" value="@currentOrderBy" />
+            <input type="search" class="form-control" id="searchbox" name="tags" value="@tagNameFilter" placeholder="Tagfilter"/>
+        </div>
+        <input type="submit" id="searchsubmit" value="Suche" class="btn btn-primary"/>
+    </form>
 
-    <table class="tags zebra-striped">
-        <thead>
+    <table class="table table-striped">
+        <thead class="thead-inverse">
             <tr>
                 @header(1, "Name")
                 @header(2, "Aufgaben")
@@ -47,7 +49,10 @@
                 <td>
                     @helper.form(action=routes.TagController.processTrack(tag.getName)) {
                         <input type="hidden" name="tag" value="@tag.getName" />
-                        <input type="submit" id="btn-@tag.getId" @if(trackedTags.contains(tag)) { value="Nicht mehr folgen" } else { value="Folgen" } class="btn track"/>
+                        <input type="submit"
+                            @if(trackedTags.contains(tag)) { value="Nicht mehr folgen" class="btn btn-success btn-block" } else { value="Folgen" class="btn btn-primary btn-block" }
+                            id="track-@tag.getId"
+                        />
                     }
                 </td>
             </tr>

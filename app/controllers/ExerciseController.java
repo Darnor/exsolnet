@@ -70,7 +70,7 @@ public class ExerciseController extends Controller {
         int pageSize = 10;
         String orderBy = Exercise.getOrderByAttributeString(order);
         PagedList<Exercise> exercises = Exercise.getPagedList(page, orderBy, titleFilter, tagFilter.split(","), pageSize);
-        return ok(exerciseList.render(exercises, order, titleFilter, tagFilter));
+        return ok(exerciseList.render(SessionService.getCurrentUserEmail(), exercises, order, titleFilter, tagFilter));
     }
 
     /**
