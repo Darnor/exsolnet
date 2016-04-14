@@ -1,5 +1,6 @@
 package integration;
 
+import models.AbstractModelTest;
 import play.test.TestBrowser;
 
 import java.util.function.Consumer;
@@ -12,6 +13,7 @@ public abstract class AbstractIntegrationTest {
 
     public static void as(String username, final Consumer<TestBrowser> block){
         running(testServer(3333, fakeApplication()), FIREFOX, browser -> {
+            AbstractModelTest.cleanDB();
             browser.goTo("http://localhost:3333/");
             browser.fill("#email").with(username);
             browser.submit("#btn_login");
