@@ -18,6 +18,7 @@ import java.util.*;
 @Entity
 @Table(name = "exercise")
 public class Exercise extends Post {
+    
     @Constraints.Required
     @NotNull
     private String title;
@@ -134,6 +135,7 @@ public class Exercise extends Post {
      * @param pageSize    the count of exercises for one page
      * @return the PagedList for the actual page and filters/orders
      */
+    //TODO remove from exercise into controller ??
     public static PagedList<Exercise> getPagedList(int pageNr, String orderBy, String titleFilter, String[] tagFilter, int pageSize) {
         Query<Exercise> query = Ebean.createQuery(Exercise.class);
         query.where().contains("title",titleFilter);
