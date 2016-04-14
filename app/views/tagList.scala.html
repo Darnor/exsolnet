@@ -41,10 +41,10 @@
         @tags.map{ tag =>
             <tr>
                 <td>
-                @tag.getName
+                    <a href="@routes.ExerciseController.list(0, 0, "", tag.getName)">@tag.getName</a>
                 </td>
                 <td>
-                @tag.getExercises.size
+                    @tag.getExercises.size
                 </td>
                 <td>
                     @helper.form(action=routes.TagController.processTrack(tag.getName)) {
