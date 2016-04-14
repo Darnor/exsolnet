@@ -23,9 +23,9 @@
     <form action="@routes.TagController.renderTagList()" class="form-inline" role="form">
         <div class="form-group">
             <input type="hidden" name="sort" value="@currentOrderBy" />
-            <input type="search" class="form-control" id="searchbox" name="tags" value="@tagNameFilter" placeholder="Tagfilter"/>
+            <input type="search" class="form-control" id="tagfilter" name="tags" value="@tagNameFilter" placeholder="Tagfilter"/>
         </div>
-        <input type="submit" id="searchsubmit" value="Suche" class="btn btn-primary"/>
+        <input type="submit" id="submit-tagfilter" value="Suche" class="btn btn-primary"/>
     </form>
 
     <table class="table table-striped">
@@ -48,10 +48,10 @@
                 </td>
                 <td>
                     @helper.form(action=routes.TagController.processTrack(tag.getName)) {
-                        <input type="hidden" name="tag" value="@tag.getName" />
+                        <input type="hidden" name="tag" id="tag_@tag.getId" value="@tag.getName" />
                         <input type="submit"
                             @if(trackedTags.contains(tag)) { value="Nicht mehr folgen" class="btn btn-success btn-block" } else { value="Folgen" class="btn btn-primary btn-block" }
-                            id="track-@tag.getId"
+                            id="track_@tag.getId"
                         />
                     }
                 </td>

@@ -3,16 +3,14 @@ package integration;
 
 import org.junit.Test;
 
-import static integration.AbstractIntegrationTest.as;
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 /**
  * Created by mario on 11.04.16.
  */
-public class LoginLogoutIT {
+public class LoginLogoutIT extends AbstractIntegrationTest {
     @Test
     public void integrationTest() {
         //as method includes login

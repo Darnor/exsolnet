@@ -3,14 +3,12 @@ package integration;
 import org.junit.Test;
 
 import static helper.RegexMatcher.matches;
-import static integration.AbstractIntegrationTest.FRANZ;
-import static integration.AbstractIntegrationTest.as;
 import static org.junit.Assert.assertThat;
 
 /**
  * Created by tourn on 11.4.16.
  */
-public class DashboardIT {
+public class DashboardIT extends AbstractIntegrationTest {
     @Test
     public void test() {
         as(FRANZ, browser -> {

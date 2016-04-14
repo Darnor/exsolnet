@@ -1,41 +1,38 @@
 package integration;
 
-import models.AbstractModelTest;
-import models.Tag;
-import models.User;
-import org.junit.Before;
 import org.junit.Test;
 
-import static integration.AbstractIntegrationTest.FRANZ;
+import static helper.RegexMatcher.matches;
+import static org.hamcrest.core.IsNot.not;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
-/**
- * Created by revy on 12.04.16.
- */
-public class TrackUntrackIT extends AbstractModelTest {
+public class TrackUntrackIT extends AbstractIntegrationTest {
 
     private static final String TRACK_STR = "Folgen";
     private static final String UNTRACK_STR = "Nicht mehr folgen";
     private static final String TAGS_PATH = "/tags";
-    private static final long TAG_ID = 8004L;
-
-    private User testUser;
-    private Tag testTag;
-
-    @Before
-    public void setUp() {
-        this.testUser = User.findUser(FRANZ);
-        this.testTag = Tag.find().byId(TAG_ID);
-    }
+    private static final long AD1_TAG_ID = 8002L;
+    private static final long AD2_TAG_ID = 8004L;
 
     @Test
     public void track() {
-        /*
-        int currentNoOfTrackedTags = testUser.getTrackedTags().size();
         as(FRANZ, browser -> {
             browser.goTo(TAGS_PATH);
-            browser.submit("#track-8004");
-            assertEquals(currentNoOfTrackedTags, testUser.getTrackedTags().size());
+            assertThat(browser.pageSource(), is(matches("<input type=\"submit\" id=\"track_" + AD2_TAG_ID + "\" class=\"btn btn-primary btn-block\" value=\"" + TRACK_STR +"\" />")));
+            browser.submit("#track_" + AD2_TAG_ID);
+            assertThat(browser.pageSource(), is(matches("<input type=\"submit\" id=\"track_" + AD2_TAG_ID + "\" class=\"btn btn-success btn-block\" value=\"" + UNTRACK_STR + "\" />")));
         });
-        */
+    }
+
+    @Test
+    public void filterTagsWithAD2() {
+        as(FRANZ, browser -> {
+            browser.goTo(TAGS_PATH);
+            browser.fill("#tagfilter").with("AD2");
+            browser.submit("#submit-tagfilter");
+            assertThat(browser.pageSource(), is(matches("<input type=\"submit\" id=\"track_" + AD2_TAG_ID + "\" class=\"btn btn-primary btn-block\" value=\"" + TRACK_STR +"\" />")));
+            assertThat(browser.pageSource(), is(not(matches("<input type=\"submit\" id=\"track_" + AD1_TAG_ID + "\" class=\"btn btn-primary btn-block\" value=\"" + TRACK_STR +"\" />"))));
+        });
     }
 }
