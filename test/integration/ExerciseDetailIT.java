@@ -12,11 +12,8 @@ public class ExerciseDetailIT extends AbstractIntegrationTest{
     @Test
     public void test() {
         as(FRANZ, browser -> {
-            browser.goTo("/dashboard");
-            assertThat(browser.pageSource(), matches("An1I.*1/1"));
-            assertThat(browser.pageSource(), matches("SE2.*0/5"));
-
-            assertThat(browser.pageSource(), matches("HOW CAN YOU BE SO WRONG!.*Franz.*8000.*Basic Math"));
+            browser.goTo("/exercises/8000");
+            assertThat(browser.pageSource(), matches("h1.*Basic Math.*/h1"));
         });
     }
 }

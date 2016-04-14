@@ -7,8 +7,6 @@ import org.junit.BeforeClass;
 import play.Application;
 import play.test.Helpers;
 
-import java.io.IOException;
-
 /**
  * Created by tourn on 6.4.16.
  */
@@ -32,7 +30,7 @@ public abstract class AbstractModelTest {
             System.out.println("Inserting default test data");
             String testData = FileUtils.readFileToString(app.getWrappedApplication().getFile("test/data.sql"));
             Ebean.execute(Ebean.createCallableSql(testData));
-        } catch (IOException e){
+        } catch (Exception e){
             throw new RuntimeException("Problem cleaning database: ", e);
         }
     }
