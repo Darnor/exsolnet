@@ -10,6 +10,7 @@ import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
 import views.html.editExercise;
+import views.html.exerciseDetail;
 import views.html.exerciseList;
 
 import javax.inject.Inject;
@@ -54,7 +55,7 @@ public class ExerciseController extends Controller {
     }
 
     public Result renderDetails(Long id) {
-        return TODO;
+        return ok(exerciseDetail.render(Exercise.findExerciseData(id), SessionService.getCurrentUserEmail()));
     }
 
     /**

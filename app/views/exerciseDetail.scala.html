@@ -1,0 +1,22 @@
+@import java.time.format.DateTimeFormatter
+@import java.time.format.FormatStyle
+@(exercise: Exercise, username: String)
+@main("Welcome to Exsolnet", username) {
+    <div style="border-bottom: 2px solid black ; width: 300px ; padding: 10px; margin: 10px">
+        <h1>@exercise.getTitle</h1>
+        <p>@exercise.getContent</p>
+        @exercise.getSolutions.map{ solution =>
+        <div class="solution">
+            <span>@solution.getContent</span>
+            <p>
+                <small>
+                    @solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
+                    -
+                    <a href="#TODO">@solution.getUser().getEmail()</a>
+                </small>
+            </p>
+        </div>
+        }
+
+    </div>
+}
