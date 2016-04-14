@@ -5,12 +5,9 @@ import com.avaje.ebean.Model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-/**
- * Created by Claudia on 31.03.2016.
- */
 @Entity
 @Table(name="track")
-public class Tracking extends Model{
+public class Tracking extends Model {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
@@ -25,37 +22,34 @@ public class Tracking extends Model{
     @NotNull
     private User user;
 
-    @NotNull
-    private boolean trackingStatus;
-
-    public Tracking(Tag tag, User user) {
-        this.id = null;
+    public Tracking(Long id, Tag tag, User user) {
+        this.id = id;
         this.tag = tag;
         this.user = user;
-        this.trackingStatus = true;
     }
 
-    public Long getId() {
+    public Long getTrackingId() {
         return id;
     }
 
-    public Tag getTag() {
+    public Tag getTrackedTag() {
         return tag;
     }
 
-    public User getUser() {
+    public User getTrackedUser() {
         return user;
     }
 
-    public boolean getTrackingStatus() {
-        return trackingStatus;
-    }
-
     public void track() {
-        trackingStatus = true;
+        id = null;
+        save();
+        user.track(this);
+        tag.track(this);
     }
 
     public void unTrack() {
-        trackingStatus = false;
+        delete();
+        user.unTrack(id);
+        tag.unTrack(id);
     }
 }

@@ -8,6 +8,7 @@ import models.User;
  * Created by tourn on 7.4.16.
  */
 public class TrackingBuilder {
+    private Long id;
     private Tag tag;
     private User user;
 
@@ -16,6 +17,11 @@ public class TrackingBuilder {
 
     public static TrackingBuilder aTracking() {
         return new TrackingBuilder();
+    }
+
+    public TrackingBuilder withId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public TrackingBuilder withTag(Tag tag) {
@@ -29,10 +35,10 @@ public class TrackingBuilder {
     }
 
     public TrackingBuilder but() {
-        return aTracking().withTag(tag).withUser(user);
+        return aTracking().withId(id).withTag(tag).withUser(user);
     }
 
     public Tracking build() {
-        return new Tracking(tag, user);
+        return new Tracking(id, tag, user);
     }
 }

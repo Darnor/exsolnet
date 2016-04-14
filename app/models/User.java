@@ -16,7 +16,7 @@ import static models.builders.UserBuilder.anUser;
  */
 @Entity
 @Table(name="exoluser")
-public class User extends Model{
+public class User extends Model {
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
@@ -141,15 +141,15 @@ public class User extends Model{
      * @return the Trackings of the User.
      */
     public Tracking getTrackingByTag(Tag tag) {
-        return trackings.stream().filter(t -> t.getTag().equals(tag)).findFirst().orElse(null);
+        return trackings.stream().filter(t -> t.getTrackedTag().equals(tag)).findFirst().orElse(null);
     }
 
-    public void addTracking(Tracking tracking) {
+    public void track(Tracking tracking) {
         trackings.add(tracking);
     }
 
-    public void removeTracking(Long trackingId){
-        trackings.removeIf(t -> t.getId().equals(trackingId));
+    public void unTrack(Long trackingId){
+        trackings.removeIf(t -> t.getTrackingId().equals(trackingId));
     }
 
     /**
@@ -254,7 +254,7 @@ public class User extends Model{
     }
 
     public List<Tag> getTrackedTags() {
-        return trackings.stream().filter(Tracking::getTrackingStatus).map(Tracking::getTag).collect(Collectors.toList());
+        return trackings.stream().map(Tracking::getTrackedTag).collect(Collectors.toList());
     }
 
     /**

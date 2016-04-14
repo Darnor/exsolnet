@@ -30,7 +30,7 @@ public class Tag extends Model {
     private List<Exercise> exercises;
 
     @OneToMany
-    @JoinColumn(name = "tag")
+    @JoinColumn(name = "tag_id")
     private List<Tracking> trackings;
 
     private static final String IS_MAIN_TAG_STR = "isMainTag";
@@ -90,8 +90,12 @@ public class Tag extends Model {
         return Collections.unmodifiableList(trackings);
     }
 
-    public void addTracking(Tracking tracking) {
+    public void track(Tracking tracking) {
         trackings.add(tracking);
+    }
+
+    public void unTrack(Long trackingId) {
+        trackings.removeIf(t -> t.getTrackingId().equals(trackingId));
     }
 
     public Boolean getMainTag() {

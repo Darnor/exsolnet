@@ -97,7 +97,7 @@ public class UserBuilder {
             user.addVote(vote);
         }
         for (Tracking tracking : trackings) {
-            user.addTracking(tracking);
+            user.track(tracking);
         }
         return user;
     }
