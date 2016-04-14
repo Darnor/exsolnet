@@ -7,8 +7,8 @@
         <h1>Aufgaben editieren</h1>
         <form method="POST" action="@if(exercise.getId == null) { @routes.ExerciseController.processCreate } else { @routes.ExerciseController.processUpdate(exercise.getId)}">
            <p>Title</p> <input id="title" placeholder="Titel" type="text" name="title" value="@exercise.getTitle"/>
-           <p>Haupt Tags</p> <input placeholder="Haupt Tags" type="search" id="maintag-filter-list" type="text" name="maintag" rel="@exercise.getTags.filter(x => x.isMainTag).map(x => x.getName).mkString(",")"/>
-            <p>Andere Tags</p> <input placeholder="Andere Tags" type="search" id="othertag-filter-list" type="text" name="othertag" rel="@exercise.getTags.filter(x => !x.isMainTag).map(x => x.getName).mkString(",")"/>
+           <p>Haupt Tags</p> <input placeholder="Haupt Tags" type="search" id="maintag-filter-list" type="text" name="maintag" rel="@exercise.getTags.filter(x => x.isMainTag).map(x => x.getName).mkString(",")" data-route="@routes.TagController.suggestMainTags("")"/>
+            <p>Andere Tags</p> <input placeholder="Andere Tags" type="search" id="othertag-filter-list" type="text" name="othertag" rel="@exercise.getTags.filter(x => !x.isMainTag).map(x => x.getName).mkString(",")" data-route="@routes.TagController.suggestOtherTags("")"/>
             <p>Inhalt</p> <input id="content" placeholder="Inhalt" type="text" name="content" value="@exercise.getContent"/>
             <button id="save">Speichern</button>
         </form>

@@ -31,14 +31,16 @@
     }
 
     $(document).ready(function () {
-        $("#maintag-filter-list").tokenInput("/tags/maintag", {
+        var route = $("#maintag-filter-list").attr('data-route');
+        $("#maintag-filter-list").tokenInput(route, {
             prePopulate: createTagFilter("#maintag-filter-list"),
             theme: "facebook"
         });
     });
 
     $(document).ready(function () {
-        $("#othertag-filter-list").tokenInput("/tags/othertag", {
+        var route = $("#othertag-filter-list").attr('data-route');
+        $("#othertag-filter-list").tokenInput(route, {
             prePopulate: createTagFilter("#othertag-filter-list"),
             theme: "facebook"
         });

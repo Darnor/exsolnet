@@ -21,7 +21,8 @@
 
     $(document).ready(function () {
         var currentTagFilter = createTagFilterFromUrl()
-        $("#tag-filter-list").tokenInput("/tags/query", {
+        var route = $("#tag-filter-list").attr("data-route");
+        $("#tag-filter-list").tokenInput(route, {
             prePopulate: currentTagFilter,
             theme: "facebook"
         });
