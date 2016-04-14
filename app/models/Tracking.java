@@ -36,10 +36,6 @@ public class Tracking extends Model {
         return tag;
     }
 
-    public User getTrackedUser() {
-        return user;
-    }
-
     public void track() {
         id = null;
         save();

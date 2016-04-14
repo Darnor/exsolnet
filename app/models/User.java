@@ -49,7 +49,8 @@ public class User extends Model {
     @OneToMany(mappedBy = "user")
     private List<Vote> votes;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany
+    @JoinColumn(name = "user_id")
     private List<Tracking> trackings;
 
     private static final String EMAIL_STR = "email";
