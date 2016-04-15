@@ -147,6 +147,10 @@ public class User extends Model {
         return trackings.stream().map(Tracking::getTag).collect(Collectors.toList());
     }
 
+    public long getNofCompletedExercisesByTag(Tag tag) {
+        return solutions.stream().filter(s -> s.getExercise().getTags().contains(tag)).count();
+    }
+
     /**
      * Authenticates the user depending on email and password combination.
      * Password is ignored for now, should in later stages be hashed and compared with value in database

@@ -1,13 +1,13 @@
 @import java.util
 @import java.time.format.DateTimeFormatter
 @import java.time.format.FormatStyle
-@(username: String, tags: util.List[DashboardController.TagEntry], comments: util.List[Comment])
+@(user: User, tags: util.List[Tag], comments: util.List[Comment])
 
-@main("Dashboard von " + username, username){
+@main("Dashboard von " + user.getEmail, user.getEmail){
     <h1>Deine gefolgten Tags</h1>
     <ul>
         @tags.map{ tag =>
-          <li><a href="@routes.ExerciseController.list(0, 0, "", tag.name)">@tag.name</a> (@tag.progress/@tag.total)</li>
+          <li><a href="@routes.ExerciseController.list(0, 0, "", tag.getName)">@tag.getName</a> (@user.getNofCompletedExercisesByTag(tag)/@tag.getExercises.size())</li>
         }
     </ul>
 

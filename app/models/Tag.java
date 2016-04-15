@@ -79,6 +79,12 @@ public class Tag extends Model {
         return new Finder<>(Tag.class);
     }
 
+    /**
+     * CARE: Should be replaced with currentUser.getNofCompletedExersiesByTag(Tag tag);
+     *
+     * @param currentUser currently logged in user
+     * @return current no of completed exersices by tag
+     */
     public long getNofCompletedExercises(User currentUser) {
         return getExercises().stream().mapToLong(exercise ->
                 exercise.getSolutions().stream().filter(solution -> solution.getUser().equals(currentUser)).count()
