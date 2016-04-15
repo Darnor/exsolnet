@@ -12,6 +12,7 @@ import services.SessionService;
 import views.html.editExercise;
 import views.html.exerciseDetail;
 import views.html.exerciseList;
+import views.html.fileNotFound;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
@@ -82,7 +83,7 @@ public class ExerciseController extends Controller {
      */
     public Result edit(long id) {
         Exercise exercise = Exercise.find().byId(id);
-        return (exercise == null) ? notFound() : ok(editExercise.render(exercise, SessionService.getCurrentUserEmail()));
+        return (exercise == null) ? notFound(fileNotFound.render("Exercise Not Found")) : ok(editExercise.render(exercise, SessionService.getCurrentUserEmail()));
     }
 
     /**
