@@ -142,7 +142,7 @@ public class User extends Model {
      * @return the Trackings of the User.
      */
     public Tracking getTrackingByTag(Tag tag) {
-        return trackings.stream().filter(t -> t.getTrackedTag().equals(tag)).findFirst().orElse(null);
+        return trackings.stream().filter(t -> t.getTag().equals(tag)).findFirst().orElse(null);
     }
 
     public void track(Tracking tracking) {
@@ -150,7 +150,7 @@ public class User extends Model {
     }
 
     public void unTrack(Long trackingId){
-        trackings.removeIf(t -> t.getTrackingId().equals(trackingId));
+        trackings.removeIf(t -> t.getId().equals(trackingId));
     }
 
     /**
@@ -255,7 +255,7 @@ public class User extends Model {
     }
 
     public List<Tag> getTrackedTags() {
-        return trackings.stream().map(Tracking::getTrackedTag).collect(Collectors.toList());
+        return trackings.stream().map(Tracking::getTag).collect(Collectors.toList());
     }
 
     /**

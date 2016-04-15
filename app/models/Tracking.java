@@ -22,30 +22,27 @@ public class Tracking extends Model {
     @NotNull
     private User user;
 
-    public Tracking(Long id, Tag tag, User user) {
-        this.id = id;
-        this.tag = tag;
-        this.user = user;
-    }
-
-    public Long getTrackingId() {
+    public Long getId() {
         return id;
     }
 
-    public Tag getTrackedTag() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Tag getTag() {
         return tag;
     }
 
-    public void track() {
-        id = null;
-        save();
-        user.track(this);
-        tag.track(this);
-    }
-
-    public void unTrack() {
-        delete();
-        user.unTrack(id);
-        tag.unTrack(id);
+    public void setTag(Tag tag) {
+        this.tag = tag;
     }
 }

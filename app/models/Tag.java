@@ -24,7 +24,7 @@ public class Tag extends Model {
     private String name;
 
     @NotNull
-    private Boolean isMainTag;
+    private boolean isMainTag;
 
     @ManyToMany(mappedBy = "tags")
     private List<Exercise> exercises;
@@ -43,22 +43,21 @@ public class Tag extends Model {
      * @param isMainTag is main tag or not
      */
     public Tag(String name, boolean isMainTag) {
-        this.id = null;
         this.name = name;
         this.isMainTag = isMainTag;
         this.exercises = new ArrayList<>();
         this.trackings = new ArrayList<>();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
     }
 
-    public Boolean isMainTag() {
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public boolean isMainTag() {
         return isMainTag;
     }
 
@@ -78,6 +77,10 @@ public class Tag extends Model {
         return Collections.unmodifiableList(exercises);
     }
 
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
+    }
+
     public void removeExercise(Long exerciseId) {
         exercises.removeIf(e -> e.getId().equals(exerciseId));
     }
@@ -87,23 +90,11 @@ public class Tag extends Model {
     }
 
     public List<Tracking> getTrackings() {
-        return Collections.unmodifiableList(trackings);
+        return trackings;
     }
 
-    public void track(Tracking tracking) {
-        trackings.add(tracking);
-    }
-
-    public void unTrack(Long trackingId) {
-        trackings.removeIf(t -> t.getTrackingId().equals(trackingId));
-    }
-
-    public Boolean getMainTag() {
-        return isMainTag;
-    }
-
-    public void setMainTag(Boolean mainTag) {
-        isMainTag = mainTag;
+    public void setTrackings(List<Tracking> trackings) {
+        this.trackings = trackings;
     }
 
     /**

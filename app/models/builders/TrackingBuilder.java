@@ -39,6 +39,10 @@ public class TrackingBuilder {
     }
 
     public Tracking build() {
-        return new Tracking(id, tag, user);
+        Tracking tracking = new Tracking();
+        tracking.setId(id);
+        tracking.setTag(tag);
+        tracking.setUser(user);
+        return tracking;
     }
 }

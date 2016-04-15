@@ -37,9 +37,9 @@ public class TagController {
         Tag tag = Tag.findTagByName(tagName);
         Tracking tracking = currentUser.getTrackingByTag(tag);
         if (tracking == null) {
-            TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build().track();
+            TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build().save();
         } else {
-            tracking.unTrack();
+            tracking.delete();
         }
         return renderTagList(Integer.parseInt(session(TAG_ORDER)), session(TAG_FILTER));
     }
@@ -53,7 +53,7 @@ public class TagController {
      * @param tagNameFilter string to filter tags names by
      * @return filterted tag list
      */
-    private List<Tag> filterTagList(List<Tag> tags, String tagNameFilter) {
+    private static List<Tag> filterTagList(List<Tag> tags, String tagNameFilter) {
         List<Tag> filteredTags = tags;
         if (tagNameFilter != null && tagNameFilter.length() > 0) {
             filteredTags = tags.stream().filter(t -> t.getName().toLowerCase().contains(tagNameFilter.toLowerCase())).collect(Collectors.toList());
@@ -70,7 +70,7 @@ public class TagController {
      * @param orderBy sort column
      * @return the sorted List depending on orderBy
      */
-    private List<Tag> sortTagList(List<Tag> tags, List<Tag> trackedTags, int orderBy) {
+    private static List<Tag> sortTagList(List<Tag> tags, List<Tag> trackedTags, int orderBy) {
         tags.sort((t1, t2) -> {
             switch(Math.abs(orderBy)) {
                 case 2:
