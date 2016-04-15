@@ -1,5 +1,5 @@
 @import java.util
-@(username: String, tags: util.List[Tag], trackedTags: util.List[Tag], currentOrderBy: Int, tagNameFilter: String)
+@(user: User, tags: util.List[Tag], trackedTags: util.List[Tag], currentOrderBy: Int, tagNameFilter: String)
 
 @****************************************
 * Helper generating navigation links    *
@@ -17,7 +17,7 @@
     </th>
 }
 
-@main("Tags: Finde passende zu dir passende Tags", username){
+@main("Tags: Finde passende zu dir passende Tags", user.getEmail){
 
     <h1>Tags</h1>
     <form action="@routes.TagController.renderTagList()" class="form-inline" role="form">

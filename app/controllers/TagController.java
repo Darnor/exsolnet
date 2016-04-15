@@ -101,7 +101,7 @@ public class TagController {
         List<Tag> tags = sortTagList(filterTagList(Tag.find().all(), tagNameFilter), trackedTags, orderBy);
         session(TAG_FILTER, tagNameFilter);
         session(TAG_ORDER, Integer.toString(orderBy));
-        return ok(tagList.render(SessionService.getCurrentUserEmail(), tags, trackedTags, orderBy, tagNameFilter));
+        return ok(tagList.render(SessionService.getCurrentUser(), tags, trackedTags, orderBy, tagNameFilter));
     }
 
     /**

@@ -9,6 +9,7 @@ import java.util.List;
  * Created by tourn on 7.4.16.
  */
 public class UserBuilder {
+    private Long id;
     private String email;
     private String password;
     private long points;
@@ -30,6 +31,11 @@ public class UserBuilder {
 
     public static UserBuilder anUser() {
         return new UserBuilder();
+    }
+
+    public UserBuilder withId(Long id) {
+        this.id = id;
+        return this;
     }
 
     public UserBuilder withEmail(String email) {
@@ -83,6 +89,7 @@ public class UserBuilder {
 
     public User build() {
         User user = new User(email, password);
+        user.setId(id);
         user.incrementPointsBy(points);
         for (Exercise exercise : exercises) {
             user.addExercise(exercise);
@@ -96,9 +103,7 @@ public class UserBuilder {
         for (Vote vote : votes) {
             user.addVote(vote);
         }
-        for (Tracking tracking : trackings) {
-            user.track(tracking);
-        }
+        user.setTrackings(trackings);
         return user;
     }
 }

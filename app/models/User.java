@@ -17,10 +17,13 @@ import static models.builders.UserBuilder.anUser;
 @Entity
 @Table(name="exoluser")
 public class User extends Model {
+
+    private static final String COLUMN_EMAIL = "email";
+
     @Id @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @Column(unique=true)
+    @Column(name = COLUMN_EMAIL, unique=true)
     @NotNull
     private String email;
 
@@ -53,10 +56,7 @@ public class User extends Model {
     @JoinColumn(name = "user_id")
     private List<Tracking> trackings;
 
-    private static final String EMAIL_STR = "email";
-
     public User(String email, String password) {
-        this.id = null;
         this.email = email;
         this.password = password;
         this.isModerator = false;
@@ -66,6 +66,14 @@ public class User extends Model {
         this.comments = new ArrayList<>();
         this.votes = new ArrayList<>();
         this.trackings = new ArrayList<>();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id){
+        this.id = id;
     }
 
     /**
@@ -145,12 +153,8 @@ public class User extends Model {
         return trackings.stream().filter(t -> t.getTag().equals(tag)).findFirst().orElse(null);
     }
 
-    public void track(Tracking tracking) {
-        trackings.add(tracking);
-    }
-
-    public void unTrack(Long trackingId){
-        trackings.removeIf(t -> t.getId().equals(trackingId));
+    public void setTrackings(List<Tracking> trackings) {
+        this.trackings = trackings;
     }
 
     /**
@@ -250,9 +254,6 @@ public class User extends Model {
       *
       * @return the Id of the User.
       */
-    public Long getId() {
-        return id;
-    }
 
     public List<Tag> getTrackedTags() {
         return trackings.stream().map(Tracking::getTag).collect(Collectors.toList());
@@ -284,7 +285,7 @@ public class User extends Model {
      * @return User
      */
     public static User findUser(String email) {
-        return find().where().ieq(EMAIL_STR, email).findUnique();
+        return find().where().ieq(COLUMN_EMAIL, email).findUnique();
     }
 
     /**
