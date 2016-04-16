@@ -2,7 +2,7 @@ package controllers;
 
 import com.avaje.ebean.PagedList;
 import models.Exercise;
-import models.Tag;
+import models.builders.ExerciseBuilder;
 import play.data.DynamicForm;
 import play.data.FormFactory;
 import play.mvc.Controller;
@@ -15,9 +15,6 @@ import views.html.exerciseList;
 import views.html.fileNotFound;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static models.builders.ExerciseBuilder.anExercise;
 
@@ -31,10 +28,13 @@ public class ExerciseController extends Controller {
     @Inject
     FormFactory formFactory;
 
-    private static final String TITLE_STR = "title";
-    private static final String CONTENT_STR = "content";
-    private static final String MAIN_TAG_STR = "mainTag";
-    private static final String OTHER_TAG_STR = "otherTag";
+    private static final String TITLE_FIELD = "title";
+    private static final String CONTENT_FIELD = "content";
+    private static final String MAIN_TAG_FIELD = "mainTag";
+    private static final String OTHER_TAG_FIELD = "otherTag";
+
+    private static final String DELIMITER = ",";
+    private static final boolean IS_MAIN_TAG = true;
 
     /**
      * render if create Exercise. Creates new blank exercise with id -1.
@@ -87,126 +87,18 @@ public class ExerciseController extends Controller {
     }
 
     /**
-     * Returns a exercise.
-     * If id exists. Get exercise from db. If null create new Exercise and return
-     *
-     * @param exerciseId the id of the exercise or null if new
-     * @return the exercise
-     */
-    private Exercise getExerciseToUpdate(Long exerciseId) {
-        Exercise exercise;
-
-        //create
-        if (exerciseId == null) {
-            exercise = anExercise().build();
-            Exercise.create(exercise);
-        } else {
-            //get
-            exercise = Exercise.findExerciseData(exerciseId);
-        }
-        return exercise;
-    }
-
-
-    private void saveMaintagInExercise(Exercise exercise, List<String> main) {
-        main.forEach(t -> {
-                    // maintag is not yet saves
-                    if (!Exercise.mainTagExistsInExercise(exercise.getId(), t)) {
-                        // get maintag from db
-                        Tag mainTag =   Tag.findMainTagByName(t);
-
-                        //main tag does not exist in db
-                        if (mainTag == null) {
-                            throw new IllegalArgumentException("not allowed to create main tags.");
-                        }
-                        // add maintag to exercise and exercise to maintag
-                        Exercise.bindTag(exercise,mainTag);
-                    }
-                }
-        );
-    }
-
-    private void saveOtherTagInExercise(Exercise exercise, List<String> other) {
-        other.forEach(t -> {
-                    if (Exercise.mainTagExistsInExercise(exercise.getId(), t))
-                        throw new IllegalArgumentException("not allowed to add maintag to othertag.");
-
-                    // tag is not yet in exercise
-                    if (!Exercise.otherTagExistsInExercise(exercise.getId(), t)) {
-                        //get tag from db or create and add tag to exercise and exercise to tag
-                        Exercise.bindTag(exercise,Tag.getOtherTagByNameOrCreate(t));
-                    }
-                }
-        );
-    }
-
-    /**
-     * Updated tag in exercise by new tag list
-     * @param exercise the exercise to be updated
-     * @param main the main tags
-     * @param other the other tags
-     */
-    private void updateTagInExercise(Exercise exercise, List<String> main, List<String> other) {
-        saveMaintagInExercise(exercise, main);
-        saveOtherTagInExercise(exercise, other);
-
-        List<String> tags = new ArrayList<>();
-        tags.addAll(main);
-        tags.addAll(other);
-
-        exercise.removeTagIfNotInList(tags);
-    }
-
-    /**
-     * Greate a List from a String with delimeter
-     * @param data the string
-     * @param delimeter the delimeter
-     * @return a list from a string or a new list if string is null
-     */
-    private List<String> getListFromString(String data, String delimeter) {
-        return data != null && data.length() > 0 ? Arrays.asList(data.split(delimeter)) : new ArrayList<>();
-    }
-
-    /**
-     * Set exercise data for update
-     * @param exercise the exercise to be set
-     * @param requestData the data from the form
-     * @throws IllegalArgumentException
-     */
-    private void setExerciseDataFromUpdateView(Exercise exercise, DynamicForm requestData) {
-        exercise.setTitle(requestData.get(TITLE_STR));
-        exercise.setContent(requestData.get(CONTENT_STR));
-        List<String> main = getListFromString(requestData.get(MAIN_TAG_STR), ",");
-        List<String> other = getListFromString(requestData.get(OTHER_TAG_STR), ",");
-        updateTagInExercise(exercise, main, other);
-    }
-
-    /**
      * Updates an exercise.
      *
-     * @param exerciseId the id of the exercise to be updated. if -1 it will be created.
+     * @param exerciseId the id of the exercise to be updated.
      * @return the result
      */
-    public Result processUpdate(Long exerciseId) {
-        //getting data from form
+    public Result processUpdate(long exerciseId) {
         DynamicForm requestData = formFactory.form().bindFromRequest();
-        Exercise exercise = getExerciseToUpdate(exerciseId);
-        setExerciseDataFromUpdateView(exercise, requestData);
-        Exercise.update(exercise);
-        //redirect to exercise list
-        return redirect(routes.ExerciseController.renderOverview());
-    }
-
-    /**
-     * Creates an exercise
-     *
-     * @return the result
-     */
-    public Result processCreate() {
-        DynamicForm requestData = formFactory.form().bindFromRequest();
-        Exercise exercise = anExercise().withUser(SessionService.getCurrentUser()).build();
-        setExerciseDataFromUpdateView(exercise, requestData);
-        exercise.save();
+        Exercise exercise = (exerciseId == -1) ? ExerciseBuilder.anExercise().build() : Exercise.find().byId(exerciseId);
+        String title = requestData.get(TITLE_FIELD);
+        String[] mainTags = requestData.get(MAIN_TAG_FIELD).split(DELIMITER);
+        String[] otherTags = requestData.get(OTHER_TAG_FIELD).split(DELIMITER);
+        Exercise.updateOrCreate(exercise, title, requestData.get(CONTENT_FIELD), mainTags, otherTags, SessionService.getCurrentUser());
         return redirect(routes.ExerciseController.renderOverview());
     }
 }

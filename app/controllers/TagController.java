@@ -10,7 +10,6 @@ import play.mvc.Security;
 import services.SessionService;
 import views.html.tagList;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -105,53 +104,21 @@ public class TagController {
     }
 
     /**
-     * suggests all tags (main and other) which starts with the tagName.
-     * @param tagName suggest tags for tagName
-     * @return Result -> list of all T
-     */
-    public Result suggestTags(String tagName) {
-        List<Tag> tagList = Tag.getSuggestedTags(tagName);
-        return suggestTagsByList(tagList);
-    }
-
-    /**
      * suggests main tags
      * @param tagName suggest tags for tagName
      * @return Result -> list of main tags
      */
-    public Result suggestMainTags(String tagName) {
-        List<Tag> tagList = Tag.getSuggestedMainTags(tagName);
-        return suggestTagsByList(tagList);
-    }
-
-    /**
-     * suggest non main tags
-     * @param tagName suggest tags for tagName
-     * @return Result -> list of non main tags
-     */
-    public Result suggestOtherTags(String tagName) {
-
-        List<Tag> tagList = Tag.getSuggestedOtherTags(tagName);
-        Tag t = new Tag(tagName,false);
-        tagList.add(0,t);
-        return suggestTagsByList(tagList);
-
-    }
-    /**
-     * return json list with suggested tags with given list
-     * @param tagList the list with suggested tags
-     * @return result of tags
-     */
-    public Result suggestTagsByList(List<Tag> tagList){
-        List<TagEntry> list = new ArrayList<>();
-        for(Tag tag : tagList){
-            list.add(new TagEntry(tag.getName()));
+    public Result suggestTags(String tagName, boolean isMainTag) {
+        List<TagEntry> suggestedTags = Tag.getSuggestedTags(tagName, isMainTag).stream().map(t -> new TagEntry(t.getName())).collect(Collectors.toList());
+        if (!isMainTag) {
+            suggestedTags.add(0, new TagEntry(tagName));
         }
-        return ok(Json.toJson(list));
+        return ok(Json.toJson(suggestedTags));
     }
-    public class TagEntry{
+
+    private class TagEntry{
         public final String name;
-        public TagEntry(String name) {
+        TagEntry(String name) {
             this.name = name;
         }
     }

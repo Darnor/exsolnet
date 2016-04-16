@@ -8,14 +8,11 @@ GET         /exercises              controllers.ExerciseController.renderOvervie
 GET         /exercises/create       controllers.ExerciseController.renderCreate
 GET         /exercises/:id          controllers.ExerciseController.renderDetails(id: Long)
 POST        /exercises/:id/update   controllers.ExerciseController.processUpdate(id: Long)
-POST        /exercises/create       controllers.ExerciseController.processCreate()
 GET         /exercises/:id/edit     controllers.ExerciseController.edit(id: Long)
 GET         /dashboard              controllers.DashboardController.renderDashboard
 GET         /tags                   controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
 GET         /tags                   controllers.TagController.renderOverview
-GET         /tags/query             controllers.TagController.suggestTags(q ?= "")
-GET         /tags/maintag           controllers.TagController.suggestMainTags(q ?= "")
-GET         /tags/othertag          controllers.TagController.suggestOtherTags(q ?= "")
+GET         /tags/query             controllers.TagController.suggestTags(q ?= "", isMainTag:Boolean ?= false)
 POST        /tags/track             controllers.TagController.processTrack(tag)
 GET         /login                  controllers.LoginController.renderLogin
 POST        /login                  controllers.LoginController.login

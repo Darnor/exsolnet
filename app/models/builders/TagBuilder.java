@@ -48,11 +48,11 @@ public class TagBuilder {
     }
 
     public Tag build() {
-        Tag tag = new Tag(name, isMainTag);
+        Tag tag = new Tag();
         tag.setId(id);
-        for (Exercise exercise : exercises) {
-            tag.addExercise(exercise);
-        }
+        tag.setName(name);
+        tag.setIsMainTag(isMainTag);
+        tag.setExercises(exercises);
         return tag;
     }
 }
