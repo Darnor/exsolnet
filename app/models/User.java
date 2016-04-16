@@ -53,7 +53,7 @@ public class User extends Model {
     private List<Vote> votes;
 
     @OneToMany
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = Tracking.COLUMN_USER_ID)
     private List<Tracking> trackings;
 
     public User(String email, String password) {
