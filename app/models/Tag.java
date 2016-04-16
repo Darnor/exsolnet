@@ -80,6 +80,13 @@ public class Tag extends Model {
         return new Finder<>(Tag.class);
     }
 
+    public long getNofCompletedExercises(User currentUser) {
+        return getExercises().stream().mapToLong(exercise ->
+                exercise.getSolutions().stream().filter(solution -> solution.getUser().equals(currentUser)).count()
+        ).sum();
+    }
+
+
     public static List<Tag> process(String[] tagNames, boolean isMainTag) {
         List<Tag> tags = new ArrayList<>();
         for (String tagName : tagNames) {
