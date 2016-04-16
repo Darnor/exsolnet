@@ -94,22 +94,11 @@ public class ExerciseBuilder {
         exercise.setContent(content);
         exercise.setPoints(points);
         exercise.setId(id);
-
-        for (Solution solution : solutions) {
-            exercise.addSolution(solution);
-        }
-        for (Vote vote : votes) {
-            exercise.addVote(vote);
-        }
-        for (Tag tag : tags) {
-            exercise.addTag(tag);
-        }
-        for (Comment comment : comments) {
-            exercise.addComment(comment);
-        }
-        for (Report report : reports) {
-            exercise.addReport(report);
-        }
+        exercise.setSolutions(solutions);
+        exercise.setVotes(votes);
+        exercise.setTags(tags);
+        exercise.setComments(comments);
+        exercise.setReports(reports);
         return exercise;
     }
 

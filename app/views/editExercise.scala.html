@@ -6,7 +6,7 @@
     <div>
         <h1>Aufgaben editieren</h1>
         <form method="POST" action="@if(exercise.getId == null) {
-            @routes.ExerciseController.processCreate
+            @routes.ExerciseController.processUpdate(-1)
         } else {
             @routes.ExerciseController.processUpdate(exercise.getId)
         }">
@@ -18,11 +18,11 @@
                     </div>
                     <div class="form-group">
                         <label for="maintag-filter-list">Haupt Tags:</label>
-                        <input required type="search" id="maintag-filter-list" type="text" name="maintag" rel="@exercise.getTags.filter(x => x.isMainTag).map(x => x.getName).mkString(",")" data-route="@routes.TagController.suggestMainTags("")"/>
+                        <input required type="search" id="maintag-filter-list" type="text" name="mainTag" rel="@exercise.getTags.filter(x => x.isMainTag).map(x => x.getName).mkString(",")" data-route="@routes.TagController.suggestTags("", true)"/>
                     </div>
                     <div class="form-group">
                         <label for="othertag-filter-list">Andere Tags:</label>
-                        <input type="search" id="othertag-filter-list" type="text" name="othertag" rel="@exercise.getTags.filter(x => !x.isMainTag).map(x => x.getName).mkString(",")" data-route="@routes.TagController.suggestOtherTags("")"/>
+                        <input type="search" id="othertag-filter-list" type="text" name="otherTag" rel="@exercise.getTags.filter(x => !x.isMainTag).map(x => x.getName).mkString(",")" data-route="@routes.TagController.suggestTags("", false)"/>
                     </div>
                     <div class="form-group">
                         <label for="content">Inhalt:</label>
