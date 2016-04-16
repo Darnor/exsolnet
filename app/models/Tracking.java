@@ -8,17 +8,21 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name="track")
 public class Tracking extends Model {
+
+    public static final String COLUMN_TAG_ID = "tag_id";
+    public static final String COLUMN_USER_ID = "user_id";
+
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "tag_id")
+    @JoinColumn(name = COLUMN_TAG_ID)
     @NotNull
     private Tag tag;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = COLUMN_USER_ID)
     @NotNull
     private User user;
 

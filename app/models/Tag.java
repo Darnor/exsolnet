@@ -9,32 +9,32 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Claudia on 31.03.2016.
- */
 @Entity
 @Table(name = "tag")
 public class Tag extends Model {
+
+    private static final String COLUMN_IS_MAIN_TAG = "isMainTag";
+    private static final String COLUMN_TAG_NAME = "name";
+    private static final String COLUMN_TAGS = "tags";
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(unique = true)
+    @Column(name = COLUMN_TAG_NAME, unique = true)
     @NotNull
     private String name;
 
+    @Column(name = COLUMN_IS_MAIN_TAG)
     @NotNull
     private boolean isMainTag;
 
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany(mappedBy = COLUMN_TAGS)
     private List<Exercise> exercises;
 
     @OneToMany
-    @JoinColumn(name = "tag_id")
+    @JoinColumn(name = Tracking.COLUMN_TAG_ID)
     private List<Tracking> trackings;
-
-    private static final String COLUMN_IS_MAIN_TAG = "isMainTag";
-    private static final String COLUMN_TAG_NAME = "name";
 
     public Long getId() {
         return id;
@@ -80,16 +80,11 @@ public class Tag extends Model {
         return new Finder<>(Tag.class);
     }
 
-    public long getNofCompletedExercises(User currentUser) {
-        return getExercises().stream().mapToLong(exercise ->
-                exercise.getSolutions().stream().filter(solution -> solution.getUser().equals(currentUser)).count()
-        ).sum();
-    }
-
     public static List<Tag> process(String[] tagNames, boolean isMainTag) {
         List<Tag> tags = new ArrayList<>();
         for (String tagName : tagNames) {
-            Tag tag = Tag.find().all().stream().filter(t -> t.getName().equals(tagName)).findFirst().orElse(TagBuilder.aTag().withName(tagName).withIsMainTag(isMainTag).build());
+            Tag tag = Tag.find().all().stream().filter(t -> t.getName().equals(tagName)).findFirst()
+                    .orElse(TagBuilder.aTag().withName(tagName).withIsMainTag(isMainTag).build());
             if (tag.getId() == null) {
                 tag.save();
             }
