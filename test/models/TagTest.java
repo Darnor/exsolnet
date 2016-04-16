@@ -2,6 +2,12 @@ package models;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
+import static models.builders.ExerciseBuilder.anExercise;
+import static models.builders.SolutionBuilder.aSolution;
+import static models.builders.TagBuilder.aTag;
+import static models.builders.UserBuilder.anUser;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -9,7 +15,6 @@ import static org.junit.Assert.assertEquals;
  */
 public class TagTest extends AbstractModelTest {
 
-    /*
     @Test
     public void testGetCompletedExercisesNoSolutions(){
         User userA = anUser().withEmail("Hans").build();
@@ -53,7 +58,6 @@ public class TagTest extends AbstractModelTest {
         Tag tag = aTag().withName("A").withExercises(Arrays.asList(e1, e2, e3)).build();
         assertEquals(2, tag.getNofCompletedExercises(userA));
     }
-    */
 
     @Test
     public void testGetSuggestedTags(){

@@ -116,7 +116,9 @@ public class Exercise extends Post {
             throw new IllegalArgumentException("Exercise must contain at least one main tag!");
         }
         List<Tag> tags = Tag.process(mainTags, true);
-        tags.addAll(Tag.process(otherTags, false));
+        if (otherTags != null && otherTags.length > 0) {
+            tags.addAll(Tag.process(otherTags, false));
+        }
         exercise.setTitle(title);
         exercise.setContent(content);
         exercise.setTags(tags);
