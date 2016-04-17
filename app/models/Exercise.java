@@ -108,16 +108,12 @@ public class Exercise extends Post {
         this.tags = tags;
     }
 
-    public static void updateOrCreate(Exercise exercise, String title, String content, String[] mainTags, String[] otherTags, User user) {
-        if (exercise.getId() != null && !exercise.getId().equals(user.getId()) && !user.getIsModerator()) {
+    public static void updateOrCreate(Exercise exercise, String title, String content, List<Tag> tags, User user) {
+        if (exercise.getId() != null && !exercise.getUser().getId().equals(user.getId()) && !user.isModerator()) {
             throw new IllegalArgumentException("User not allowed to edit another users exercise!");
         }
-        if (mainTags == null || mainTags.length == 0) {
+        if (tags.stream().filter(Tag::isMainTag).count() == 0) {
             throw new IllegalArgumentException("Exercise must contain at least one main tag!");
-        }
-        List<Tag> tags = Tag.process(mainTags, true);
-        if (otherTags != null && otherTags.length > 0) {
-            tags.addAll(Tag.process(otherTags, false));
         }
         exercise.setTitle(title);
         exercise.setContent(content);

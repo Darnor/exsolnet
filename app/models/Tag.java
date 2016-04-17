@@ -5,7 +5,6 @@ import models.builders.TagBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -87,17 +86,24 @@ public class Tag extends Model {
     }
 
 
-    public static List<Tag> process(String[] tagNames, boolean isMainTag) {
-        List<Tag> tags = new ArrayList<>();
-        for (String tagName : tagNames) {
-            Tag tag = Tag.find().all().stream().filter(t -> t.getName().equals(tagName)).findFirst()
-                    .orElse(TagBuilder.aTag().withName(tagName).withIsMainTag(isMainTag).build());
-            if (tag.getId() == null) {
-                tag.save();
-            }
-            tags.add(tag);
+    public static Tag processCreate(String tagName, boolean isMainTag, User user) {
+        Tag tag = Tag.find().all().stream()
+                .filter(t -> t.getName().equals(tagName))
+                .findFirst()
+                .orElse(TagBuilder.aTag().withName(tagName).withIsMainTag(isMainTag).build());
+
+        if (isMainTag != tag.isMainTag) {
+            throw new IllegalArgumentException("Not allowed to add a main tag to an other tag and vice versa.");
         }
-        return tags;
+
+        if (tag.getId() == null) {
+            if (!user.isModerator() && isMainTag) {
+                throw new IllegalArgumentException("Not allowed to create new main tag!");
+            }
+            tag.save();
+        }
+
+        return tag;
     }
 
     /**

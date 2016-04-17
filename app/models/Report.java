@@ -21,7 +21,8 @@ public class Report extends Model {
     private String message;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime time;
+    @NotNull
+    private LocalDateTime time = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -40,12 +41,6 @@ public class Report extends Model {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-    public Report(User user, String message) {
-        this.user = user;
-        this.message = message;
-        this.time = LocalDateTime.now();
-    }
-
     public Long getId() {
         return id;
     }
@@ -58,7 +53,47 @@ public class Report extends Model {
         return message;
     }
 
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
     public User getUser() {
         return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public LocalDateTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalDateTime time) {
+        this.time = time;
+    }
+
+    public Solution getSolution() {
+        return solution;
+    }
+
+    public void setSolution(Solution solution) {
+        this.solution = solution;
+    }
+
+    public Exercise getExercise() {
+        return exercise;
+    }
+
+    public void setExercise(Exercise exercise) {
+        this.exercise = exercise;
+    }
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
     }
 }

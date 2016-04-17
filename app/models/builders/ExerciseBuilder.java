@@ -2,12 +2,9 @@ package models.builders;
 
 import models.*;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Created by tourn on 11.4.16.
- */
 public class ExerciseBuilder {
     private String title;
     private List<Solution> solutions;
@@ -16,16 +13,12 @@ public class ExerciseBuilder {
     private User user;
     private List<Report> reports;
     private List<Comment> comments;
-    private String content;
-    private long points;
     private Long id;
+    private String content;
+    private LocalDateTime time = LocalDateTime.now();
+    private long points;
 
     private ExerciseBuilder() {
-        solutions = new ArrayList<>();
-        votes = new ArrayList<>();
-        tags = new ArrayList<>();
-        reports = new ArrayList<>();
-        comments = new ArrayList<>();
     }
 
     public static ExerciseBuilder anExercise() {
@@ -52,11 +45,6 @@ public class ExerciseBuilder {
         return this;
     }
 
-    public ExerciseBuilder withId(Long id) {
-        this.id = id;
-        return this;
-    }
-
     public ExerciseBuilder withUser(User user) {
         this.user = user;
         return this;
@@ -72,8 +60,18 @@ public class ExerciseBuilder {
         return this;
     }
 
+    public ExerciseBuilder withId(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public ExerciseBuilder withContent(String content) {
         this.content = content;
+        return this;
+    }
+
+    public ExerciseBuilder withTime(LocalDateTime time) {
+        this.time = time;
         return this;
     }
 
@@ -82,25 +80,23 @@ public class ExerciseBuilder {
         return this;
     }
 
-
     public ExerciseBuilder but() {
-        return anExercise().withTitle(title).withSolutions(solutions).withVotes(votes).withTags(tags).withUser(user).withReports(reports).withComments(comments).withContent(content).withPoints(points);
+        return anExercise().withTitle(title).withSolutions(solutions).withVotes(votes).withTags(tags).withUser(user).withReports(reports).withComments(comments).withId(id).withContent(content).withTime(time).withPoints(points);
     }
 
     public Exercise build() {
         Exercise exercise = new Exercise();
-        exercise.setUser(user);
         exercise.setTitle(title);
-        exercise.setContent(content);
-        exercise.setPoints(points);
-        exercise.setId(id);
         exercise.setSolutions(solutions);
         exercise.setVotes(votes);
         exercise.setTags(tags);
-        exercise.setComments(comments);
+        exercise.setUser(user);
         exercise.setReports(reports);
+        exercise.setComments(comments);
+        exercise.setId(id);
+        exercise.setContent(content);
+        exercise.setTime(time);
+        exercise.setPoints(points);
         return exercise;
     }
-
-
 }

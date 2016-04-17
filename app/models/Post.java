@@ -27,12 +27,12 @@ public class Post extends Model {
     @Basic
     private long points;
 
-    public Post() {
-        this.id = null;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getContent() {
@@ -47,15 +47,15 @@ public class Post extends Model {
         return time;
     }
 
-    public void setPoints(long points) {
-        this.points = points;
+    public void setTime(LocalDateTime time) {
+        this.time = time;
     }
 
     public long getPoints() {
         return points;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPoints(long points) {
+        this.points = points;
     }
 }
