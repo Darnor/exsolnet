@@ -3,6 +3,7 @@ package controllers;
 import com.avaje.ebean.PagedList;
 import models.Exercise;
 import models.Tag;
+import models.User;
 import models.builders.ExerciseBuilder;
 import play.data.DynamicForm;
 import play.data.FormFactory;
@@ -35,6 +36,9 @@ public class ExerciseController extends Controller {
     private static final String MAIN_TAG_FIELD = "mainTag";
     private static final String OTHER_TAG_FIELD = "otherTag";
 
+    /**
+     * Specifies the id to be used to mark a new Exercise, should be less than 0
+     */
     private static final long NEW_EXERCISE_ID = -1;
 
     private static final String TAG_NAME_DELIMITER = ",";
@@ -98,6 +102,25 @@ public class ExerciseController extends Controller {
         return (exercise == null) ? notFound(fileNotFound.render("Exercise Not Found")) : ok(editExercise.render(exercise, SessionService.getCurrentUserEmail()));
     }
 
+    private void checkIfUserIsAllowedToUpdateExercise(User user, Exercise exercise) {
+        if (exercise == null) {
+            throw new IllegalArgumentException("Not a valid exercise.");
+        }
+        if (user == null || (!exercise.getUser().getId().equals(user.getId()) && !user.isModerator())) {
+            throw new IllegalArgumentException("User not allowed to modify this exercise.");
+        }
+    }
+
+    private void validateFormData(long exerciseId, String title, List<Tag> mainTags, String content, User user) {
+        if (title.trim().length() == 0 || mainTags.isEmpty() || content.trim().length() == 0) {
+            throw new IllegalArgumentException("Formdata not valid.");
+        }
+        if (exerciseId != NEW_EXERCISE_ID) {
+            Exercise exercise = Exercise.find().byId(exerciseId);
+            checkIfUserIsAllowedToUpdateExercise(user, exercise);
+        }
+    }
+
     /**
      * Update or create an exercise based on the
      *
@@ -105,12 +128,18 @@ public class ExerciseController extends Controller {
      * @return the result
      */
     public Result processUpdateOrCreate(long exerciseId) {
+        User currentUser = SessionService.getCurrentUser();
+
         DynamicForm requestData = formFactory.form().bindFromRequest();
         Exercise exercise = (exerciseId == NEW_EXERCISE_ID) ? ExerciseBuilder.anExercise().build() : Exercise.find().byId(exerciseId);
         String title = requestData.get(TITLE_FIELD);
+        String content = requestData.get(CONTENT_FIELD);
         List<Tag> tags = processTagNames(requestData.get(MAIN_TAG_FIELD), true);
+
+        validateFormData(exerciseId, title, tags, content, currentUser);
+
         tags.addAll(processTagNames(requestData.get(OTHER_TAG_FIELD), false));
-        Exercise.updateOrCreate(exercise, title, requestData.get(CONTENT_FIELD), tags, SessionService.getCurrentUser());
+        Exercise.updateOrCreate(exercise, title, content, tags, currentUser);
         return redirect(routes.ExerciseController.renderOverview());
     }
 }
