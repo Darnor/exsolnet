@@ -1,17 +1,21 @@
 package models.builders;
 
-import models.Exercise;
-import models.Solution;
-import models.User;
+import models.*;
 
-/**
- * Created by tourn on 11.4.16.
- */
+import java.time.LocalDateTime;
+import java.util.List;
+
 public class SolutionBuilder {
-    private User user;
-    private String content;
-    private int points;
+    private boolean isOfficial;
     private Exercise exercise;
+    private User user;
+    private List<Report> reports;
+    private List<Comment> comments;
+    private List<Vote> votes;
+    private Long id;
+    private String content;
+    private LocalDateTime time = LocalDateTime.now();
+    private long points;
 
     private SolutionBuilder() {
     }
@@ -20,8 +24,8 @@ public class SolutionBuilder {
         return new SolutionBuilder();
     }
 
-    public SolutionBuilder withUser(User user) {
-        this.user = user;
+    public SolutionBuilder withIsOfficial(boolean isOfficial) {
+        this.isOfficial = isOfficial;
         return this;
     }
 
@@ -30,25 +34,62 @@ public class SolutionBuilder {
         return this;
     }
 
+    public SolutionBuilder withUser(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public SolutionBuilder withReports(List<Report> reports) {
+        this.reports = reports;
+        return this;
+    }
+
+    public SolutionBuilder withComments(List<Comment> comments) {
+        this.comments = comments;
+        return this;
+    }
+
+    public SolutionBuilder withVotes(List<Vote> votes) {
+        this.votes = votes;
+        return this;
+    }
+
+    public SolutionBuilder withId(Long id) {
+        this.id = id;
+        return this;
+    }
+
     public SolutionBuilder withContent(String content) {
         this.content = content;
         return this;
     }
 
-    public SolutionBuilder withPoints(int points) {
+    public SolutionBuilder withTime(LocalDateTime time) {
+        this.time = time;
+        return this;
+    }
+
+    public SolutionBuilder withPoints(long points) {
         this.points = points;
         return this;
     }
 
     public SolutionBuilder but() {
-        return aSolution().withUser(user).withContent(content).withPoints(points).withExercise(exercise);
+        return aSolution().withIsOfficial(isOfficial).withExercise(exercise).withUser(user).withReports(reports).withComments(comments).withVotes(votes).withId(id).withContent(content).withTime(time).withPoints(points);
     }
 
     public Solution build() {
-        Solution solution = new Solution(user, exercise);
-        solution.setContent(content);
-        solution.setPoints(points);
+        Solution solution = new Solution();
+        solution.setIsOfficial(isOfficial);
         solution.setExercise(exercise);
+        solution.setUser(user);
+        solution.setReports(reports);
+        solution.setComments(comments);
+        solution.setVotes(votes);
+        solution.setId(id);
+        solution.setContent(content);
+        solution.setTime(time);
+        solution.setPoints(points);
         return solution;
     }
 }

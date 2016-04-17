@@ -3,46 +3,65 @@ package integration;
 import models.Exercise;
 import org.junit.Assert;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 
-/**
- * Created by tourn on 11.4.16.
- */
 public class ExerciseEditCreateIT extends AbstractIntegrationTest {
 
-    /*
-    // nullptr
+    private void fillTagTokenElements(WebElement element, String tag) {
+        try {
+            element.sendKeys(tag);
+            // Wait 2 seconds for the Token to be created. Very brittle for tests...
+            Thread.sleep(2000);
+            element.sendKeys(Keys.ENTER);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @Test
     public void testCreate() {
         as(FRANZ, browser -> {
 
             String title = "Event Foo";
-            String otherTag = "MinTäg, DinTäg";
+            String[] mainTags = { "An1I" };
+            String[] otherTags = {"MinTäg", "DinTäg"};
             String content = "En neue Event wo i erstell.";
-            String mainTag = "An1I";
 
             browser.goTo("/exercises/create");
+
             browser.fill("#title").with(title);
+
+            //TODO Beter way to input tags... Thread sleep -> workaround...
+
+            WebElement mainTagElement = browser.getDriver().findElement(By.id("token-input-maintag-filter-list"));
+            for (String tag : mainTags) {
+                fillTagTokenElements(mainTagElement, tag);
+            }
+
+            WebElement otherTagElement = browser.getDriver().findElement(By.id("token-input-othertag-filter-list"));
+            for (String tag : otherTags) {
+                fillTagTokenElements(otherTagElement, tag);
+            }
+
             browser.fill("#content").with(content);
-
-            WebElement element = browser.getDriver().findElement(By.id("token-input-maintag-filter-list"));
-            element.sendKeys(mainTag + Keys.RETURN);
-            WebElement element2 = browser.getDriver().findElement(By.id("token-input-othertag-filter-list"));
-            element.sendKeys(otherTag + Keys.RETURN);
-
             browser.submit("#save");
 
-            Exercise newExercise = Exercise.find().where().eq("title", "Event Foo").findUnique();
+            Exercise newExercise = Exercise.find().where().eq("title", title).findUnique();
+            Assert.assertNotNull(newExercise);
             Assert.assertEquals(title,newExercise.getTitle());
             Assert.assertEquals(content,newExercise.getContent());
-          //TODO shall work  Assert.assertEquals(3,newExercise.getTags().size());
+            Assert.assertEquals(3,newExercise.getTags().size());
         });
     }
-    */
 
     @Test
     public void testUpdate() {
         as(FRANZ, browser -> {
             Exercise updateExercise = Exercise.find().where().eq("id", 8000L).findUnique();
+
+            Assert.assertNotNull(updateExercise);
 
             String title = updateExercise.getTitle() + " version 2";
             String content = updateExercise.getContent() + " und jetzt no en zuesatz zu dere Ufgab";
@@ -54,6 +73,8 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
             browser.submit("#save");
 
             Exercise newExercise = Exercise.find().where().eq("id", 8000L).findUnique();
+
+            Assert.assertNotNull(newExercise);
             Assert.assertEquals(newExercise.getTitle(), title);
             Assert.assertEquals(newExercise.getContent(), content);
         });

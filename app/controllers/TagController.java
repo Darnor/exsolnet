@@ -17,35 +17,11 @@ import java.util.stream.Collectors;
 import static play.mvc.Controller.session;
 import static play.mvc.Results.ok;
 
-/**
- * Created by revy on 05.04.16.
- */
 @Security.Authenticated(Secured.class)
-
 public class TagController {
 
     private static final String TAG_FILTER = "tagFilter";
     private static final String TAG_ORDER = "tagOrder";
-
-    /**
-     * @param tagName String containing the Tag Name which needs to be tracked or if tracked untracked
-     * @return renders the tagList again
-     */
-    public Result processTrack(String tagName) {
-        User currentUser = SessionService.getCurrentUser();
-        Tag tag = Tag.findTagByName(tagName);
-        Tracking tracking = currentUser.getTrackingByTag(tag);
-        if (tracking == null) {
-            TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build().save();
-        } else {
-            tracking.delete();
-        }
-        return renderTagList(Integer.parseInt(session(TAG_ORDER)), session(TAG_FILTER));
-    }
-
-    public Result renderOverview() {
-        return renderTagList(1, "");
-    }
 
     /**
      * @param tags list containing tags
@@ -91,6 +67,26 @@ public class TagController {
     }
 
     /**
+     * @param tagName String containing the Tag Name which needs to be tracked or if tracked untracked
+     * @return renders the tagList again
+     */
+    public Result processTrack(String tagName) {
+        User currentUser = SessionService.getCurrentUser();
+        Tag tag = Tag.findTagByName(tagName);
+        Tracking tracking = currentUser.getTrackingByTag(tag);
+        if (tracking == null) {
+            TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build().save();
+        } else {
+            tracking.delete();
+        }
+        return renderTagList(Integer.parseInt(session(TAG_ORDER)), session(TAG_FILTER));
+    }
+
+    public Result renderOverview() {
+        return renderTagList(1, "");
+    }
+
+    /**
      * @param orderBy colum to order the tags
      * @param tagNameFilter filter for the tags
      * @return renders the tags site
@@ -109,10 +105,15 @@ public class TagController {
      * @return Result -> list of main tags
      */
     public Result suggestTags(String tagName, boolean isMainTag) {
-        List<TagEntry> suggestedTags = Tag.getSuggestedTags(tagName, isMainTag).stream().map(t -> new TagEntry(t.getName())).collect(Collectors.toList());
+        List<TagEntry> suggestedTags = Tag.getSuggestedTags(tagName, isMainTag)
+                .stream()
+                .map(t -> new TagEntry(t.getName()))
+                .collect(Collectors.toList());
+
         if (!isMainTag) {
             suggestedTags.add(0, new TagEntry(tagName));
         }
+
         return ok(Json.toJson(suggestedTags));
     }
 

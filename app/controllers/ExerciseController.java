@@ -2,6 +2,7 @@ package controllers;
 
 import com.avaje.ebean.PagedList;
 import models.Exercise;
+import models.Tag;
 import models.builders.ExerciseBuilder;
 import play.data.DynamicForm;
 import play.data.FormFactory;
@@ -15,8 +16,9 @@ import views.html.exerciseList;
 import views.html.fileNotFound;
 
 import javax.inject.Inject;
-
-import static models.builders.ExerciseBuilder.anExercise;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -33,8 +35,18 @@ public class ExerciseController extends Controller {
     private static final String MAIN_TAG_FIELD = "mainTag";
     private static final String OTHER_TAG_FIELD = "otherTag";
 
-    private static final String DELIMITER = ",";
-    private static final boolean IS_MAIN_TAG = true;
+    private static final long NEW_EXERCISE_ID = -1;
+
+    private static final String TAG_NAME_DELIMITER = ",";
+
+    private static List<Tag> processTagNames(String tagNames, boolean isMainTag) {
+        return Arrays.asList(tagNames.split(TAG_NAME_DELIMITER)).stream()
+                .map(String::trim)
+                .filter(t -> t.length() > 0)
+                .distinct()
+                .map(s -> Tag.processCreate(s, isMainTag, SessionService.getCurrentUser()))
+                .collect(Collectors.toList());
+    }
 
     /**
      * render if create Exercise. Creates new blank exercise with id -1.
@@ -43,7 +55,7 @@ public class ExerciseController extends Controller {
      * @return Result of new Exercise
      */
     public Result renderCreate() {
-        return ok(editExercise.render(anExercise().build(), SessionService.getCurrentUserEmail()));
+        return ok(editExercise.render(ExerciseBuilder.anExercise().withId(NEW_EXERCISE_ID).build(), SessionService.getCurrentUserEmail()));
     }
 
     /**
@@ -87,18 +99,18 @@ public class ExerciseController extends Controller {
     }
 
     /**
-     * Updates an exercise.
+     * Update or create an exercise based on the
      *
      * @param exerciseId the id of the exercise to be updated.
      * @return the result
      */
-    public Result processUpdate(long exerciseId) {
+    public Result processUpdateOrCreate(long exerciseId) {
         DynamicForm requestData = formFactory.form().bindFromRequest();
-        Exercise exercise = (exerciseId == -1) ? ExerciseBuilder.anExercise().build() : Exercise.find().byId(exerciseId);
+        Exercise exercise = (exerciseId == NEW_EXERCISE_ID) ? ExerciseBuilder.anExercise().build() : Exercise.find().byId(exerciseId);
         String title = requestData.get(TITLE_FIELD);
-        String[] mainTags = requestData.get(MAIN_TAG_FIELD).split(DELIMITER);
-        String[] otherTags = requestData.get(OTHER_TAG_FIELD).split(DELIMITER);
-        Exercise.updateOrCreate(exercise, title, requestData.get(CONTENT_FIELD), mainTags, otherTags, SessionService.getCurrentUser());
+        List<Tag> tags = processTagNames(requestData.get(MAIN_TAG_FIELD), true);
+        tags.addAll(processTagNames(requestData.get(OTHER_TAG_FIELD), false));
+        Exercise.updateOrCreate(exercise, title, requestData.get(CONTENT_FIELD), tags, SessionService.getCurrentUser());
         return redirect(routes.ExerciseController.renderOverview());
     }
 }
