@@ -5,9 +5,6 @@ import models.Solution;
 import models.User;
 import models.Vote;
 
-/**
- * Created by tourn on 7.4.16.
- */
 public class VoteBuilder {
     private Long id;
     private int value;
@@ -52,12 +49,12 @@ public class VoteBuilder {
     }
 
     public Vote build() {
-        Vote vote = new Vote(user, solution, exercise);
-        if (value == 1) {
-            vote.upVote();
-        } else if (value == -1) {
-            vote.downVote();
-        }
+        Vote vote = new Vote();
+        vote.setId(id);
+        vote.setValue(value);
+        vote.setSolution(solution);
+        vote.setExercise(exercise);
+        vote.setUser(user);
         return vote;
     }
 }

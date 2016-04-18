@@ -2,29 +2,26 @@ package models.builders;
 
 import models.Exercise;
 import models.Tag;
+import models.Tracking;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by tourn on 7.4.16.
- */
 public class TagBuilder {
+    private Long id;
     private String name;
     private boolean isMainTag;
     private List<Exercise> exercises;
-    private Long id;
+    private List<Tracking> trackings;
 
     private TagBuilder() {
-        exercises = new ArrayList<>();
     }
 
     public static TagBuilder aTag() {
         return new TagBuilder();
     }
 
-    public TagBuilder withIsMainTag(boolean isMainTag) {
-        this.isMainTag = isMainTag;
+    public TagBuilder withId(Long id) {
+        this.id = id;
         return this;
     }
 
@@ -33,8 +30,8 @@ public class TagBuilder {
         return this;
     }
 
-    public TagBuilder withId(long id) {
-        this.id = id;
+    public TagBuilder withIsMainTag(boolean isMainTag) {
+        this.isMainTag = isMainTag;
         return this;
     }
 
@@ -43,16 +40,22 @@ public class TagBuilder {
         return this;
     }
 
+    public TagBuilder withTrackings(List<Tracking> trackings) {
+        this.trackings = trackings;
+        return this;
+    }
+
     public TagBuilder but() {
-        return aTag().withName(name).withIsMainTag(isMainTag).withExercises(exercises);
+        return aTag().withId(id).withName(name).withIsMainTag(isMainTag).withExercises(exercises).withTrackings(trackings);
     }
 
     public Tag build() {
-        Tag tag = new Tag(name, isMainTag);
+        Tag tag = new Tag();
         tag.setId(id);
-        for (Exercise exercise : exercises) {
-            tag.addExercise(exercise);
-        }
+        tag.setName(name);
+        tag.setIsMainTag(isMainTag);
+        tag.setExercises(exercises);
+        tag.setTrackings(trackings);
         return tag;
     }
 }

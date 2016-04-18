@@ -10,7 +10,6 @@ import play.mvc.Security;
 import services.SessionService;
 import views.html.tagList;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,35 +17,11 @@ import java.util.stream.Collectors;
 import static play.mvc.Controller.session;
 import static play.mvc.Results.ok;
 
-/**
- * Created by revy on 05.04.16.
- */
 @Security.Authenticated(Secured.class)
-
 public class TagController {
 
     private static final String TAG_FILTER = "tagFilter";
     private static final String TAG_ORDER = "tagOrder";
-
-    /**
-     * @param tagName String containing the Tag Name which needs to be tracked or if tracked untracked
-     * @return renders the tagList again
-     */
-    public Result processTrack(String tagName) {
-        User currentUser = SessionService.getCurrentUser();
-        Tag tag = Tag.findTagByName(tagName);
-        Tracking tracking = currentUser.getTrackingByTag(tag);
-        if (tracking == null) {
-            TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build().save();
-        } else {
-            tracking.delete();
-        }
-        return renderTagList(Integer.parseInt(session(TAG_ORDER)), session(TAG_FILTER));
-    }
-
-    public Result renderOverview() {
-        return renderTagList(1, "");
-    }
 
     /**
      * @param tags list containing tags
@@ -92,26 +67,37 @@ public class TagController {
     }
 
     /**
+     * @param tagName String containing the Tag Name which needs to be tracked or if tracked untracked
+     * @return renders the tagList again
+     */
+    public Result processTrack(String tagName) {
+        User currentUser = SessionService.getCurrentUser();
+        Tag tag = Tag.findTagByName(tagName);
+        Tracking tracking = currentUser.getTrackingByTag(tag);
+        if (tracking == null) {
+            TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build().save();
+        } else {
+            tracking.delete();
+        }
+        return renderTagList(Integer.parseInt(session(TAG_ORDER)), session(TAG_FILTER));
+    }
+
+    public Result renderOverview() {
+        return renderTagList(1, "");
+    }
+
+    /**
      * @param orderBy colum to order the tags
      * @param tagNameFilter filter for the tags
      * @return renders the tags site
      */
     public Result renderTagList(int orderBy, String tagNameFilter) {
-        List<Tag> trackedTags = SessionService.getCurrentUser().getTrackedTags();
+        User currentUser = SessionService.getCurrentUser();
+        List<Tag> trackedTags = currentUser.getTrackedTags();
         List<Tag> tags = sortTagList(filterTagList(Tag.find().all(), tagNameFilter), trackedTags, orderBy);
         session(TAG_FILTER, tagNameFilter);
         session(TAG_ORDER, Integer.toString(orderBy));
-        return ok(tagList.render(SessionService.getCurrentUser(), tags, trackedTags, orderBy, tagNameFilter));
-    }
-
-    /**
-     * suggests all tags (main and other) which starts with the tagName.
-     * @param tagName suggest tags for tagName
-     * @return Result -> list of all T
-     */
-    public Result suggestTags(String tagName) {
-        List<Tag> tagList = Tag.getSuggestedTags(tagName);
-        return suggestTagsByList(tagList);
+        return ok(tagList.render(currentUser, tags, trackedTags, orderBy, tagNameFilter));
     }
 
     /**
@@ -119,39 +105,22 @@ public class TagController {
      * @param tagName suggest tags for tagName
      * @return Result -> list of main tags
      */
-    public Result suggestMainTags(String tagName) {
-        List<Tag> tagList = Tag.getSuggestedMainTags(tagName);
-        return suggestTagsByList(tagList);
-    }
+    public Result suggestTags(String tagName, boolean isMainTag) {
+        List<TagEntry> suggestedTags = Tag.getSuggestedTags(tagName, isMainTag)
+                .stream()
+                .map(t -> new TagEntry(t.getName()))
+                .collect(Collectors.toList());
 
-    /**
-     * suggest non main tags
-     * @param tagName suggest tags for tagName
-     * @return Result -> list of non main tags
-     */
-    public Result suggestOtherTags(String tagName) {
-
-        List<Tag> tagList = Tag.getSuggestedOtherTags(tagName);
-        Tag t = new Tag(tagName,false);
-        tagList.add(0,t);
-        return suggestTagsByList(tagList);
-
-    }
-    /**
-     * return json list with suggested tags with given list
-     * @param tagList the list with suggested tags
-     * @return result of tags
-     */
-    public Result suggestTagsByList(List<Tag> tagList){
-        List<TagEntry> list = new ArrayList<>();
-        for(Tag tag : tagList){
-            list.add(new TagEntry(tag.getName()));
+        if (!isMainTag || SessionService.getCurrentUser().isModerator()) {
+            suggestedTags.add(0, new TagEntry(tagName));
         }
-        return ok(Json.toJson(list));
+
+        return ok(Json.toJson(suggestedTags));
     }
-    public class TagEntry{
+
+    private class TagEntry{
         public final String name;
-        public TagEntry(String name) {
+        TagEntry(String name) {
             this.name = name;
         }
     }

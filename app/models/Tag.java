@@ -5,49 +5,35 @@ import models.builders.TagBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Claudia on 31.03.2016.
- */
 @Entity
 @Table(name = "tag")
 public class Tag extends Model {
+
+    private static final String COLUMN_IS_MAIN_TAG = "isMainTag";
+    private static final String COLUMN_TAG_NAME = "name";
+    private static final String COLUMN_TAGS = "tags";
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(unique = true)
+    @Column(name = COLUMN_TAG_NAME, unique = true)
     @NotNull
     private String name;
 
+    @Column(name = COLUMN_IS_MAIN_TAG)
     @NotNull
     private boolean isMainTag;
 
-    @ManyToMany(mappedBy = "tags")
+    @ManyToMany(mappedBy = COLUMN_TAGS)
     private List<Exercise> exercises;
 
     @OneToMany
-    @JoinColumn(name = "tag_id")
+    @JoinColumn(name = Tracking.COLUMN_TAG_ID)
     private List<Tracking> trackings;
-
-    private static final String IS_MAIN_TAG_STR = "isMainTag";
-    private static final String NAME_STR = "name";
-
-    /**
-     * Constructor for new Tag for one exercise
-     *
-     * @param name      the name of the tag
-     * @param isMainTag is main tag or not
-     */
-    public Tag(String name, boolean isMainTag) {
-        this.name = name;
-        this.isMainTag = isMainTag;
-        this.exercises = new ArrayList<>();
-        this.trackings = new ArrayList<>();
-    }
 
     public Long getId() {
         return id;
@@ -81,33 +67,12 @@ public class Tag extends Model {
         this.exercises = exercises;
     }
 
-    public void removeExercise(Long exerciseId) {
-        exercises.removeIf(e -> e.getId().equals(exerciseId));
-    }
-
-    public void addExercise(Exercise exercise) {
-        exercises.add(exercise);
-    }
-
     public List<Tracking> getTrackings() {
-        return trackings;
+        return Collections.unmodifiableList(trackings);
     }
 
     public void setTrackings(List<Tracking> trackings) {
         this.trackings = trackings;
-    }
-
-    /**
-     * Save tag in db
-     *
-     * @param tag to be saved
-     */
-    public static void create(Tag tag) {
-        tag.save();
-    }
-
-    public static void update(Tag tag) {
-        tag.update();
     }
 
     public static Model.Finder<Long, Tag> find() {
@@ -120,6 +85,27 @@ public class Tag extends Model {
         ).sum();
     }
 
+
+    public static Tag processCreate(String tagName, boolean isMainTag, User user) {
+        Tag tag = Tag.find().all().stream()
+                .filter(t -> t.getName().equals(tagName))
+                .findFirst()
+                .orElse(TagBuilder.aTag().withName(tagName).withIsMainTag(isMainTag).build());
+
+        if (isMainTag != tag.isMainTag) {
+            throw new IllegalArgumentException("Not allowed to add a main tag to an other tag and vice versa.");
+        }
+
+        if (tag.getId() == null) {
+            if (!user.isModerator() && isMainTag) {
+                throw new IllegalArgumentException("Not allowed to create new main tag!");
+            }
+            tag.save();
+        }
+
+        return tag;
+    }
+
     /**
      * returns list of suggested tags (other and main)
      * case-insensitiv
@@ -128,7 +114,7 @@ public class Tag extends Model {
      * @return list of all tags that start with tagName
      */
     public static List<Tag> getSuggestedTags(String tagName) {
-        return find().where().istartsWith(NAME_STR, tagName).findList();
+        return find().where().istartsWith(COLUMN_TAG_NAME, tagName).findList();
     }
 
     /**
@@ -137,20 +123,9 @@ public class Tag extends Model {
      * @param tagName tag that starts with tagName
      * @return list of main tags that start with tagName
      */
-    public static List<Tag> getSuggestedMainTags(String tagName) {
-        List<Tag> list = find().where().eq(IS_MAIN_TAG_STR, true).istartsWith(NAME_STR, tagName).findList();
-        return list.isEmpty() ? find().where().eq(IS_MAIN_TAG_STR, true).findList() : list;
-    }
-
-    /**
-     * returns list of suggestet tags which are not main tags
-     *
-     * @param tagName tag that starts with tagName
-     * @return list of other tags that start with tagName
-     */
-    public static List<Tag> getSuggestedOtherTags(String tagName) {
-        List<Tag> list = find().where().eq(IS_MAIN_TAG_STR, false).istartsWith(NAME_STR, tagName).findList();
-        return list.isEmpty() ? find().where().eq(IS_MAIN_TAG_STR, false).findList() : list;
+    public static List<Tag> getSuggestedTags(String tagName, boolean isMainTag) {
+        List<Tag> list = find().where().eq(COLUMN_IS_MAIN_TAG, isMainTag).istartsWith(COLUMN_TAG_NAME, tagName).findList();
+        return list.isEmpty() ? find().where().eq(COLUMN_IS_MAIN_TAG, isMainTag).findList() : list;
     }
 
     /**
@@ -160,42 +135,6 @@ public class Tag extends Model {
      * @return the tag or null if it doesnt exist
      */
     public static Tag findTagByName(String name) {
-        return find().where().eq(NAME_STR, name).findUnique();
+        return find().where().eq(COLUMN_TAG_NAME, name).findUnique();
     }
-
-    /**
-     * gets main tag from db by name
-     *
-     * @param name the name
-     * @return the maintag or null if it does not exist in db
-     */
-    public static Tag findMainTagByName(String name) {
-        return find().where().eq(NAME_STR, name).eq(IS_MAIN_TAG_STR, true).findUnique();
-    }
-
-    /**
-     * gets other tag from db by name
-     *
-     * @param name the name
-     * @return the tag or null if it does not exist
-     */
-    public static Tag findOtherTagByName(String name) {
-        return find().where().eq(NAME_STR, name).eq(IS_MAIN_TAG_STR, false).findUnique();
-    }
-
-    /**
-     * get other tag or create if it does not exist
-     *
-     * @param tagName the tag name
-     * @return the tag
-     */
-    public static Tag getOtherTagByNameOrCreate(String tagName) {
-        Tag tag = findOtherTagByName(tagName);
-        if (tag == null) {
-            tag = TagBuilder.aTag().withName(tagName).build();
-            create(tag);
-        }
-        return tag;
-    }
-
 }

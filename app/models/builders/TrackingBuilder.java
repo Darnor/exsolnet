@@ -4,9 +4,6 @@ import models.Tag;
 import models.Tracking;
 import models.User;
 
-/**
- * Created by tourn on 7.4.16.
- */
 public class TrackingBuilder {
     private Long id;
     private Tag tag;

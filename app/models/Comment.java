@@ -5,7 +5,6 @@ import com.avaje.ebean.Model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -44,59 +43,60 @@ public class Comment extends Model {
 
     private static final int NOF_RECENT_COMMENTS = 5;
 
-    public Comment(User user) {
-        id = null;
-        this.user = user;
-        this.reports = new ArrayList<>();
-        this.time = LocalDateTime.now();
-    }
-
     public String getContent() {
         return content;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public List<Report> getReports() {
-        return Collections.unmodifiableList(reports);
-    }
-
-    public void addReport(Report report) {
-        reports.add(report);
-    }
-
-    public void removeReport(Long reportId) {
-        reports.removeIf(r -> r.getId().equals(reportId));
     }
 
     public void setContent(String content) {
         this.content = content;
     }
 
-    public void setSolution(Solution solution) {
-        this.solution = solution;
+    public Long getId() {
+        return id;
     }
 
-    public void setExercise(Exercise exercise) {
-        this.exercise = exercise;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Report> getReports() {
+        return Collections.unmodifiableList(reports);
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
     }
 
     public User getUser() {
         return user;
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public LocalDateTime getTime() {
         return time;
+    }
+
+    public void setTime(LocalDateTime time) {
+        this.time = time;
     }
 
     public Exercise getExercise() {
         return exercise;
     }
 
+    public void setExercise(Exercise exercise) {
+        this.exercise = exercise;
+    }
+
     public Solution getSolution() {
         return solution;
+    }
+
+    public void setSolution(Solution solution) {
+        this.solution = solution;
     }
 
     /**

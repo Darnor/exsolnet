@@ -2,7 +2,7 @@ package models;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -13,7 +13,7 @@ import java.util.List;
 public class Solution extends Post{
     @Basic
     @NotNull
-    private boolean official;
+    private boolean isOfficial;
 
     @ManyToOne
     @JoinColumn(name = "exercise_id")
@@ -34,17 +34,12 @@ public class Solution extends Post{
     @OneToMany(mappedBy = "solution")
     private List<Vote> votes;
 
-    public Solution(User user, Exercise exercise) {
-        this.user = user;
-        this.exercise = exercise;
-        this.official = false;
-        this.reports = new ArrayList<>();
-        this.comments = new ArrayList<>();
-        this.votes = new ArrayList<>();
-    }
-
     public User getUser() {
         return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Exercise getExercise() {
@@ -53,5 +48,37 @@ public class Solution extends Post{
 
     public void setExercise(Exercise exercise) {
         this.exercise = exercise;
+    }
+
+    public boolean isOfficial() {
+        return isOfficial;
+    }
+
+    public void setIsOfficial(boolean isOfficial) {
+        this.isOfficial = isOfficial;
+    }
+
+    public List<Report> getReports() {
+        return Collections.unmodifiableList(reports);
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
+    }
+
+    public List<Comment> getComments() {
+        return Collections.unmodifiableList(comments);
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<Vote> getVotes() {
+        return Collections.unmodifiableList(votes);
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
     }
 }
