@@ -92,11 +92,12 @@ public class TagController {
      * @return renders the tags site
      */
     public Result renderTagList(int orderBy, String tagNameFilter) {
-        List<Tag> trackedTags = SessionService.getCurrentUser().getTrackedTags();
+        User currentUser = SessionService.getCurrentUser();
+        List<Tag> trackedTags = currentUser.getTrackedTags();
         List<Tag> tags = sortTagList(filterTagList(Tag.find().all(), tagNameFilter), trackedTags, orderBy);
         session(TAG_FILTER, tagNameFilter);
         session(TAG_ORDER, Integer.toString(orderBy));
-        return ok(tagList.render(SessionService.getCurrentUser(), tags, trackedTags, orderBy, tagNameFilter));
+        return ok(tagList.render(currentUser, tags, trackedTags, orderBy, tagNameFilter));
     }
 
     /**
@@ -110,7 +111,7 @@ public class TagController {
                 .map(t -> new TagEntry(t.getName()))
                 .collect(Collectors.toList());
 
-        if (!isMainTag) {
+        if (!isMainTag || SessionService.getCurrentUser().isModerator()) {
             suggestedTags.add(0, new TagEntry(tagName));
         }
 

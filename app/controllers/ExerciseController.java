@@ -52,6 +52,28 @@ public class ExerciseController extends Controller {
                 .collect(Collectors.toList());
     }
 
+    private static void checkIfUserIsAllowedToUpdateExercise(User user, Exercise exercise) {
+        if (exercise == null) {
+            throw new IllegalArgumentException("Not a valid exercise.");
+        }
+        if (!exercise.getUser().getId().equals(user.getId()) && !user.isModerator()) {
+            throw new IllegalArgumentException("User not allowed to modify this exercise.");
+        }
+    }
+
+    private static void validateFormData(long exerciseId, String title, List<Tag> mainTags, String content, User user) {
+        if (title.trim().length() == 0 || mainTags.isEmpty() || content.trim().length() == 0) {
+            throw new IllegalArgumentException("Formdata not valid.");
+        }
+        if (user == null) {
+            throw new IllegalArgumentException("Invalid user.");
+        }
+        if (exerciseId != NEW_EXERCISE_ID) {
+            Exercise exercise = Exercise.find().byId(exerciseId);
+            checkIfUserIsAllowedToUpdateExercise(user, exercise);
+        }
+    }
+
     /**
      * render if create Exercise. Creates new blank exercise with id -1.
      * id -1 is important. And passes session of current user.
@@ -100,25 +122,6 @@ public class ExerciseController extends Controller {
     public Result edit(long id) {
         Exercise exercise = Exercise.find().byId(id);
         return (exercise == null) ? notFound(fileNotFound.render("Exercise Not Found")) : ok(editExercise.render(exercise, SessionService.getCurrentUserEmail()));
-    }
-
-    private void checkIfUserIsAllowedToUpdateExercise(User user, Exercise exercise) {
-        if (exercise == null) {
-            throw new IllegalArgumentException("Not a valid exercise.");
-        }
-        if (user == null || (!exercise.getUser().getId().equals(user.getId()) && !user.isModerator())) {
-            throw new IllegalArgumentException("User not allowed to modify this exercise.");
-        }
-    }
-
-    private void validateFormData(long exerciseId, String title, List<Tag> mainTags, String content, User user) {
-        if (title.trim().length() == 0 || mainTags.isEmpty() || content.trim().length() == 0) {
-            throw new IllegalArgumentException("Formdata not valid.");
-        }
-        if (exerciseId != NEW_EXERCISE_ID) {
-            Exercise exercise = Exercise.find().byId(exerciseId);
-            checkIfUserIsAllowedToUpdateExercise(user, exercise);
-        }
     }
 
     /**
