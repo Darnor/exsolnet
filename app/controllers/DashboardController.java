@@ -20,6 +20,6 @@ public class DashboardController extends Controller {
      */
     public Result renderDashboard(){
         User currentUser = SessionService.getCurrentUser();
-        return ok(dashboard.render(currentUser, User.getTrackedTags(currentUser), Comment.getRecentComments(currentUser)));
+        return ok(dashboard.render(currentUser, currentUser.getTrackedTags(), Comment.getRecentComments(currentUser)));
     }
 }

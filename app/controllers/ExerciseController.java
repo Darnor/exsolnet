@@ -62,7 +62,7 @@ public class ExerciseController extends Controller {
      * @return Result of new Exercise
      */
     public Result renderCreate() {
-        return ok(editExercise.render(ExerciseBuilder.anExercise().build(), SessionService.getCurrentUserEmail()));
+        return ok(editExercise.render(SessionService.getCurrentUser(), ExerciseBuilder.anExercise().build()));
     }
 
     /**
@@ -75,7 +75,7 @@ public class ExerciseController extends Controller {
     }
 
     public Result renderDetails(Long id) {
-        return ok(exerciseDetail.render(Exercise.findById(id), SessionService.getCurrentUserEmail()));
+        return ok(exerciseDetail.render(SessionService.getCurrentUser(), Exercise.findById(id)));
     }
 
     /**
@@ -91,7 +91,7 @@ public class ExerciseController extends Controller {
         int pageSize = 10;
         String orderBy = Exercise.getOrderByAttributeString(order);
         PagedList<Exercise> exercises = Exercise.getPagedList(page, orderBy, titleFilter, tagFilter.split(","), pageSize);
-        return ok(exerciseList.render(SessionService.getCurrentUserEmail(), exercises, order, titleFilter, tagFilter));
+        return ok(exerciseList.render(SessionService.getCurrentUser(), exercises, order, titleFilter, tagFilter));
     }
 
     /**
@@ -102,7 +102,7 @@ public class ExerciseController extends Controller {
      */
     public Result edit(long id) {
         Exercise exercise = Exercise.find().byId(id);
-        return (exercise == null) ? notFound(fileNotFound.render("Exercise Not Found")) : ok(editExercise.render(exercise, SessionService.getCurrentUserEmail()));
+        return (exercise == null) ? notFound(fileNotFound.render("Exercise Not Found")) : ok(editExercise.render(SessionService.getCurrentUser(), exercise));
     }
 
     public Result processCreate() {

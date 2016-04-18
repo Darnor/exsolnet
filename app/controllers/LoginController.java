@@ -21,7 +21,7 @@ public class LoginController extends Controller {
      * @return Result
      */
     public Result renderLogin(){
-            return ok(views.html.login.render(SessionService.getCurrentUserEmail()));
+            return ok(views.html.login.render(SessionService.getCurrentUser()));
     }
 
     /**

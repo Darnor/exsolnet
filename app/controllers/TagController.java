@@ -22,19 +22,6 @@ public class TagController extends Controller {
     private static final String TAG_ORDER = "tagOrder";
 
     /**
-     * @param tags list containing tags
-     * @param tagNameFilter string to filter tags names by
-     * @return filterted tag list
-     */
-    private static List<Tag> filterTagList(List<Tag> tags, String tagNameFilter) {
-        List<Tag> filteredTags = tags;
-        if (tagNameFilter != null && tagNameFilter.length() > 0) {
-            filteredTags = tags.stream().filter(t -> t.getName().toLowerCase().contains(tagNameFilter.toLowerCase())).collect(Collectors.toList());
-        }
-        return filteredTags;
-    }
-
-    /**
      * return a sorted list depending on the orderBy value
      * per default the list is sorted by the first column aka the tag name
      *
@@ -92,7 +79,7 @@ public class TagController extends Controller {
     public Result renderTagList(int orderBy, String tagNameFilter) {
         User currentUser = SessionService.getCurrentUser();
         List<Tag> trackedTags = currentUser.getTrackedTags();
-        List<Tag> tags = sortTagList(filterTagList(Tag.find().all(), tagNameFilter), trackedTags, orderBy);
+        List<Tag> tags = sortTagList(Tag.getFilteredTags(tagNameFilter), trackedTags, orderBy);
         session(TAG_FILTER, tagNameFilter);
         session(TAG_ORDER, Integer.toString(orderBy));
         return ok(tagList.render(currentUser, tags, trackedTags, orderBy, tagNameFilter));

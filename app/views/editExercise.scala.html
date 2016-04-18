@@ -1,10 +1,10 @@
-@(exercise: Exercise, username: String)
-@main("Welcome to Exsolnet", username) {
+@(user: User, exercise: Exercise)
+@main(if(exercise.getId == null) {"Aufgabe erstellen"} else {"Aufgabe editieren"}, user) {
     <script src="@routes.Assets.versioned("javascripts/jquery.tokeninput.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("javascripts/exercise.js")" type="text/javascript"></script>
 
     <div>
-        <h1>Aufgaben editieren</h1>
+        <h1>Aufgabe @if(exercise.getId == null) {erstellen} else {editieren}</h1>
         <form method="POST" action="
         @if(exercise.getId == null) {
             @routes.ExerciseController.processCreate()

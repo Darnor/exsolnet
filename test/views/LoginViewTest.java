@@ -1,5 +1,6 @@
 package views;
 
+import models.builders.UserBuilder;
 import org.junit.Test;
 import play.twirl.api.Html;
 import views.html.login;
@@ -14,7 +15,7 @@ public class LoginViewTest {
 
     @Test
     public void checkIfUserNameGetsRendered(){
-        Html html = login.render("Jhonny");
+        Html html = login.render(UserBuilder.anUser().withEmail("Jhonny").build());
         assertThat(html.body(), containsString("Jhonny"));
     }
 }

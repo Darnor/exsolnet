@@ -158,7 +158,7 @@ public class Exercise extends Post {
     //TODO remove from exercise into controller ??
     public static PagedList<Exercise> getPagedList(int pageNr, String orderBy, String titleFilter, String[] tagFilter, int pageSize) {
         Query<Exercise> query = Ebean.createQuery(Exercise.class);
-        query.where().contains("title",titleFilter);
+        query.where().icontains("title",titleFilter);
         if(!"".equals(tagFilter[0])){
             query.where().in("tags.name", Arrays.asList(tagFilter));
         }
@@ -185,7 +185,7 @@ public class Exercise extends Post {
      */
     public static String getOrderByAttributeString(int order){
         String result = tableHeaderMap.get(Math.abs(order));
-        if(order<0){
+        if(order < 0){
             result += " desc";
         }
         return result;

@@ -1,26 +1,21 @@
 package models;
 
 import com.avaje.ebean.Model;
+import models.builders.UserBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static models.builders.UserBuilder.anUser;
-
-/**
- * Created by mario on 21.03.16.
- */
 @Entity
 @Table(name="exoluser")
 public class User extends Model {
 
     private static final String COLUMN_EMAIL = "email";
 
-    @Id @GeneratedValue(strategy= GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(name = COLUMN_EMAIL, unique=true)
@@ -112,12 +107,12 @@ public class User extends Model {
         this.reports = reports;
     }
 
-    public void setTrackings(List<Tracking> trackings) {
-        this.trackings = trackings;
+    public List<Tracking> getTrackings() {
+        return Collections.unmodifiableList(trackings);
     }
 
-    public List<Tracking> getTrackings() {
-        return trackings;
+    public void setTrackings(List<Tracking> trackings) {
+        this.trackings = trackings;
     }
 
     public List<Comment> getComments() {
@@ -128,12 +123,12 @@ public class User extends Model {
         this.comments = comments;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public long getPoints() {
@@ -166,7 +161,7 @@ public class User extends Model {
         User user = findUser(email);
         if (user == null) {
             //create user if non existing
-            user = anUser().withEmail(email).build();
+            user = UserBuilder.anUser().withEmail(email).build();
             user.save();
         }
         return user;

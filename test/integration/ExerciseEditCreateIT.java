@@ -12,6 +12,7 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
     private void fillTagTokenElements(WebElement element, String tag) {
         try {
             element.sendKeys(tag);
+            //TODO Beter way to input tags... Thread sleep -> workaround...
             // Wait 2 seconds for the Token to be created. Very brittle for tests...
             Thread.sleep(2000);
             element.sendKeys(Keys.ENTER);
@@ -23,7 +24,6 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
     @Test
     public void testCreate() {
         as(FRANZ, browser -> {
-
             String title = "Event Foo";
             String[] mainTags = { "An1I" };
             String[] otherTags = {"MinTäg", "DinTäg"};
@@ -32,8 +32,6 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
             browser.goTo("/exercises/create");
 
             browser.fill("#title").with(title);
-
-            //TODO Beter way to input tags... Thread sleep -> workaround...
 
             WebElement mainTagElement = browser.getDriver().findElement(By.id("token-input-maintag-filter-list"));
             for (String tag : mainTags) {

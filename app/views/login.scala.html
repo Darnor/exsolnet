@@ -1,6 +1,6 @@
-@(username: String)
-    @main("User", username) {
-        @if(username == null) {
+@(user: User)
+    @main(if(user == null) {"Login"} else {"Logout"}, user) {
+        @if(user == null) {
             <form method="POST" action="@routes.LoginController.login()">
                 <div class="form-group">
                     <label for="exampleInputEmail1">Email address</label>
@@ -14,7 +14,7 @@
             </form>
         } else {
             <form method="POST" action="@routes.LoginController.logout()">
-                <label id="lbl_username">@username</label>
+                <label id="lbl_username">@user.getEmail</label>
                 <button type="submit" id="btn_logout" class="btn btn-default">Logout</button>
             </form>
         }

@@ -15,6 +15,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class TagTest extends AbstractModelTest {
 
+    //TODO REDO Tests
+
     @Test
     public void testGetCompletedExercisesNoSolutions(){
         User userA = anUser().withEmail("Hans").build();
@@ -70,8 +72,9 @@ public class TagTest extends AbstractModelTest {
         assertEquals("An1I", suggestedTags.get(0).getName());
     }
 
-    /*
 
+    //TODO REDO
+/*
     @Test
     public void testGetSuggestedMainTags(){
         assertEquals(1, Tag.getSuggestedMainTags("V").size());

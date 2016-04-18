@@ -1,7 +1,7 @@
 @import java.time.format.DateTimeFormatter
 @import java.time.format.FormatStyle
-@(exercise: Exercise, username: String)
-@main("Welcome to Exsolnet", username) {
+@(user: User, exercise: Exercise)
+@main(exercise.getTitle, user) {
     <div style="border-bottom: 2px solid black ; width: 300px ; padding: 10px; margin: 10px">
         <h1>@exercise.getTitle</h1>
         <p>@exercise.getContent</p>

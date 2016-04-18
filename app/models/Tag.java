@@ -79,12 +79,7 @@ public class Tag extends Model {
         return new Finder<>(Tag.class);
     }
 
-    /**
-     * CARE: Should be replaced with currentUser.getNofCompletedExersiesByTag(Tag tag);
-     *
-     * @param currentUser currently logged in user
-     * @return current no of completed exersices by tag
-     */
+    @Deprecated
     public long getNofCompletedExercises(User currentUser) {
         return getExercises().stream().mapToLong(exercise ->
                 exercise.getSolutions().stream().filter(solution -> solution.getUser().equals(currentUser)).count()
@@ -95,6 +90,10 @@ public class Tag extends Model {
         Tag tag = TagBuilder.aTag().withName(tagName).withIsMainTag(isMainTag).build();
         tag.save();
         return tag;
+    }
+
+    public static List<Tag> getFilteredTags(String tagNameFilter) {
+        return find().where().icontains(COLUMN_TAG_NAME, tagNameFilter).findList();
     }
 
     /**
@@ -126,6 +125,6 @@ public class Tag extends Model {
      * @return the tag or null if it doesnt exist
      */
     public static Tag findTagByName(String name) {
-        return find().where().eq(COLUMN_TAG_NAME, name).findUnique();
+        return find().where().ieq(COLUMN_TAG_NAME, name).findUnique();
     }
 }

@@ -1,9 +1,9 @@
-@(title: String, username: String)(content: Html)
+@(title: String, user: User)(content: Html)
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>@title</title>
+        <title>Exsolnet: @title</title>
         <script src="@routes.Assets.versioned("javascripts/jquery-2.2.3.js")" type="text/javascript"></script>
             <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -35,7 +35,7 @@
                         <li><a href=@routes.TagController.renderTagList()>Tags</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href=@routes.LoginController.renderLogin()>@if(username == null) {Login} else {@username}</a></li>
+                        <li><a href=@routes.LoginController.renderLogin()>@if(user == null) {Login} else {@user.getEmail}</a></li>
                     </ul>
                 </div>
             </div>
