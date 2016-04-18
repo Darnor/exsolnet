@@ -5,7 +5,12 @@
 
     <div>
         <h1>Aufgaben editieren</h1>
-        <form method="POST" action="@routes.ExerciseController.processUpdateOrCreate(exercise.getId)">
+        <form method="POST" action="
+        @if(exercise.getId == null) {
+            @routes.ExerciseController.processCreate()
+        } else {
+            @routes.ExerciseController.processUpdate(exercise.getId)
+        }">
             <div class="container-fluid">
                 <div class="row">
                     <div class="form-group">

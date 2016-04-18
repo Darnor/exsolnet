@@ -111,17 +111,12 @@ public class User extends Model {
         this.reports = reports;
     }
 
-    /**
-     * Gets the Trackings of the User.
-     *
-     * @return the Trackings of the User.
-     */
-    public Tracking getTrackingByTag(Tag tag) {
-        return trackings.stream().filter(t -> t.getTag().equals(tag)).findFirst().orElse(null);
-    }
-
     public void setTrackings(List<Tracking> trackings) {
         this.trackings = trackings;
+    }
+
+    public List<Tracking> getTrackings() {
+        return trackings;
     }
 
     public List<Comment> getComments() {
@@ -133,10 +128,6 @@ public class User extends Model {
     }
 
     public void setEmail(String email) {
-        //TODO I'm just a setter
-        /*if (email == null || email.length() == 0) {
-            throw new IllegalArgumentException("Email cannot be null and must be at east one character long.");
-        }*/
         this.email = email;
     }
 
@@ -150,10 +141,6 @@ public class User extends Model {
 
     public void setPoints(long points) {
         this.points = points;
-    }
-
-    public void incrementPointsBy(long amount) {
-        points += amount;
     }
 
     public List<Tag> getTrackedTags() {

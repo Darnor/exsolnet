@@ -5,6 +5,7 @@ import models.Tracking;
 import models.User;
 import models.builders.TrackingBuilder;
 import play.libs.Json;
+import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
@@ -14,11 +15,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static play.mvc.Controller.session;
-import static play.mvc.Results.ok;
-
 @Security.Authenticated(Secured.class)
-public class TagController {
+public class TagController extends Controller {
 
     private static final String TAG_FILTER = "tagFilter";
     private static final String TAG_ORDER = "tagOrder";
@@ -73,7 +71,7 @@ public class TagController {
     public Result processTrack(String tagName) {
         User currentUser = SessionService.getCurrentUser();
         Tag tag = Tag.findTagByName(tagName);
-        Tracking tracking = currentUser.getTrackingByTag(tag);
+        Tracking tracking = currentUser.getTrackings().stream().filter(t -> t.getTag().getId().equals(tag.getId())).findFirst().orElse(null);
         if (tracking == null) {
             TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build().save();
         } else {
@@ -101,9 +99,10 @@ public class TagController {
     }
 
     /**
-     * suggests main tags
-     * @param tagName suggest tags for tagName
-     * @return Result -> list of main tags
+     * Suggest Tags based on the tagName and isMainTag
+     * @param tagName The searched Tagname
+     * @param isMainTag Tag type
+     * @return Returns TagEntries containg the TagName
      */
     public Result suggestTags(String tagName, boolean isMainTag) {
         List<TagEntry> suggestedTags = Tag.getSuggestedTags(tagName, isMainTag)
@@ -111,11 +110,15 @@ public class TagController {
                 .map(t -> new TagEntry(t.getName()))
                 .collect(Collectors.toList());
 
-        if (!isMainTag || SessionService.getCurrentUser().isModerator()) {
+        if (!isMainTag) {
             suggestedTags.add(0, new TagEntry(tagName));
         }
 
         return ok(Json.toJson(suggestedTags));
+    }
+
+    public Result suggestAllTags(String tagName) {
+        return ok(Json.toJson(Tag.getSuggestedTags(tagName).stream().map(t -> new TagEntry(t.getName())).collect(Collectors.toList())));
     }
 
     private class TagEntry{

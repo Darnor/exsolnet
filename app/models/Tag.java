@@ -85,24 +85,9 @@ public class Tag extends Model {
         ).sum();
     }
 
-
-    public static Tag processCreate(String tagName, boolean isMainTag, User user) {
-        Tag tag = Tag.find().all().stream()
-                .filter(t -> t.getName().equals(tagName))
-                .findFirst()
-                .orElse(TagBuilder.aTag().withName(tagName).withIsMainTag(isMainTag).build());
-
-        if (isMainTag != tag.isMainTag) {
-            throw new IllegalArgumentException("Not allowed to add a main tag to an other tag and vice versa.");
-        }
-
-        if (tag.getId() == null) {
-            if (!user.isModerator() && isMainTag) {
-                throw new IllegalArgumentException("Not allowed to create new main tag!");
-            }
-            tag.save();
-        }
-
+    public static Tag create(String tagName, boolean isMainTag) {
+        Tag tag = TagBuilder.aTag().withName(tagName).withIsMainTag(isMainTag).build();
+        tag.save();
         return tag;
     }
 

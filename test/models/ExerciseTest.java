@@ -53,8 +53,8 @@ public class ExerciseTest extends AbstractModelTest {
     }
     @Test
     public void testFindExerciseData(){
-        assertEquals("Basic Math",Exercise.findExerciseData(8000L).getTitle());
-        assertEquals(null, Exercise.findExerciseData(404L));
+        assertEquals("Basic Math",Exercise.findById(8000L).getTitle());
+        assertEquals(null, Exercise.findById(404L));
     }
     @Test
     public void testRemoveTagIfNotInList(){

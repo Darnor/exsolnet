@@ -5,15 +5,13 @@ import com.avaje.ebean.Model;
 import com.avaje.ebean.PagedList;
 import com.avaje.ebean.Query;
 import com.avaje.ebean.annotation.Formula;
+import models.builders.ExerciseBuilder;
 import play.data.validation.Constraints;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.*;
-
-/**
- * Created by mario on 21.03.16.
- */
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "exercise")
@@ -51,6 +49,19 @@ public class Exercise extends Post {
 
     @OneToMany(mappedBy = "exercise")
     private List<Comment> comments;
+
+    /**
+     * Map the Id of the html exercise-table to their Model-Attribute-name
+     */
+    private static final Map<Integer, String> tableHeaderMap;
+    static
+    {
+        tableHeaderMap = new HashMap<>();
+        tableHeaderMap.put(1, "title");
+        tableHeaderMap.put(2, "solutionCount");
+        tableHeaderMap.put(3, "points");
+        tableHeaderMap.put(4, "time");
+    }
 
     public String getTitle() {
         return title;
@@ -108,22 +119,26 @@ public class Exercise extends Post {
         this.tags = tags;
     }
 
-    public static void updateOrCreate(Exercise exercise, String title, String content, List<Tag> tags, User user) {
-        if (exercise.getId() != null && !exercise.getUser().getId().equals(user.getId()) && !user.isModerator()) {
-            throw new IllegalArgumentException("User not allowed to edit another users exercise!");
+    private void fillData(String title, String content, List<Tag> tags, User user) {
+        this.setTitle(title);
+        this.setContent(content);
+        this.setUser(user);
+        this.setTags(tags);
+    }
+
+    public static void create(String title, String content, List<Tag> tags, User user) {
+        Exercise exercise = ExerciseBuilder.anExercise().build();
+        exercise.fillData(title, content, tags, user);
+        exercise.save();
+    }
+
+    public static void update(long id, String title, String content, List<Tag> tags, User user) {
+        Exercise exercise = find().byId(id);
+        if (exercise == null) {
+            throw new IllegalArgumentException("Invalid exercise id");
         }
-        if (tags.stream().filter(Tag::isMainTag).count() == 0) {
-            throw new IllegalArgumentException("Exercise must contain at least one main tag!");
-        }
-        exercise.setTitle(title);
-        exercise.setContent(content);
-        exercise.setTags(tags);
-        if (exercise.getId() == null) {
-            exercise.setUser(user);
-            exercise.save();
-        } else {
-            exercise.update();
-        }
+        exercise.fillData(title, content, tags, user);
+        exercise.update();
     }
 
     public static Model.Finder<Long, Exercise> find() {
@@ -144,7 +159,7 @@ public class Exercise extends Post {
     public static PagedList<Exercise> getPagedList(int pageNr, String orderBy, String titleFilter, String[] tagFilter, int pageSize) {
         Query<Exercise> query = Ebean.createQuery(Exercise.class);
         query.where().contains("title",titleFilter);
-        if(!tagFilter[0].equals("")){
+        if(!"".equals(tagFilter[0])){
             query.where().in("tags.name", Arrays.asList(tagFilter));
         }
         return query.orderBy(orderBy).findPagedList(pageNr, pageSize);
@@ -155,8 +170,12 @@ public class Exercise extends Post {
      * @param id the id of the exercise
      * @return the exercise from the db with the fiven id, null if it doesnt exist, nullpointer exception if id is null
      */
-    public static Exercise findExerciseData(Long id) {
+    public static Exercise findById(Long id) {
         return find().where().eq("id", id).findUnique();
+    }
+
+    public List<Tag> getTagsSortedByTagType() {
+        return tags.stream().sorted((t1, t2) -> t1.isMainTag() ? -1 : t2.isMainTag() ? 1 : 0).collect(Collectors.toList());
     }
 
     /**
@@ -170,19 +189,5 @@ public class Exercise extends Post {
             result += " desc";
         }
         return result;
-    }
-
-    /**
-     * Map the Id of the html exercise-table to their Model-Attribute-name
-     */
-    private static final Map<Integer, String> tableHeaderMap;
-    static
-    {
-        tableHeaderMap = new HashMap<Integer, String>();
-        tableHeaderMap.put(1, "title");
-        tableHeaderMap.put(2, "solutionCount");
-        tableHeaderMap.put(3, "points");
-        tableHeaderMap.put(4, "time");
-        tableHeaderMap.put(5, "title"); //TODO
     }
 }
