@@ -8,6 +8,8 @@ public class SessionService {
 
     public static final String KEY_USERNAME = "connected";
 
+    private SessionService() {}
+
     /**
      * returns the email of current user session
      * @return String email address
