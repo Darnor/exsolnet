@@ -13,9 +13,6 @@ import static play.mvc.Http.Status.SEE_OTHER;
 import static play.test.Helpers.*;
 
 
-/**
- * Created by mario on 11.04.16.
- */
 public class SecuredAuthenticatorTest {
 
     @Test

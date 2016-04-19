@@ -8,9 +8,6 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import services.SessionService;
 
-/**
- * Created by mario on 05.04.16.
- */
 public class LoginController extends Controller {
 
     @Inject

@@ -7,9 +7,6 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-/**
- * Created by mario on 11.04.16.
- */
 public class LoginLogoutIT extends AbstractIntegrationTest {
     @Test
     public void integrationTest() {

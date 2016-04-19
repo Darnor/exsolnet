@@ -12,9 +12,6 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-/**
- * Created by Frank on 12.04.2016.
- */
 public class ExerciseListViewTest extends AbstractModelTest {
     static PagedList<Exercise> pagedExerciseList;
     static PagedList<Exercise> pageZero;

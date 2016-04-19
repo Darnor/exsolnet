@@ -8,9 +8,6 @@ import views.html.login;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.StringContains.containsString;
 
-/**
- * Created by mario on 05.04.16.
- */
 public class LoginViewTest {
 
     @Test

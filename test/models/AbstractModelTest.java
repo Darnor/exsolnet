@@ -7,9 +7,6 @@ import org.junit.BeforeClass;
 import play.Application;
 import play.test.Helpers;
 
-/**
- * Created by tourn on 6.4.16.
- */
 public abstract class AbstractModelTest {
     protected static Application app;
 

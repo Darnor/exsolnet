@@ -5,9 +5,6 @@ import org.junit.Test;
 import static helper.RegexMatcher.matches;
 import static org.junit.Assert.assertThat;
 
-/**
- * Created by tourn on 11.4.16.
- */
 public class DashboardIT extends AbstractIntegrationTest {
     @Test
     public void test() {

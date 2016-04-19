@@ -5,9 +5,6 @@ import com.avaje.ebean.Model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-/**
- * Created by Claudia on 31.03.2016.
- */
 @Entity
 @Table(name="vote")
 public class Vote extends Model {

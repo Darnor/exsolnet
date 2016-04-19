@@ -6,9 +6,6 @@ import org.junit.Test;
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.*;
 
-/**
- * Created by mario on 06.04.16.
- */
 public class UserTest extends AbstractModelTest {
 
     @Test

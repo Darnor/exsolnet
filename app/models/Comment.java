@@ -8,9 +8,6 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Claudia on 31.03.2016.
- */
 @Entity
 @Table(name="comment")
 public class Comment extends Model {

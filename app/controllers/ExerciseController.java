@@ -78,7 +78,7 @@ public class ExerciseController extends Controller {
      * @param order the orderID from the HTML-table
      * @return the order-by-attribute-string
      */
-    protected static String getOrderByAttributeString(int order){
+    static String getOrderByAttributeString(int order){
         String result = tableHeaderMap.get(Math.abs(order));
         if(order < 0){
             result += " desc";

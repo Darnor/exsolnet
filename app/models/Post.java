@@ -6,9 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-/**
- * Created by Claudia on 31.03.2016.
- */
 @MappedSuperclass
 public class Post extends Model {
 

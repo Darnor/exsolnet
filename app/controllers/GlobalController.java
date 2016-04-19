@@ -16,9 +16,6 @@ import java.util.concurrent.CompletionStage;
 
 import static play.mvc.Results.notFound;
 
-/**
- * Created by mario on 15.04.16.
- */
 public class GlobalController extends DefaultHttpErrorHandler{
 
     @Inject

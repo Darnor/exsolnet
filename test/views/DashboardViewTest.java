@@ -18,9 +18,6 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-/**
- * Created by tourn on 4.4.16.
- */
 public class DashboardViewTest {
 
     @Test

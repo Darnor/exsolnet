@@ -5,9 +5,6 @@ import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Claudia on 31.03.2016.
- */
 @Entity
 @Table(name="solution")
 public class Solution extends Post{

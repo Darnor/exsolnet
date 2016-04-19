@@ -6,9 +6,6 @@ import org.hamcrest.core.SubstringMatcher;
 
 import java.util.regex.Pattern;
 
-/**
- * Created by tourn on 12.4.16.
- */
 public class RegexMatcher extends SubstringMatcher{
     private final Pattern pattern;
 
