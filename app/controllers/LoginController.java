@@ -2,7 +2,7 @@ package controllers;
 
 import com.google.inject.Inject;
 import models.User;
-import play.data.Form;
+import play.data.DynamicForm;
 import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -32,9 +32,9 @@ public class LoginController extends Controller {
      * @return Result
      */
     public Result login() {
-        Form<User> userForm = formFactory.form(User.class);
-        User user = userForm.bindFromRequest().get();
-        if(User.authenticate(user.getEmail(), user.getPassword()) != null){
+        DynamicForm requestData = formFactory.form().bindFromRequest();
+        User user = User.authenticate(requestData.get("emailorusername"), requestData.get("password"));
+        if(user != null){
             SessionService.set(user.getEmail());
         }
         return redirect(routes.DashboardController.renderDashboard());

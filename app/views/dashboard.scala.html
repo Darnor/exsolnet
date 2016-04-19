@@ -21,7 +21,7 @@
                 @comment.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
                     -
 
-                <a href="#TODO">@comment.getUser().getEmail()</a>
+                <a href="#TODO">@comment.getUser().getUsername()</a>
                 auf
 
                     @if(comment.getExercise() != null) {

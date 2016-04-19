@@ -6,6 +6,7 @@ import java.util.List;
 
 public class UserBuilder {
     private Long id;
+    private String username;
     private String email;
     private String password;
     private long points;
@@ -26,6 +27,11 @@ public class UserBuilder {
 
     public UserBuilder withId(Long id) {
         this.id = id;
+        return this;
+    }
+
+    public UserBuilder withUsername(String username) {
+        this.username = username;
         return this;
     }
 
@@ -80,12 +86,13 @@ public class UserBuilder {
     }
 
     public UserBuilder but() {
-        return anUser().withId(id).withEmail(email).withPassword(password).withPoints(points).withIsModerator(isModerator).withExercises(exercises).withSolutions(solutions).withReports(reports).withComments(comments).withVotes(votes).withTrackings(trackings);
+        return anUser().withId(id).withUsername(username).withEmail(email).withPassword(password).withPoints(points).withIsModerator(isModerator).withExercises(exercises).withSolutions(solutions).withReports(reports).withComments(comments).withVotes(votes).withTrackings(trackings);
     }
 
     public User build() {
         User user = new User();
         user.setId(id);
+        user.setUsername(username);
         user.setEmail(email);
         user.setPassword(password);
         user.setPoints(points);

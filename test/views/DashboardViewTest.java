@@ -25,7 +25,7 @@ public class DashboardViewTest {
 
     @Test
     public void usernameIsRendered() {
-        Content html = views.html.dashboard.render(UserBuilder.anUser().withEmail("Franz").build(), new ArrayList<>(), new ArrayList<>());
+        Content html = views.html.dashboard.render(UserBuilder.anUser().withUsername("Franz").build(), new ArrayList<>(), new ArrayList<>());
         assertEquals("text/html", html.contentType());
         assertThat(html.body(), containsString("Franz"));
     }
@@ -64,7 +64,7 @@ public class DashboardViewTest {
     @Test
     public void exerciseCommentsAreRendered() {
         List<Comment> comments = new ArrayList<>();
-        User commenter = anUser().withEmail("Hans").build();
+        User commenter = anUser().withUsername("Hans").build();
         CommentBuilder comment = aComment().withUser(commenter).withExercise(
                 anExercise().withTitle("Basic Math").withId(1234L).build()
         );
@@ -82,7 +82,7 @@ public class DashboardViewTest {
     @Test
     public void solutionCommentsAreRendered() {
         List<Comment> comments = new ArrayList<>();
-        User commenter = anUser().withEmail("Hans").build();
+        User commenter = anUser().withUsername("Hans").build();
         CommentBuilder comment = aComment().withUser(commenter).withSolution(
                 aSolution().withExercise(
                         anExercise().withTitle("Basic Math").withId(1234L).build()

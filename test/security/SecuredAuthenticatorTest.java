@@ -3,13 +3,12 @@ package security;
 import com.google.common.collect.ImmutableMap;
 import controllers.routes;
 import org.junit.Test;
-import play.mvc.*;
+import play.mvc.Result;
 import services.SessionService;
 
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.StringContains.*;
+import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
-import static play.mvc.Controller.session;
 import static play.mvc.Http.Status.SEE_OTHER;
 import static play.test.Helpers.*;
 
@@ -70,11 +69,11 @@ public class SecuredAuthenticatorTest {
             Result result = route(
                     fakeRequest(routes.LoginController.login())
                             .bodyForm(ImmutableMap.of(
-                                    "email", "ursli",
+                                    "emailorusername", "ursli@hsr.ch",
                                     "password", "urslispw"
                                 ))
             );
-            assertThat(result.session().get(SessionService.KEY_USERNAME), is("ursli"));
+            assertThat(result.session().get(SessionService.KEY_USEREMAIL), is("ursli@hsr.ch"));
             assertThat(result.status(), is(SEE_OTHER));
             assertThat(result.redirectLocation().toString(), containsString("/"));
         });

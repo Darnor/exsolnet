@@ -14,9 +14,15 @@ import java.util.stream.Collectors;
 public class User extends Model {
 
     private static final String COLUMN_EMAIL = "email";
+    private static final String COLUMN_USERNAME = "username";
 
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(name = COLUMN_USERNAME, unique=true)
+    @Basic
+    @NotNull
+    private String username;
 
     @Column(name = COLUMN_EMAIL, unique=true)
     @NotNull
@@ -131,6 +137,14 @@ public class User extends Model {
         this.email = email;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
     public long getPoints() {
         return points;
     }
@@ -148,20 +162,29 @@ public class User extends Model {
     }
 
     /**
-     * Authenticates the user depending on email and password combination.
+     * Authenticates the user depending on email/Username and password combination.
      * Password is ignored for now, should in later stages be hashed and compared with value in database
      * <p>
      * CARE: password not used in this implementation
      *
-     * @param email    Mail address of User, who wants to login
+     * @param emailOrUsername    Mail address or Username of User, who wants to login
      * @param password Password of User, who wants to login
      * @return user
      */
-    public static User authenticate(String email, String password) {
-        User user = findUser(email);
+    public static User authenticate(String emailOrUsername, String password) {
+        User user;
+        if(emailOrUsername.contains("@")){
+            user = findUserByEmail(emailOrUsername);
+        }else{
+            user = findUserByUsername(emailOrUsername);
+        }
         if (user == null) {
             //create user if non existing
-            user = UserBuilder.anUser().withEmail(email).build();
+            if(emailOrUsername.contains("@")){
+                user = UserBuilder.anUser().withEmail(emailOrUsername).withUsername(emailOrUsername.split("@")[0]).build();
+            }else{
+                user = UserBuilder.anUser().withUsername(emailOrUsername).withEmail(emailOrUsername+"@hsr.ch").build();
+            }
             user.save();
         }
         return user;
@@ -172,8 +195,17 @@ public class User extends Model {
      * @param email
      * @return User
      */
-    public static User findUser(String email) {
+    public static User findUserByEmail(String email) {
         return find().where().ieq(COLUMN_EMAIL, email).findUnique();
+    }
+
+    /**
+     * Queries database, and returns User holding given username
+     * @param username
+     * @return User
+     */
+    public static User findUserByUsername(String username) {
+        return find().where().ieq(COLUMN_USERNAME, username).findUnique();
     }
 
     /**

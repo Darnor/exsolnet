@@ -44,7 +44,7 @@
             <tr>
                 <td>
                     <a href="@routes.ExerciseController.renderDetails(exercise.getId)">@exercise.getTitle</a>
-                    <p>von <a>@exercise.getUser.getEmail</a>
+                    <p>von <a>@exercise.getUser.getUsername</a>
                         @for(tag <- exercise.getTagsSortedByTagType){
                             @tag.getName,
                         }

@@ -15,7 +15,7 @@ public class LoginViewTest {
 
     @Test
     public void checkIfUserNameGetsRendered(){
-        Html html = login.render(UserBuilder.anUser().withEmail("Jhonny").build());
+        Html html = login.render(UserBuilder.anUser().withUsername("Jhonny").build());
         assertThat(html.body(), containsString("Jhonny"));
     }
 }

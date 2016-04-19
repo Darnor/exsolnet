@@ -3,8 +3,8 @@
         @if(user == null) {
             <form method="POST" action="@routes.LoginController.login()">
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input class="form-control" name="email" id="email" placeholder="Email">
+                    <label for="exampleInputEmail1">Email address or Username</label>
+                    <input class="form-control" name="emailorusername" id="email" placeholder="Email or Username">
                 </div>
                 <div class="form-group">
                     <label for="exampleInputPassword1">Password</label>
@@ -14,7 +14,7 @@
             </form>
         } else {
             <form method="POST" action="@routes.LoginController.logout()">
-                <label id="lbl_username">@user.getEmail</label>
+                <label id="lbl_username">@user.getUsername</label>
                 <button type="submit" id="btn_logout" class="btn btn-default">Logout</button>
             </form>
         }

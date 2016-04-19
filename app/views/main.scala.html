@@ -35,7 +35,7 @@
                         <li><a href=@routes.TagController.renderTagList()>Tags</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href=@routes.LoginController.renderLogin()>@if(user == null) {Login} else {@user.getEmail}</a></li>
+                        <li><a href=@routes.LoginController.renderLogin()>@if(user == null) {Login} else {@user.getUsername}</a></li>
                     </ul>
                 </div>
             </div>

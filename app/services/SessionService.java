@@ -6,7 +6,7 @@ import static play.mvc.Controller.session;
 
 public class SessionService {
 
-    public static final String KEY_USERNAME = "connected";
+    public static final String KEY_USEREMAIL = "connected";
 
     private SessionService() {}
 
@@ -15,7 +15,7 @@ public class SessionService {
      * @return String email address
      */
     public static String getCurrentUserEmail(){
-        return session(KEY_USERNAME);
+        return session(KEY_USEREMAIL);
     }
 
     /**
@@ -51,7 +51,7 @@ public class SessionService {
      * @param value
      */
     public static void set(String value){
-        session(KEY_USERNAME, value);
+        session(KEY_USEREMAIL, value);
     }
 
     /**
