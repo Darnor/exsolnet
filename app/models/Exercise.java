@@ -174,8 +174,17 @@ public class Exercise extends Post {
         return find().where().eq("id", id).findUnique();
     }
 
+    /**
+     * Get all Tags sorted by isMainTag or if equal by alphabet.
+     * @return returns the sorted Tag list
+     */
     public List<Tag> getTagsSortedByTagType() {
-        return tags.stream().sorted((t1, t2) -> t1.isMainTag() ? -1 : t2.isMainTag() ? 1 : 0).collect(Collectors.toList());
+        return tags.stream().sorted((t1, t2) -> {
+            if (t1.isMainTag() == t2.isMainTag()) {
+                return t1.getName().compareToIgnoreCase(t2.getName());
+            }
+            return t1.isMainTag() ? -1 : 1;
+        }).collect(Collectors.toList());
     }
 
     /**
