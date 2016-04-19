@@ -1,13 +1,9 @@
 package services;
 
-import com.google.inject.Inject;
 import models.User;
 
 import static play.mvc.Controller.session;
 
-/**
- * Created by mario on 31.03.16.
- */
 public class SessionService {
 
     public static final String KEY_USERNAME = "connected";

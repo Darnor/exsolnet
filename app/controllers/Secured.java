@@ -1,5 +1,4 @@
 package controllers;
-import com.google.inject.Inject;
 import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Security;

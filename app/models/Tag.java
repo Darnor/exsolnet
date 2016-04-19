@@ -79,13 +79,6 @@ public class Tag extends Model {
         return new Finder<>(Tag.class);
     }
 
-    @Deprecated
-    public long getNofCompletedExercises(User currentUser) {
-        return getExercises().stream().mapToLong(exercise ->
-                exercise.getSolutions().stream().filter(solution -> solution.getUser().equals(currentUser)).count()
-        ).sum();
-    }
-
     public static Tag create(String tagName, boolean isMainTag) {
         Tag tag = TagBuilder.aTag().withName(tagName).withIsMainTag(isMainTag).build();
         tag.save();
