@@ -33,14 +33,6 @@ public class ExerciseTest extends AbstractModelTest {
     }
 
     @Test
-    public void testGetOrderByAttributeString(){
-        assertEquals("title",Exercise.getOrderByAttributeString(1));
-        assertEquals("solutionCount",Exercise.getOrderByAttributeString(2));
-        assertEquals("points",Exercise.getOrderByAttributeString(3));
-        assertEquals("time",Exercise.getOrderByAttributeString(4));
-    }
-
-    @Test
     public void testAddTag(){
         Exercise exercise = ExerciseBuilder.anExercise().build();
         Tag tag = TagBuilder.aTag().withName("tag").withId(1L).withIsMainTag(true).build();

@@ -50,19 +50,6 @@ public class Exercise extends Post {
     @OneToMany(mappedBy = "exercise")
     private List<Comment> comments;
 
-    /**
-     * Map the Id of the html exercise-table to their Model-Attribute-name
-     */
-    private static final Map<Integer, String> tableHeaderMap;
-    static
-    {
-        tableHeaderMap = new HashMap<>();
-        tableHeaderMap.put(1, "title");
-        tableHeaderMap.put(2, "solutionCount");
-        tableHeaderMap.put(3, "points");
-        tableHeaderMap.put(4, "time");
-    }
-
     public String getTitle() {
         return title;
     }
@@ -185,18 +172,5 @@ public class Exercise extends Post {
             }
             return t1.isMainTag() ? -1 : 1;
         }).collect(Collectors.toList());
-    }
-
-    /**
-     * Converts the order-Id to the orderBy string
-     * @param order the orderID from the HTML-table
-     * @return the order-by-attribute-string
-     */
-    public static String getOrderByAttributeString(int order){
-        String result = tableHeaderMap.get(Math.abs(order));
-        if(order < 0){
-            result += " desc";
-        }
-        return result;
     }
 }

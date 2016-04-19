@@ -17,7 +17,9 @@ import views.html.fileNotFound;
 
 import javax.inject.Inject;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -34,8 +36,24 @@ public class ExerciseController extends Controller {
     private static final String CONTENT_FIELD = "content";
     private static final String MAIN_TAG_FIELD = "mainTag";
     private static final String OTHER_TAG_FIELD = "otherTag";
+    private static final String SOLUTION_COUNT_FIELD = "solutionCount";
+    private static final String POINTS_FIELD = "points";
+    private static final String TIME_FIELD = "time";
 
     private static final String TAG_NAME_DELIMITER = ",";
+
+    /**
+     * Map the Id of the html exercise-table to their Model-Attribute-name
+     */
+    private static final Map<Integer, String> tableHeaderMap;
+    static
+    {
+        tableHeaderMap = new HashMap<>();
+        tableHeaderMap.put(1, TITLE_FIELD);
+        tableHeaderMap.put(2, SOLUTION_COUNT_FIELD);
+        tableHeaderMap.put(3, POINTS_FIELD);
+        tableHeaderMap.put(4, TIME_FIELD);
+    }
 
     private static List<Tag> createTagList(String tagNames, boolean isMainTag) {
         return Arrays.asList(tagNames.split(TAG_NAME_DELIMITER)).stream()
@@ -53,6 +71,19 @@ public class ExerciseController extends Controller {
         if (title.trim().length() == 0 || mainTags.isEmpty() || content.trim().length() == 0) {
             throw new IllegalArgumentException("Formdata not valid.");
         }
+    }
+
+    /**
+     * Converts the order-Id to the orderBy string
+     * @param order the orderID from the HTML-table
+     * @return the order-by-attribute-string
+     */
+    protected static String getOrderByAttributeString(int order){
+        String result = tableHeaderMap.get(Math.abs(order));
+        if(order < 0){
+            result += " desc";
+        }
+        return result;
     }
 
     /**
@@ -89,7 +120,7 @@ public class ExerciseController extends Controller {
      */
     public Result list(int page, int order, String titleFilter, String tagFilter) {
         int pageSize = 10;
-        String orderBy = Exercise.getOrderByAttributeString(order);
+        String orderBy = getOrderByAttributeString(order);
         PagedList<Exercise> exercises = Exercise.getPagedList(page, orderBy, titleFilter, tagFilter.split(","), pageSize);
         return ok(exerciseList.render(SessionService.getCurrentUser(), exercises, order, titleFilter, tagFilter));
     }
