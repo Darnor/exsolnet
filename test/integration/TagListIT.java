@@ -1,0 +1,76 @@
+package integration;
+
+import org.junit.Test;
+
+import static helper.RegexMatcher.matches;
+import static org.fluentlenium.core.filter.FilterConstructor.withText;
+import static org.hamcrest.core.IsNot.not;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
+public class TagListIT extends AbstractIntegrationTest {
+
+    private static final String TRACK_STR = "Folgen";
+    private static final String UNTRACK_STR = "Nicht mehr folgen";
+    private static final String TAGS_PATH = "/tags";
+    private static final long AD1_TAG_ID = 8002L;
+    private static final long AD2_TAG_ID = 8004L;
+
+    @Test
+    public void testTrackUntrack() {
+        as(FRANZ, browser -> {
+            browser.goTo(TAGS_PATH);
+            assertThat(browser.pageSource(), is(matches("<input type=\"submit\" id=\"track_" + AD2_TAG_ID + "\" class=\"btn btn-primary btn-block\" value=\"" + TRACK_STR + "\" />")));
+            browser.submit("#track_" + AD2_TAG_ID);
+            assertThat(browser.pageSource(), is(matches("<input type=\"submit\" id=\"track_" + AD2_TAG_ID + "\" class=\"btn btn-success btn-block\" value=\"" + UNTRACK_STR + "\" />")));
+            browser.submit("#track_" + AD2_TAG_ID);
+            assertThat(browser.pageSource(), is(matches("id=\"track_" + AD2_TAG_ID + ".*value=\"" + TRACK_STR)));
+        });
+    }
+
+    @Test
+    public void filterTagsWithAD2() {
+        as(FRANZ, browser -> {
+            browser.goTo(TAGS_PATH);
+            browser.fill("#tagfilter").with("AD2");
+            browser.submit("#submit-tagfilter");
+            assertThat(browser.pageSource(), is(matches("<input type=\"submit\" id=\"track_" + AD2_TAG_ID + "\" class=\"btn btn-primary btn-block\" value=\"" + TRACK_STR +"\" />")));
+            assertThat(browser.pageSource(), is(not(matches("<input type=\"submit\" id=\"track_" + AD1_TAG_ID + "\" class=\"btn btn-primary btn-block\" value=\"" + TRACK_STR +"\" />"))));
+        });
+    }
+
+    @Test
+    public void testIsSortedByNameByDefault(){
+        as(FRANZ, browser -> {
+            browser.goTo(TAGS_PATH);
+            assertThat(browser.pageSource(), matches("Ableiten.*AD1.*AD2.*Allgemein"));
+        });
+    }
+
+    @Test
+    public void testSortByNameReverse(){
+        as(FRANZ, browser -> {
+            browser.goTo(TAGS_PATH);
+            browser.find("a", withText("Name")).click();
+            assertThat(browser.pageSource(), matches("Allgemein.*AD2.*AD1.*Ableiten"));
+        });
+    }
+
+    @Test
+    public void testSortByExerciseCount(){
+        as(FRANZ, browser -> {
+            browser.goTo(TAGS_PATH);
+            browser.click("#header_Aufgaben");
+            assertThat(browser.pageSource(), matches("5.*3.*2.*1"));
+        });
+    }
+
+    @Test
+    public void testSortByTracking(){
+        as(FRANZ, browser -> {
+            browser.goTo(TAGS_PATH);
+            browser.find("a", withText("Subscription")).click();
+            assertThat(browser.pageSource(), matches("Nicht mehr folgen.*Nicht mehr folgen.*Folgen.*Folgen.*Folgen"));
+        });
+    }
+}

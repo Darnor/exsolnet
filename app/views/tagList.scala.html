@@ -12,7 +12,7 @@
 * Helper generating table headers *
 ***********************************@
 @header(columnId: Int, title: String) = {
-    <th class="col@columnId header @if(Math.abs(currentOrderBy) == columnId) @{if(currentOrderBy == columnId) "headerSortDown" else "headerSortUp"}">
+    <th id="header_@title" class="col@columnId header @if(Math.abs(currentOrderBy) == columnId) @{if(currentOrderBy == columnId) "headerSortDown" else "headerSortUp"}">
         <a href="@link(if (currentOrderBy == columnId) -columnId else columnId )">@title</a>
     </th>
 }
