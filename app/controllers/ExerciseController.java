@@ -103,7 +103,7 @@ public class ExerciseController extends Controller {
      * @return Result of the Default ExerciseOverview View
      */
     public Result renderOverview() {
-        return list(0, 1, "", "");
+        return renderList(0, 1, "", "");
     }
 
     public Result renderDetails(Long id) {
@@ -119,7 +119,7 @@ public class ExerciseController extends Controller {
      * @param tagFilter string of tags for filter splittet by ','
      * @return Result View of the filtered ExerciseList
      */
-    public Result list(int page, int order, String titleFilter, String tagFilter) {
+    public Result renderList(int page, int order, String titleFilter, String tagFilter) {
         String orderBy = getOrderByAttributeString(order);
         PagedList<Exercise> exercises = Exercise.getPagedList(page, orderBy, titleFilter, tagFilter.split(","), PAGE_SIZE);
         return ok(exerciseList.render(SessionService.getCurrentUser(), exercises, order, titleFilter, tagFilter));

@@ -41,7 +41,7 @@
         @tags.map{ tag =>
             <tr>
                 <td>
-                    <a href="@routes.ExerciseController.list(0, 0, "", tag.getName)">@tag.getName</a>
+                    <a href="@routes.ExerciseController.renderList(0, 0, "", tag.getName)">@tag.getName</a>
                 </td>
                 <td>
                     @tag.getExercises.size

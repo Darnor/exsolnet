@@ -7,7 +7,7 @@
     <h1>Deine gefolgten Tags</h1>
     <ul>
         @tags.map{ tag =>
-          <li><a href="@routes.ExerciseController.list(0, 0, "", tag.getName)">@tag.getName</a> (@user.getNofCompletedExercisesByTag(tag)/@tag.getExercises.size())</li>
+          <li><a href="@routes.ExerciseController.renderList(0, 0, "", tag.getName)">@tag.getName</a> (@user.getNofCompletedExercisesByTag(tag)/@tag.getExercises.size())</li>
         }
     </ul>
 

@@ -3,7 +3,7 @@
 # ~~~~
 
 GET         /                       controllers.DashboardController.renderDashboard
-GET         /exercises              controllers.ExerciseController.list(page:Int ?= 0, sort:Int ?=1, title ?= "", tags ?="")
+GET         /exercises              controllers.ExerciseController.renderList(page:Int ?= 0, sort:Int ?=1, title ?= "", tags ?="")
 GET         /exercises              controllers.ExerciseController.renderOverview
 GET         /exercises/create       controllers.ExerciseController.renderCreate
 GET         /exercises/:id          controllers.ExerciseController.renderDetails(id: Long)
