@@ -167,23 +167,18 @@ public class User extends Model {
      * <p>
      * CARE: password not used in this implementation
      *
-     * @param emailOrUsername    Mail address or Username of User, who wants to login
+     * @param userLogin    Mail address or Username of User, who wants to login
      * @param password Password of User, who wants to login
      * @return user
      */
-    public static User authenticate(String emailOrUsername, String password) {
-        User user;
-        if(emailOrUsername.contains("@")){
-            user = findUserByEmail(emailOrUsername);
-        }else{
-            user = findUserByUsername(emailOrUsername);
-        }
+    public static User authenticate(String userLogin, String password) {
+        User user = (userLogin.contains("@")) ? findUserByEmail(userLogin) : findUserByUsername(userLogin);
         if (user == null) {
             //create user if non existing
-            if(emailOrUsername.contains("@")){
-                user = UserBuilder.anUser().withEmail(emailOrUsername).withUsername(emailOrUsername.split("@")[0]).build();
+            if(userLogin.contains("@")){
+                user = UserBuilder.anUser().withEmail(userLogin).withUsername(userLogin.split("@")[0]).build();
             }else{
-                user = UserBuilder.anUser().withUsername(emailOrUsername).withEmail(emailOrUsername+"@hsr.ch").build();
+                user = UserBuilder.anUser().withUsername(userLogin).withEmail(userLogin+"@hsr.ch").build();
             }
             user.save();
         }
