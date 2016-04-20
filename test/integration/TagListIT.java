@@ -2,6 +2,8 @@ package integration;
 
 import org.junit.Test;
 
+import java.util.concurrent.TimeUnit;
+
 import static helper.RegexMatcher.matches;
 import static org.fluentlenium.core.filter.FilterConstructor.withText;
 import static org.hamcrest.core.IsNot.not;
@@ -52,6 +54,7 @@ public class TagListIT extends AbstractIntegrationTest {
         as(FRANZ, browser -> {
             browser.goTo(TAGS_PATH);
             browser.find("a", withText("Name")).click();
+            browser.await().atMost(1, TimeUnit.SECONDS).untilPage().isLoaded();
             assertThat(browser.pageSource(), matches("Allgemein.*AD2.*AD1.*Ableiten"));
         });
     }
@@ -61,6 +64,7 @@ public class TagListIT extends AbstractIntegrationTest {
         as(FRANZ, browser -> {
             browser.goTo(TAGS_PATH);
             browser.click("#header_Aufgaben");
+            browser.await().atMost(1, TimeUnit.SECONDS).untilPage().isLoaded();
             assertThat(browser.pageSource(), matches("5.*3.*2.*1"));
         });
     }
@@ -70,6 +74,7 @@ public class TagListIT extends AbstractIntegrationTest {
         as(FRANZ, browser -> {
             browser.goTo(TAGS_PATH);
             browser.find("a", withText("Subscription")).click();
+            browser.await().atMost(1, TimeUnit.SECONDS).untilPage().isLoaded();
             assertThat(browser.pageSource(), matches("Nicht mehr folgen.*Nicht mehr folgen.*Folgen.*Folgen.*Folgen"));
         });
     }

@@ -5,6 +5,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
+import java.util.concurrent.TimeUnit;
+
 import static helper.RegexMatcher.matches;
 import static org.fluentlenium.core.filter.FilterConstructor.withText;
 import static org.junit.Assert.assertThat;
@@ -69,6 +71,7 @@ public class ExerciseListIT extends AbstractIntegrationTest{
         as(FRANZ, browser -> {
             browser.goTo("/exercises");
             browser.click("a",withText("Titel"));
+            browser.await().atMost(1, TimeUnit.SECONDS).untilPage().isLoaded();
             assertThat(browser.pageSource(), matches("XXX.*von.*Hans.*Allgemein"));
         });
     }
