@@ -1,8 +1,11 @@
 package integration;
 
 import models.AbstractModelTest;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
 import play.test.TestBrowser;
 
+import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
 import static org.junit.Assert.assertNotEquals;
@@ -21,6 +24,12 @@ public abstract class AbstractIntegrationTest extends AbstractModelTest {
             block.accept(browser);
         });
 
+    }
+
+    protected static void fillTagTokenElements(TestBrowser browser, WebElement element, String tag) {
+        element.sendKeys(tag);
+        browser.await().atMost(2, TimeUnit.SECONDS).until(".token-input-selected-dropdown-item-facebook").isPresent();
+        element.sendKeys(Keys.ENTER);
     }
 
 }

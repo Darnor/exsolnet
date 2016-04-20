@@ -4,22 +4,9 @@ import models.Exercise;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 
 public class ExerciseEditCreateIT extends AbstractIntegrationTest {
-
-    private void fillTagTokenElements(WebElement element, String tag) {
-        try {
-            element.sendKeys(tag);
-            //TODO Beter way to input tags... Thread sleep -> workaround...
-            // Wait 2 seconds for the Token to be created. Very brittle for tests...
-            Thread.sleep(2000);
-            element.sendKeys(Keys.ENTER);
-        } catch (InterruptedException ex) {
-            ex.printStackTrace();
-        }
-    }
 
     @Test
     public void testCreate() {
@@ -35,12 +22,12 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
 
             WebElement mainTagElement = browser.getDriver().findElement(By.id("token-input-maintag-filter-list"));
             for (String tag : mainTags) {
-                fillTagTokenElements(mainTagElement, tag);
+                fillTagTokenElements(browser, mainTagElement, tag);
             }
 
             WebElement otherTagElement = browser.getDriver().findElement(By.id("token-input-othertag-filter-list"));
             for (String tag : otherTags) {
-                fillTagTokenElements(otherTagElement, tag);
+                fillTagTokenElements(browser, otherTagElement, tag);
             }
 
             browser.fill("#content").with(content);

@@ -6,8 +6,8 @@ import java.util.concurrent.TimeUnit;
 
 import static helper.RegexMatcher.matches;
 import static org.fluentlenium.core.filter.FilterConstructor.withText;
-import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
 
 public class TagListIT extends AbstractIntegrationTest {
