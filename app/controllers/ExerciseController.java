@@ -41,6 +41,7 @@ public class ExerciseController extends Controller {
     private static final String TIME_FIELD = "time";
 
     private static final String TAG_NAME_DELIMITER = ",";
+    private static final int PAGE_SIZE = 10;
 
     /**
      * Map the Id of the html exercise-table to their Model-Attribute-name
@@ -119,9 +120,8 @@ public class ExerciseController extends Controller {
      * @return Result View of the filtered ExerciseList
      */
     public Result list(int page, int order, String titleFilter, String tagFilter) {
-        int pageSize = 10;
         String orderBy = getOrderByAttributeString(order);
-        PagedList<Exercise> exercises = Exercise.getPagedList(page, orderBy, titleFilter, tagFilter.split(","), pageSize);
+        PagedList<Exercise> exercises = Exercise.getPagedList(page, orderBy, titleFilter, tagFilter.split(","), PAGE_SIZE);
         return ok(exerciseList.render(SessionService.getCurrentUser(), exercises, order, titleFilter, tagFilter));
     }
 
