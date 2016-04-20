@@ -35,7 +35,6 @@
                 @header(2, "Lösungen")
                 @header(3, "Bewertung")
                 @header(4, "Datum")
-                @*header(5, "Gelöst")*@
             </tr>
         </thead>
         <tbody>
@@ -57,11 +56,8 @@
                 @exercise.getPoints
                 </td>
                 <td>
-                @exercise.getTime().format(java.time.format.DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm:ss"))@*"dd.MM.yy - hh:mm:ss"*@
+                @exercise.getTime().format(java.time.format.DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm:ss"))
                 </td>
-                @*<td class="text-center">
-                exercise.getSolutions.find(s => s.getUser.getEmail.equals(username))
-                </td>*@
             </tr>
         }
         </tbody>
