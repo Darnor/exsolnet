@@ -23,9 +23,9 @@
     <script src="@routes.Assets.versioned("javascripts/exerciselist.js")" type="text/javascript"></script>
     <form method="GET" action="@routes.ExerciseController.renderList()" class="form-horizontal">
         <input type="hidden" name="sort" value="@currentOrderBy" />
-        <input type="search" class="form-control" id="searchbox" name="title" value="@currentTitleFilter" placeholder="Titel-Filter"/>
+        <input type="search" class="form-control" id="title-filter" name="title" value="@currentTitleFilter" placeholder="Titel-Filter"/>
         <input type="search" class="form-control" id="tag-filter-list" name="tags" value="@currentTagFilter" placeholder="Tag-Filter" data-route="@routes.TagController.suggestAllTags("")"/>
-        <input type="submit" class="btn btn-primary btn-default" id="searchsubmit" value="Suche" />
+        <input type="submit" class="btn btn-primary btn-default" id="submit-filter" value="Suche" />
     </form>
 
     <table class="table table-striped">
