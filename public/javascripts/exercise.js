@@ -35,6 +35,7 @@
         $("#maintag-filter-list").tokenInput(route, {
             preventDuplicates: true,
             prePopulate: createTagFilter("#maintag-filter-list"),
+            hintText: "Suche nach Haupt-Tags",
             theme: "facebook"
         });
     });
@@ -44,6 +45,7 @@
         $("#othertag-filter-list").tokenInput(route, {
             preventDuplicates: true,
             prePopulate: createTagFilter("#othertag-filter-list"),
+            hintText: "Suche nach anderen Tags",
             theme: "facebook"
         });
     });
