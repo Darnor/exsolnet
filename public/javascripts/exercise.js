@@ -33,6 +33,7 @@
     $(document).ready(function () {
         var route = $("#maintag-filter-list").attr('data-route');
         $("#maintag-filter-list").tokenInput(route, {
+            preventDuplicates: true,
             prePopulate: createTagFilter("#maintag-filter-list"),
             theme: "facebook"
         });
@@ -41,6 +42,7 @@
     $(document).ready(function () {
         var route = $("#othertag-filter-list").attr('data-route');
         $("#othertag-filter-list").tokenInput(route, {
+            preventDuplicates: true,
             prePopulate: createTagFilter("#othertag-filter-list"),
             theme: "facebook"
         });
