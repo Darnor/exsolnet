@@ -23,6 +23,7 @@
         var currentTagFilter = createTagFilterFromUrl()
         var route = $("#tag-filter-list").attr("data-route");
         $("#tag-filter-list").tokenInput(route, {
+            preventDuplicates: true,
             prePopulate: currentTagFilter,
             theme: "facebook"
         });
