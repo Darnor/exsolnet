@@ -51,10 +51,7 @@
         }">
             <span class="item">
                 <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">@exercise.getTitle</a>
-                <p> @for(tag <- exercise.getTagsSortedByTagType) {
-                    @tag.getName,
-                }
-                </p>
+                <p> @exercise.getTags.map(x => x.getName).mkString(",")</p>
             </span>
 
             <span><a class="meta user" href="@routes.UserController.renderUser(exercise.getUser.getId)">@exercise.getUser.getUsername</a></span>
