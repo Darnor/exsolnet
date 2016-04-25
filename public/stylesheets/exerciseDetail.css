@@ -1,0 +1,152 @@
+
+.solution {
+    display: block;
+    position: relative;
+    padding: .75em 5em .75em 1em;
+    border-radius: .25em;
+    margin-bottom: .5em;
+    background: #fff;
+    box-shadow: /* regular  */ 0 .0625em .125em rgba(0, 0, 0, .125),
+        /* inset  */ inset 0 -.25em 0 -.125em rgba(0, 0, 0, .125),
+        /* category color (left) */ inset 1em 0 0 -.7em rgba(200, 0, 120, .5),
+        /* arrow background (right) */ inset -2em 0 0 -.3em rgba(0, 0, 0, .05);
+
+}
+
+.solution-item {
+    font-weight: bold;
+    color: #000;
+    display: block;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.solution-item:after {
+    content: '';
+    display: block;
+    height: 0;
+    width: 100%;
+}
+
+.solution-blue {
+    box-shadow: 0 .0625em .125em rgba(0, 0, 0, .125),
+    inset 0 -.25em 0 -.125em rgba(0, 0, 0, .125),
+    inset 1em 0 0 -.7em rgba(0, 95, 210, .5),
+    inset -2em 0 0 -.3em rgba(0, 0, 0, .05);
+}
+
+.solution-green {
+    box-shadow: 0 .0625em .125em rgba(0, 0, 0, .125),
+    inset 0 -.25em 0 -.125em rgba(0, 0, 0, .125),
+    inset 1em 0 0 -.7em rgba(20, 160, 0, .5),
+    inset -2em 0 0 -.3em rgba(0, 0, 0, .05);
+}
+
+.solution-red {
+    box-shadow: 0 .0625em .125em rgba(0, 0, 0, .125),
+    inset 0 -.25em 0 -.125em rgba(0, 0, 0, .125),
+    inset 1em 0 0 -.7em rgba(210, 15, 0, .5),
+    inset -2em 0 0 -.3em rgba(0, 0, 0, .05);
+}
+
+.meta {
+    margin-left: .25em;
+}
+
+.user,
+.time,
+i {
+    font-size: 8px;
+    font-size: .5em;
+    line-height: 2; /* 16 "px" */
+}
+
+.time {
+    font-weight: bold;
+}
+
+.time:before {
+    content: 'Eingereicht: ';
+    font-weight: normal;
+}
+
+.points {
+    position: absolute;
+    font-family: 'Pathway Gothic One', sans-serif;
+    font-size: 2em;
+    right: 1.125em;
+    top: 0;
+    line-height: 2.083; /* 50 "px", should be same as button height */
+}
+
+.clock {
+    display: inline-block;
+    position: relative;
+    width: 1.333em;
+    height: 1.333em;
+    margin-left: .333em;
+    border: .25em solid #95979d;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+
+.clock:before,
+.clock:after {
+    content: '';
+    display: block;
+    position: absolute;
+    width: .125em;
+    height: .25em;
+    background: #95979d;
+}
+
+.clock:before {
+    left: 50%;
+    bottom: 47%;
+    margin-left: -.0625em;
+}
+
+.clock:after {
+    transform: rotate(135deg);
+    left: 63%;
+    top: 47%;
+}
+
+
+.box {
+
+
+
+    display: block;
+    width: 1em;
+    height: 1em;
+    font-size: .75em;
+    position: absolute;
+    right: .667em;
+    top: 50%;
+    margin-top: -1.3em; /* just eyeballing it */
+}
+
+.box > .up {
+    color:#00a47a;
+}
+
+.box > .up:hover {
+    color:#00fdbc;
+    font-size:1.1em;
+    text-shadow: 0px 2px 2px black;
+
+}
+
+
+.box >.down {
+    color:#e75a48;
+
+}
+
+.box >.down:hover {
+    font-size:1.1em;
+    text-shadow: 0px 2px 2px black;
+
+}

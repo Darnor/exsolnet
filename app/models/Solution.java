@@ -1,6 +1,8 @@
 package models;
 
+import com.avaje.ebean.Model;
 import models.builders.SolutionBuilder;
+import models.builders.VoteBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -8,8 +10,8 @@ import java.util.Collections;
 import java.util.List;
 
 @Entity
-@Table(name="solution")
-public class Solution extends Post{
+@Table(name = "solution")
+public class Solution extends Post {
     @Basic
     @NotNull
     private boolean isOfficial;
@@ -77,6 +79,10 @@ public class Solution extends Post{
         return Collections.unmodifiableList(votes);
     }
 
+    public void addVote(Vote vote) {
+        votes.add(vote);
+    }
+
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
     }
@@ -90,6 +96,42 @@ public class Solution extends Post{
         exercise.save();
         user.save();
         solution.save();
+    }
+
+    public static Model.Finder<Long, Solution> find() {
+        return new Finder<>(Solution.class);
+    }
+
+    /**
+     * the data of the solution with the given id
+     *
+     * @param id the id of the solution
+     * @return the solution from the db with the given id, null if it doesnt exist, nullpointer exception if id is null
+     */
+    public static Solution findById(Long id) {
+        return find().where().eq("id", id).findUnique();
+    }
+
+    public void upvote(User user) {
+        vote(user, 1);
+    }
+
+    public void downvote(User user) {
+        vote(user, -1);
+    }
+
+    private void vote(User user, int value) {
+        Vote vote = VoteBuilder.aVote().withSolution(this).withUser(user).withValue(value).build();
+        addVote(vote);
+        user.addVote(vote);
+        vote.save();
+        user.save();
+        this.save();
+    }
+
+    @Override
+    public long getPoints() {
+        return votes.stream().mapToInt(vote -> vote.getValue()).sum();
     }
 
 }

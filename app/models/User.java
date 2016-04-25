@@ -10,21 +10,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name="exoluser")
+@Table(name = "exoluser")
 public class User extends Model {
 
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_USERNAME = "username";
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = COLUMN_USERNAME, unique=true)
+    @Column(name = COLUMN_USERNAME, unique = true)
     @Basic
     @NotNull
     private String username;
 
-    @Column(name = COLUMN_EMAIL, unique=true)
+    @Column(name = COLUMN_EMAIL, unique = true)
     @NotNull
     private String email;
 
@@ -61,7 +62,7 @@ public class User extends Model {
         return id;
     }
 
-    public void setId(Long id){
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -93,7 +94,9 @@ public class User extends Model {
         return Collections.unmodifiableList(solutions);
     }
 
-    public void addSolution(Solution solution){solutions.add(solution);}
+    public void addSolution(Solution solution) {
+        solutions.add(solution);
+    }
 
     public void setSolutions(List<Solution> solutions) {
         this.solutions = solutions;
@@ -169,18 +172,18 @@ public class User extends Model {
      * <p>
      * CARE: password not used in this implementation
      *
-     * @param userLogin    Mail address or Username of User, who wants to login
-     * @param password Password of User, who wants to login
+     * @param userLogin Mail address or Username of User, who wants to login
+     * @param password  Password of User, who wants to login
      * @return user
      */
     public static User authenticate(String userLogin, String password) {
         User user = userLogin.contains("@") ? findUserByEmail(userLogin) : findUserByUsername(userLogin);
         if (user == null) {
             //create user if non existing
-            if(userLogin.contains("@")){
+            if (userLogin.contains("@")) {
                 user = UserBuilder.anUser().withEmail(userLogin).withUsername(userLogin.split("@")[0]).build();
-            }else{
-                user = UserBuilder.anUser().withUsername(userLogin).withEmail(userLogin+"@hsr.ch").build();
+            } else {
+                user = UserBuilder.anUser().withUsername(userLogin).withEmail(userLogin + "@hsr.ch").build();
             }
             user.save();
         }
@@ -189,6 +192,7 @@ public class User extends Model {
 
     /**
      * Queries database, and returns User holding given email address
+     *
      * @param email
      * @return User
      */
@@ -198,6 +202,7 @@ public class User extends Model {
 
     /**
      * Queries database, and returns User holding given username
+     *
      * @param username
      * @return User
      */
@@ -208,21 +213,26 @@ public class User extends Model {
 
     /**
      * Checks if the User has solved the exercise
+     *
      * @param id of the exercise
      * @return boolean
      */
-    public boolean hasSolved(long id){
+    public boolean hasSolved(long id) {
         return solutions.stream().filter(s -> s.getExercise().getId().equals(id)).findFirst().orElse(null) != null;
     }
 
     /**
      * Return Finder Object for DB's queries.
-     *
+     * <p>
      * CARE: should not be used! may be removed on next version
      *
      * @return Finder for User Models
      */
     public static Model.Finder<Long, User> find() {
         return new Finder<>(User.class);
+    }
+
+    public void addVote(Vote vote) {
+        votes.add(vote);
     }
 }

@@ -4,6 +4,7 @@ import models.Exercise;
 import models.Solution;
 import models.User;
 import models.builders.SolutionBuilder;
+import play.Logger;
 import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -40,7 +41,7 @@ public class ExerciseDetailController extends Controller {
             } else {
                 return renderSolutions(id);
             }
-        } else{
+        } else {
             return notFound(error404.render(user, "Diese Aufgabe existiert nicht"));
         }
     }
@@ -74,5 +75,20 @@ public class ExerciseDetailController extends Controller {
     public Result processUpdate(Long exerciseId) {
         Solution.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), Exercise.findById(exerciseId), SessionService.getCurrentUser());
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
+    }
+
+    public Result upVote(Long solutionId) {
+        Logger.info("Up Vote "+solutionId);
+
+        Solution solution = Solution.findById(solutionId);
+        solution.upvote(SessionService.getCurrentUser());
+        return redirect(routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise().getId()));
+    }
+    public Result downVote(Long solutionId) {
+        Logger.info("Down Vote "+solutionId);
+
+        Solution solution = Solution.findById(solutionId);
+        solution.downvote(SessionService.getCurrentUser());
+        return redirect(routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise().getId()));
     }
 }
