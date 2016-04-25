@@ -5,7 +5,7 @@
   <div>
       @exercise.getSolutions.map{ solution =>
           <div class="solution">
-              <span>@solution.getContent</span>
+              <span>@Html(solution.getContent)</span>
               <p>
                   <small>
                       @solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
