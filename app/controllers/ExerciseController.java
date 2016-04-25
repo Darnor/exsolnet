@@ -11,7 +11,6 @@ import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
 import views.html.editExercise;
-import views.html.exerciseDetail;
 import views.html.exerciseList;
 import views.html.fileNotFound;
 
@@ -105,10 +104,7 @@ public class ExerciseController extends Controller {
     public Result renderOverview() {
         return renderList(0, 1, "", "");
     }
-
-    public Result renderDetails(Long id) {
-        return ok(exerciseDetail.render(SessionService.getCurrentUser(), Exercise.findById(id)));
-    }
+    
 
     /**
      * render the ExerciseOverview View with given Parameters

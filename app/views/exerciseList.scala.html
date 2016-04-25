@@ -43,7 +43,7 @@
         @for(exercise <- currentPage.getList){
             <tr>
                 <td>
-                    <a href="@routes.ExerciseController.renderDetails(exercise.getId)">@exercise.getTitle</a>
+                    <a href="@routes.SolutionController.renderExerciseDetail(exercise.getId)">@exercise.getTitle</a>
                     <p>von <a>@exercise.getUser.getUsername</a>
                         @for(tag <- exercise.getTagsSortedByTagType){
                             @tag.getName,

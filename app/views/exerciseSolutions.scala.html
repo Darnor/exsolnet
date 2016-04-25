@@ -1,0 +1,19 @@
+@import java.time.format.DateTimeFormatter
+@import java.time.format.FormatStyle
+@(user: User, exercise: Exercise)
+@exerciseDetail(user,exercise) {
+  <div>
+      @exercise.getSolutions.map{ solution =>
+          <div class="solution">
+              <span>@solution.getContent</span>
+              <p>
+                  <small>
+                      @solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
+                      -
+                      <a href="#TODO">@solution.getUser().getUsername()</a>
+                  </small>
+              </p>
+          </div>
+      }
+  </div>
+}

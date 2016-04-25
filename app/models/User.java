@@ -203,6 +203,16 @@ public class User extends Model {
         return find().where().ieq(COLUMN_USERNAME, username).findUnique();
     }
 
+
+    /**
+     * Checks if the User has solved the exercise
+     * @param id of the exercise
+     * @return boolean
+     */
+    public boolean hasSolved(long id){
+        return solutions.stream().filter(s -> s.getExercise().getId().equals(id)).findFirst().orElse(null) != null;
+    }
+
     /**
      * Return Finder Object for DB's queries.
      *

@@ -6,7 +6,7 @@ GET         /                       controllers.DashboardController.renderDashbo
 GET         /exercises              controllers.ExerciseController.renderList(page:Int ?= 0, sort:Int ?=1, title ?= "", tags ?="")
 GET         /exercises              controllers.ExerciseController.renderOverview
 GET         /exercises/create       controllers.ExerciseController.renderCreate
-GET         /exercises/:id          controllers.ExerciseController.renderDetails(id: Long)
+GET         /exercises/:id          controllers.SolutionController.renderExerciseDetail(id: Long)
 POST        /exercises/create       controllers.ExerciseController.processCreate()
 POST        /exercises/:id/update   controllers.ExerciseController.processUpdate(id: Long)
 GET         /exercises/:id/edit     controllers.ExerciseController.edit(id: Long)
