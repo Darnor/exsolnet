@@ -172,7 +172,7 @@ public class User extends Model {
      * @return user
      */
     public static User authenticate(String userLogin, String password) {
-        User user = (userLogin.contains("@")) ? findUserByEmail(userLogin) : findUserByUsername(userLogin);
+        User user = userLogin.contains("@") ? findUserByEmail(userLogin) : findUserByUsername(userLogin);
         if (user == null) {
             //create user if non existing
             if(userLogin.contains("@")){
