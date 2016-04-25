@@ -2,6 +2,7 @@ package controllers;
 
 import com.google.inject.Inject;
 import models.User;
+import play.Logger;
 import play.data.DynamicForm;
 import play.data.FormFactory;
 import play.mvc.Controller;
@@ -33,6 +34,9 @@ public class LoginController extends Controller {
         User user = User.authenticate(requestData.get("emailorusername"), requestData.get("password"));
         if(user != null){
             SessionService.set(user.getEmail());
+
+            Logger.info(user.getEmail()+" is logged in");
+
         }
         return redirect(routes.DashboardController.renderDashboard());
     }
