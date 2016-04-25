@@ -73,6 +73,6 @@ public class ExerciseDetailController extends Controller {
      */
     public Result processUpdate(Long exerciseId) {
         Solution.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), Exercise.findById(exerciseId), SessionService.getCurrentUser());
-        return renderSolutions(exerciseId);
+        return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
     }
 }

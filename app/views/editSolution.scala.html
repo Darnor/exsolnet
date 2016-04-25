@@ -2,7 +2,13 @@
 @exerciseDetail(user, exercise) {
     <form method="POST" action="@routes.ExerciseDetailController.processUpdate(exercise.getId)">
         <div>
-            <textarea required class="form-control" rows="5" id="content" type="text" name="content" >@solution.getContent</textarea>
+            <textarea name="content" id="content" rows="10" cols="80">
+               @solution.getContent
+            </textarea>
+            <script>
+                    CKEDITOR.replace( 'content' );
+            </script>
+
             <button class="btn btn-primary btn-lg btn-block" id="save">Speichern</button>
         </div>
     </form>
