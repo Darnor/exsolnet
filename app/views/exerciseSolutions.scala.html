@@ -1,26 +1,26 @@
 @import java.time.format.DateTimeFormatter
 @import java.time.format.FormatStyle
-@(user: User, exercise: Exercise)
+@(user: User, exercise: Exercise, solutions: java.util.List[Solution])
 @exerciseDetail(user, exercise) {
     <div>
-    @exercise.getSolutions.map { solution =>
-        <div class="solution  @if(solution.getPoints <= 0) {
-            solution-red
-        } else {
-            @if(solution.isOfficial) {
-                solution-green
-            } else { solution-blue}
-        }">
-            <span class="solution-item">@Html(solution.getContent)</span>
-            <span><a class="meta user" href="#TODO">@solution.getUser().getUsername()</a>
-            </span>  <i class="clock"></i>
-            <span class="meta time">@solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))</span>
-            <span class="meta points">@solution.getPoints</span>
-            <div class = "box">
-                <a class = "up" href="@routes.ExerciseDetailController.upVote(solution.getId)">&#9650;</a>
-                <a class = "down" href="@routes.ExerciseDetailController.downVote(solution.getId)">&#9660;</a>
+        @for(solution <- solutions) {
+            <div class="solution  @if(solution.getPoints <= 0) {
+                solution-red
+            } else {
+                @if(solution.isOfficial) {
+                    solution-green
+                } else { solution-blue}
+            }">
+                <span class="solution-item">@Html(solution.getContent)</span>
+                <span><a class="meta user" href="#TODO">@solution.getUser().getUsername()</a>
+                </span>  <i class="clock"></i>
+                <span class="meta time">@solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))</span>
+                <span class="meta points">@solution.getPoints</span>
+                <div class = "box">
+                    <a class = "up" href="@routes.ExerciseDetailController.upVote(solution.getId)">&#9650;</a>
+                    <a class = "down" href="@routes.ExerciseDetailController.downVote(solution.getId)">&#9660;</a>
+                </div>
             </div>
-        </div>
-    }
+        }
     </div>
 }
