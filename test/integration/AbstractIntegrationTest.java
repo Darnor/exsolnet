@@ -2,6 +2,7 @@ package integration;
 
 import helper.AbstractApplicationTest;
 import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import play.test.TestBrowser;
 
@@ -15,14 +16,17 @@ public abstract class AbstractIntegrationTest extends AbstractApplicationTest {
     public static final String FRANZ = "Franz";
 
     public static void as(String username, final Consumer<TestBrowser> block){
-        running(testServer(3333, fakeApplication()), FIREFOX, browser -> {
+        as(username, HTMLUNIT, block);
+    }
+
+    public static void as(String username, Class<? extends WebDriver> driver, final Consumer<TestBrowser> block){
+        running(testServer(3333, fakeApplication()), driver, browser -> {
             browser.goTo("http://localhost:3333/");
             browser.fill("#email").with(username);
             browser.submit("#btn_login");
             assertNotEquals("Login failed!", "/login", browser.url());
             block.accept(browser);
         });
-
     }
 
     protected static void fillTagTokenElements(TestBrowser browser, WebElement element, String tag) {

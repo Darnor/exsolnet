@@ -22,9 +22,9 @@ public class TagListIT extends AbstractIntegrationTest {
     public void testTrackUntrack() {
         as(FRANZ, browser -> {
             browser.goTo(TAGS_PATH);
-            assertThat(browser.pageSource(), is(matches("<input type=\"submit\" id=\"track_" + AD2_TAG_ID + "\" class=\"btn btn-primary btn-block\" value=\"" + TRACK_STR + "\" />")));
+            assertThat(browser.pageSource(), is(matches("input.*" + AD2_TAG_ID + ".*" + TRACK_STR)));
             browser.submit("#track_" + AD2_TAG_ID);
-            assertThat(browser.pageSource(), is(matches("<input type=\"submit\" id=\"track_" + AD2_TAG_ID + "\" class=\"btn btn-success btn-block\" value=\"" + UNTRACK_STR + "\" />")));
+            assertThat(browser.pageSource(), is(matches("input.*" + AD2_TAG_ID + ".*" + UNTRACK_STR)));
             browser.submit("#track_" + AD2_TAG_ID);
             assertThat(browser.pageSource(), is(matches("id=\"track_" + AD2_TAG_ID + ".*value=\"" + TRACK_STR)));
         });
@@ -36,8 +36,8 @@ public class TagListIT extends AbstractIntegrationTest {
             browser.goTo(TAGS_PATH);
             browser.fill("#tagfilter").with("AD2");
             browser.submit("#submit-tagfilter");
-            assertThat(browser.pageSource(), is(matches("<input type=\"submit\" id=\"track_" + AD2_TAG_ID + "\" class=\"btn btn-primary btn-block\" value=\"" + TRACK_STR +"\" />")));
-            assertThat(browser.pageSource(), is(not(matches("<input type=\"submit\" id=\"track_" + AD1_TAG_ID + "\" class=\"btn btn-primary btn-block\" value=\"" + TRACK_STR +"\" />"))));
+            assertThat(browser.pageSource(), is(matches("input.*" + AD2_TAG_ID + ".*" + TRACK_STR)));
+            assertThat(browser.pageSource(), is(not(matches("input.*" + AD1_TAG_ID + ".*" + TRACK_STR))));
         });
     }
 

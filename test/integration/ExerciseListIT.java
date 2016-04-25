@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 import static helper.RegexMatcher.matches;
 import static org.fluentlenium.core.filter.FilterConstructor.withText;
 import static org.junit.Assert.assertThat;
+import static play.test.Helpers.FIREFOX;
 
 public class ExerciseListIT extends AbstractIntegrationTest{
     @Test
@@ -42,7 +43,7 @@ public class ExerciseListIT extends AbstractIntegrationTest{
 
     @Test
     public void testTagFilterForm() {
-        as(FRANZ, browser -> {
+        as(FRANZ, FIREFOX, browser -> {
             browser.goTo("/exercises");
             WebElement mainTagElement = browser.getDriver().findElement(By.id("token-input-tag-filter-list"));
             fillTagTokenElements(browser, mainTagElement, "Allgemein");
@@ -53,7 +54,7 @@ public class ExerciseListIT extends AbstractIntegrationTest{
 
     @Test
     public void testTagAndFilterForm() {
-        as(FRANZ, browser -> {
+        as(FRANZ, FIREFOX, browser -> {
             browser.goTo("/exercises");
             browser.fill("#title-filter").with("XXX");
             WebElement mainTagElement = browser.getDriver().findElement(By.id("token-input-tag-filter-list"));
