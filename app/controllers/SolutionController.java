@@ -8,6 +8,7 @@ import play.mvc.Result;
 import services.SessionService;
 import views.html.editSolution;
 import views.html.exerciseSolutions;
+import views.html.fileNotFound;
 
 public class SolutionController extends Controller{
 
@@ -29,7 +30,7 @@ public class SolutionController extends Controller{
                 return renderSolutions(id);
             }
         } else{
-            return notFound();
+            return notFound(fileNotFound.render("Diese Aufgabe existiert nicht"));
         }
     }
 
