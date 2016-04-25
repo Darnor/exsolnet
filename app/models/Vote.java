@@ -1,15 +1,16 @@
 package models;
 
 import com.avaje.ebean.Model;
+import models.builders.VoteBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="vote")
+@Table(name = "vote")
 public class Vote extends Model {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotNull
@@ -68,4 +69,28 @@ public class Vote extends Model {
         this.user = user;
     }
 
+    public static Model.Finder<Long, Vote> find() {
+        return new Finder<>(Vote.class);
+    }
+
+    public static void upvote(User user, Solution solution) {
+        vote(user, 1, solution);
+    }
+
+    public static void downvote(User user, Solution solution) {
+        vote(user, -1, solution);
+    }
+
+    private static void vote(User user, int value, Solution solution) {
+        Vote vote = null;
+
+        vote = Vote.find().where().eq("user_id", user.getId()).eq("solution_id", solution.getId()).findUnique();
+        if (vote == null)
+            vote = VoteBuilder.aVote().withSolution(solution).withUser(user).withValue(value).build();
+        vote.setValue(value);
+
+        vote.save();
+
+
+    }
 }

@@ -2,7 +2,6 @@ package models;
 
 import com.avaje.ebean.Model;
 import models.builders.SolutionBuilder;
-import models.builders.VoteBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -110,23 +109,6 @@ public class Solution extends Post {
      */
     public static Solution findById(Long id) {
         return find().where().eq("id", id).findUnique();
-    }
-
-    public void upvote(User user) {
-        vote(user, 1);
-    }
-
-    public void downvote(User user) {
-        vote(user, -1);
-    }
-
-    private void vote(User user, int value) {
-        Vote vote = VoteBuilder.aVote().withSolution(this).withUser(user).withValue(value).build();
-        addVote(vote);
-        user.addVote(vote);
-        vote.save();
-        user.save();
-        this.save();
     }
 
     @Override

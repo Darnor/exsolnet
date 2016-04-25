@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "exercise")
 public class Exercise extends Post {
-    
+
     @Constraints.Required
     @NotNull
     private String title;
@@ -69,8 +69,9 @@ public class Exercise extends Post {
     public List<Solution> getSolutions() {
         return Collections.unmodifiableList(solutions);
     }
+
     public void addSolution(Solution solution) {
-       solutions.add(solution);
+        solutions.add(solution);
     }
 
 
@@ -148,8 +149,8 @@ public class Exercise extends Post {
      */
     public static PagedList<Exercise> getPagedList(int pageNr, String orderBy, String titleFilter, String[] tagFilter, int pageSize) {
         Query<Exercise> query = Ebean.createQuery(Exercise.class);
-        query.where().icontains("title",titleFilter);
-        if(!"".equals(tagFilter[0])){
+        query.where().icontains("title", titleFilter);
+        if (!"".equals(tagFilter[0])) {
             query.where().in("tags.name", Arrays.asList(tagFilter));
         }
         return query.orderBy(orderBy).findPagedList(pageNr, pageSize);
@@ -157,6 +158,7 @@ public class Exercise extends Post {
 
     /**
      * the data of the exercise with the given id
+     *
      * @param id the id of the exercise
      * @return the exercise from the db with the fiven id, null if it doesnt exist, nullpointer exception if id is null
      */
@@ -166,6 +168,7 @@ public class Exercise extends Post {
 
     /**
      * Get all Tags sorted by isMainTag or if equal by alphabet.
+     *
      * @return returns the sorted Tag list
      */
     public List<Tag> getTagsSortedByTagType() {
@@ -176,4 +179,8 @@ public class Exercise extends Post {
             return t1.isMainTag() ? -1 : 1;
         }).collect(Collectors.toList());
     }
+
+    public void addVote(Vote vote){
+        votes.add(vote);
+}
 }

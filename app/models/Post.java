@@ -55,4 +55,5 @@ public class Post extends Model {
     public void setPoints(long points) {
         this.points = points;
     }
+
 }

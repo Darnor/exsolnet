@@ -3,6 +3,7 @@ package controllers;
 import models.Exercise;
 import models.Solution;
 import models.User;
+import models.Vote;
 import models.builders.SolutionBuilder;
 import play.Logger;
 import play.data.FormFactory;
@@ -175,14 +176,14 @@ public class ExerciseDetailController extends Controller {
         Logger.info("Up Vote "+solutionId);
 
         Solution solution = Solution.findById(solutionId);
-        solution.upvote(SessionService.getCurrentUser());
+        Vote.upvote(SessionService.getCurrentUser(),solution);
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise().getId()));
     }
     public Result downVote(Long solutionId) {
         Logger.info("Down Vote "+solutionId);
 
         Solution solution = Solution.findById(solutionId);
-        solution.downvote(SessionService.getCurrentUser());
+        Vote.downvote(SessionService.getCurrentUser(),solution);
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise().getId()));
     }
 }
