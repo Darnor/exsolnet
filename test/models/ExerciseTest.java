@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.PagedList;
+import helper.AbstractApplicationTest;
 import models.builders.ExerciseBuilder;
 import models.builders.TagBuilder;
 import org.junit.Test;
@@ -9,7 +10,7 @@ import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
-public class ExerciseTest extends AbstractModelTest {
+public class ExerciseTest extends AbstractApplicationTest {
 
     @Test
     public void testGetPagedListFilteredByTwoTags(){

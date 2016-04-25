@@ -1,12 +1,13 @@
 package models;
 
+import helper.AbstractApplicationTest;
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class SolutionTest extends AbstractModelTest {
+public class SolutionTest extends AbstractApplicationTest {
 
     @Test
     public void testCreateSolutions() {

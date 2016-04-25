@@ -1,12 +1,14 @@
-package models;
+package helper;
 
-import helper.DatabaseHelper;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import play.Application;
 import play.test.Helpers;
 
-public abstract class AbstractModelTest {
+/**
+ * The mother of all tests, cleaning the database _ONCE_ on initialization
+ */
+public abstract class AbstractApplicationTest {
     protected static Application app;
 
     @BeforeClass

@@ -1,5 +1,6 @@
 package models;
 
+import helper.AbstractApplicationTest;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -11,7 +12,7 @@ import static models.builders.TagBuilder.aTag;
 import static models.builders.UserBuilder.anUser;
 import static org.junit.Assert.assertEquals;
 
-public class TagTest extends AbstractModelTest {
+public class TagTest extends AbstractApplicationTest {
 
     @Test
     public void testGetCompletedExercisesNoSolutions(){

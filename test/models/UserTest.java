@@ -1,12 +1,13 @@
 package models;
 
+import helper.AbstractApplicationTest;
 import org.junit.Test;
 
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.*;
 
-public class UserTest extends AbstractModelTest {
+public class UserTest extends AbstractApplicationTest {
 
     @Test
     public void checkIfAuthenticateCreatesNewUserWhenNonExisting(){

@@ -1,6 +1,6 @@
 package integration;
 
-import models.AbstractModelTest;
+import helper.AbstractApplicationTest;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import play.test.TestBrowser;
@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 import static org.junit.Assert.assertNotEquals;
 import static play.test.Helpers.*;
 
-public abstract class AbstractIntegrationTest extends AbstractModelTest {
+public abstract class AbstractIntegrationTest extends AbstractApplicationTest {
     public static final String FRANZ = "Franz";
 
     public static void as(String username, final Consumer<TestBrowser> block){
@@ -20,7 +20,6 @@ public abstract class AbstractIntegrationTest extends AbstractModelTest {
             browser.fill("#email").with(username);
             browser.submit("#btn_login");
             assertNotEquals("Login failed!", "/login", browser.url());
-            System.out.println(browser.url());
             block.accept(browser);
         });
 
