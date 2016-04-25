@@ -69,6 +69,10 @@ public class Exercise extends Post {
     public List<Solution> getSolutions() {
         return Collections.unmodifiableList(solutions);
     }
+    public void addSolution(Solution solution) {
+       solutions.add(solution);
+    }
+
 
     public void setSolutions(List<Solution> solutions) {
         this.solutions = solutions;

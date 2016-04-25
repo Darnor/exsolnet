@@ -93,6 +93,8 @@ public class User extends Model {
         return Collections.unmodifiableList(solutions);
     }
 
+    public void addSolution(Solution solution){solutions.add(solution);}
+
     public void setSolutions(List<Solution> solutions) {
         this.solutions = solutions;
     }

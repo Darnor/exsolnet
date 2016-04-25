@@ -1,9 +1,9 @@
-@import java.time.format.DateTimeFormatter
-@import java.time.format.FormatStyle
 @(user: User, exercise: Exercise, solution: Solution)
-@exerciseDetail(user,exercise) {
-  <div>
-      <textarea required class="form-control" rows="5" id="content"  type="text" name="content" >@solution.getContent</textarea>
-      <button class="btn btn-primary btn-lg btn-block" id="save">Speichern</button>
-  </div>
+@exerciseDetail(user, exercise) {
+    <form method="POST" action="@routes.ExerciseDetailController.processUpdate(exercise.getId)">
+        <div>
+            <textarea required class="form-control" rows="5" id="content" type="text" name="content" >@solution.getContent</textarea>
+            <button class="btn btn-primary btn-lg btn-block" id="save">Speichern</button>
+        </div>
+    </form>
 }

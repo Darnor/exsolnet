@@ -1,5 +1,7 @@
 package models;
 
+import models.builders.SolutionBuilder;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collections;
@@ -78,4 +80,16 @@ public class Solution extends Post{
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
     }
+
+    public static void create(String content, Exercise exercise, User user) {
+
+        Solution solution = SolutionBuilder.aSolution().withExercise(exercise).withContent(content).withUser(user).build();
+        exercise.addSolution(solution);
+        user.addSolution(solution);
+
+        exercise.save();
+        user.save();
+        solution.save();
+    }
+
 }

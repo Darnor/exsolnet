@@ -9,6 +9,7 @@ GET         /exercises/create       controllers.ExerciseController.renderCreate
 GET         /exercises/:id          controllers.ExerciseDetailController.renderExerciseDetail(id: Long)
 POST        /exercises/create       controllers.ExerciseController.processCreate()
 POST        /exercises/:id/update   controllers.ExerciseController.processUpdate(id: Long)
+POST        /exercises/:id/solution controllers.ExerciseDetailController.processUpdate(id: Long)
 GET         /exercises/:id/edit     controllers.ExerciseController.edit(id: Long)
 GET         /dashboard              controllers.DashboardController.renderDashboard
 GET         /tags                   controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
