@@ -1,6 +1,6 @@
 @(exercises: java.util.List[Exercise])
 
-<table class="table table-striped">
+<!--<table class="table table-striped">
     <thead class="thead-inverse">
         <tr>
             <td>Titel</td>
@@ -10,27 +10,31 @@
         </tr>
     </thead>
     <tbody>
+-->
+@exercises.map { exercise =>
+    <div class="list @if(exercise.getPoints < 0) {
+        item-red
+    } else {
+        @if(exercise.getPoints > 0) {
+            item-green
+        } else { item-blue}
+    }">
+        <span class="item" >
+            <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">@exercise.getTitle</a>
+            <p> @exercise.getTags.map(x => x.getName).mkString(", ")</p>
 
-    @exercises.map{ exercise =>
-        <tr>
-            <td>
-                <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">@exercise.getTitle</a>
-                <p>von <a href="@routes.UserController.renderUser(exercise.getUser.getId)">@exercise.getUser.getUsername</a>
-                    @for(tag <- exercise.getTagsSortedByTagType){
-                        @tag.getName,
-                    }
-                    </p>
-            </td>
-            <td class="text-center">
-            @exercise.getSolutions.size
-            </td>
-            <td class="text-center">
-            @exercise.getPoints
-            </td>
-            <td>
-            @exercise.getTime().format(java.time.format.DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm:ss"))
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+        </span>
+        <span class="meta user"><a href="@routes.UserController.renderUser(exercise.getUser.getId)">@exercise.getUser.getUsername</a>
+
+        </span>
+        <span class="meta count">
+        @exercise.getSolutions.size
+        </span>
+        <span class="meta points">
+        @exercise.getPoints
+        </span>
+        <span class="meta time">
+        @exercise.getTime().format(java.time.format.DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm:ss"))
+        </span>
+    </div>
+}
