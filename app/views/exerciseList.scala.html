@@ -1,22 +1,23 @@
 @(user: User, currentPage: com.avaje.ebean.PagedList[Exercise], currentOrderBy: Int, currentTitleFilter: String, currentTagFilter: String)
-
 @****************************************
-* Helper generating navigation links    *
+* Helper generating navigation links *
 ****************************************@
-@link(newPage: Int,newOrderBy: Int) = @{
+@link(newPage: Int, newOrderBy: Int) = @{
     routes.ExerciseController.renderList(newPage, newOrderBy, currentTitleFilter, currentTagFilter)
 }
 
-@**********************************
-* Helper generating table headers *
-***********************************@
+    @**********************************
+    * Helper generating table headers *
+    ***********************************@
 @header(orderBy: Int, title: String) = {
-    <th class="col@orderBy header @if(currentOrderBy == orderBy) @{if(currentOrderBy == orderBy) "headerSortDown" else "headerSortUp"}">
-        <a href="@link(0,if (currentOrderBy == orderBy) -orderBy else orderBy )">@title</a>
+    <th class="col@orderBy header @if(currentOrderBy == orderBy) @{
+        if(currentOrderBy == orderBy) "headerSortDown" else "headerSortUp"
+    }">
+        <a href="@link(0, if(currentOrderBy == orderBy) -orderBy else orderBy)">@title</a>
     </th>
 }
 
-@main("Aufgaben", user){
+@main("Aufgaben", user) {
     <h1>Aufgaben Übersicht</h1>
 
     <script src="@routes.Assets.versioned("javascripts/jquery.tokeninput.js")" type="text/javascript"></script>
@@ -29,7 +30,7 @@
         <input type="submit" class="btn btn-primary btn-default" id="submit-filter" value="Suche" />
     </form>
 
-    <table class="table table-striped">
+    <div class="table table-striped ">
         <thead class="thead-inverse">
             <tr>
                 @header(1, "Titel")
@@ -39,56 +40,61 @@
             </tr>
         </thead>
         <tbody>
+    </div>
+    @for(exercise <- currentPage.getList) {
+        <div class="list  @if(exercise.getPoints < 0) {
+            item-red
+        } else {
+            @if(exercise.getPoints > 0) {
+                item-green
+            } else { item-blue}
+        }">
+            <span class="item">
+                <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">@exercise.getTitle</a>
+                <p> @for(tag <- exercise.getTagsSortedByTagType) {
+                    @tag.getName,
+                }
+                </p>
+            </span>
 
-        @for(exercise <- currentPage.getList){
-            <tr>
-                <td>
-                    <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">@exercise.getTitle</a>
-                    <p>von <a href="@routes.UserController.renderUser(exercise.getUser.getId)">@exercise.getUser.getUsername</a>
-                        @for(tag <- exercise.getTagsSortedByTagType){
-                            @tag.getName,
-                        }
-                    </p>
-                </td>
-                <td class="text-center">
-                @exercise.getSolutions.size
-                </td>
-                <td class="text-center">
-                @exercise.getPoints
-                </td>
-                <td>
-                @exercise.getTime().format(java.time.format.DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm:ss"))
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
+            <span><a class="meta user" href="@routes.UserController.renderUser(exercise.getUser.getId)">@exercise.getUser.getUsername</a></span>
+            <span class="text-center meta count">
+            @exercise.getSolutions.size
+            </span>
+            <span class="text-center meta points">
+            @exercise.getPoints
+            </span>
+            <span class="meta time">
+            @exercise.getTime().format(java.time.format.DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm:ss"))
+            </span>
+        </div>
+    }
 
     <div id="pagination" class="pagination">
         <div>
-            @if(currentPage.hasPrev){
-                <div class="prev">
-                    <a href="@link(currentPage.getPageIndex-1,currentOrderBy)">&larr; Vorherige</a>
-                </div>
-            }else {
-                <div class="prev disabled">
-                    <a>&larr; Vorherige</a>
-                </div>
-            }
+        @if(currentPage.hasPrev) {
+            <div class="prev">
+                <a href="@link(currentPage.getPageIndex - 1, currentOrderBy)">&larr; Vorherige</a>
+            </div>
+        } else {
+            <div class="prev disabled">
+                <a>&larr; Vorherige</a>
+            </div>
+        }
         </div>
         <div>
-            @if(currentPage.hasNext) {
-                <div class="next">
-                    <a href="@link(currentPage.getPageIndex+1, currentOrderBy)">Nächste &rarr;</a>
-                </div>
-            }else{
-                <div class="next disabled">
-                    <a>Nächste &rarr;</a>
-                </div>
-            }
+        @if(currentPage.hasNext) {
+            <div class="next">
+                <a href="@link(currentPage.getPageIndex + 1, currentOrderBy)">Nächste &rarr;</a>
+            </div>
+        } else {
+            <div class="next disabled">
+                <a>Nächste &rarr;</a>
+            </div>
+        }
         </div>
         <div class="current">
-            <p>Zeige @currentPage.getDisplayXtoYofZ(" bis "," von ") an</p>
+            <p>Zeige @currentPage.getDisplayXtoYofZ(" bis ", " von ") an</p>
         </div>
     </div>
 }

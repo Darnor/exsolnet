@@ -1,5 +1,5 @@
 
-.solution {
+.list {
     display: block;
     position: relative;
     padding: .75em 5em .75em 1em;
@@ -55,6 +55,7 @@
 
 .user,
 .time,
+.count,
 i {
     font-size: 8px;
     font-size: .5em;
@@ -67,6 +68,10 @@ i {
 
 .time:before {
     content: 'Eingereicht: ';
+    font-weight: normal;
+}
+.count:before {
+    content: 'Anzahl Lösungen: ';
     font-weight: normal;
 }
 
