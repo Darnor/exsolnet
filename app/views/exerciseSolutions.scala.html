@@ -4,7 +4,7 @@
 @exerciseDetail(user, exercise) {
     <div>
         @for(solution <- solutions) {
-            <div class="solution  @if(solution.getPoints <= 0) {
+            <div class="solution  @if(solution.getPoints < 0) {
                 solution-red
             } else {
                 @if(solution.isOfficial) {
