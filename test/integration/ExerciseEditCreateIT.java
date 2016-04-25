@@ -2,18 +2,16 @@ package integration;
 
 import models.Exercise;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import static play.test.Helpers.FIREFOX;
 import static org.hamcrest.core.StringContains.containsString;
+import static play.test.Helpers.FIREFOX;
 
 public class ExerciseEditCreateIT extends AbstractIntegrationTest {
 
     @Test
-    @Ignore("Claudia pls fix")
     public void testCreate() {
         as(FRANZ, FIREFOX, browser -> {
             String title = "Event Foo";
@@ -48,7 +46,6 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
     }
 
     @Test
-    @Ignore("Claudia pls fix")
     public void testUpdate() {
         as(FRANZ, FIREFOX, browser -> {
             Exercise updateExercise = Exercise.find().where().eq("id", 8000L).findUnique();
