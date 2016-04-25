@@ -10,7 +10,7 @@ import views.html.editSolution;
 import views.html.exerciseSolutions;
 import views.html.fileNotFound;
 
-public class SolutionController extends Controller{
+public class ExerciseDetailController extends Controller{
 
     /**
      * renders the exercise Details. If the user has solved the exercise, renders additional all soultions with
