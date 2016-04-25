@@ -1,6 +1,7 @@
 package integration;
 
 import helper.AbstractApplicationTest;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -35,4 +36,13 @@ public abstract class AbstractIntegrationTest extends AbstractApplicationTest {
         element.sendKeys(Keys.ENTER);
     }
 
+    protected static void fillCKEditor(TestBrowser browser, String content) {
+        WebDriver driver = browser.getDriver();
+        WebElement iframe = driver.findElement(By.tagName("iframe"));
+        driver.switchTo().frame(iframe);
+        WebElement contentInput = driver.findElement(By.tagName("body"));
+        contentInput.clear();
+        contentInput.sendKeys(content);
+        driver.switchTo().parentFrame();
+    }
 }
