@@ -18,8 +18,8 @@ public class LoginController extends Controller {
      * Renders login and logout fields, depending if user is logged in
      * @return Result
      */
-    public Result renderLogin(){
-            return ok(views.html.login.render(SessionService.getCurrentUser()));
+    public Result renderLogin() {
+        return SessionService.getCurrentUser() != null ? redirect(routes.UserController.renderDashboard()) : ok(views.html.login.render(SessionService.getCurrentUser()));
     }
 
     /**
@@ -38,8 +38,7 @@ public class LoginController extends Controller {
             Logger.info(user.getEmail()+" is logged in");
 
         }
-        //FIXME
-        return user == null ? notFound() : redirect(routes.UserController.renderDashboard());
+        return redirect(routes.UserController.renderDashboard());
     }
 
     /**

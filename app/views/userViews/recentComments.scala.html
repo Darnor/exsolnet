@@ -2,7 +2,7 @@
 @import java.time.format.FormatStyle
 @(comments: java.util.List[Comment])
 
-<h1>Neue Kommentare auf deine Beiträge</h1>
+
 @comments.map{ comment =>
     <div class="comment">
         <span>@comment.getContent()</span>
