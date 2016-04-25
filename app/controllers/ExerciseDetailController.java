@@ -30,7 +30,7 @@ public class ExerciseDetailController extends Controller{
                 return renderSolutions(id);
             }
         } else{
-            return notFound(error404.render("Diese Aufgabe existiert nicht"));
+            return notFound(error404.render(user, "Diese Aufgabe existiert nicht"));
         }
     }
 

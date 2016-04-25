@@ -1,5 +1,5 @@
-@(message: String)
-@main("404", null){
+@(user: User, message: String)
+@main("404", user){
     <div class="hero-unit center">
         <h1>@message <small>Error 404</small></h1>
         <br />

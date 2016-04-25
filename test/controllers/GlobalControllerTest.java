@@ -11,7 +11,7 @@ public class GlobalControllerTest {
     public void testUnhandledRoutesRedirectedToPageNotFound() {
         running(testServer(3333, fakeApplication()), FIREFOX, browser -> {
             browser.goTo("http://localhost:3333/DefinitlyNonExistingRoutROFLMAO");
-            assertThat(browser.pageSource(), containsString("Page not found"));
+            assertThat(browser.pageSource(), containsString("Seite nicht gefunden"));
         });
     }
 

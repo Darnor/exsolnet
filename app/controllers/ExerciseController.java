@@ -129,7 +129,11 @@ public class ExerciseController extends Controller {
      */
     public Result edit(long id) {
         Exercise exercise = Exercise.find().byId(id);
-        return (exercise == null) ? notFound(error404.render("Exercise Not Found")) : ok(editExercise.render(SessionService.getCurrentUser(), exercise));
+        if(exercise != null){
+            return ok(editExercise.render(SessionService.getCurrentUser(), exercise));
+        } else {
+            return notFound(error404.render(SessionService.getCurrentUser(), "Aufgabe nicht gefunden"));
+        }
     }
 
     public Result processCreate() {
