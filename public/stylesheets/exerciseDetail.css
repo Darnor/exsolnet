@@ -13,7 +13,7 @@
 
 }
 
-.solution-item {
+.item {
     color: #000;
     display: block;
     white-space: nowrap;
@@ -21,28 +21,28 @@
     overflow: hidden;
 }
 
-.solution-item:after {
+.item:after {
     content: '';
     display: block;
     height: 0;
     width: 100%;
 }
 
-.solution-blue {
+.item-blue {
     box-shadow: 0 .0625em .125em rgba(0, 0, 0, .125),
     inset 0 -.25em 0 -.125em rgba(0, 0, 0, .125),
     inset 1em 0 0 -.7em rgba(0, 95, 210, .5),
     inset -2em 0 0 -.3em rgba(0, 0, 0, .05);
 }
 
-.solution-green {
+.item-green {
     box-shadow: 0 .0625em .125em rgba(0, 0, 0, .125),
     inset 0 -.25em 0 -.125em rgba(0, 0, 0, .125),
     inset 1em 0 0 -.7em rgba(20, 160, 0, .5),
     inset -2em 0 0 -.3em rgba(0, 0, 0, .05);
 }
 
-.solution-red {
+.item-red {
     box-shadow: 0 .0625em .125em rgba(0, 0, 0, .125),
     inset 0 -.25em 0 -.125em rgba(0, 0, 0, .125),
     inset 1em 0 0 -.7em rgba(210, 15, 0, .5),
