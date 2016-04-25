@@ -1,7 +1,6 @@
 package models;
 
-import com.avaje.ebean.Ebean;
-import org.apache.commons.io.FileUtils;
+import helper.DatabaseHelper;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import play.Application;
@@ -15,21 +14,7 @@ public abstract class AbstractModelTest {
         app = Helpers.fakeApplication();
         Helpers.start(app);
 
-        cleanDB();
-    }
-
-    public static void cleanDB() {
-        try {
-            System.out.println("Cleaning DB");
-            String clean = FileUtils.readFileToString(app.getWrappedApplication().getFile("test/clean.sql"));
-            Ebean.execute(Ebean.createCallableSql(clean));
-
-            System.out.println("Inserting default test data");
-            String testData = FileUtils.readFileToString(app.getWrappedApplication().getFile("test/data.sql"));
-            Ebean.execute(Ebean.createCallableSql(testData));
-        } catch (Exception e){
-            throw new RuntimeException("Problem cleaning database: ", e);
-        }
+        DatabaseHelper.cleanDB(app);
     }
 
     @AfterClass

@@ -1,7 +1,7 @@
 package views;
 
 import com.avaje.ebean.PagedList;
-import models.AbstractModelTest;
+import helper.DatabaseHelper;
 import models.Exercise;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,13 +12,14 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-public class ExerciseListViewTest extends AbstractModelTest {
+public class ExerciseListViewTest extends AbstractViewTest {
     static PagedList<Exercise> pagedExerciseList;
     static PagedList<Exercise> pageZero;
     static PagedList<Exercise> pageOne;
 
     @BeforeClass
-    public static void setUp(){
+    public static void setUpBeforeClass(){
+        DatabaseHelper.cleanDB(app);
         pagedExerciseList = Exercise.find().where().orderBy("title").findPagedList(0,2);
         pageZero = Exercise.find().where().orderBy("title").findPagedList(0,10);
         pageOne = Exercise.find().where().orderBy("title").findPagedList(1,10);

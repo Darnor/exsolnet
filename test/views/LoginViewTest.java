@@ -8,7 +8,7 @@ import views.html.login;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.StringContains.containsString;
 
-public class LoginViewTest {
+public class LoginViewTest extends AbstractViewTest{
 
     @Test
     public void checkIfUserNameGetsRendered(){

@@ -49,7 +49,6 @@
             </div>
         </nav>
         <div class="body">
-            @*
             @if(flash.containsKey("success")){
                 <div class="alert alert-success">
                 @flash.get("success")
@@ -60,7 +59,6 @@
                 @flash.get("error")
                 </div>
             }
-            *@
         @content
         </div>
     </body>

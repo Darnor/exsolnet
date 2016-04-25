@@ -19,7 +19,7 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-public class TagViewTest {
+public class TagViewTest extends AbstractViewTest{
 
     @Test
     public void testTagExist() {
