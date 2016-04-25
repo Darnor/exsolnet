@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import static play.test.Helpers.FIREFOX;
@@ -34,9 +35,21 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
                 fillTagTokenElements(browser, otherTagElement, tag);
             }
 
-            browser.fill("#content").with(content);
-            browser.submit("#save");
+            WebDriver driver = browser.getDriver();
+            WebElement iframe = driver.findElement(By.tagName("iframe"));
+            driver.switchTo().frame(iframe);
+            WebElement contentInput = driver.findElement(By.tagName("body"));
+            contentInput.clear();
+            contentInput.sendKeys(content);
 
+            //browser.fill("#content").with(content);
+            //browser.click("#save");
+            browser.submit("#save");
+            try {
+                Thread.sleep(10000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Exercise newExercise = Exercise.find().where().eq("title", title).findUnique();
             Assert.assertNotNull(newExercise);
             Assert.assertEquals(title,newExercise.getTitle());
