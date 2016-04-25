@@ -7,8 +7,8 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import services.SessionService;
 import views.html.editSolution;
+import views.html.error404;
 import views.html.exerciseSolutions;
-import views.html.fileNotFound;
 
 public class ExerciseDetailController extends Controller{
 
@@ -30,7 +30,7 @@ public class ExerciseDetailController extends Controller{
                 return renderSolutions(id);
             }
         } else{
-            return notFound(fileNotFound.render("Diese Aufgabe existiert nicht"));
+            return notFound(error404.render("Diese Aufgabe existiert nicht"));
         }
     }
 

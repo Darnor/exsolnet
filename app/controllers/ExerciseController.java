@@ -11,8 +11,8 @@ import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
 import views.html.editExercise;
+import views.html.error404;
 import views.html.exerciseList;
-import views.html.fileNotFound;
 
 import javax.inject.Inject;
 import java.util.Arrays;
@@ -129,7 +129,7 @@ public class ExerciseController extends Controller {
      */
     public Result edit(long id) {
         Exercise exercise = Exercise.find().byId(id);
-        return (exercise == null) ? notFound(fileNotFound.render("Exercise Not Found")) : ok(editExercise.render(SessionService.getCurrentUser(), exercise));
+        return (exercise == null) ? notFound(error404.render("Exercise Not Found")) : ok(editExercise.render(SessionService.getCurrentUser(), exercise));
     }
 
     public Result processCreate() {

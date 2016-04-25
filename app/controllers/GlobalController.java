@@ -26,7 +26,7 @@ public class GlobalController extends DefaultHttpErrorHandler{
 
     public CompletionStage<Result> onClientError(Http.RequestHeader request, int statusCode, String message) {
         return CompletableFuture.completedFuture(
-               notFound(views.html.fileNotFound.render("Page not found"))
+               notFound(views.html.error404.render("Page not found"))
         );
     }
 
