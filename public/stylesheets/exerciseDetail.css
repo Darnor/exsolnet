@@ -14,7 +14,6 @@
 }
 
 .solution-item {
-    font-weight: bold;
     color: #000;
     display: block;
     white-space: nowrap;
@@ -115,8 +114,6 @@ i {
 
 
 .box {
-
-
 
     display: block;
     width: 1em;
