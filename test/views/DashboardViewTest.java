@@ -4,6 +4,9 @@ import models.*;
 import models.builders.*;
 import org.junit.Test;
 import play.twirl.api.Content;
+import views.html.userDashboard;
+import views.html.userViews.recentComments;
+import views.html.userViews.followedTags;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +25,12 @@ public class DashboardViewTest extends AbstractViewTest{
 
     @Test
     public void usernameIsRendered() {
-        Content html = views.html.dashboard.render(UserBuilder.anUser().withUsername("Franz").build(), new ArrayList<>(), new ArrayList<>());
+        User user = UserBuilder.anUser().withId(1L).withUsername("Franz").build();
+        Content html = userDashboard.render(
+                user,
+                followedTags.render(user, new ArrayList<>()),
+                recentComments.render(new ArrayList<>())
+        );
         assertEquals("text/html", html.contentType());
         assertThat(html.body(), containsString("Franz"));
     }
@@ -50,9 +58,13 @@ public class DashboardViewTest extends AbstractViewTest{
                 SolutionBuilder.aSolution().withId(2L).withExercise(exercisesB.get(2)).build()
         );
 
-        User user = UserBuilder.anUser().withSolutions(solutions).build();
+        User user = anUser().withId(1L).withSolutions(solutions).build();
 
-        Content html = views.html.dashboard.render(user, Arrays.asList(aTag, bTag), new ArrayList<>());
+        Content html = userDashboard.render(
+                user,
+                followedTags.render(user, Arrays.asList(aTag, bTag)),
+                recentComments.render(new ArrayList<>())
+        );
         assertEquals("text/html", html.contentType());
         assertThat(html.body(), matches("<a href=.*/exercises.*tags=A.*>A</a>.*0/2"));
         assertThat(html.body(), matches("<a href=.*/exercises.*tags=B.*>B</a>.*2/3"));
@@ -61,7 +73,7 @@ public class DashboardViewTest extends AbstractViewTest{
     @Test
     public void exerciseCommentsAreRendered() {
         List<Comment> comments = new ArrayList<>();
-        User commenter = anUser().withUsername("Hans").build();
+        User commenter = anUser().withId(1L).withUsername("Hans").build();
         CommentBuilder comment = aComment().withUser(commenter).withExercise(
                 anExercise().withTitle("Basic Math").withId(1234L).build()
         );
@@ -71,7 +83,11 @@ public class DashboardViewTest extends AbstractViewTest{
         comments.add(comment.but().withContent("Comment 4").build());
         comments.add(comment.but().withContent("Comment 5").build());
 
-        Content html = views.html.dashboard.render(commenter, new ArrayList<>(), comments);
+        Content html = userDashboard.render(
+                commenter,
+                followedTags.render(commenter, new ArrayList<>()),
+                recentComments.render(comments)
+        );
         assertEquals("text/html", html.contentType());
         assertThat(html.body(), matches("Comment 1.*Hans.*auf.*Basic Math.*"));
     }
@@ -79,7 +95,7 @@ public class DashboardViewTest extends AbstractViewTest{
     @Test
     public void solutionCommentsAreRendered() {
         List<Comment> comments = new ArrayList<>();
-        User commenter = anUser().withUsername("Hans").build();
+        User commenter = anUser().withId(1L).withUsername("Hans").build();
         CommentBuilder comment = aComment().withUser(commenter).withSolution(
                 aSolution().withExercise(
                         anExercise().withTitle("Basic Math").withId(1234L).build()
@@ -91,7 +107,11 @@ public class DashboardViewTest extends AbstractViewTest{
         comments.add(comment.but().withContent("Comment 4").build());
         comments.add(comment.but().withContent("Comment 5").build());
 
-        Content html = views.html.dashboard.render(commenter, new ArrayList<>(), comments);
+        Content html = userDashboard.render(
+                commenter,
+                followedTags.render(commenter, new ArrayList<>()),
+                recentComments.render(comments)
+        );
         assertEquals("text/html", html.contentType());
         assertThat(html.body(), matches("Comment 1.*Hans.*auf.*Basic Math.*"));
 

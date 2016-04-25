@@ -30,7 +30,7 @@ public class SecuredAuthenticatorTest {
     public void authenticateFailureOnDashboardController(){
         running(fakeApplication(), () -> {
             Result result = route(
-                    fakeRequest(routes.DashboardController.renderDashboard())
+                    fakeRequest(routes.UserController.renderDashboard())
             );
             assertThat(result.status(), is(SEE_OTHER));
             assertThat(result.redirectLocation().toString(), containsString("/login"));

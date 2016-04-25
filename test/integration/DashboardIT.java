@@ -9,7 +9,7 @@ public class DashboardIT extends AbstractIntegrationTest {
     @Test
     public void test() {
         as(FRANZ, browser -> {
-            browser.goTo("/dashboard");
+            browser.goTo("/user");
             assertThat(browser.pageSource(), matches("An1I.*1/1"));
             assertThat(browser.pageSource(), matches("SE2.*0/5"));
 

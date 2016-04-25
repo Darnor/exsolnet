@@ -26,7 +26,7 @@ public class LoginController extends Controller {
      * Parses the body and puts including Form values into User Object
      * Authenticates the user based on email and password.
      * Sets the session on the user's email
-     * redirect to dashboard
+     * redirect to the user dashboard
      * @return Result
      */
     public Result login() {
@@ -38,7 +38,8 @@ public class LoginController extends Controller {
             Logger.info(user.getEmail()+" is logged in");
 
         }
-        return redirect(routes.DashboardController.renderDashboard());
+        //FIXME
+        return user == null ? notFound() : redirect(routes.UserController.renderDashboard());
     }
 
     /**
@@ -50,6 +51,6 @@ public class LoginController extends Controller {
         if(SessionService.isLoggedin()){
             SessionService.clear();
         }
-        return redirect(routes.DashboardController.renderDashboard());
+        return redirect(routes.UserController.renderDashboard());
     }
 }

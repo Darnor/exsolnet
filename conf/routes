@@ -2,7 +2,7 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET         /                       controllers.DashboardController.renderDashboard
+GET         /                       controllers.UserController.renderDashboard
 GET         /exercises              controllers.ExerciseController.renderList(page:Int ?= 0, sort:Int ?=1, title ?= "", tags ?="")
 GET         /exercises              controllers.ExerciseController.renderOverview
 GET         /exercises/create       controllers.ExerciseController.renderCreate
@@ -13,7 +13,6 @@ POST        /exercises/:id/solution controllers.ExerciseDetailController.process
 GET         /solution/:id/upvote    controllers.ExerciseDetailController.upVote(id: Long)
 GET         /solution/:id/downvote  controllers.ExerciseDetailController.downVote(id: Long)
 GET         /exercises/:id/edit     controllers.ExerciseController.edit(id: Long)
-GET         /dashboard              controllers.DashboardController.renderDashboard
 GET         /tags                   controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
 GET         /tags                   controllers.TagController.renderOverview
 GET         /tags/query             controllers.TagController.suggestTags(q ?= "", isMainTag:Boolean ?= false)
@@ -22,6 +21,9 @@ POST        /tags/track             controllers.TagController.processTrack(tag)
 GET         /login                  controllers.LoginController.renderLogin
 POST        /login                  controllers.LoginController.login
 POST        /logout                 controllers.LoginController.logout
+GET         /user                   controllers.UserController.renderDashboard
+GET         /user/:id               controllers.UserController.renderUser(id: Long)
+POST        /user/:id/edit          controllers.UserController.edit(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)

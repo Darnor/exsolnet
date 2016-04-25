@@ -1,0 +1,27 @@
+@(user: User, followedTags: Html, recentComments: Html)
+
+@main(user.getUsername, user){
+
+    <div class="user-section">
+        <form method="POST" action="@routes.LoginController.logout()">
+            <label id="lbl_username">@user.getUsername</label>
+            <button type="submit" id="btn_logout" class="btn btn-default">Logout</button>
+        </form>
+        <form method="POST" action="@routes.UserController.edit(user.getId)">
+            <button type="submit" id="btn_edit" class="btn btn-default">Edit</button>
+        </form>
+    </div>
+
+    <div class="followed-tags">
+        @followedTags
+    </div>
+
+    <div class="recent-comments">
+        @recentComments
+    </div>
+
+    <div class="my-exercises">
+    </div>
+
+
+}
