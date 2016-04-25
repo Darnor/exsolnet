@@ -21,6 +21,16 @@ public class ExerciseListIT extends AbstractIntegrationTest{
     }
 
     @Test
+    public void testGoToExercisesViaHeader() {
+        as(FRANZ, browser -> {
+            browser.click("a",withText("Aufgaben"));
+            browser.await().atMost(1, TimeUnit.SECONDS).untilPage().isLoaded();
+            assertThat(browser.pageSource(), matches("Ableitung 1a"));
+            assertThat(browser.pageSource(), matches("von.*Blubberduck.*An2I.*Ableiten.*Funktion"));
+        });
+    }
+
+    @Test
     public void testTitleFilterForm() {
         as(FRANZ, browser -> {
             browser.goTo("/exercises");
