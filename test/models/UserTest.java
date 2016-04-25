@@ -41,4 +41,18 @@ public class UserTest extends AbstractModelTest {
         assertEquals(testusername,user.getUsername());
         assertEquals(userId, user.getId());
     }
+
+    @Test
+    public void testHasSolved(){
+        String testusername = "Franz";
+        User user = User.findUserByUsername(testusername);
+        assertTrue(user.hasSolved(8000));
+    }
+
+    @Test
+    public void testHasNotSolved(){
+        String testusername = "Franz";
+        User user = User.findUserByUsername(testusername);
+        assertFalse(user.hasSolved(8007));
+    }
 }
