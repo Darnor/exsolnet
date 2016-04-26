@@ -2,6 +2,7 @@ package integration;
 
 
 import org.junit.Test;
+import play.Logger;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
@@ -15,8 +16,9 @@ public class LoginLogoutIT extends AbstractIntegrationTest {
         as("testhansli", FIREFOX, browser -> {
             browser.goTo("/login");
             assertThat(browser.pageSource(), containsString("testhansli"));
-            browser.submit("#btn_logout");
-            browser.goTo("/user");
+            browser.click("#btn_logout");
+            Logger.info(browser.pageSource());
+            browser.goTo("/");
             assertThat(browser.url(), containsString("/login"));
             assertEquals(null, browser.getCookie("PLAY_SESSION"));
         });

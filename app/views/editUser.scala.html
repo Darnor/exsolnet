@@ -1,4 +1,16 @@
 @(user: User)
 @main(user.getEmail, user) {
-
+    <form method="POST" action="@routes.UserController.processUpdate()">
+        <div class="form-group">
+            <label for="username">Benutzername:</label>
+            <input required id="username" type="text" name="username" value="@user.getUsername"/>
+            <label for="email">Email:</label>
+            <input required id="email" type="text" name="username" value="@user.getEmail"/>
+            <label for="password">Passwort:</label>
+            <input id="password" type="password" name="password" value=""/>
+            <label for="password-again">Passwort Bestätigung:</label>
+            <input id="password-again" type="password" name="password-again" value=""/>
+            <button class="btn btn-primary btn-lg btn-block" id="save">Speichern</button>
+        </div>
+    </form>
 }

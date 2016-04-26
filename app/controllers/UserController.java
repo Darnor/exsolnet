@@ -3,10 +3,13 @@ package controllers;
 import models.Comment;
 import models.Tag;
 import models.User;
+import play.data.DynamicForm;
+import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
+import views.html.editUser;
 import views.html.error404;
 import views.html.externalUserView;
 import views.html.userDashboard;
@@ -14,6 +17,7 @@ import views.html.userViews.followedTags;
 import views.html.userViews.recentComments;
 import views.html.userViews.userExerciseList;
 
+import javax.inject.Inject;
 import java.util.List;
 
 /**
@@ -21,6 +25,9 @@ import java.util.List;
  */
 @Security.Authenticated(Secured.class)
 public class UserController extends Controller {
+
+    @Inject
+    FormFactory formFactory;
 
     /**
      * Render the user dashboard route
@@ -35,8 +42,17 @@ public class UserController extends Controller {
         ));
     }
 
-    public Result edit(long userId) {
-        return ok();
+    public Result processUpdate() {
+        DynamicForm requestData = formFactory.form().bindFromRequest();
+        User currentUser = SessionService.getCurrentUser();
+        String username = requestData.get("username");
+        User.update(currentUser.getId(), username, currentUser.getEmail(), currentUser.getPassword(), currentUser.isModerator());
+        return renderDashboard();
+    }
+
+    public Result renderEditUser() {
+        User currentUser = SessionService.getCurrentUser();
+        return ok(editUser.render(currentUser));
     }
 
     public Result renderUser(long userId) {

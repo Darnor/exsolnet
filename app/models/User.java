@@ -210,7 +210,6 @@ public class User extends Model {
         return find().where().ieq(COLUMN_USERNAME, username).findUnique();
     }
 
-
     /**
      * Checks if the User has solved the exercise
      *
@@ -219,6 +218,22 @@ public class User extends Model {
      */
     public boolean hasSolved(long id) {
         return solutions.stream().filter(s -> s.getExercise().getId().equals(id)).findFirst().orElse(null) != null;
+    }
+
+    public static User create() {
+        return null;
+    }
+
+    public static void update(Long id, String username, String email, String password, boolean isModerator) {
+        User user = find().byId(id);
+        if (user == null) {
+            throw new IllegalArgumentException("Not a valid user");
+        }
+        user.setUsername(username);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setIsModerator(isModerator);
+        user.update();
     }
 
     /**

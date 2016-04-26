@@ -3,12 +3,10 @@
 @main(user.getUsername, user){
 
     <div class="user-section">
-        <form method="POST" action="@routes.LoginController.logout()">
-            <label id="lbl_username">@user.getUsername</label>
-            <button type="submit" id="btn_logout" class="btn btn-default">Logout</button>
-        </form>
-        <form method="POST" action="@routes.UserController.edit(user.getId)">
-            <button type="submit" id="btn_edit" class="btn btn-default">Edit</button>
+        <h1>@user.getUsername</h1>
+        <form>
+            <button formmethod="GET" type="submit" id="btn_edit" class="btn btn-default" formaction="@routes.UserController.renderEditUser()">Edit</button>
+            <button formmethod="POST" type="submit" id="btn_logout" class="btn btn-default" formaction="@routes.LoginController.logout()">Logout</button>
         </form>
     </div>
 
