@@ -44,30 +44,32 @@
         <tbody>
     </div>
     @for(exercise <- currentPage.getList) {
-        <div class="list  @if(exercise.getPoints < 0) {
-            item-red
-        } else {
-            @if(exercise.getPoints > 0) {
-                item-green
-            } else { item-blue}
-        }">
-            <span class="item">
-                <p class="title"><a class="title" href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">@exercise.getTitle</a></p>
-                <p class="meta tag maintag">@exercise.getTags.filter(x => x.isMainTag).map(x => x.getName).mkString(", ") </p>
-                <p class="meta tag">@exercise.getTags.filter(x => !x.isMainTag).map(x => x.getName).mkString(", ")</p>
-            </span>
+        <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">
+            <div class="list  @if(exercise.getPoints < 0) {
+                item-red
+            } else {
+                @if(exercise.getPoints > 0) {
+                    item-green
+                } else { item-blue}
+            }">
+                <span class="item">
+                    <p class="title">@exercise.getTitle</p>
+                    <p class="meta tag maintag">@exercise.getTagsSortedByTagType.filter(x => x.isMainTag).map(x => x.getName).mkString(", ") </p>
+                    <p class="meta tag">@exercise.getTagsSortedByTagType.filter(x => !x.isMainTag).map(x => x.getName).mkString(", ")</p>
+                </span>
 
-            <span><a class="meta user" href="@routes.UserController.renderUser(exercise.getUser.getId)">@exercise.getUser.getUsername</a></span>
-            <span class="text-center meta count">
-            @exercise.getSolutions.size
-            </span>
-            <span class="text-center meta points">
-            @exercise.getPoints
-            </span>
-            <span class="meta time">
-            @exercise.getTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
-            </span>
-        </div>
+                <span><a class="meta user" href="@routes.UserController.renderUser(exercise.getUser.getId)">@exercise.getUser.getUsername</a></span>
+                <span class="text-center meta count">
+                @exercise.getSolutions.size
+                </span>
+                <span class="text-center meta points">
+                @exercise.getPoints
+                </span>
+                <span class="meta time">
+                @exercise.getTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
+                </span>
+            </div>
+        </a>
     }
 
     <div id="pagination" class="pagination">

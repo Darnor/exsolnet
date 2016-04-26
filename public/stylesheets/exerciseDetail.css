@@ -10,7 +10,6 @@
         /* inset  */ inset 0 -.25em 0 -.125em rgba(0, 0, 0, .125),
         /* category color (left) */ inset 1em 0 0 -.7em rgba(200, 0, 120, .5),
         /* arrow background (right) */ inset -2em 0 0 -.3em rgba(0, 0, 0, .05);
-
 }
 
 .item {
@@ -20,7 +19,12 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
-
+.list:hover{
+    background: lightgrey;
+}
+.list > a:hover{
+    text-decoration: none;
+}
 .item:after {
     content: '';
     display: block;
