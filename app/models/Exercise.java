@@ -10,7 +10,9 @@ import play.data.validation.Constraints;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Entity
@@ -180,7 +182,12 @@ public class Exercise extends Post {
         }).collect(Collectors.toList());
     }
 
-    public void addVote(Vote vote){
+    public void addVote(Vote vote) {
         votes.add(vote);
-}
+    }
+
+    @Override
+    public long getPoints() {
+        return votes.stream().mapToInt(vote -> vote.getValue()).sum();
+    }
 }
