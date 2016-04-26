@@ -38,7 +38,8 @@ public class UserController extends Controller {
         return ok(userDashboard.render(
                 currentUser,
                 followedTags.apply(currentUser, currentUser.getTrackedTags()),
-                recentComments.apply(Comment.getRecentComments(currentUser))
+                recentComments.apply(Comment.getRecentComments(currentUser)),
+                userExerciseList.apply(currentUser.getExercises())
         ));
     }
 
@@ -57,6 +58,9 @@ public class UserController extends Controller {
 
     public Result renderUser(long userId) {
         User currentUser = SessionService.getCurrentUser();
+        if (currentUser.getId().equals(userId)) {
+            return renderDashboard();
+        }
         User viewedUser = User.find().byId(userId);
         if (viewedUser == null) {
             return notFound(error404.render(currentUser, "User not found!"));

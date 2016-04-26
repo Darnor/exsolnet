@@ -1,4 +1,4 @@
-@(user: User, followedTags: Html, recentComments: Html)
+@(user: User, followedTags: Html, recentComments: Html, myExercises: Html)
 
 @main(user.getUsername, user){
 
@@ -10,18 +10,18 @@
         </form>
     </div>
 
-    <h1>Neue Kommentare auf deine Beiträge</h1>
+    <h1>Deine gefolgten Tags:</h1>
     <div class="followed-tags">
         @followedTags
     </div>
 
-    <h1>Deine gefolgten Tags</h1>
+    <h1>Neue Kommentare auf deine Beiträge:</h1>
     <div class="recent-comments">
         @recentComments
     </div>
 
+    <h1>Deine erstellten Aufgaben:</h1>
     <div class="my-exercises">
+        @myExercises
     </div>
-
-
 }
