@@ -10,8 +10,10 @@ GET         /exercises/:id          controllers.ExerciseDetailController.renderE
 POST        /exercises/create       controllers.ExerciseController.processCreate()
 POST        /exercises/:id/update   controllers.ExerciseController.processUpdate(id: Long)
 POST        /exercises/:id/solution controllers.ExerciseDetailController.processUpdate(id: Long)
-GET         /solution/:id/upvote    controllers.ExerciseDetailController.upVote(id: Long)
-GET         /solution/:id/downvote  controllers.ExerciseDetailController.downVote(id: Long)
+GET         /exercise/:id/upvote    controllers.ExerciseDetailController.upVoteExercise(id: Long)
+GET         /exercise/:id/downvote  controllers.ExerciseDetailController.downVoteExercise(id: Long)
+GET         /solution/:id/upvote    controllers.ExerciseDetailController.upVoteSolution(id: Long)
+GET         /solution/:id/downvote  controllers.ExerciseDetailController.downVoteSolution(id: Long)
 GET         /exercises/:id/edit     controllers.ExerciseController.edit(id: Long)
 GET         /tags                   controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
 GET         /tags                   controllers.TagController.renderOverview

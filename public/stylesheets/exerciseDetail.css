@@ -1,4 +1,15 @@
+.exercisedetail{
+    display: block;
+    position: relative;
+    padding: .75em 5em .75em 1em;
+    border-radius: .25em;
+    margin-bottom: .5em;
+    background: #fff;
+    box-shadow: /* regular  */ 0 .0625em .125em rgba(0, 0, 0, .125),
+        /* inset  */ inset 0 -.25em 0 -.125em rgba(0, 0, 0, .125),
+        /* arrow background (right) */ inset -2em 0 0 -.3em rgba(0, 0, 0, .05);
 
+}
 .list {
     display: block;
     position: relative;

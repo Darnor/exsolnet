@@ -81,12 +81,33 @@ public class Vote extends Model {
         vote(user, -1, solution);
     }
 
+    public static void upvote(User user, Exercise exercise) {
+        vote(user, 1, exercise);
+    }
+
+    public static void downvote(User user, Exercise exercise) {
+        vote(user, -1, exercise);
+    }
+
     private static void vote(User user, int value, Solution solution) {
         Vote vote = null;
 
         vote = Vote.find().where().eq("user_id", user.getId()).eq("solution_id", solution.getId()).findUnique();
         if (vote == null)
             vote = VoteBuilder.aVote().withSolution(solution).withUser(user).withValue(value).build();
+        vote.setValue(value);
+
+        vote.save();
+
+
+    }
+
+    private static void vote(User user, int value, Exercise exercise) {
+        Vote vote = null;
+
+        vote = Vote.find().where().eq("user_id", user.getId()).eq("exercise_id", exercise.getId()).findUnique();
+        if (vote == null)
+            vote = VoteBuilder.aVote().withExercise(exercise).withUser(user).withValue(value).build();
         vote.setValue(value);
 
         vote.save();

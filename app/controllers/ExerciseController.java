@@ -167,4 +167,6 @@ public class ExerciseController extends Controller {
         Exercise.update(exerciseId, title, content, tags, SessionService.getCurrentUser());
         return redirect(routes.ExerciseController.renderOverview());
     }
+
+
 }

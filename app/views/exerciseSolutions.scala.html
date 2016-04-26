@@ -17,8 +17,8 @@
                 <span class="meta time">@solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))</span>
                 <span class="meta points">@solution.getPoints</span>
                 <div class = "box">
-                    <a class = "up" href="@routes.ExerciseDetailController.upVote(solution.getId)">&#9650;</a>
-                    <a class = "down" href="@routes.ExerciseDetailController.downVote(solution.getId)">&#9660;</a>
+                    <a class = "up" href="@routes.ExerciseDetailController.upVoteSolution(solution.getId)">&#9650;</a>
+                    <a class = "down" href="@routes.ExerciseDetailController.downVoteSolution(solution.getId)">&#9660;</a>
                 </div>
             </div>
         }

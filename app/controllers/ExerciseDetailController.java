@@ -172,18 +172,56 @@ public class ExerciseDetailController extends Controller {
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
     }
 
-    public Result upVote(Long solutionId) {
+    /**
+     *
+     * Upvote Solution
+     * @param solutionId
+     * @return
+     */
+    public Result upVoteSolution(Long solutionId) {
         Logger.info("Up Vote "+solutionId);
 
         Solution solution = Solution.findById(solutionId);
         Vote.upvote(SessionService.getCurrentUser(),solution);
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise().getId()));
     }
-    public Result downVote(Long solutionId) {
+
+    /**
+     * Downvote Solution
+     * @param solutionId
+     * @return
+     */
+    public Result downVoteSolution(Long solutionId) {
         Logger.info("Down Vote "+solutionId);
 
         Solution solution = Solution.findById(solutionId);
         Vote.downvote(SessionService.getCurrentUser(),solution);
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise().getId()));
+    }
+
+    /**
+     * Upvote Exercise
+     * @param exerciseId
+     * @return
+     */
+    public Result upVoteExercise(Long exerciseId) {
+        Logger.info("Up Vote "+exerciseId);
+
+        Exercise exercise = Exercise.findById(exerciseId);
+        Vote.upvote(SessionService.getCurrentUser(),exercise);
+        return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
+    }
+
+    /**
+     * DownVOte Exercise
+     * @param exerciseId
+     * @return
+     */
+    public Result downVoteExercise(Long exerciseId) {
+        Logger.info("Down Vote "+exerciseId);
+
+        Exercise exercise = Exercise.findById(exerciseId);
+        Vote.upvote(SessionService.getCurrentUser(),exercise);
+        return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
     }
 }
