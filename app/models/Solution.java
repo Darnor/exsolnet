@@ -113,7 +113,7 @@ public class Solution extends Post {
 
     @Override
     public long getPoints() {
-        return votes.stream().mapToInt(vote -> vote.getValue()).sum();
+        return votes.stream().mapToLong(vote -> vote.getValue()).sum();
     }
 
 }
