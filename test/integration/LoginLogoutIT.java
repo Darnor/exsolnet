@@ -1,8 +1,6 @@
 package integration;
 
-
 import org.junit.Test;
-import play.Logger;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;

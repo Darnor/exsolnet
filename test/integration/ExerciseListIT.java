@@ -3,7 +3,6 @@ package integration;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import play.Logger;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,8 +16,6 @@ public class ExerciseListIT extends AbstractIntegrationTest{
     public void testNoFilterExercises() {
         as(FRANZ, browser -> {
             browser.goTo("/exercises");
-            Logger.info(browser.pageSource());
-            Logger.info(browser.pageSource());
             assertThat(browser.pageSource(), matches("Ableitung 1a"));
             assertThat(browser.pageSource(), matches("An2I.*Ableiten.*Funktion.*Blubberduck.*1.*3.*02.12.15 08:00"));
         });
