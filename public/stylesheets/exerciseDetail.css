@@ -10,7 +10,7 @@
         /* arrow background (right) */ inset -2em 0 0 -.3em rgba(0, 0, 0, .05);
 
 }
-.list {
+.list,.listSolution {
     display: block;
     position: relative;
     padding: .75em 5em .75em 1em;

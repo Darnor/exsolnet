@@ -221,7 +221,7 @@ public class ExerciseDetailController extends Controller {
         Logger.info("Down Vote "+exerciseId);
 
         Exercise exercise = Exercise.findById(exerciseId);
-        Vote.upvote(SessionService.getCurrentUser(),exercise);
+        Vote.downvote(SessionService.getCurrentUser(),exercise);
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
     }
 }
