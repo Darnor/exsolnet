@@ -52,8 +52,9 @@
             } else { item-blue}
         }">
             <span class="item">
-                <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">@exercise.getTitle</a>
-                <p> <b>@exercise.getTags.filter(x => x.isMainTag).map(x => x.getName).mkString(",") </b> @exercise.getTags.filter(x => !x.isMainTag).map(x => x.getName).mkString(",")</p>
+                <p class="title"><a class="title" href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">@exercise.getTitle</a></p>
+                <p class="meta tag maintag">@exercise.getTags.filter(x => x.isMainTag).map(x => x.getName).mkString(", ") </p>
+                <p class="meta tag">@exercise.getTags.filter(x => !x.isMainTag).map(x => x.getName).mkString(", ")</p>
             </span>
 
             <span><a class="meta user" href="@routes.UserController.renderUser(exercise.getUser.getId)">@exercise.getUser.getUsername</a></span>

@@ -20,7 +20,7 @@ public class ExerciseListIT extends AbstractIntegrationTest{
             Logger.info(browser.pageSource());
             Logger.info(browser.pageSource());
             assertThat(browser.pageSource(), matches("Ableitung 1a"));
-            assertThat(browser.pageSource(), matches("Funktion.*An2I.*Ableiten.*Blubberduck.*1.*3.*02.12.15 08:00"));
+            assertThat(browser.pageSource(), matches("An2I.*Ableiten.*Blubberduck.*1.*3.*02.12.15 08:00"));
         });
     }
 
@@ -30,7 +30,7 @@ public class ExerciseListIT extends AbstractIntegrationTest{
             browser.click("a",withText("Aufgaben"));
             browser.await().atMost(1, TimeUnit.SECONDS).untilPage().isLoaded();
             assertThat(browser.pageSource(), matches("Ableitung 1a"));
-            assertThat(browser.pageSource(), matches("Funktion.*An2I.*Ableiten.*Blubberduck"));
+            assertThat(browser.pageSource(), matches("An2I.*Ableiten.*Blubberduck"));
         });
     }
 

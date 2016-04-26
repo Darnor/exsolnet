@@ -52,6 +52,9 @@
 .meta {
     margin-left: .25em;
 }
+.title{
+    margin-bottom: 3px;
+}
 
 .user,
 .time,
@@ -61,8 +64,12 @@ i {
     font-size: .5em;
     line-height: 2; /* 16 "px" */
 }
+.tag{
+    font-size: 10px;
+    margin-bottom: 0px;
+}
 
-.time {
+.maintag,.time {
     font-weight: bold;
 }
 
