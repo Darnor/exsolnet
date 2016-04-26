@@ -29,6 +29,6 @@
     margin-top: 0px;
 
 }
-.token-input-dropdown-facebook,.input_tag > ul.token-input-list-facebook,.input_tag_top > ul.token-input-list-facebook {
+.input_tag > ul.token-input-list-facebook,.input_tag_top > ul.token-input-list-facebook {
     width: 100% !important;
 }
