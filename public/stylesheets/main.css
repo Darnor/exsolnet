@@ -1,3 +1,10 @@
+/*dont make it ugly round*/
+* {
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+}
+
 .topheader {
     background-color: #558B2F;
     height: auto;

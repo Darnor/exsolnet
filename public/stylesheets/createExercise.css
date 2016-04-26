@@ -1,0 +1,34 @@
+.input_title{
+    width:100%;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 7px;
+    margin-bottom: 0px;
+}
+
+::-webkit-input-placeholder {
+    color: grey;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    color: grey;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+    color: grey;
+}
+
+:-ms-input-placeholder {
+    color: grey;
+}
+.input_tag_top{
+    margin-top: 15px;
+    margin-bottom: 0px;
+}
+.input_tag{
+    margin-top: 0px;
+
+}
+.token-input-dropdown-facebook,.input_tag > ul.token-input-list-facebook,.input_tag_top > ul.token-input-list-facebook {
+    width: 100% !important;
+}
