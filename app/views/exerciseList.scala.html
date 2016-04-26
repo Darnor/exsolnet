@@ -1,5 +1,4 @@
-@import java.time.format.DateTimeFormatter
-@import java.time.format.FormatStyle
+@import java.time.format.{DateTimeFormatter, FormatStyle}
 @(user: User, currentPage: com.avaje.ebean.PagedList[Exercise], currentOrderBy: Int, currentTitleFilter: String, currentTagFilter: String)
 @****************************************
 * Helper generating navigation links *
@@ -54,7 +53,7 @@
         }">
             <span class="item">
                 <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">@exercise.getTitle</a>
-                <p> @exercise.getTags.map(x => x.getName).mkString(", ")</p>
+                <p> <b>@exercise.getTags.filter(x => x.isMainTag).map(x => x.getName).mkString(",") </b> @exercise.getTags.filter(x => !x.isMainTag).map(x => x.getName).mkString(",")</p>
             </span>
 
             <span><a class="meta user" href="@routes.UserController.renderUser(exercise.getUser.getId)">@exercise.getUser.getUsername</a></span>
