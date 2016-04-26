@@ -17,7 +17,6 @@ public class LoginLogoutIT extends AbstractIntegrationTest {
             browser.goTo("/login");
             assertThat(browser.pageSource(), containsString("testhansli"));
             browser.click("#btn_logout");
-            Logger.info(browser.pageSource());
             browser.goTo("/");
             assertThat(browser.url(), containsString("/login"));
             assertEquals(null, browser.getCookie("PLAY_SESSION"));
