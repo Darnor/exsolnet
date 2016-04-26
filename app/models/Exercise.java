@@ -26,15 +26,7 @@ public class Exercise extends Post {
     @Formula(select = "(select count(*) from solution _s where _s.exercise_id=${ta}.id)")
     private int solutionCount;
 
-    /*@Formula(select = "select sum(_v.value) from vote _v where _v.exercise_id=${ta}.id")
-    @Formula(select = "(select sum(_v.value) from vote _v where _v.exercise_id=${ta}.id)")
-    @Transient
-    @Formula(select = "(select sum(value) from vote _v where _v.exercise_id=${ta}.id)")*/
-    /*@Formula(select = "_v${ta}.points",
-             join = "left outer join (select exercise_id, sum(value) as points from vote group by exercise_id) as _v${ta} on _v${ta}.exercise_id = ${ta}.id")*/
-     @Formula(select = "_v${ta}.points",
-             join = "left outer join (select exercise_id, sum(value) as points from vote group by exercise_id) as _v${ta} on _v${ta}.exercise_id = ${ta}.id")
-    //@Formula(select = "(select sum(value) from vote _v where _v.exercise_id=${ta}.id)")
+    @Formula(select = "(select coalesce(sum(value),0) from exercise left join vote on vote.exercise_id = exercise.id where exercise.id = ${ta}.id group by exercise.id)")
     private long point;
 
     @Override

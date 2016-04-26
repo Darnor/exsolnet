@@ -78,4 +78,14 @@ public class ExerciseTest extends AbstractApplicationTest {
         assertEquals(1, exercise.getTags().stream().filter(t -> t.getName().equals("An1I") && t.isMainTag()).count());
         assertEquals(0, exercise.getTags().stream().filter(t -> t.getName().equals("foo") && t.isMainTag()).count());
     }
+
+    @Test
+    public void testPoints(){
+        assertEquals(-10, Exercise.findById(8012L).getPoints());
+    }
+
+    @Test
+    public void testPointsNoVotes(){
+        assertEquals(0, Exercise.findById(8010L).getPoints());
+    }
 }
