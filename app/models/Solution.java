@@ -35,7 +35,7 @@ public class Solution extends Post {
     @OneToMany(mappedBy = "solution")
     private List<Vote> votes;
 
-    @Formula(select = "(select coalesce(sum(value),0) from solution left join vote on vote.solution_id = solution.id where solution.id = ${ta}.id group by solution.id)")
+    @Formula(select = "(SELECT coalesce(sum(value),0) FROM vote v INNER JOIN solution s ON v.solution_id = s.id WHERE s.id = ${ta}.id)")
     private long points;
 
     public User getUser() {

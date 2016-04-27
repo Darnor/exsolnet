@@ -23,10 +23,10 @@ public class Exercise extends Post {
     @NotNull
     private String title;
 
-    @Formula(select = "(select count(*) from solution _s where _s.exercise_id=${ta}.id)")
+    @Formula(select = "(SELECT count(*) FROM solution _s WHERE _s.exercise_id = ${ta}.id)")
     private int solutionCount;
 
-    @Formula(select = "(select coalesce(sum(value),0) from exercise left join vote on vote.exercise_id = exercise.id where exercise.id = ${ta}.id group by exercise.id)")
+    @Formula(select = "(SELECT coalesce(sum(value),0) FROM vote v INNER JOIN exercise e ON v.exercise_id = e.id WHERE e.id = ${ta}.id)")
     private long points;
 
     @OneToMany(mappedBy = "exercise")

@@ -98,6 +98,9 @@ public class Vote extends Model {
         if (vote == null) {
             VoteBuilder.aVote().withUser(user).withValue(value).withExercise(exercise).withSolution(solution).build().save();
         } else if (vote.getValue() != value) {
+            vote.setValue(value);
+            vote.update();
+        } else if (vote.getValue() == value) {
             vote.delete();
         }
     }

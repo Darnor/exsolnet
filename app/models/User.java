@@ -33,7 +33,7 @@ public class User extends Model {
     @NotNull
     private String password;
 
-    @Formula(select = "(SELECT coalesce(sum(value),0) FROM (SELECT value FROM vote v LEFT OUTER JOIN exercise e ON e.id = v.exercise_id WHERE e.user_id = ${ta}.id UNION ALL SELECT value FROM vote v LEFT OUTER JOIN solution s ON s.id = v.solution_id WHERE s.user_id = ${ta}.id) AS value)")
+    @Formula(select = "(SELECT coalesce(sum(value),0) FROM (SELECT value FROM vote v INNER JOIN exercise e ON e.id = v.exercise_id WHERE e.user_id = ${ta}.id UNION ALL SELECT value FROM vote v INNER JOIN solution s ON s.id = v.solution_id WHERE s.user_id = ${ta}.id) AS value)")
     private long points;
 
     @NotNull
