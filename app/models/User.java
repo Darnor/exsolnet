@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.Formula;
 import models.builders.UserBuilder;
 
 import javax.persistence.*;
@@ -33,7 +34,7 @@ public class User extends Model {
     //@NotNull
     private String password;
 
-    @NotNull
+    @Formula(select = "(select coalesce(sum(value),0) from exoluser u left outer join exercise on u.id = exercise.user_id left outer join solution on exercise.id = solution.exercise_id LEFT JOIN vote ON (exercise.id = vote.exercise_id OR solution.id = vote.solution_id) where u.id = ${ta}.id group by u.id)")
     private long points;
 
     @NotNull
@@ -152,10 +153,6 @@ public class User extends Model {
 
     public long getPoints() {
         return points;
-    }
-
-    public void setPoints(long points) {
-        this.points = points;
     }
 
     public List<Tag> getTrackedTags() {

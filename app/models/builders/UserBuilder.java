@@ -9,7 +9,6 @@ public class UserBuilder {
     private String username;
     private String email;
     private String password;
-    private long points;
     private boolean isModerator;
     private List<Exercise> exercises;
     private List<Solution> solutions;
@@ -42,11 +41,6 @@ public class UserBuilder {
 
     public UserBuilder withPassword(String password) {
         this.password = password;
-        return this;
-    }
-
-    public UserBuilder withPoints(long points) {
-        this.points = points;
         return this;
     }
 
@@ -86,7 +80,7 @@ public class UserBuilder {
     }
 
     public UserBuilder but() {
-        return anUser().withId(id).withUsername(username).withEmail(email).withPassword(password).withPoints(points).withIsModerator(isModerator).withExercises(exercises).withSolutions(solutions).withReports(reports).withComments(comments).withVotes(votes).withTrackings(trackings);
+        return anUser().withId(id).withUsername(username).withEmail(email).withPassword(password).withIsModerator(isModerator).withExercises(exercises).withSolutions(solutions).withReports(reports).withComments(comments).withVotes(votes).withTrackings(trackings);
     }
 
     public User build() {
@@ -95,7 +89,6 @@ public class UserBuilder {
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword(password);
-        user.setPoints(points);
         user.setIsModerator(isModerator);
         user.setExercises(exercises);
         user.setSolutions(solutions);
