@@ -40,14 +40,9 @@ public class ExerciseDetailController extends Controller {
         User user = SessionService.getCurrentUser();
         Exercise exercise = Exercise.findById(id);
         if (exercise != null) {
-            if (!user.hasSolved(id)) {
-                return renderCreateSolution(id);
-            } else {
-                return renderSolutions(id);
-            }
-        } else {
-            return notFound(error404.render(user, "Diese Aufgabe existiert nicht"));
+            return user.hasSolved(id) ? renderSolutions(id) : renderCreateSolution(id);
         }
+        return notFound(error404.render(user, "Diese Aufgabe existiert nicht"));
     }
 
     /**
@@ -71,10 +66,8 @@ public class ExerciseDetailController extends Controller {
         return ok(exerciseSolutions.render(SessionService.getCurrentUser(), exercise, getSortedSolutionList(exercise.getSolutions())));
     }
 
-
-
     /**
-     * sorts (and copy) the solution-list of the exercise for the View.
+     * sorts the solution-list of the exercise for the View.
      * 1. Official Solution (or best solution if it has no official solution)
      * 2. Best Solution (or second best if it has no official solution or it is the best solution)
      * 3. Rest (sorted after date)
@@ -82,83 +75,19 @@ public class ExerciseDetailController extends Controller {
      * @param solutions which should be sorted
      * @return a sorted solution List (copy)
      */
-    protected static List<Solution> getSortedSolutionList(List<Solution> solutions){
-        List<Solution> sortedSolutions = new ArrayList<>(solutions);
-        if(sortedSolutions.size()>2){
-            sortedSolutions = sortWithTwoOrMoreElements(sortedSolutions);
-        }else{
-            sortedSolutions.sort((e1,e2) -> (int)e1.getPoints()-(int)e2.getPoints());
-        }
-        return sortedSolutions;
-    }
-
-    /**
-     * Helper-Method for getSortedSolutionList.
-     * Sorts the Solution-list if it has more than 2 elements
-     *
-     * @param sortedSolutions which should be sorted
-     * @return a sorted solution List
-     */
-    private static List<Solution> sortWithTwoOrMoreElements(List<Solution> sortedSolutions){
-        Solution officialSolution = sortedSolutions.stream().filter(s -> s.isOfficial()).findFirst().orElse(null);
-        if(officialSolution != null){
-            sortedSolutions = sortWithOfficialSolution(sortedSolutions,officialSolution);
-        }else{
-            sortedSolutions = sortWithoutOfficialSolution(sortedSolutions);
-        }
-        sortedSolutions = moveWorseSolutionToTheEnd(sortedSolutions);
-        return sortedSolutions;
-    }
-
-    /**
-     * Helper-Method for getSortedSolutionList.
-     * Moves worse solution to the end of the list
-     * Worst solution will be the last element
-     *
-     * @param sortedSolutions which will be edited
-     * @return a sorted solution List
-     */
-    private static List<Solution> moveWorseSolutionToTheEnd(List<Solution> sortedSolutions){
-        int worsePointsLimit = -3;
-        List<Solution> worseSolution = sortedSolutions.stream().filter(s -> s.getPoints()<=worsePointsLimit).collect(Collectors.toList());
-        sortedSolutions.removeAll(worseSolution);
-        worseSolution.sort((e1,e2) -> (int)e2.getPoints()-(int)e1.getPoints());
-        worseSolution.stream().forEach(s -> sortedSolutions.add(s));
-        return sortedSolutions;
-    }
-
-    /**
-     * Helper-Method for getSortedSolutionList.
-     * Sorts the Solution-list if it has more than 2 elements and an official solution
-     *
-     * @param sortedSolutions which should be sorted
-     * @return a sorted solution List
-     */
-    private static List<Solution> sortWithOfficialSolution(List<Solution> sortedSolutions, Solution officialSolution){
-        sortedSolutions.remove(officialSolution);
-        sortedSolutions.sort((e1,e2) -> (int)e2.getPoints()-(int)e1.getPoints());
-        Solution bestSolution = sortedSolutions.remove(0);
-        sortedSolutions.sort((e1,e2) -> e2.getTime().compareTo(e1.getTime()));
-        sortedSolutions.add(0,bestSolution);
-        sortedSolutions.add(0,officialSolution);
-        return sortedSolutions;
-    }
-
-    /**
-     * Helper-Method for getSortedSolutionList.
-     * Sorts the Solution-list if it has more than 2 elements and no official solution
-     *
-     * @param sortedSolutions which should be sorted
-     * @return a sorted solution List
-     */
-    private static List<Solution> sortWithoutOfficialSolution(List<Solution> sortedSolutions){
-        sortedSolutions.sort((e1,e2) -> (int)e2.getPoints()-(int)e1.getPoints());
-        Solution bestSolution = sortedSolutions.remove(0);
-        Solution secondBestSolution = sortedSolutions.remove(0);
-        sortedSolutions.sort((e1,e2) -> e2.getTime().compareTo(e1.getTime()));
-        sortedSolutions.add(0,secondBestSolution);
-        sortedSolutions.add(0,bestSolution);
-        return sortedSolutions;
+    private static List<Solution> getSortedSolutionList(List<Solution> solutions) {
+        return solutions.stream().sorted((s1, s2) -> {
+            if (s1.isOfficial() == s2.isOfficial()) {
+                if (s1.getPoints() == s2.getPoints()) {
+                    return s1.getTime().compareTo(s2.getTime());
+                }
+                return s1.getPoints() > s2.getPoints() ? -1 : s2.getPoints() > s1.getPoints() ? 1 : 0;
+            }
+            if (s1.isOfficial()) {
+                return -1;
+            }
+            return 1;
+        }).collect(Collectors.toList());
     }
 
     /**
@@ -173,14 +102,12 @@ public class ExerciseDetailController extends Controller {
     }
 
     /**
-     *
      * Upvote Solution
      * @param solutionId
      * @return
      */
     public Result upVoteSolution(Long solutionId) {
-        Logger.info("Up Vote "+solutionId);
-
+        Logger.info("Up Vote " + solutionId);
         Solution solution = Solution.findById(solutionId);
         Vote.upvote(SessionService.getCurrentUser(),solution);
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise().getId()));
@@ -192,8 +119,7 @@ public class ExerciseDetailController extends Controller {
      * @return
      */
     public Result downVoteSolution(Long solutionId) {
-        Logger.info("Down Vote "+solutionId);
-
+        Logger.info("Down Vote " + solutionId);
         Solution solution = Solution.findById(solutionId);
         Vote.downvote(SessionService.getCurrentUser(),solution);
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise().getId()));
@@ -205,8 +131,7 @@ public class ExerciseDetailController extends Controller {
      * @return
      */
     public Result upVoteExercise(Long exerciseId) {
-        Logger.info("Up Vote "+exerciseId);
-
+        Logger.info("Up Vote " + exerciseId);
         Exercise exercise = Exercise.findById(exerciseId);
         Vote.upvote(SessionService.getCurrentUser(),exercise);
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
@@ -218,8 +143,7 @@ public class ExerciseDetailController extends Controller {
      * @return
      */
     public Result downVoteExercise(Long exerciseId) {
-        Logger.info("Down Vote "+exerciseId);
-
+        Logger.info("Down Vote " + exerciseId);
         Exercise exercise = Exercise.findById(exerciseId);
         Vote.downvote(SessionService.getCurrentUser(),exercise);
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
