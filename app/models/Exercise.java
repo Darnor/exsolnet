@@ -192,9 +192,4 @@ public class Exercise extends Post {
     public void addVote(Vote vote) {
         votes.add(vote);
     }
-
-    @Override
-    public long getPoints() {
-        return votes.stream().mapToInt(vote -> vote.getValue()).sum();
-    }
 }
