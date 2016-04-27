@@ -231,8 +231,4 @@ public class User extends Model {
     public static Model.Finder<Long, User> find() {
         return new Finder<>(User.class);
     }
-
-    public void addVote(Vote vote) {
-        votes.add(vote);
-    }
 }
