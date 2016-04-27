@@ -1,41 +1,27 @@
 @import java.time.format.DateTimeFormatter
 @(exercises: java.util.List[Exercise])
 
-<!--<table class="table table-striped">
-    <thead class="thead-inverse">
-        <tr>
-            <td>Titel</td>
-            <td>Lösungen</td>
-            <td>Bewertung</td>
-            <td>Datum</td>
-        </tr>
-    </thead>
-    <tbody>
--->
 @exercises.map { exercise =>
-    <div class="list @if(exercise.getPoints < 0) {
-        item-red
-    } else {
-        @if(exercise.getPoints > 0) {
-            item-green
-        } else { item-blue}
-    }">
+    <div class="list @if(exercise.getPoints < 0) { item-red } else { @if(exercise.getPoints > 0) { item-green } else { item-blue} }">
         <span class="item" >
-            <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">@exercise.getTitle</a>
-            <p> @exercise.getTags.map(x => x.getName).mkString(", ")</p>
-
+            <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">
+                @exercise.getTitle
+            </a>
+            <p>@exercise.getTags.map(x => x.getName).mkString(", ")</p>
         </span>
-        <span class="meta user"><a href="@routes.UserController.renderUser(exercise.getUser.getId)">@exercise.getUser.getUsername</a>
-
+        <span class="meta user">
+            <a href="@routes.UserController.renderUser(exercise.getUser.getId)">
+                @exercise.getUser.getUsername
+            </a>
         </span>
         <span class="meta count">
-        @exercise.getSolutions.size
+            @exercise.getSolutions.size
         </span>
         <span class="meta points">
-        @exercise.getPoints
+            @exercise.getPoints
         </span>
         <span class="meta time">
-        @exercise.getTime().format(DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm:ss"))
+            @exercise.getTime().format(DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm:ss"))
         </span>
     </div>
 }

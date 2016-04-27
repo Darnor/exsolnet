@@ -5,20 +5,19 @@
 
 @comments.map{ comment =>
     <div class="comment">
-        <span>@comment.getContent()</span>
+        <span>@comment.getContent</span>
         <p>
 
             <small>
                 @comment.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
                 -
-
-                <a href="#TODO">@comment.getUser().getUsername()</a>
+                <a href="@routes.UserController.renderUser(comment.getUser.getId)">@comment.getUser.getUsername</a>
                 auf
 
-                @if(comment.getExercise() != null) {
-                    <a href="@routes.ExerciseDetailController.renderExerciseDetail(comment.getExercise.getId)">@comment.getExercise().getTitle()</a>
+                @if(comment.getExercise != null) {
+                    <a href="@routes.ExerciseDetailController.renderExerciseDetail(comment.getExercise.getId)">@comment.getExercise.getTitle</a>
                 } else {
-                    <a href="@routes.ExerciseDetailController.renderExerciseDetail(comment.getSolution.getExercise.getId)">@comment.getSolution().getExercise().getTitle()</a>
+                    <a href="@routes.ExerciseDetailController.renderExerciseDetail(comment.getSolution.getExercise.getId)">@comment.getSolution.getExercise.getTitle</a>
                 }
             </small>
         </p>
