@@ -21,12 +21,14 @@ GET         /tags/query             controllers.TagController.suggestTags(q ?= "
 GET         /tags/queryAll          controllers.TagController.suggestAllTags(q ?= "")
 POST        /tags/track             controllers.TagController.processTrack(tag)
 GET         /login                  controllers.LoginController.renderLogin
+GET         /register               controllers.LoginController.renderRegister
+POST        /register               controllers.LoginController.processRegister
 POST        /login                  controllers.LoginController.login
 POST        /logout                 controllers.LoginController.logout
 GET         /user                   controllers.UserController.renderDashboard
-GET         /user/edit              controllers.UserController.renderEditUser
+GET         /user/edit              controllers.UserController.renderEdit
 GET         /user/:id               controllers.UserController.renderUser(id: Long)
-POST        /user/update            controllers.UserController.processUpdate
+POST        /user/update            controllers.UserController.processUpdate(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)

@@ -178,7 +178,7 @@ public class User extends Model {
      */
     public static User authenticate(String userLogin, String password) {
         User user = userLogin.contains("@") ? findUserByEmail(userLogin) : findUserByUsername(userLogin);
-        if (user == null) {
+        /*if (user == null) {
             //create user if non existing
             if (userLogin.contains("@")) {
                 user = UserBuilder.anUser().withEmail(userLogin).withUsername(userLogin.split("@")[0]).build();
@@ -186,7 +186,7 @@ public class User extends Model {
                 user = UserBuilder.anUser().withUsername(userLogin).withEmail(userLogin + "@hsr.ch").build();
             }
             user.save();
-        }
+        }*/
         return user;
     }
 
@@ -220,8 +220,10 @@ public class User extends Model {
         return solutions.stream().filter(s -> s.getExercise().getId().equals(id)).findFirst().orElse(null) != null;
     }
 
-    public static User create() {
-        return null;
+    public static User create(String username, String email, String password, boolean isModerator) {
+        User user = UserBuilder.anUser().withUsername(username).withEmail(email).withPassword(password).withIsModerator(isModerator).build();
+        user.save();
+        return user;
     }
 
     public static void update(Long id, String username, String email, String password, boolean isModerator) {

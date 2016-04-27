@@ -1,3 +1,4 @@
+@import java.time.format.DateTimeFormatter
 @(exercises: java.util.List[Exercise])
 
 <!--<table class="table table-striped">
@@ -34,7 +35,7 @@
         @exercise.getPoints
         </span>
         <span class="meta time">
-        @exercise.getTime().format(java.time.format.DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm:ss"))
+        @exercise.getTime().format(DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm:ss"))
         </span>
     </div>
 }

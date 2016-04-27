@@ -1,6 +1,7 @@
 package models;
 
 import helper.AbstractApplicationTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 
@@ -10,6 +11,7 @@ import static org.junit.Assert.*;
 public class UserTest extends AbstractApplicationTest {
 
     @Test
+    @Ignore
     public void checkIfAuthenticateCreatesNewUserWhenNonExisting(){
         String testemail = "nonexistinghans@hsr.ch";
         assertNull(User.findUserByEmail(testemail));

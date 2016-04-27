@@ -7,6 +7,8 @@ import play.twirl.api.Content;
 import views.html.userDashboard;
 import views.html.userViews.recentComments;
 import views.html.userViews.followedTags;
+import views.html.userViews.userExerciseList;
+import views.html.userViews.userSolutionList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +31,9 @@ public class DashboardViewTest extends AbstractViewTest{
         Content html = userDashboard.render(
                 user,
                 followedTags.render(user, new ArrayList<>()),
-                recentComments.render(new ArrayList<>())
+                recentComments.render(new ArrayList<>()),
+                userExerciseList.render(new ArrayList<>()),
+                userSolutionList.render(new ArrayList<>())
         );
         assertEquals("text/html", html.contentType());
         assertThat(html.body(), containsString("Franz"));
@@ -63,7 +67,9 @@ public class DashboardViewTest extends AbstractViewTest{
         Content html = userDashboard.render(
                 user,
                 followedTags.render(user, Arrays.asList(aTag, bTag)),
-                recentComments.render(new ArrayList<>())
+                recentComments.render(new ArrayList<>()),
+                userExerciseList.render(new ArrayList<>()),
+                userSolutionList.render(new ArrayList<>())
         );
         assertEquals("text/html", html.contentType());
         assertThat(html.body(), matches("<a href=.*/exercises.*tags=A.*>A</a>.*0/2"));
@@ -86,7 +92,9 @@ public class DashboardViewTest extends AbstractViewTest{
         Content html = userDashboard.render(
                 commenter,
                 followedTags.render(commenter, new ArrayList<>()),
-                recentComments.render(comments)
+                recentComments.render(comments),
+                userExerciseList.render(new ArrayList<>()),
+                userSolutionList.render(new ArrayList<>())
         );
         assertEquals("text/html", html.contentType());
         assertThat(html.body(), matches("Comment 1.*Hans.*auf.*Basic Math.*"));
@@ -110,10 +118,11 @@ public class DashboardViewTest extends AbstractViewTest{
         Content html = userDashboard.render(
                 commenter,
                 followedTags.render(commenter, new ArrayList<>()),
-                recentComments.render(comments)
+                recentComments.render(comments),
+                userExerciseList.render(new ArrayList<>()),
+                userSolutionList.render(new ArrayList<>())
         );
         assertEquals("text/html", html.contentType());
         assertThat(html.body(), matches("Comment 1.*Hans.*auf.*Basic Math.*"));
-
     }
 }

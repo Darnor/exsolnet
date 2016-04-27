@@ -3,19 +3,19 @@ package controllers;
 import models.Comment;
 import models.Tag;
 import models.User;
+import models.builders.UserBuilder;
+import play.Logger;
 import play.data.DynamicForm;
 import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
-import views.html.editUser;
-import views.html.error404;
-import views.html.externalUserView;
-import views.html.userDashboard;
+import views.html.*;
 import views.html.userViews.followedTags;
 import views.html.userViews.recentComments;
 import views.html.userViews.userExerciseList;
+import views.html.userViews.userSolutionList;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -29,6 +29,13 @@ public class UserController extends Controller {
     @Inject
     FormFactory formFactory;
 
+    public static boolean validateUserForm(String username, String email, String password, String passwordCheck) {
+        return password.equals(passwordCheck)
+                && username.trim().length() > 0
+                && password.trim().length() > 0
+                && email.contains("@");
+   }
+
     /**
      * Render the user dashboard route
      * @return the result
@@ -39,31 +46,41 @@ public class UserController extends Controller {
                 currentUser,
                 followedTags.apply(currentUser, currentUser.getTrackedTags()),
                 recentComments.apply(Comment.getRecentComments(currentUser)),
-                userExerciseList.apply(currentUser.getExercises())
+                userExerciseList.apply(currentUser.getExercises()),
+                userSolutionList.apply(currentUser.getSolutions())
         ));
     }
 
-    public Result processUpdate() {
+    public Result processUpdate(long userId) {
         DynamicForm requestData = formFactory.form().bindFromRequest();
-        User currentUser = SessionService.getCurrentUser();
         String username = requestData.get("username");
-        User.update(currentUser.getId(), username, currentUser.getEmail(), currentUser.getPassword(), currentUser.isModerator());
-        return renderDashboard();
+        String email = requestData.get("email");
+        String password = requestData.get("password");
+        String passwordCheck = requestData.get("password-check");
+        if(validateUserForm(username, email, password, passwordCheck)) {
+            User.update(userId, username, email, password, false);
+            return renderDashboard();
+        }
+        return renderEdit();
     }
 
-    public Result renderEditUser() {
+    public Result renderEdit() {
         User currentUser = SessionService.getCurrentUser();
+        if (currentUser == null) {
+            currentUser = UserBuilder.anUser().withUsername("").withEmail("").build();
+        }
+        Logger.info(currentUser.getEmail() + " tried to render the user edit form.");
         return ok(editUser.render(currentUser));
     }
 
     public Result renderUser(long userId) {
         User currentUser = SessionService.getCurrentUser();
+        User viewedUser = User.find().byId(userId);
+        if (currentUser == null || viewedUser == null) {
+            return notFound(error404.render(currentUser, "User not found!"));
+        }
         if (currentUser.getId().equals(userId)) {
             return renderDashboard();
-        }
-        User viewedUser = User.find().byId(userId);
-        if (viewedUser == null) {
-            return notFound(error404.render(currentUser, "User not found!"));
         }
         List<Tag> tags = viewedUser.getTrackedTags();
         return ok(externalUserView.render(currentUser,

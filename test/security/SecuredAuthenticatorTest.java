@@ -66,11 +66,11 @@ public class SecuredAuthenticatorTest {
             Result result = route(
                     fakeRequest(routes.LoginController.login())
                             .bodyForm(ImmutableMap.of(
-                                    "emailorusername", "ursli@hsr.ch",
-                                    "password", "urslispw"
+                                    "emailorusername", "Franz",
+                                    "password", ""
                                 ))
             );
-            assertThat(result.session().get(SessionService.KEY_USEREMAIL), is("ursli@hsr.ch"));
+            assertThat(result.session().get(SessionService.KEY_USEREMAIL), is("franz@hsr.ch"));
             assertThat(result.status(), is(SEE_OTHER));
             assertThat(result.redirectLocation().toString(), containsString("/"));
         });

@@ -1,11 +1,11 @@
-@(user: User, followedTags: Html, recentComments: Html, myExercises: Html)
+@(user: User, followedTags: Html, recentComments: Html, myExercises: Html, mySolutions: Html)
 
 @main(user.getUsername, user){
 
     <div class="user-section">
         <h1>@user.getUsername</h1>
         <form>
-            <button formmethod="GET" type="submit" id="btn_edit" class="btn btn-default" formaction="@routes.UserController.renderEditUser()">Edit</button>
+            <button formmethod="GET" type="submit" id="btn_edit" class="btn btn-default" formaction="@routes.UserController.renderEdit()">Edit</button>
             <button formmethod="POST" type="submit" id="btn_logout" class="btn btn-default" formaction="@routes.LoginController.logout()">Logout</button>
         </form>
     </div>
@@ -23,5 +23,10 @@
     <h1>Deine erstellten Aufgaben:</h1>
     <div class="my-exercises">
         @myExercises
+    </div>
+
+    <h1>Deine erstellten Lösungen:</h1>
+    <div class="my-solutions">
+        @mySolutions
     </div>
 }
