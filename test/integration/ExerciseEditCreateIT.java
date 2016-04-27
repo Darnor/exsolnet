@@ -53,7 +53,7 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
             Assert.assertNotNull(updateExercise);
 
             String title = updateExercise.getTitle() + " version 2";
-            String content = updateExercise.getContent() + " und jetzt no en zuesatz zu dere Ufgab";
+            String content = "und jetzt no en zuesatz zu dere Ufgab";
 
 
             browser.goTo("/exercises/8000/edit");
