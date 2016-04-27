@@ -6,9 +6,16 @@ import models.builders.VoteBuilder;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import static com.avaje.ebean.Expr.eq;
+
 @Entity
 @Table(name = "vote")
 public class Vote extends Model {
+
+    private static final String COLUMN_SOLUTION_ID = "solution_id";
+    private static final String COLUMN_EXERCISE_ID = "exercise_id";
+    private static final String COLUMN_USER_ID = "user_id";
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -17,15 +24,15 @@ public class Vote extends Model {
     private int value;
 
     @ManyToOne
-    @JoinColumn(name = "solution_id")
+    @JoinColumn(name = COLUMN_SOLUTION_ID)
     private Solution solution;
 
     @ManyToOne
-    @JoinColumn(name = "exercise_id")
+    @JoinColumn(name = COLUMN_EXERCISE_ID)
     private Exercise exercise;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = COLUMN_USER_ID)
     @NotNull
     private User user;
 
@@ -73,45 +80,26 @@ public class Vote extends Model {
         return new Finder<>(Vote.class);
     }
 
-    public static void upvote(User user, Solution solution) {
-        vote(user, 1, solution);
+    public static void upvote(User user, Post post) {
+        vote(user, 1, post);
     }
 
-    public static void downvote(User user, Solution solution) {
-        vote(user, -1, solution);
+    public static void downvote(User user, Post post) {
+        vote(user, -1, post);
     }
 
-    public static void upvote(User user, Exercise exercise) {
-        vote(user, 1, exercise);
-    }
-
-    public static void downvote(User user, Exercise exercise) {
-        vote(user, -1, exercise);
-    }
-
-    private static void vote(User user, int value, Solution solution) {
-        Vote vote = null;
-
-        vote = Vote.find().where().eq("user_id", user.getId()).eq("solution_id", solution.getId()).findUnique();
-        if (vote == null)
-            vote = VoteBuilder.aVote().withSolution(solution).withUser(user).withValue(value).build();
-        vote.setValue(value);
-
-        vote.save();
-
-
-    }
-
-    private static void vote(User user, int value, Exercise exercise) {
-        Vote vote = null;
-
-        vote = Vote.find().where().eq("user_id", user.getId()).eq("exercise_id", exercise.getId()).findUnique();
-        if (vote == null)
-            vote = VoteBuilder.aVote().withExercise(exercise).withUser(user).withValue(value).build();
-        vote.setValue(value);
-
-        vote.save();
-
-
+    private static void vote(User user, int value, Post post) {
+        Vote vote = Vote.find().where().eq(COLUMN_USER_ID, user.getId()).or(eq(COLUMN_SOLUTION_ID, post.getId()), eq(COLUMN_EXERCISE_ID, post.getId())).findUnique();
+        if (vote == null) {
+            vote = VoteBuilder.aVote().withUser(user).withValue(value).build();
+            if (post instanceof Exercise) {
+                vote.setExercise((Exercise)post);
+            } else {
+                vote.setSolution((Solution)post);
+            }
+            vote.save();
+        } else if (vote.getValue() != value){
+            vote.delete();
+        }
     }
 }

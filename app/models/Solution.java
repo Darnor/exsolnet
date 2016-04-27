@@ -82,23 +82,14 @@ public class Solution extends Post {
         return Collections.unmodifiableList(votes);
     }
 
-    public void addVote(Vote vote) {
-        votes.add(vote);
-    }
-
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
     }
 
-    public static void create(String content, Exercise exercise, User user) {
-
+    public static Solution create(String content, Exercise exercise, User user) {
         Solution solution = SolutionBuilder.aSolution().withExercise(exercise).withContent(content).withUser(user).build();
-        exercise.addSolution(solution);
-        user.addSolution(solution);
-
-        exercise.save();
-        user.save();
         solution.save();
+        return solution;
     }
 
     public static Model.Finder<Long, Solution> find() {

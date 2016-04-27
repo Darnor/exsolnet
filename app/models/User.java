@@ -33,7 +33,7 @@ public class User extends Model {
     @NotNull
     private String password;
 
-    @Formula(select = "(select coalesce(sum(value),0) from exoluser u left outer join exercise on u.id = exercise.user_id left outer join solution on exercise.id = solution.exercise_id LEFT JOIN vote ON (exercise.id = vote.exercise_id OR solution.id = vote.solution_id) where u.id = ${ta}.id group by u.id)")
+    @Formula(select = "(SELECT coalesce(sum(value),0) FROM (SELECT value FROM vote v LEFT OUTER JOIN exercise e ON e.id = v.exercise_id WHERE e.user_id = ${ta}.id UNION ALL SELECT value FROM vote v LEFT OUTER JOIN solution s ON s.id = v.solution_id WHERE s.user_id = ${ta}.id) AS value)")
     private long points;
 
     @NotNull
@@ -92,10 +92,6 @@ public class User extends Model {
 
     public List<Solution> getSolutions() {
         return Collections.unmodifiableList(solutions);
-    }
-
-    public void addSolution(Solution solution) {
-        solutions.add(solution);
     }
 
     public void setSolutions(List<Solution> solutions) {
