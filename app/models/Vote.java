@@ -1,6 +1,8 @@
 package models;
 
 import com.avaje.ebean.Model;
+import models.builders.ExerciseBuilder;
+import models.builders.SolutionBuilder;
 import models.builders.VoteBuilder;
 
 import javax.persistence.*;
@@ -89,16 +91,13 @@ public class Vote extends Model {
     }
 
     private static void vote(User user, int value, Post post) {
-        Vote vote = Vote.find().where().eq(COLUMN_USER_ID, user.getId()).or(eq(COLUMN_SOLUTION_ID, post.getId()), eq(COLUMN_EXERCISE_ID, post.getId())).findUnique();
+        Exercise exercise = post instanceof Exercise ? (Exercise)post : ExerciseBuilder.anExercise().build();
+        Solution solution = post instanceof Solution ? (Solution)post : SolutionBuilder.aSolution().build();
+
+        Vote vote = Vote.find().where().eq(COLUMN_USER_ID, user.getId()).and(eq(COLUMN_SOLUTION_ID, solution.getId()), eq(COLUMN_EXERCISE_ID, exercise.getId())).findUnique();
         if (vote == null) {
-            vote = VoteBuilder.aVote().withUser(user).withValue(value).build();
-            if (post instanceof Exercise) {
-                vote.setExercise((Exercise)post);
-            } else {
-                vote.setSolution((Solution)post);
-            }
-            vote.save();
-        } else if (vote.getValue() != value){
+            VoteBuilder.aVote().withUser(user).withValue(value).withExercise(exercise).withSolution(solution).build().save();
+        } else if (vote.getValue() != value) {
             vote.delete();
         }
     }
