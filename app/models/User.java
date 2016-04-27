@@ -30,8 +30,7 @@ public class User extends Model {
     @NotNull
     private String email;
 
-    // Currently not needed, must be in the final version.
-    //@NotNull
+    @NotNull
     private String password;
 
     @Formula(select = "(select coalesce(sum(value),0) from exoluser u left outer join exercise on u.id = exercise.user_id left outer join solution on exercise.id = solution.exercise_id LEFT JOIN vote ON (exercise.id = vote.exercise_id OR solution.id = vote.solution_id) where u.id = ${ta}.id group by u.id)")
@@ -175,16 +174,7 @@ public class User extends Model {
      */
     public static User authenticate(String userLogin, String password) {
         User user = userLogin.contains("@") ? findUserByEmail(userLogin) : findUserByUsername(userLogin);
-        /*if (user == null) {
-            //create user if non existing
-            if (userLogin.contains("@")) {
-                user = UserBuilder.anUser().withEmail(userLogin).withUsername(userLogin.split("@")[0]).build();
-            } else {
-                user = UserBuilder.anUser().withUsername(userLogin).withEmail(userLogin + "@hsr.ch").build();
-            }
-            user.save();
-        }*/
-        return user;
+        return user != null && user.password.equals(password) ? user : null;
     }
 
     /**

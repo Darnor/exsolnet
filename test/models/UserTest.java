@@ -11,22 +11,13 @@ import static org.junit.Assert.*;
 public class UserTest extends AbstractApplicationTest {
 
     @Test
-    @Ignore
-    public void checkIfAuthenticateCreatesNewUserWhenNonExisting(){
-        String testemail = "nonexistinghans@hsr.ch";
-        assertNull(User.findUserByEmail(testemail));
-        User.authenticate(testemail, null);
-        assertNotNull(User.findUserByEmail(testemail));
-    }
-
-    @Test
     public void checkIfAuthenticateReturnsUserExistingWithEmail(){
         String testemail = "hans@hsr.ch";
         User existingUser = User.findUserByEmail(testemail);
         assertNotNull(existingUser);
         Long userId = existingUser.getId();
 
-        User user = User.authenticate(testemail, null);
+        User user = User.authenticate(testemail, "");
 
         assertEquals(testemail,user.getEmail());
         assertEquals(userId, user.getId());
@@ -39,7 +30,7 @@ public class UserTest extends AbstractApplicationTest {
         assertNotNull(existingUser);
         Long userId = existingUser.getId();
 
-        User user = User.authenticate(testusername, null);
+        User user = User.authenticate(testusername, "");
 
         assertEquals(testusername,user.getUsername());
         assertEquals(userId, user.getId());
