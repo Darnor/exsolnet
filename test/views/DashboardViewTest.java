@@ -72,8 +72,8 @@ public class DashboardViewTest extends AbstractViewTest{
                 userSolutionList.render(new ArrayList<>())
         );
         assertEquals("text/html", html.contentType());
-        assertThat(html.body(), matches("<a href=.*/exercises.*tags=A.*>A</a>.*0/2"));
-        assertThat(html.body(), matches("<a href=.*/exercises.*tags=B.*>B</a>.*2/3"));
+        assertThat(html.body(), matches("<a href=.*/exercises.*tags=A.*>.*A.*</a>.*0/2"));
+        assertThat(html.body(), matches("<a href=.*/exercises.*tags=B.*>.*B.*</a>.*2/3"));
     }
 
     @Test
