@@ -75,7 +75,7 @@ public class ExerciseDetailController extends Controller {
      * @param solutions which should be sorted
      * @return a sorted solution List (copy)
      */
-    private static List<Solution> getSortedSolutionList(List<Solution> solutions) {
+    static List<Solution> getSortedSolutionList(List<Solution> solutions) {
         return solutions.stream().sorted((s1, s2) -> {
             if (s1.isOfficial() == s2.isOfficial()) {
                 if (s1.getPoints() == s2.getPoints()) {
