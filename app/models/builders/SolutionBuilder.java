@@ -15,7 +15,6 @@ public class SolutionBuilder {
     private Long id;
     private String content;
     private LocalDateTime time = LocalDateTime.now();
-    private long points;
 
     private SolutionBuilder() {
     }
@@ -69,13 +68,8 @@ public class SolutionBuilder {
         return this;
     }
 
-    public SolutionBuilder withPoints(long points) {
-        this.points = points;
-        return this;
-    }
-
     public SolutionBuilder but() {
-        return aSolution().withIsOfficial(isOfficial).withExercise(exercise).withUser(user).withReports(reports).withComments(comments).withVotes(votes).withId(id).withContent(content).withTime(time).withPoints(points);
+        return aSolution().withIsOfficial(isOfficial).withExercise(exercise).withUser(user).withReports(reports).withComments(comments).withVotes(votes).withId(id).withContent(content).withTime(time);
     }
 
     public Solution build() {
@@ -89,7 +83,6 @@ public class SolutionBuilder {
         solution.setId(id);
         solution.setContent(content);
         solution.setTime(time);
-        solution.setPoints(points);
         return solution;
     }
 }

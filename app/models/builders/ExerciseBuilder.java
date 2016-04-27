@@ -16,7 +16,6 @@ public class ExerciseBuilder {
     private Long id;
     private String content;
     private LocalDateTime time = LocalDateTime.now();
-    private long points;
 
     private ExerciseBuilder() {
     }
@@ -75,13 +74,8 @@ public class ExerciseBuilder {
         return this;
     }
 
-    public ExerciseBuilder withPoints(long points) {
-        this.points = points;
-        return this;
-    }
-
     public ExerciseBuilder but() {
-        return anExercise().withTitle(title).withSolutions(solutions).withVotes(votes).withTags(tags).withUser(user).withReports(reports).withComments(comments).withId(id).withContent(content).withTime(time).withPoints(points);
+        return anExercise().withTitle(title).withSolutions(solutions).withVotes(votes).withTags(tags).withUser(user).withReports(reports).withComments(comments).withId(id).withContent(content).withTime(time);
     }
 
     public Exercise build() {
@@ -96,7 +90,6 @@ public class ExerciseBuilder {
         exercise.setId(id);
         exercise.setContent(content);
         exercise.setTime(time);
-        exercise.setPoints(points);
         return exercise;
     }
 }

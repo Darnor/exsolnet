@@ -115,7 +115,7 @@ public class Exercise extends Post {
     public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
-    
+
     public long getPoints() {
         return points;
     }
