@@ -21,9 +21,6 @@ public class Post extends Model {
     @NotNull
     private LocalDateTime time = LocalDateTime.now();
 
-    @Basic
-    private long points;
-
     public Long getId() {
         return id;
     }
@@ -47,13 +44,4 @@ public class Post extends Model {
     public void setTime(LocalDateTime time) {
         this.time = time;
     }
-
-    public long getPoints() {
-        return points;
-    }
-
-    public void setPoints(long points) {
-        this.points = points;
-    }
-
 }

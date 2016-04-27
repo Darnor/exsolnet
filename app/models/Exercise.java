@@ -27,12 +27,7 @@ public class Exercise extends Post {
     private int solutionCount;
 
     @Formula(select = "(select coalesce(sum(value),0) from exercise left join vote on vote.exercise_id = exercise.id where exercise.id = ${ta}.id group by exercise.id)")
-    private long point;
-
-    @Override
-    public long getPoints() {
-        return point;
-    }
+    private long points;
 
     @OneToMany(mappedBy = "exercise")
     private List<Solution> solutions;
@@ -119,6 +114,10 @@ public class Exercise extends Post {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+    
+    public long getPoints() {
+        return points;
     }
 
     private void fillData(String title, String content, List<Tag> tags, User user) {

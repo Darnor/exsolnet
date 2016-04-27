@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import com.avaje.ebean.annotation.Formula;
 import models.builders.SolutionBuilder;
 
 import javax.persistence.*;
@@ -33,6 +34,9 @@ public class Solution extends Post {
 
     @OneToMany(mappedBy = "solution")
     private List<Vote> votes;
+
+    @Formula(select = "(select coalesce(sum(value),0) from solution left join vote on vote.solution_id = solution.id where solution.id = ${ta}.id group by solution.id)")
+    private long points;
 
     public User getUser() {
         return user;
@@ -111,9 +115,8 @@ public class Solution extends Post {
         return find().where().eq("id", id).findUnique();
     }
 
-    @Override
     public long getPoints() {
-        return votes.stream().mapToLong(vote -> vote.getValue()).sum();
+        return points;
     }
 
 }
