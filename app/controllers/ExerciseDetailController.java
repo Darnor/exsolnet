@@ -24,6 +24,7 @@ import java.util.List;
 public class ExerciseDetailController extends Controller {
 
     private static final String CONTENT_FIELD = "content";
+    private static final long BAD_SOLUTION_THRESHOLD = -1;
 
     @Inject
     FormFactory formFactory;
@@ -76,18 +77,39 @@ public class ExerciseDetailController extends Controller {
      * @return a sorted solution List (copy)
      */
     static List<Solution> getSortedSolutionList(List<Solution> solutions) {
-        return solutions.stream().sorted((s1, s2) -> {
-            if (s1.isOfficial() == s2.isOfficial()) {
-                if (s1.getPoints() == s2.getPoints()) {
-                    return s1.getTime().compareTo(s2.getTime());
-                }
-                return s1.getPoints() > s2.getPoints() ? -1 : s2.getPoints() > s1.getPoints() ? 1 : 0;
-            }
-            if (s1.isOfficial()) {
-                return -1;
-            }
-            return 1;
-        }).collect(Collectors.toList());
+        List<Solution> sortedSolutions = solutions.stream()
+            .filter(s -> !s.isOfficial())
+            .sorted((s1, s2) -> s2.getTime().compareTo(s1.getTime()))
+            .collect(Collectors.toList());
+
+        Solution officialSolution = solutions.stream()
+                .parallel()
+                .filter(Solution::isOfficial)
+                .findFirst().orElse(null);
+
+        Solution topSolution = solutions.stream()
+                .filter(s -> !s.isOfficial())
+                .sorted((s1, s2) -> s1.getPoints() > s2.getPoints() ? -1 : s1.getPoints() < s2.getPoints() ? 1 : 0)
+                .findFirst().orElse(null);
+
+        List<Solution> badSolutions = sortedSolutions.stream()
+                .filter(s -> s.getPoints() < BAD_SOLUTION_THRESHOLD)
+                .collect(Collectors.toList());
+
+        sortedSolutions.removeAll(badSolutions);
+        sortedSolutions.addAll(badSolutions);
+
+        if (topSolution != null) {
+            sortedSolutions.remove(topSolution);
+            sortedSolutions.add(0, topSolution);
+        }
+
+        if (officialSolution != null) {
+            sortedSolutions.remove(officialSolution);
+            sortedSolutions.add(0, officialSolution);
+        }
+
+        return sortedSolutions;
     }
 
     /**
