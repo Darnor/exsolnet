@@ -1,0 +1,10 @@
+@(user: User, message: String)
+@main("500", user){
+    <div class="hero-unit center">
+        <h1>@message <small>Error 500</small></h1>
+        <br />
+        <p>Es sieht aus, als wär in unserem System etwas kaputt. Keine Panik - der Fehler wurde aufgezeichnet und wird von unseren Entwicklern untersucht.</p>
+        <p><b>In der Zwischenzeit kannst du hier lang:</b></p>
+        <a href="@routes.UserController.renderDashboard()" class="btn btn-large btn-info"><i class="icon-home icon-white"></i> Zurück zum Start</a>
+    </div>
+}

@@ -11,6 +11,7 @@ import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Results;
 import services.SessionService;
+import views.html.error500;
 
 import javax.inject.Provider;
 import java.util.concurrent.CompletableFuture;
@@ -35,7 +36,7 @@ public class GlobalController extends DefaultHttpErrorHandler{
     public CompletionStage<Result> onServerError(Http.RequestHeader request, Throwable exception) {
         Logger.error("500", exception);
         return CompletableFuture.completedFuture(
-                Results.internalServerError("Ein interner Fehler ist aufgetreten")
+                Results.internalServerError(error500.render(SessionService.getCurrentUser(), "Ein interner Fehler ist aufgetreten"))
         );
     }
 }
