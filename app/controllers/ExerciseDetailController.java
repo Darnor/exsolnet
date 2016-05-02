@@ -19,12 +19,14 @@ import views.html.exerciseSolutions;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Security.Authenticated(Secured.class)
 public class ExerciseDetailController extends Controller {
 
     private static final String CONTENT_FIELD = "content";
-    private static final long BAD_SOLUTION_THRESHOLD = -1;
+    private static final int NO_OF_LATEST_SOLUTIONS = 2;
+    private static final int NO_OF_TOP_SOLTUIONS = 1;
 
     @Inject
     FormFactory formFactory;
@@ -75,52 +77,45 @@ public class ExerciseDetailController extends Controller {
      */
     public Result renderSolutions(Long exerciseId){
         Exercise exercise = Exercise.findById(exerciseId);
-        return ok(exerciseSolutions.render(SessionService.getCurrentUser(), exercise, getSortedSolutionList(exercise.getSolutions())));
+        List<Solution> solutions = getPointSortedSolutions(exercise.getSolutions());
+        List<Solution> officialSolutions = getOfficialSolutions(solutions);
+        solutions.removeAll(officialSolutions);
+        List<Solution> topSolutions = getTopSolutions(solutions);
+        solutions.removeAll(topSolutions);
+        List<Solution> latestSolutions = getLatestSolutions(solutions);
+        solutions.removeAll(latestSolutions);
+        return ok(exerciseSolutions.render(SessionService.getCurrentUser(), exercise, officialSolutions, topSolutions, latestSolutions, solutions));
     }
 
-    /**
-     * sorts the solution-list of the exercise for the View.
-     * 1. Official Solution (or best solution if it has no official solution)
-     * 2. Best Solution (or second best if it has no official solution or it is the best solution)
-     * 3. Rest (sorted after date)
-     *
-     * @param solutions which should be sorted
-     * @return a sorted solution List (copy)
-     */
-    static List<Solution> getSortedSolutionList(List<Solution> solutions) {
-        List<Solution> sortedSolutions = solutions.stream()
-            .filter(s -> !s.isOfficial())
-            .sorted((s1, s2) -> s2.getTime().compareTo(s1.getTime()))
-            .collect(Collectors.toList());
+    static List<Solution> getOfficialSolutions(List<Solution> solutions) {
+        return solutions.stream().filter(Solution::isOfficial).collect(Collectors.toList());
+    }
 
-        Solution officialSolution = solutions.stream()
-                .parallel()
-                .filter(Solution::isOfficial)
-                .findFirst().orElse(null);
+    static List<Solution> getTopSolutions(List<Solution> solutions) {
+        return getFirstNoOfSolutions(getPointSortedSolutions(solutions), NO_OF_TOP_SOLTUIONS);
+    }
 
-        Solution topSolution = solutions.stream()
-                .filter(s -> !s.isOfficial())
-                .sorted((s1, s2) -> s1.getPoints() > s2.getPoints() ? -1 : s1.getPoints() < s2.getPoints() ? 1 : 0)
-                .findFirst().orElse(null);
+    static List<Solution> getLatestSolutions(List<Solution> solutions) {
+        return getFirstNoOfSolutions(getTimeSortedSolutions(solutions), NO_OF_LATEST_SOLUTIONS);
+    }
 
-        List<Solution> badSolutions = sortedSolutions.stream()
-                .filter(s -> s.getPoints() < BAD_SOLUTION_THRESHOLD)
+    static List<Solution> getFirstNoOfSolutions(List<Solution> solutions, int n) {
+        return IntStream.range(0, n)
+                .mapToObj(i -> (solutions.size() > n) ? solutions.get(i) : null)
+                .filter(s -> s != null)
                 .collect(Collectors.toList());
+    }
 
-        sortedSolutions.removeAll(badSolutions);
-        sortedSolutions.addAll(badSolutions);
+    static List<Solution> getTimeSortedSolutions(List<Solution> solutions) {
+        return solutions.stream()
+                .sorted((s1, s2) -> s2.getTime().compareTo(s1.getTime()))
+                .collect(Collectors.toList());
+    }
 
-        if (topSolution != null) {
-            sortedSolutions.remove(topSolution);
-            sortedSolutions.add(0, topSolution);
-        }
-
-        if (officialSolution != null) {
-            sortedSolutions.remove(officialSolution);
-            sortedSolutions.add(0, officialSolution);
-        }
-
-        return sortedSolutions;
+    static List<Solution> getPointSortedSolutions(List<Solution> solutions) {
+        return solutions.stream()
+                .sorted((s1, s2) -> s1.getPoints() > s2.getPoints() ? -1 : s1.getPoints() < s2.getPoints() ? 1 : 0)
+                .collect(Collectors.toList());
     }
 
     /**
