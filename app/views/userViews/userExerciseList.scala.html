@@ -2,7 +2,7 @@
 @(exercises: java.util.List[Exercise])
 
 @exercises.map { exercise =>
-    <div class="list @if(exercise.getPoints < 0) { item-red } else { @if(exercise.getPoints > 0) { item-green } else { item-blue} }">
+    <div class="exercisedetail @if(exercise.getPoints < 0) { item-red } else { @if(exercise.getPoints > 0) { item-green } else { item-blue} }">
         <span class="item" >
             <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">
                 @exercise.getTitle
