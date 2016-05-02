@@ -1,6 +1,5 @@
 @import java.time.format.{DateTimeFormatter, FormatStyle}
-@import java.util
-@(user: User, currentPage: com.avaje.ebean.PagedList[Exercise], currentOrderBy: Int, currentTitleFilter: String, currentTagFilter: String,tags: util.List[Tag])
+@(user: User, currentPage: com.avaje.ebean.PagedList[Exercise], currentOrderBy: Int, currentTitleFilter: String, currentTagFilter: String)
 @****************************************
 * Helper generating navigation links *
 ****************************************@
@@ -28,15 +27,6 @@
         <input type="hidden" name="sort" value="@currentOrderBy" />
         <input type="search" class="form-control" id="title-filter" name="title" value="@currentTitleFilter" placeholder="Titel-Filter"/>
         <p>Tag-Filter: </p>
-        <div class="form-group input_tag">
-            <label for="othertag">Tags:</label>
-
-            <select name="tags" id="tags" style="width: 100%" class="js-example-basic-multiple" multiple>
-            @for(tag <- tags) {
-                    <option value=@tag.getName>@tag.getName</option>
-            }
-            </select>
-        </div>
         <input type="search" class="form-control" id="tag-filter-list" name="tags" value="@currentTagFilter" placeholder="Tag-Filter" data-route="@routes.TagController.suggestAllTags("")"/>
         <input type="submit" class="btn btn-primary btn-default" id="submit-filter" value="Suche"/>
     </form>
