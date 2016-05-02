@@ -64,7 +64,7 @@ public class TagController extends Controller {
         } else {
             tracking.delete();
         }
-        return renderTagList(Integer.parseInt(session(TAG_ORDER)), session(TAG_FILTER));
+        return redirect(routes.TagController.renderTagList(Integer.parseInt(session(TAG_ORDER)), session(TAG_FILTER)));
     }
 
     public Result renderOverview() {
