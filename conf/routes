@@ -2,33 +2,34 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
-GET         /                       controllers.UserController.renderDashboard
-GET         /exercises              controllers.ExerciseController.renderList(page:Int ?= 0, sort:Int ?=1, title ?= "", tags ?="")
-GET         /exercises              controllers.ExerciseController.renderOverview
-GET         /exercises/create       controllers.ExerciseController.renderCreate
-GET         /exercises/:id          controllers.ExerciseDetailController.renderExerciseDetail(id: Long)
-POST        /exercises/create       controllers.ExerciseController.processCreate()
-POST        /exercises/:id/update   controllers.ExerciseController.processUpdate(id: Long)
-POST        /exercises/:id/solution controllers.ExerciseDetailController.processUpdate(id: Long)
-GET         /exercise/:id/upvote    controllers.ExerciseDetailController.upVoteExercise(id: Long)
-GET         /exercise/:id/downvote  controllers.ExerciseDetailController.downVoteExercise(id: Long)
-GET         /solution/:id/upvote    controllers.ExerciseDetailController.upVoteSolution(id: Long)
-GET         /solution/:id/downvote  controllers.ExerciseDetailController.downVoteSolution(id: Long)
-GET         /exercises/:id/edit     controllers.ExerciseController.edit(id: Long)
-GET         /tags                   controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
-GET         /tags                   controllers.TagController.renderOverview
-GET         /tags/query             controllers.TagController.suggestTags(q ?= "", isMainTag:Boolean ?= false)
-GET         /tags/queryAll          controllers.TagController.suggestAllTags(q ?= "")
-POST        /tags/track             controllers.TagController.processTrack(tag)
-GET         /login                  controllers.LoginController.renderLogin
-GET         /register               controllers.LoginController.renderRegister
-POST        /register               controllers.LoginController.processRegister
-POST        /login                  controllers.LoginController.login
-POST        /logout                 controllers.LoginController.logout
-GET         /user                   controllers.UserController.renderDashboard
-GET         /user/edit              controllers.UserController.renderEdit
-GET         /user/:id               controllers.UserController.renderUser(id: Long)
-POST        /user/update            controllers.UserController.processUpdate(id: Long)
+GET         /                               controllers.UserController.renderDashboard
+GET         /exercises                      controllers.ExerciseController.renderList(page:Int ?= 0, sort:Int ?=1, title ?= "", tags ?="")
+GET         /exercises                      controllers.ExerciseController.renderOverview
+GET         /exercises/create               controllers.ExerciseController.renderCreate
+POST        /exercises/create               controllers.ExerciseController.processCreate()
+POST        /exercises/:id/update           controllers.ExerciseController.processUpdate(id: Long)
+GET         /exercises/:id                  controllers.ExerciseDetailController.renderExerciseDetail(id: Long)
+GET         /exercises/:id/createsolution   controllers.ExerciseDetailController.renderCreateSolution(id: Long)
+POST        /exercises/:id/solution         controllers.ExerciseDetailController.processUpdate(id: Long)
+GET         /exercise/:id/upvote            controllers.ExerciseDetailController.upVoteExercise(id: Long)
+GET         /exercise/:id/downvote          controllers.ExerciseDetailController.downVoteExercise(id: Long)
+GET         /solution/:id/upvote            controllers.ExerciseDetailController.upVoteSolution(id: Long)
+GET         /solution/:id/downvote          controllers.ExerciseDetailController.downVoteSolution(id: Long)
+GET         /exercises/:id/edit             controllers.ExerciseController.edit(id: Long)
+GET         /tags                           controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
+GET         /tags                           controllers.TagController.renderOverview
+GET         /tags/query                     controllers.TagController.suggestTags(q ?= "", isMainTag:Boolean ?= false)
+GET         /tags/queryAll                  controllers.TagController.suggestAllTags(q ?= "")
+POST        /tags/track                     controllers.TagController.processTrack(tag)
+GET         /login                          controllers.LoginController.renderLogin
+GET         /register                       controllers.LoginController.renderRegister
+POST        /register                       controllers.LoginController.processRegister
+POST        /login                          controllers.LoginController.login
+POST        /logout                         controllers.LoginController.logout
+GET         /user                           controllers.UserController.renderDashboard
+GET         /user/edit                      controllers.UserController.renderEdit
+GET         /user/:id                       controllers.UserController.renderUser(id: Long)
+POST        /user/update                    controllers.UserController.processUpdate(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file           controllers.Assets.versioned(path="/public", file: Asset)

@@ -13,11 +13,12 @@ import play.mvc.Security;
 import services.SessionService;
 import views.html.editSolution;
 import views.html.error404;
+import views.html.exerciseNotSolved;
 import views.html.exerciseSolutions;
 
 import javax.inject.Inject;
-import java.util.stream.Collectors;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Security.Authenticated(Secured.class)
 public class ExerciseDetailController extends Controller {
@@ -40,9 +41,20 @@ public class ExerciseDetailController extends Controller {
         User user = SessionService.getCurrentUser();
         Exercise exercise = Exercise.findById(id);
         if (exercise != null) {
-            return user.hasSolved(id) ? renderSolutions(id) : renderCreateSolution(id);
+            return user.hasSolved(id) ? renderSolutions(id) : renderExerciseNotSolved(id);
         }
         return notFound(error404.render(user, "Diese Aufgabe existiert nicht"));
+    }
+
+    /**
+     * renders the exercise details with an Info (like you have to solve the exercise first before looking
+     * at other solutions
+     *
+     * @param exerciseId the id of the Exercise
+     * @return Result View of the detailed exercise with no Solution and an Info
+     */
+    public Result renderExerciseNotSolved(long exerciseId) {
+        return ok(exerciseNotSolved.render(SessionService.getCurrentUser(), Exercise.findById(exerciseId)));
     }
 
     /**
