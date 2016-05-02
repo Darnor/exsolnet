@@ -80,23 +80,15 @@ public class ExerciseDetailController extends Controller {
         List<Solution> solutions = getPointSortedSolutions(exercise.getSolutions());
         List<Solution> officialSolutions = getOfficialSolutions(solutions);
         solutions.removeAll(officialSolutions);
-        List<Solution> topSolutions = getTopSolutions(solutions);
+        List<Solution> topSolutions = getFirstNoOfSolutions(solutions, NO_OF_TOP_SOLTUIONS);
         solutions.removeAll(topSolutions);
-        List<Solution> latestSolutions = getLatestSolutions(solutions);
+        List<Solution> latestSolutions = getFirstNoOfSolutions(getTimeSortedSolutions(solutions), NO_OF_LATEST_SOLUTIONS);
         solutions.removeAll(latestSolutions);
         return ok(exerciseSolutions.render(SessionService.getCurrentUser(), exercise, officialSolutions, topSolutions, latestSolutions, solutions));
     }
 
     static List<Solution> getOfficialSolutions(List<Solution> solutions) {
         return solutions.stream().filter(Solution::isOfficial).collect(Collectors.toList());
-    }
-
-    static List<Solution> getTopSolutions(List<Solution> solutions) {
-        return getFirstNoOfSolutions(getPointSortedSolutions(solutions), NO_OF_TOP_SOLTUIONS);
-    }
-
-    static List<Solution> getLatestSolutions(List<Solution> solutions) {
-        return getFirstNoOfSolutions(getTimeSortedSolutions(solutions), NO_OF_LATEST_SOLUTIONS);
     }
 
     static List<Solution> getFirstNoOfSolutions(List<Solution> solutions, int n) {
