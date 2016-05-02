@@ -16,7 +16,6 @@ import views.html.error404;
 import views.html.exerciseSolutions;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
 import java.util.stream.Collectors;
 import java.util.List;
 
