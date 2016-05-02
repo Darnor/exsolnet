@@ -132,7 +132,7 @@ public class ExerciseController extends Controller {
     public Result renderList(int page, int order, String titleFilter, String tagFilter) {
         String orderBy = getOrderByAttributeString(order);
         PagedList<Exercise> exercises = Exercise.getPagedList(page, orderBy, titleFilter, tagFilter.split(","), PAGE_SIZE);
-        return ok(exerciseList.render(SessionService.getCurrentUser(), exercises, order, titleFilter, tagFilter));
+        return ok(exerciseList.render(SessionService.getCurrentUser(), exercises, order, titleFilter, tagFilter,Tag.getAll()));
     }
 
     /**
