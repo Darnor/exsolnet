@@ -81,11 +81,11 @@ public class ExerciseTest extends AbstractApplicationTest {
 
     @Test
     public void testPoints(){
-        assertEquals(-10, Exercise.findById(8012L).getPoints());
+        assertEquals(-5, Exercise.findById(8012L).getPoints());
     }
 
     @Test
     public void testPointsNoVotes(){
-        assertEquals(0, Exercise.findById(8010L).getPoints());
+        assertEquals(0, Exercise.findById(8008L).getPoints());
     }
 }

@@ -17,7 +17,7 @@ public class ExerciseListIT extends AbstractIntegrationTest{
         as(FRANZ, browser -> {
             browser.goTo("/exercises");
             assertThat(browser.pageSource(), matches("Ableitung 1a"));
-            assertThat(browser.pageSource(), matches("An2I.*Ableiten.*Funktion.*Blubberduck.*1.*3.*02.12.15 08:00"));
+            assertThat(browser.pageSource(), matches("An2I.*Ableiten.*Funktion.*Blubberduck.*3.*0.*02.12.15 08:00"));
         });
     }
 
