@@ -120,4 +120,31 @@ public class Tag extends Model {
     public static Tag findTagByName(String name) {
         return find().where().ieq(COLUMN_TAG_NAME, name).findUnique();
     }
+
+    /**
+     *
+     * @return all tags
+     */
+    public static List<Tag> getAll(){
+    List<Tag> list = find().all();
+        return list;
+    }
+
+    /**
+     *
+     * @return all main tags
+     */
+    public static List<Tag> getAllMain(){
+        List<Tag> list = find().where().eq(COLUMN_IS_MAIN_TAG,true).findList();
+        return list;
+    }
+
+    /**
+     *
+     * @return all other tags
+     */
+    public static List<Tag> getAllOther(){
+        List<Tag> list = find().where().eq(COLUMN_IS_MAIN_TAG,false).findList();
+        return list;
+    }
 }
