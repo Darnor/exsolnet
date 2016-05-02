@@ -75,7 +75,7 @@ public class ExerciseDetailController extends Controller {
      * @param exerciseId the id of the Exercise
      * @return Result view of the exercise with all solutions and comments.
      */
-    public Result renderSolutions(Long exerciseId){
+    public Result renderSolutions(Long exerciseId) {
         Exercise exercise = Exercise.findById(exerciseId);
         List<Solution> solutions = getPointSortedSolutions(exercise.getSolutions());
         List<Solution> officialSolutions = getOfficialSolutions(solutions);
