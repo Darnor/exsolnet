@@ -4,7 +4,7 @@ import models.Exercise;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static play.test.Helpers.FIREFOX;
@@ -15,22 +15,21 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
     public void testCreate() {
         as(FRANZ, FIREFOX, browser -> {
             String title = "Event Foo";
-            String[] mainTags = { "An1I" };
-            String[] otherTags = {"MinTäg", "DinTäg"};
+            String mainTag = "An1I" ;
+            String[] otherTags = {"Tree", "Pattern"};
             String content = "En neue Event wo i erstell.";
 
             browser.goTo("/exercises/create");
 
             browser.fill("#title").with(title);
 
-            WebElement mainTagElement = browser.getDriver().findElement(By.id("token-input-maintag-filter-list"));
-            for (String tag : mainTags) {
-                fillTagTokenElements(browser, mainTagElement, tag);
-            }
+            Select dropdownmain = new Select(browser.getDriver().findElement(By.id("maintag")));
+            dropdownmain.selectByValue(mainTag);
 
-            WebElement otherTagElement = browser.getDriver().findElement(By.id("token-input-othertag-filter-list"));
+
+            Select dropdownother = new Select(browser.getDriver().findElement(By.id("othertag")));
             for (String tag : otherTags) {
-                fillTagTokenElements(browser, otherTagElement, tag);
+                dropdownother.selectByValue(tag);
             }
 
             fillCKEditor(browser, content);
