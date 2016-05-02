@@ -19,4 +19,11 @@ public class SolutionTest extends AbstractApplicationTest {
         assertEquals("content", fromdb.get(1).getContent());
     }
 
+    @Test
+    public void testPoints(){
+        assertEquals(1, Solution.findById(8002L).getPoints());
+        assertEquals(-5, Solution.findById(8012L).getPoints());
+        assertEquals(-1, Solution.findById(8011L).getPoints());
+    }
+
 }
