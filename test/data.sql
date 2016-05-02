@@ -44,7 +44,7 @@ INSERT INTO exercise VALUES (8001, '<p>What''s the opposite of false?</p>', '201
 INSERT INTO exercise VALUES (8007, '<p>Was ist die erste Ableitung von y=5x?</p>
 
 <p>y''=???</p>', '2015-12-02 08:00:02', 'Ableitung 1a)', 8002);
-INSERT INTO exercise VALUES (8011, '<p>Wie gross ist die Fläche der Funktion y=x^3 zwischen dem Punkt x1=-1 und x2=1?', '2016-01-14 16:03:23', 'Fläche einer Funktion', 8002);
+INSERT INTO exercise VALUES (8011, '<p>Wie gross ist die Fl&auml;che der Funktion y=x^3 zwischen dem Punkt x1=-1 und x2=1?', '2016-01-14 16:03:23', 'Fläche einer Funktion', 8002);
 INSERT INTO exercise VALUES (8012, '<p>Besuche meine super Website: http://www.iamhans.com', '2016-04-11 21:45:33', 'XXX', 8001);
 INSERT INTO exercise VALUES (8008, '<p>Was bedeutet TDD genau?</p>', '2016-04-01 09:24:24', 'TDD Definition', 8008);
 INSERT INTO exercise VALUES (8009, '<p>Was ist ein Unit Test?</p>', '2016-04-01 09:27:12', 'Unit Testing', 8008);
@@ -87,7 +87,7 @@ INSERT INTO exercise VALUES (8006, '<p>Entwerfen Sie ein Error-Handling Policy f
 <p>Falls Sie kein Engineering-Projekt haben, verwenden Sie das kleine Java Beispiel-Projekt ImageGallery aus der Vorlage.</p>', '2016-03-18 15:02:14', 'Erro Handling Policy', 8008);
 INSERT INTO exercise VALUES (8002, '<p>Wie teuer ist eine Suchoperation eines AVL-Trees mit n Elementen?</p>
 
-<p>Lösung in O-Notation angeben.</p>', '2016-02-17 23:55:34', 'AVL-Tree Suchkosten', 8002);
+<p>L&ouml;sung in O-Notation angeben.</p>', '2016-02-17 23:55:34', 'AVL-Tree Suchkosten', 8002);
 
 INSERT INTO exercise VALUES (8000, '<p>Whats 1+2?</p>', '2015-01-08 00:00:00', 'Basic Math', 8000);
 --ExcerciseTag

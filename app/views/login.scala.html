@@ -3,12 +3,12 @@
 @main("Login", user) {
     <form method="POST" action="@routes.LoginController.login()">
         <div class="form-group">
-            <label for="emailorusername">Email address or Username</label>
-            <input class="form-control" name="emailorusername" id="email" required placeholder="Email or Username" oninvalid="this.setCustomValidity('Bitte Email oder Username angeben.')">
+            <label for="emailorusername">E-Mail-Adresse oder Benutzername</label>
+            <input class="form-control" name="emailorusername" id="email" required placeholder="E-Mail oder Benutzername" oninvalid="this.setCustomValidity('Bitte E-Mail oder Benutzername angeben.')">
         </div>
         <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+            <label for="password">Passwort</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Passwort">
         </div>
         <button type="submit" id="btn_login" class="btn btn-default">Login</button>
     </form>
