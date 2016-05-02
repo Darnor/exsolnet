@@ -1,4 +1,5 @@
-@(user: User, exercise: Exercise, maintags: List[Tag], othertags: List[Tag])
+@import java.util
+@(user: User, exercise: Exercise, maintags: util.List[Tag], othertags: util.List[Tag])
 
 @main(if(exercise.getId == null) {
     "Aufgabe erstellen"
