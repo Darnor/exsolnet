@@ -18,8 +18,7 @@ GET         /solution/:id/downvote          controllers.ExerciseDetailController
 GET         /exercises/:id/edit             controllers.ExerciseController.edit(id: Long)
 GET         /tags                           controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
 GET         /tags                           controllers.TagController.renderOverview
-GET         /tags/query                     controllers.TagController.suggestTags(q ?= "", isMainTag:Boolean ?= false)
-GET         /tags/queryAll                  controllers.TagController.suggestAllTags(q ?= "")
+GET         /tags/query                     controllers.TagController.suggestTags(q ?= "")
 POST        /tags/track                     controllers.TagController.processTrack(tag)
 GET         /login                          controllers.LoginController.renderLogin
 GET         /register                       controllers.LoginController.renderRegister

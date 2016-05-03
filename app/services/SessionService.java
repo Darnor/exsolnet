@@ -19,15 +19,6 @@ public class SessionService {
     }
 
     /**
-     * Access the session hashmap, key "connected" will return loggedin User's email
-     * @param key
-     * @return String
-     */
-    public static String get(String key){
-        return session(key);
-    }
-
-    /**
      * returns the user object of current user, null if no user is logged in
      * @return
      */

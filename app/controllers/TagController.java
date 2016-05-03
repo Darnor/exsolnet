@@ -85,26 +85,7 @@ public class TagController extends Controller {
         return ok(tagList.render(currentUser, tags, trackedTags, orderBy, tagNameFilter));
     }
 
-    /**
-     * Suggest Tags based on the tagName and isMainTag
-     * @param tagName The searched Tagname
-     * @param isMainTag Tag type
-     * @return Returns TagEntries containg the TagName
-     */
-    public Result suggestTags(String tagName, boolean isMainTag) {
-        List<TagEntry> suggestedTags = Tag.getSuggestedTags(tagName, isMainTag)
-                .stream()
-                .map(t -> new TagEntry(t.getName()))
-                .collect(Collectors.toList());
-
-        if (!isMainTag) {
-            suggestedTags.add(0, new TagEntry(tagName));
-        }
-
-        return ok(Json.toJson(suggestedTags));
-    }
-
-    public Result suggestAllTags(String tagName) {
+    public Result suggestTags(String tagName) {
         return ok(Json.toJson(Tag.getSuggestedTags(tagName).stream().map(t -> new TagEntry(t.getName())).collect(Collectors.toList())));
     }
 

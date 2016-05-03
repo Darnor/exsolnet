@@ -97,18 +97,7 @@ public class Tag extends Model {
      * @return list of all tags that start with tagName
      */
     public static List<Tag> getSuggestedTags(String tagName) {
-        return find().where().istartsWith(COLUMN_TAG_NAME, tagName).findList();
-    }
-
-    /**
-     * returns list of suggested tags which are main tags
-     *
-     * @param tagName tag that starts with tagName
-     * @return list of main tags that start with tagName
-     */
-    public static List<Tag> getSuggestedTags(String tagName, boolean isMainTag) {
-        List<Tag> list = find().where().eq(COLUMN_IS_MAIN_TAG, isMainTag).istartsWith(COLUMN_TAG_NAME, tagName).findList();
-        return list.isEmpty() ? find().where().eq(COLUMN_IS_MAIN_TAG, isMainTag).findList() : list;
+        return find().where().istartsWith(COLUMN_TAG_NAME, tagName).orderBy(COLUMN_TAG_NAME).findList();
     }
 
     /**
@@ -119,15 +108,6 @@ public class Tag extends Model {
      */
     public static Tag findTagByName(String name) {
         return find().where().ieq(COLUMN_TAG_NAME, name).findUnique();
-    }
-
-    /**
-     *
-     * @return all tags
-     */
-    public static List<Tag> getAll(){
-    List<Tag> list = find().all();
-        return list;
     }
 
     /**
