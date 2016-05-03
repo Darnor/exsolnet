@@ -80,7 +80,7 @@ public class TagTest extends AbstractApplicationTest {
         assertEquals(2, Tag.getSuggestedTags("An").size());
         List<Tag> suggestedTags = Tag.getSuggestedTags("a");
         assertEquals(7, suggestedTags.size());
-        assertEquals("An1I", suggestedTags.get(0).getName());
+        assertEquals("Ableiten", suggestedTags.get(0).getName());
     }
 
 
