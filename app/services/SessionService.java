@@ -19,8 +19,7 @@ public class SessionService {
     }
 
     /**
-     * returns the user object of current user, null if no user is logged in
-     * @return
+     * @return the user object of current user, null if no user is logged in
      */
     public static User getCurrentUser(){
         return User.find().where().ieq("email", getCurrentUserEmail()).findUnique();

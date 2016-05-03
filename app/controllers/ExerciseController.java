@@ -4,7 +4,9 @@ import com.avaje.ebean.PagedList;
 import models.Exercise;
 import models.Tag;
 import models.User;
+import models.Vote;
 import models.builders.ExerciseBuilder;
+import play.Logger;
 import play.data.DynamicForm;
 import play.data.FormFactory;
 import play.mvc.Controller;
@@ -123,7 +125,7 @@ public class ExerciseController extends Controller {
      * @param id exercise id that exists in db
      * @return redered exercise
      */
-    public Result edit(long id) {
+    public Result renderEdit(long id) {
         Exercise exercise = Exercise.find().byId(id);
         if (exercise == null) {
             return notFound(error404.render(SessionService.getCurrentUser(), "Aufgabe nicht gefunden"));
@@ -168,5 +170,19 @@ public class ExerciseController extends Controller {
     public Result processUpdate(long exerciseId) {
         bindForm(exerciseId);
         return redirect(routes.ExerciseController.renderOverview());
+    }
+
+    public Result upVote(Long exerciseId) {
+        Logger.info("Up Vote Exercise " + exerciseId);
+        Exercise exercise = Exercise.findById(exerciseId);
+        Vote.upvote(SessionService.getCurrentUser(), exercise);
+        return ok(String.valueOf(Exercise.findById(exerciseId).getPoints()));
+    }
+
+    public Result downVote(Long exerciseId) {
+        Logger.info("Down Vote Exercise " + exerciseId);
+        Exercise exercise = Exercise.findById(exerciseId);
+        Vote.downvote(SessionService.getCurrentUser(), exercise);
+        return ok(String.valueOf(Exercise.findById(exerciseId).getPoints()));
     }
 }

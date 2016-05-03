@@ -1,93 +1,20 @@
 @import java.time.format.DateTimeFormatter
 @import java.time.format.FormatStyle
-@(user: User, exercise: Exercise, officialSolutions: java.util.List[Solution], topSolutions: java.util.List[Solution], latestSolutions: java.util.List[Solution], solutions: java.util.List[Solution])
+@(user: User, exercise: Exercise, officialSolutions: Html, topSolutions: Html, latestSolutions: Html, solutions: Html)
 @exerciseDetail(user, exercise) {
-
     <div>
-    @for(solution <- officialSolutions) {
-        <div class="listSolution  @if(solution.getPoints < 0) {
-            item-red
-        } else {
-            @if(solution.isOfficial) {
-                item-green
-            } else { item-blue}
-        }">
-            <span class="item">@Html(solution.getContent)</span>
-            <span><a class="meta user" href="@routes.UserController.renderUser(solution.getUser.getId)">@solution.getUser.getUsername</a>
-            </span> <i class="clock"></i>
-            <span class="meta time">@solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))</span>
-            <span id="solutionPoints@solution.getId" class="meta points">@solution.getPoints</span>
-            <div class = "box">
-                <a id="upVoteSolution@solution.getId" class = "up" onclick="upVoteSolution(@solution.getId)" >&#9650;</a>
-                <a id="downVoteSolution@solution.getId" class = "down" onclick="downVoteSolution(@solution.getId)" >&#9660;</a>
-            </div>
-        </div>
-    }
+        @officialSolutions
     </div>
 
     <div>
-    @for(solution <- topSolutions) {
-        <div class="listSolution  @if(solution.getPoints < 0) {
-            item-red
-        } else {
-            @if(solution.isOfficial) {
-                item-green
-            } else { item-blue}
-        }">
-            <span class="item">@Html(solution.getContent)</span>
-            <span><a class="meta user" href="@routes.UserController.renderUser(solution.getUser.getId)">@solution.getUser.getUsername</a>
-            </span> <i class="clock"></i>
-            <span class="meta time">@solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))</span>
-            <span id="solutionPoints@solution.getId" class="meta points">@solution.getPoints</span>
-            <div class = "box">
-                <a id="upVoteSolution@solution.getId" class = "up" onclick="upVoteSolution(@solution.getId)" >&#9650;</a>
-                <a id="downVoteSolution@solution.getId" class = "down" onclick="downVoteSolution(@solution.getId)" >&#9660;</a>
-            </div>
-        </div>
-    }
+        @topSolutions
     </div>
 
     <div>
-    @for(solution <- latestSolutions) {
-        <div class="listSolution  @if(solution.getPoints < 0) {
-            item-red
-        } else {
-            @if(solution.isOfficial) {
-                item-green
-            } else { item-blue}
-        }">
-            <span class="item">@Html(solution.getContent)</span>
-            <span><a class="meta user" href="@routes.UserController.renderUser(solution.getUser.getId)">@solution.getUser.getUsername</a>
-            </span> <i class="clock"></i>
-            <span class="meta time">@solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))</span>
-            <span id="solutionPoints@solution.getId" class="meta points">@solution.getPoints</span>
-            <div class = "box">
-                <a id="upVoteSolution@solution.getId" class = "up" onclick="upVoteSolution(@solution.getId)" >&#9650;</a>
-                <a id="downVoteSolution@solution.getId" class = "down" onclick="downVoteSolution(@solution.getId)" >&#9660;</a>
-            </div>
-        </div>
-    }
+        @latestSolutions
     </div>
 
     <div>
-    @for(solution <- solutions) {
-        <div class="listSolution  @if(solution.getPoints < 0) {
-            item-red
-        } else {
-            @if(solution.isOfficial) {
-                item-green
-            } else { item-blue}
-        }">
-            <span class="item">@Html(solution.getContent)</span>
-            <span><a class="meta user" href="@routes.UserController.renderUser(solution.getUser.getId)">@solution.getUser.getUsername</a>
-            </span> <i class="clock"></i>
-            <span class="meta time">@solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))</span>
-            <span id="solutionPoints@solution.getId" class="meta points">@solution.getPoints</span>
-            <div class = "box">
-                <a id="upVoteSolution@solution.getId" class = "up" onclick="upVoteSolution(@solution.getId)" >&#9650;</a>
-                <a id="downVoteSolution@solution.getId" class = "down" onclick="downVoteSolution(@solution.getId)" >&#9660;</a>
-            </div>
-        </div>
-    }
+        @solutions
     </div>
 }

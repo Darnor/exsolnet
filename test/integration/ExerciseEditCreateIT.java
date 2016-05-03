@@ -54,7 +54,6 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
             String title = updateExercise.getTitle() + " version 2";
             String content = "und jetzt no en zuesatz zu dere Ufgab";
 
-
             browser.goTo("/exercises/8000/edit");
             browser.fill("#title").with(title);
             fillCKEditor(browser, content);

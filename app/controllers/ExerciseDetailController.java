@@ -3,9 +3,7 @@ package controllers;
 import models.Exercise;
 import models.Solution;
 import models.User;
-import models.Vote;
 import models.builders.SolutionBuilder;
-import play.Logger;
 import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -15,6 +13,7 @@ import views.html.editSolution;
 import views.html.error404;
 import views.html.exerciseNotSolved;
 import views.html.exerciseSolutions;
+import views.html.exerciseViews.exerciseSolutionList;
 
 import javax.inject.Inject;
 import java.util.List;
@@ -77,14 +76,26 @@ public class ExerciseDetailController extends Controller {
      */
     public Result renderSolutions(Long exerciseId) {
         Exercise exercise = Exercise.findById(exerciseId);
+
         List<Solution> solutions = getPointSortedSolutions(exercise.getSolutions());
+
         List<Solution> officialSolutions = getOfficialSolutions(solutions);
         solutions.removeAll(officialSolutions);
+
         List<Solution> topSolutions = getFirstNoOfSolutions(solutions, NO_OF_TOP_SOLTUIONS);
         solutions.removeAll(topSolutions);
+
         List<Solution> latestSolutions = getFirstNoOfSolutions(getTimeSortedSolutions(solutions), NO_OF_LATEST_SOLUTIONS);
         solutions.removeAll(latestSolutions);
-        return ok(exerciseSolutions.render(SessionService.getCurrentUser(), exercise, officialSolutions, topSolutions, latestSolutions, solutions));
+
+        return ok(exerciseSolutions.render(
+                SessionService.getCurrentUser(),
+                exercise,
+                exerciseSolutionList.apply(officialSolutions),
+                exerciseSolutionList.apply(topSolutions),
+                exerciseSolutionList.apply(latestSolutions),
+                exerciseSolutionList.apply(solutions)
+        ));
     }
 
     static List<Solution> getOfficialSolutions(List<Solution> solutions) {
@@ -119,53 +130,5 @@ public class ExerciseDetailController extends Controller {
     public Result processUpdate(Long exerciseId) {
         Solution.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), Exercise.findById(exerciseId), SessionService.getCurrentUser());
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
-    }
-
-    /**
-     * Upvote Solution
-     * @param solutionId
-     * @return
-     */
-    public Result upVoteSolution(Long solutionId) {
-        Logger.info("Up Vote Solution " + solutionId);
-        Solution solution = Solution.findById(solutionId);
-        Vote.upvote(SessionService.getCurrentUser(),solution);
-        return ok(String.valueOf(Solution.findById(solutionId).getPoints()));
-    }
-
-    /**
-     * Downvote Solution
-     * @param solutionId
-     * @return
-     */
-    public Result downVoteSolution(Long solutionId) {
-        Logger.info("Down Vote Solution " + solutionId);
-        Solution solution = Solution.findById(solutionId);
-        Vote.downvote(SessionService.getCurrentUser(),solution);
-        return ok(String.valueOf(Solution.findById(solutionId).getPoints()));
-    }
-
-    /**
-     * Upvote Exercise
-     * @param exerciseId
-     * @return
-     */
-    public Result upVoteExercise(Long exerciseId) {
-        Logger.info("Up Vote Exercise " + exerciseId);
-        Exercise exercise = Exercise.findById(exerciseId);
-        Vote.upvote(SessionService.getCurrentUser(),exercise);
-        return ok(String.valueOf(Exercise.findById(exerciseId).getPoints()));
-    }
-
-    /**
-     * DownVOte Exercise
-     * @param exerciseId
-     * @return
-     */
-    public Result downVoteExercise(Long exerciseId) {
-        Logger.info("Down Vote Exercise " + exerciseId);
-        Exercise exercise = Exercise.findById(exerciseId);
-        Vote.downvote(SessionService.getCurrentUser(),exercise);
-        return ok(String.valueOf(Exercise.findById(exerciseId).getPoints()));
     }
 }

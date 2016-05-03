@@ -59,9 +59,9 @@ public class UserController extends Controller {
         String passwordCheck = requestData.get("password-check");
         if(validateUserForm(username, email, password, passwordCheck)) {
             User.update(userId, username, email, password, false);
-            return renderDashboard();
+            return redirect(routes.UserController.renderDashboard());
         }
-        return renderEdit();
+        return redirect(routes.UserController.renderEdit());
     }
 
     public Result renderEdit() {

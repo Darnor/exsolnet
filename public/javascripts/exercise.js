@@ -1,5 +1,4 @@
 (function ($) {
-
     $(document).ready(function() {
         $(".tags-basic-single").select2();
         $(".tags-basic-multiple").select2();
@@ -9,11 +8,10 @@
         });
     });
 
-
     function createTagFilter(id) {
         var result = [];
         var tagString = $(id).attr('rel');
-        if (tagString.length > 0) {
+        if (tagString && tagString.length > 0) {
             var tagArray = tagString.split(",");
             for (var i in tagArray) {
                 result.push({name: tagArray[i]});
