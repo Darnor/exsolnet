@@ -51,14 +51,14 @@ public class ExerciseListViewTest extends AbstractViewTest {
     public void testPaginationPageZeroPrevDisabled() {
         Content html = exerciseList.render(null, pageZero, 1, "", "");
         assertEquals("text/html", html.contentType());
-        assertThat(html.body(), containsString("<div class=\"prev disabled\">"));
+        assertThat(html.body(), containsString("<a class=\"btn prev disabled\""));
     }
 
     @Test
     public void testPaginationPageZeroNextNotDisabled() {
         Content html = exerciseList.render(null, pageZero, 1, "", "");
         assertEquals("text/html", html.contentType());
-        assertThat(html.body(), containsString("<div class=\"next\">"));
+        assertThat(html.body(), containsString("<a class=\"btn next\""));
     }
 
     @Test
@@ -72,14 +72,14 @@ public class ExerciseListViewTest extends AbstractViewTest {
     public void testPaginationPageOnePrevNotDisabled() {
         Content html = exerciseList.render(null, pageOne, 1, "", "");
         assertEquals("text/html", html.contentType());
-        assertThat(html.body(), containsString("<div class=\"prev\">"));
+        assertThat(html.body(), containsString("<a class=\"btn prev\""));
     }
 
     @Test
     public void testPaginationPageOneNextDisabled() {
         Content html = exerciseList.render(null, pageOne, 1, "", "");
         assertEquals("text/html", html.contentType());
-        assertThat(html.body(), containsString("<div class=\"next disabled\">"));
+        assertThat(html.body(), containsString("<a class=\"btn next disabled\""));
     }
 
     @Test
