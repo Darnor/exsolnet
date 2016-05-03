@@ -91,3 +91,10 @@ body {
     width: 100%;
 }
 
+.display-inline > div{
+    display: inline;
+}
+
+.selected{
+    font-weight: bold;
+}

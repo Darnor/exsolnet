@@ -1,21 +1,24 @@
 @import java.time.format.{DateTimeFormatter, FormatStyle}
 @(user: User, currentPage: com.avaje.ebean.PagedList[Exercise], currentOrderBy: Int, currentTitleFilter: String, currentTagFilter: String)
-@*************************************
-* Helper generating navigation links *
-**************************************@
+
+@****************************************
+* Helper generating sorting links *
+****************************************@
+>>>>>>> better sorting design/experience in ExerciseList
 @link(newPage: Int, newOrderBy: Int) = @{
     routes.ExerciseController.renderList(newPage, newOrderBy, currentTitleFilter, currentTagFilter)
 }
 
-@**********************************
-* Helper generating table headers *
-***********************************@
-@header(orderBy: Int, title: String) = {
-    <th class="col@orderBy header @if(currentOrderBy == orderBy) @{
-        if(currentOrderBy == orderBy) "headerSortDown" else "headerSortUp"
-    }">
-        <a href="@link(0, if(currentOrderBy == orderBy) -orderBy else orderBy)">@title</a>
-    </th>
+@sortingfield(orderBy: Int, title: String) = {
+    <div  class="@if(Math.abs(currentOrderBy) == orderBy) @{"selected"}">
+        <a class="btn @if(Math.abs(currentOrderBy) == orderBy) @{"selected"}" href="@link(0, if(currentOrderBy == orderBy) -orderBy else orderBy)">@title
+            @if(Math.abs(currentOrderBy) == orderBy) @{
+                if(currentOrderBy == orderBy)
+                    <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
+                else
+                    <span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+            }</a>
+    </div>
 }
 
 @main("Aufgaben", user) {
@@ -32,17 +35,13 @@
     </form>
 
     Sortieren nach:
-    <div class="table table-striped ">
-        <thead class="thead-inverse">
-            <tr>
-                @header(1, "Titel")
-                @header(2, "Lösungen")
-                @header(3, "Bewertung")
-                @header(4, "Datum")
-            </tr>
-        </thead>
-        <tbody>
+    <div class="display-inline">
+        @sortingfield(1, "Titel")
+        @sortingfield(2, "Lösungen")
+        @sortingfield(3, "Bewertung")
+        @sortingfield(4, "Datum")
     </div>
+
     @for(exercise <- currentPage.getList) {
         <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">
             <div class="list  @if(exercise.getPoints < 0) {
