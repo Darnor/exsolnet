@@ -14,11 +14,15 @@ import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
 import views.html.editExercise;
+import views.html.error403;
 import views.html.error404;
 import views.html.exerciseList;
 
 import javax.inject.Inject;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -91,7 +95,12 @@ public class ExerciseController extends Controller {
      * @return Result of new Exercise
      */
     public Result renderCreate() {
-        return ok(editExercise.render(SessionService.getCurrentUser(), ExerciseBuilder.anExercise().build(), Tag.findTagsByType(Tag.Type.MAIN), Tag.findTagsByType(Tag.Type.NORMAL)));
+        return ok(editExercise.render(
+                SessionService.getCurrentUser(),
+                ExerciseBuilder.anExercise().build(),
+                Tag.findTagsByType(Tag.Type.MAIN),
+                Tag.findTagsByType(Tag.Type.NORMAL)
+        ));
     }
 
     /**
@@ -126,11 +135,18 @@ public class ExerciseController extends Controller {
      * @return redered exercise
      */
     public Result renderEdit(long id) {
+        User currentUser = SessionService.getCurrentUser();
         Exercise exercise = Exercise.find().byId(id);
+
         if (exercise == null) {
-            return notFound(error404.render(SessionService.getCurrentUser(), "Aufgabe nicht gefunden"));
+            return notFound(error404.render(currentUser, "Aufgabe nicht gefunden"));
         }
-        return ok(editExercise.render(SessionService.getCurrentUser(), exercise, Tag.findTagsByType(Tag.Type.MAIN), Tag.findTagsByType(Tag.Type.NORMAL)));
+
+        if (!exercise.getUser().getId().equals(currentUser.getId())) {
+            return notFound(error403.render(currentUser, "Keine Berechtigungen diese Aufgabe zu editieren"));
+        }
+
+        return ok(editExercise.render(currentUser, exercise, Tag.findTagsByType(Tag.Type.MAIN), Tag.findTagsByType(Tag.Type.NORMAL)));
     }
 
     private void bindForm(Long exerciseId) {
