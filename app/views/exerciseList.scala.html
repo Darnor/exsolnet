@@ -74,20 +74,20 @@
         <div class="display-inline">
             @if(currentPage.hasPrev) {
                 <div class="prev">
-                    <a href="@link(currentPage.getPageIndex - 1, currentOrderBy)">&larr; Vorherige</a>
+                    <a class="btn" href="@link(currentPage.getPageIndex - 1, currentOrderBy)"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Vorherige</a>
                 </div>
             } else {
                 <div class="prev disabled">
-                    <a>&larr; Vorherige</a>
+                    <a class="btn disabled"><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>Vorherige</a>
                 </div>
             }
             @if(currentPage.hasNext) {
                 <div class="next">
-                    <a href="@link(currentPage.getPageIndex + 1, currentOrderBy)">Nächste &rarr;</a>
+                    <a class="btn" href="@link(currentPage.getPageIndex + 1, currentOrderBy)">Nächste<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
                 </div>
             } else {
                 <div class="next disabled">
-                    <a>Nächste &rarr;</a>
+                    <a class="btn disabled">Nächste<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></a>
                 </div>
             }
         </div>
