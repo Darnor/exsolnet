@@ -93,7 +93,7 @@ public class ExerciseDetailController extends Controller {
 
     static List<Solution> getFirstNoOfSolutions(List<Solution> solutions, int n) {
         return IntStream.range(0, n)
-                .mapToObj(i -> (solutions.size() > n) ? solutions.get(i) : null)
+                .mapToObj(i -> (solutions.size() > i) ? solutions.get(i) : null)
                 .filter(s -> s != null)
                 .collect(Collectors.toList());
     }

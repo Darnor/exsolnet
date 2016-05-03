@@ -79,10 +79,7 @@ public class ExerciseController extends Controller {
      */
     static String getOrderByAttributeString(int order) {
         String result = tableHeaderMap.get(Math.abs(order));
-        if (order < 0) {
-            result += " desc";
-        }
-        return result;
+        return order < 0 ? result + " desc" : result;
     }
 
     /**
@@ -128,11 +125,10 @@ public class ExerciseController extends Controller {
      */
     public Result edit(long id) {
         Exercise exercise = Exercise.find().byId(id);
-        if (exercise != null) {
-            return ok(editExercise.render(SessionService.getCurrentUser(), exercise, Tag.findTagsByType(Tag.Type.MAIN), Tag.findTagsByType(Tag.Type.NORMAL)));
-        } else {
+        if (exercise == null) {
             return notFound(error404.render(SessionService.getCurrentUser(), "Aufgabe nicht gefunden"));
         }
+        return ok(editExercise.render(SessionService.getCurrentUser(), exercise, Tag.findTagsByType(Tag.Type.MAIN), Tag.findTagsByType(Tag.Type.NORMAL)));
     }
 
     private void bindForm(Long exerciseId) {
@@ -154,22 +150,23 @@ public class ExerciseController extends Controller {
         }
     }
 
+    /**
+     * Create a new exercise from the Form Data
+     * @return redirect to the exercise overview
+     */
     public Result processCreate() {
         bindForm(null);
         return redirect(routes.ExerciseController.renderOverview());
     }
 
     /**
-     * Update or create an exercise based on the
+     * Update an exercise based on the given exerciseId
      *
      * @param exerciseId the id of the exercise to be updated.
-     * @return the result
+     * @return redirect to the exercise overview
      */
-
     public Result processUpdate(long exerciseId) {
         bindForm(exerciseId);
         return redirect(routes.ExerciseController.renderOverview());
     }
-
-
 }

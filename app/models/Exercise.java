@@ -122,19 +122,21 @@ public class Exercise extends Post {
         this.setTags(tags);
     }
 
-    public static void create(String title, String content, List<Tag> tags, User user) {
+    public static Exercise create(String title, String content, List<Tag> tags, User user) {
         Exercise exercise = ExerciseBuilder.anExercise().build();
         exercise.fillData(title, content, tags, user);
         exercise.save();
+        return exercise;
     }
 
-    public static void update(long id, String title, String content, List<Tag> tags, User user) {
+    public static Exercise update(long id, String title, String content, List<Tag> tags, User user) {
         Exercise exercise = find().byId(id);
         if (exercise == null) {
             throw new IllegalArgumentException("Invalid exercise id");
         }
         exercise.fillData(title, content, tags, user);
         exercise.update();
+        return exercise;
     }
 
     public static Model.Finder<Long, Exercise> find() {
@@ -164,7 +166,7 @@ public class Exercise extends Post {
      * the data of the exercise with the given id
      *
      * @param id the id of the exercise
-     * @return the exercise from the db with the fiven id, null if it doesnt exist, nullpointer exception if id is null
+     * @return the exercise from the db with the given id, null if it doesnt exist, nullpointer exception if id is null
      */
     public static Exercise findById(Long id) {
         return find().where().eq("id", id).findUnique();
@@ -182,9 +184,5 @@ public class Exercise extends Post {
             }
             return t1.isMainTag() ? -1 : 1;
         }).collect(Collectors.toList());
-    }
-
-    public void addVote(Vote vote) {
-        votes.add(vote);
     }
 }
