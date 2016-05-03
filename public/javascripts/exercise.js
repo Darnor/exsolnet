@@ -1,22 +1,14 @@
-/**
- * Created by Claudia on 11.04.2016.
- */
-
 (function ($) {
 
-  
-
-  /*  $(document).ready(function () {
-        $('body').on('keyup', 'input', 'change', 'click', function () {
-            if ($("#title").val() !== "" && $("#content").val() !== "" && $("form >  ul:first > li > p").length > 0) {
-                if ($("#save").hasAttribute('disabled'))
-                    $("#save").removeAttr('disabled');
-            }
-            else {
-                $("#save").attr('disabled', 'disabled');
-            }
+    $(document).ready(function() {
+        $(".tags-basic-single").select2();
+        $(".tags-basic-multiple").select2();
+        $(".tags-tokenizer").select2({
+            tags: true,
+            tokenSeparators: [',', ' ']
         });
-    });*/
+    });
+
 
     function createTagFilter(id) {
         var result = [];
