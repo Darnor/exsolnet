@@ -127,10 +127,10 @@ public class ExerciseDetailController extends Controller {
      * @return
      */
     public Result upVoteSolution(Long solutionId) {
-        Logger.info("Up Vote " + solutionId);
+        Logger.info("Up Vote Solution " + solutionId);
         Solution solution = Solution.findById(solutionId);
         Vote.upvote(SessionService.getCurrentUser(),solution);
-        return redirect(routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise().getId()));
+        return ok(String.valueOf(Solution.findById(solutionId).getPoints()));
     }
 
     /**
@@ -139,10 +139,10 @@ public class ExerciseDetailController extends Controller {
      * @return
      */
     public Result downVoteSolution(Long solutionId) {
-        Logger.info("Down Vote " + solutionId);
+        Logger.info("Down Vote Solution " + solutionId);
         Solution solution = Solution.findById(solutionId);
         Vote.downvote(SessionService.getCurrentUser(),solution);
-        return redirect(routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise().getId()));
+        return ok(String.valueOf(Solution.findById(solutionId).getPoints()));
     }
 
     /**
@@ -151,10 +151,10 @@ public class ExerciseDetailController extends Controller {
      * @return
      */
     public Result upVoteExercise(Long exerciseId) {
-        Logger.info("Up Vote " + exerciseId);
+        Logger.info("Up Vote Exercise " + exerciseId);
         Exercise exercise = Exercise.findById(exerciseId);
         Vote.upvote(SessionService.getCurrentUser(),exercise);
-        return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
+        return ok(String.valueOf(Exercise.findById(exerciseId).getPoints()));
     }
 
     /**
@@ -163,9 +163,9 @@ public class ExerciseDetailController extends Controller {
      * @return
      */
     public Result downVoteExercise(Long exerciseId) {
-        Logger.info("Down Vote " + exerciseId);
+        Logger.info("Down Vote Exercise " + exerciseId);
         Exercise exercise = Exercise.findById(exerciseId);
         Vote.downvote(SessionService.getCurrentUser(),exercise);
-        return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
+        return ok(String.valueOf(Exercise.findById(exerciseId).getPoints()));
     }
 }

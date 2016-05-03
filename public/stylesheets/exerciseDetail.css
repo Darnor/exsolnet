@@ -160,7 +160,7 @@ i {
     color:#00fdbc;
     font-size:1.1em;
     text-shadow: 0px 2px 2px black;
-
+    cursor: pointer;
 }
 
 
@@ -172,5 +172,5 @@ i {
 .box >.down:hover {
     font-size:1.1em;
     text-shadow: 0px 2px 2px black;
-
+    cursor: pointer;
 }

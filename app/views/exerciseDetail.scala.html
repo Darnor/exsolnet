@@ -15,7 +15,7 @@
         <span class="text-center meta count">
         @exercise.getSolutions.size
         </span>
-        <span class="text-center meta points">
+        <span id="exercisePoints" class="text-center meta points">
         @exercise.getPoints
         </span>
         <span class="meta time">
@@ -23,8 +23,8 @@
         </span>
 
         <div class = "box">
-            <a class = "up" href="@routes.ExerciseDetailController.upVoteExercise(exercise.getId)">&#9650;</a>
-            <a class = "down" href="@routes.ExerciseDetailController.downVoteExercise(exercise.getId)">&#9660;</a>
+            <a id="upVoteExercise" class = "up" onclick="upVoteExercise(@exercise.getId)" >&#9650;</a>
+            <a id="downVoteExercise" class = "down" onclick="downVoteExercise(@exercise.getId)" >&#9660;</a>
         </div>
     </div>
     @solutionsContent
