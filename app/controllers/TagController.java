@@ -55,9 +55,9 @@ public class TagController extends Controller {
      * @param tagName String containing the Tag Name which needs to be tracked or if tracked untracked
      * @return renders the tagList again
      */
-    public Result processTrack(String tagName) {
+    public Result processTrack(Long tagId) {
         User currentUser = SessionService.getCurrentUser();
-        Tag tag = Tag.findTagByName(tagName);
+        Tag tag = Tag.find().where().eq("id", tagId).findUnique();
         Tracking tracking = currentUser.getTrackings().stream().filter(t -> t.getTag().getId().equals(tag.getId())).findFirst().orElse(null);
         if (tracking == null) {
             TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build().save();

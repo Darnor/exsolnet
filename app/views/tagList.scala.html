@@ -53,13 +53,11 @@
                     @tag.getExercises.size
                 </td>
                 <td>
-                    @helper.form(action=routes.TagController.processTrack(tag.getName)) {
                         <input type="hidden" name="tag" id="tag_@tag.getId" value="@tag.getName" />
-                        <input type="submit"
+                        <input type="submit" onclick="trackTag(@tag.getId)"
                             @if(trackedTags.contains(tag)) { value="Nicht mehr folgen" class="btn btn-success btn-block" } else { value="Folgen" class="btn btn-primary btn-block" }
                             id="track_@tag.getId"
                         />
-                    }
                 </td>
             </tr>
         }
