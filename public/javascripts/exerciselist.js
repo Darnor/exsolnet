@@ -26,10 +26,5 @@
             prePopulate: currentTagFilter,
             theme: "facebook"
         });
-
-        $(".js-alltags").select2({
-            tags: true,
-            tokenSeparators: [',']
-        })
     });
 })($);
