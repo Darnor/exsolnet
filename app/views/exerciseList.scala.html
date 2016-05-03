@@ -2,9 +2,8 @@
 @(user: User, currentPage: com.avaje.ebean.PagedList[Exercise], currentOrderBy: Int, currentTitleFilter: String, currentTagFilter: String)
 
 @****************************************
-* Helper generating sorting links *
+* Helper generating sorting links       *
 ****************************************@
->>>>>>> better sorting design/experience in ExerciseList
 @link(newPage: Int, newOrderBy: Int) = @{
     routes.ExerciseController.renderList(newPage, newOrderBy, currentTitleFilter, currentTagFilter)
 }
@@ -72,27 +71,25 @@
     }
 
     <div id="pagination" class="pagination">
-        <div>
-        @if(currentPage.hasPrev) {
-            <div class="prev">
-                <a href="@link(currentPage.getPageIndex - 1, currentOrderBy)">&larr; Vorherige</a>
-            </div>
-        } else {
-            <div class="prev disabled">
-                <a>&larr; Vorherige</a>
-            </div>
-        }
-        </div>
-        <div>
-        @if(currentPage.hasNext) {
-            <div class="next">
-                <a href="@link(currentPage.getPageIndex + 1, currentOrderBy)">Nächste &rarr;</a>
-            </div>
-        } else {
-            <div class="next disabled">
-                <a>Nächste &rarr;</a>
-            </div>
-        }
+        <div class="display-inline">
+            @if(currentPage.hasPrev) {
+                <div class="prev">
+                    <a href="@link(currentPage.getPageIndex - 1, currentOrderBy)">&larr; Vorherige</a>
+                </div>
+            } else {
+                <div class="prev disabled">
+                    <a>&larr; Vorherige</a>
+                </div>
+            }
+            @if(currentPage.hasNext) {
+                <div class="next">
+                    <a href="@link(currentPage.getPageIndex + 1, currentOrderBy)">Nächste &rarr;</a>
+                </div>
+            } else {
+                <div class="next disabled">
+                    <a>Nächste &rarr;</a>
+                </div>
+            }
         </div>
         <div class="current">
             <p>Zeige @currentPage.getDisplayXtoYofZ(" bis ", " von ") an</p>
