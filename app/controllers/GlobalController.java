@@ -26,13 +26,14 @@ public class GlobalController extends DefaultHttpErrorHandler{
         super(configuration, environment, sourceMapper, routes);
     }
 
-
+    @Override
     public CompletionStage<Result> onClientError(Http.RequestHeader request, int statusCode, String message) {
         return CompletableFuture.completedFuture(
                notFound(views.html.error404.render(SessionService.getCurrentUser(), "Seite nicht gefunden"))
         );
     }
 
+    @Override
     public CompletionStage<Result> onServerError(Http.RequestHeader request, Throwable exception) {
         Logger.error("500", exception);
         return CompletableFuture.completedFuture(
