@@ -19,14 +19,6 @@ public class SessionService {
     }
 
     /**
-     * checks if the user is logged in
-     * @return boolean
-     */
-    public static boolean isLoggedin(){
-        return getCurrentUserEmail() != null;
-    }
-
-    /**
      * Access the session hashmap, key "connected" will return loggedin User's email
      * @param key
      * @return String
@@ -40,18 +32,15 @@ public class SessionService {
      * @return
      */
     public static User getCurrentUser(){
-        if(!isLoggedin()){
-            return null;
-        }
         return User.find().where().ieq("email", getCurrentUserEmail()).findUnique();
     }
 
     /**
      *  sets a key value pair into session hashmap, key "connected" stores the current loggedin User's email
-     * @param value
+     * @param email adress of the user
      */
-    public static void set(String value){
-        session(KEY_USEREMAIL, value);
+    public static void createSession(String email){
+        session(KEY_USEREMAIL, email);
     }
 
     /**

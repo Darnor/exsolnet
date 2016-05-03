@@ -41,7 +41,7 @@ public class LoginController extends Controller {
             Logger.warn(name + " tried to log in.");
             return redirect(routes.LoginController.renderLogin());
         }
-        SessionService.set(user.getEmail());
+        SessionService.createSession(user.getEmail());
         Logger.info(user.getEmail() + " is logged in");
         return redirect(routes.UserController.renderDashboard());
     }
@@ -59,7 +59,7 @@ public class LoginController extends Controller {
         if(UserController.validateUserForm(username, email, password, passwordCheck)) {
             User user = User.create(username, email, password, false);
             Logger.info("New user with name " + user.getUsername() + " just registered.");
-            SessionService.set(user.getEmail());
+            SessionService.createSession(user.getEmail());
             return redirect(routes.UserController.renderDashboard());
         }
         return redirect(routes.LoginController.renderLogin());
@@ -71,9 +71,7 @@ public class LoginController extends Controller {
      * @return Result
      */
     public Result logout() {
-        if(SessionService.isLoggedin()){
-            SessionService.clear();
-        }
+        SessionService.clear();
         return redirect(routes.UserController.renderDashboard());
     }
 }
