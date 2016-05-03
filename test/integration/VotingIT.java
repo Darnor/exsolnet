@@ -82,10 +82,10 @@ public class VotingIT extends AbstractIntegrationTest {
 
     @Test
     public void testSolutionDoubleUpVote() {
-        long solutionId = 8002;
+        long solutionId = 8001;
         as(FRANZ, browser -> {
             long oldpoints = Solution.find().where().eq("id", solutionId).findUnique().getPoints();
-            browser.goTo("/exercises/8001");
+            browser.goTo("/exercises/8000");
             browser.click("#upVoteSolution" + solutionId);
 
             //wait for ajax
