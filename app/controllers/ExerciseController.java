@@ -3,6 +3,7 @@ package controllers;
 import com.avaje.ebean.PagedList;
 import models.Exercise;
 import models.Tag;
+import models.User;
 import models.builders.ExerciseBuilder;
 import play.data.DynamicForm;
 import play.data.FormFactory;
@@ -15,10 +16,8 @@ import views.html.error404;
 import views.html.exerciseList;
 
 import javax.inject.Inject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -54,34 +53,20 @@ public class ExerciseController extends Controller {
         tableHeaderMap.put(4, TIME_FIELD);
     }
 
-
-        private  List<Tag> createTagList() {
-           /* return Arrays.asList(tagNames.split(TAG_NAME_DELIMITER)).stream()
-                    .map(String::trim)
-                    .filter(t -> t.length() > 0)
-                    .distinct()
-                    .map(s -> {
-                        Tag tag = Tag.findTagByName(s);
-                        return tag == null ? Tag.create(s, isMainTag) : tag;
-                    })
-                    .collect(Collectors.toList());*/
-            String maintag = formFactory.form().bindFromRequest().get(MAIN_TAG_FIELD);
-            List<Tag> tags = new ArrayList<Tag>();
-            tags.add(createTag(maintag, true));
-            String[] othertags = request().body().asFormUrlEncoded().get(OTHER_TAG_FIELD);
-            for (String t : othertags) {
-                tags.add(createTag(t, false));
-            }
-            return tags;
-        }
-
-    private static Tag createTag(String tagName, boolean isMainTag) {
-        Tag tag = Tag.findTagByName(tagName);
-        return tag == null ? Tag.create(tagName, isMainTag) : tag;
+    private static List<Tag> createTagList(Tag.Type type, String... tagNames) {
+        return Arrays.asList(tagNames).stream()
+                .map(String::trim)
+                .filter(t -> t.length() > 0)
+                .distinct()
+                .map(s -> {
+                    Tag tag = Tag.findTagByName(s);
+                    return tag == null ? Tag.create(s, type) : tag;
+                })
+                .collect(Collectors.toList());
     }
 
-    private static void validateFormData(String title, List<Tag> mainTags, String content) {
-        if (title.trim().length() == 0 || mainTags.isEmpty() || content.trim().length() == 0) {
+    private static void validateFormData(String title, String mainTag, String content) {
+        if (title.trim().length() == 0 || mainTag.trim().length() == 0 || content.trim().length() == 0) {
             throw new IllegalArgumentException("Formdata not valid.");
         }
     }
@@ -107,7 +92,7 @@ public class ExerciseController extends Controller {
      * @return Result of new Exercise
      */
     public Result renderCreate() {
-        return ok(editExercise.render(SessionService.getCurrentUser(), ExerciseBuilder.anExercise().build(), Tag.getAllMain(), Tag.getAllOther()));
+        return ok(editExercise.render(SessionService.getCurrentUser(), ExerciseBuilder.anExercise().build(), Tag.findTagsByType(Tag.Type.MAIN), Tag.findTagsByType(Tag.Type.NORMAL)));
     }
 
     /**
@@ -131,7 +116,7 @@ public class ExerciseController extends Controller {
      */
     public Result renderList(int page, int order, String titleFilter, String tagFilter) {
         String orderBy = getOrderByAttributeString(order);
-        PagedList<Exercise> exercises = Exercise.getPagedList(page, orderBy, titleFilter, tagFilter.split(","), PAGE_SIZE);
+        PagedList<Exercise> exercises = Exercise.getPagedList(page, orderBy, titleFilter, tagFilter.split(TAG_NAME_DELIMITER), PAGE_SIZE);
         return ok(exerciseList.render(SessionService.getCurrentUser(), exercises, order, titleFilter, tagFilter));
     }
 
@@ -144,22 +129,33 @@ public class ExerciseController extends Controller {
     public Result edit(long id) {
         Exercise exercise = Exercise.find().byId(id);
         if (exercise != null) {
-            return ok(editExercise.render(SessionService.getCurrentUser(), exercise, Tag.getAllMain(), Tag.getAllOther()));
+            return ok(editExercise.render(SessionService.getCurrentUser(), exercise, Tag.findTagsByType(Tag.Type.MAIN), Tag.findTagsByType(Tag.Type.NORMAL)));
         } else {
             return notFound(error404.render(SessionService.getCurrentUser(), "Aufgabe nicht gefunden"));
         }
     }
 
-    public Result processCreate() {
+    private void bindForm(Long exerciseId) {
+        User currentUser = SessionService.getCurrentUser();
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String title = requestData.get(TITLE_FIELD);
         String content = requestData.get(CONTENT_FIELD);
-        String maintag = requestData.get(MAIN_TAG_FIELD);
+        String mainTag = requestData.get(MAIN_TAG_FIELD);
 
-        List<Tag> tags = createTagList();
+        validateFormData(title, mainTag, content);
 
-        validateFormData(title, tags, content);
-        Exercise.create(title, content, tags, SessionService.getCurrentUser());
+        List<Tag> tags = createTagList(Tag.Type.MAIN, mainTag);
+        tags.addAll(createTagList(Tag.Type.NORMAL, request().body().asFormUrlEncoded().get(OTHER_TAG_FIELD)));
+
+        if (exerciseId == null) {
+            Exercise.create(title, content, tags, currentUser);
+        } else {
+            Exercise.update(exerciseId, title, content, tags, currentUser);
+        }
+    }
+
+    public Result processCreate() {
+        bindForm(null);
         return redirect(routes.ExerciseController.renderOverview());
     }
 
@@ -171,13 +167,7 @@ public class ExerciseController extends Controller {
      */
 
     public Result processUpdate(long exerciseId) {
-        DynamicForm requestData = formFactory.form().bindFromRequest();
-        String title = requestData.get(TITLE_FIELD);
-        String content = requestData.get(CONTENT_FIELD);
-        List<Tag> tags = createTagList();
-
-        validateFormData(title, tags, content);
-        Exercise.update(exerciseId, title, content, tags, SessionService.getCurrentUser());
+        bindForm(exerciseId);
         return redirect(routes.ExerciseController.renderOverview());
     }
 

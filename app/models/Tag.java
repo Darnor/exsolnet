@@ -12,6 +12,16 @@ import java.util.List;
 @Table(name = "tag")
 public class Tag extends Model {
 
+    public enum Type {
+        MAIN(true), NORMAL(false);
+
+        boolean value;
+
+        Type(boolean value) {
+            this.value = value;
+        }
+    }
+
     private static final String COLUMN_IS_MAIN_TAG = "isMainTag";
     private static final String COLUMN_TAG_NAME = "name";
     private static final String COLUMN_TAGS = "tags";
@@ -79,14 +89,14 @@ public class Tag extends Model {
         return new Finder<>(Tag.class);
     }
 
-    public static Tag create(String tagName, boolean isMainTag) {
-        Tag tag = TagBuilder.aTag().withName(tagName).withIsMainTag(isMainTag).build();
+    public static Tag create(String tagName, Type type) {
+        Tag tag = TagBuilder.aTag().withName(tagName).withIsMainTag(type.value).build();
         tag.save();
         return tag;
     }
 
     public static List<Tag> getFilteredTags(String tagNameFilter) {
-        return find().where().icontains(COLUMN_TAG_NAME, tagNameFilter).findList();
+        return find().where().icontains(COLUMN_TAG_NAME, tagNameFilter).orderBy(COLUMN_TAG_NAME).findList();
     }
 
     /**
@@ -112,19 +122,9 @@ public class Tag extends Model {
 
     /**
      *
-     * @return all main tags
+     * @return all tags based in their types
      */
-    public static List<Tag> getAllMain(){
-        List<Tag> list = find().where().eq(COLUMN_IS_MAIN_TAG,true).findList();
-        return list;
-    }
-
-    /**
-     *
-     * @return all other tags
-     */
-    public static List<Tag> getAllOther(){
-        List<Tag> list = find().where().eq(COLUMN_IS_MAIN_TAG,false).findList();
-        return list;
+    public static List<Tag> findTagsByType(Type type){
+        return find().where().eq(COLUMN_IS_MAIN_TAG, type.value).orderBy(COLUMN_TAG_NAME).findList();
     }
 }
