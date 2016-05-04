@@ -2,23 +2,30 @@
 @import java.time.format.FormatStyle
 @(solutions: java.util.List[Solution])
 
-@for(solution <- solutions) {
-    <div class="listSolution  @if(solution.getPoints < 0) { item-red } else { @if(solution.isOfficial) { item-green } else { item-blue } }">
-        <span class="item" >
-            <a href="@routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise.getId)">@solution.getExercise.getTitle</a>
-        </span>
-        <span class="item">
+@if(solutions.size() == 0){
+    <p>Du hast noch keine Aufgaben gelöst. <a href="@routes.ExerciseController.renderOverview()">Hier</a>
+        findest du eine Liste von interessanten aufgaben.</p>
+} else {
+    @for(solution <- solutions) {
+        <div class="listSolution  @if(solution.getPoints < 0) { item-red } else {
+            @if(solution.isOfficial) { item-green } else { item-blue }
+        }">
+            <span class="item" >
+                <a href="@routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise.getId)">@solution.getExercise.getTitle</a>
+            </span>
+            <span class="item">
             @Html(solution.getContent)
-        </span>
-        <span>
-            <a class="meta user" href="@routes.UserController.renderUser(solution.getUser.getId)">@solution.getUser.getUsername</a>
-        </span>
-        <i class="clock"></i>
-        <span class="meta time">
+            </span>
+            <span>
+                <a class="meta user" href="@routes.UserController.renderUser(solution.getUser.getId)">@solution.getUser.getUsername</a>
+            </span>
+            <i class="clock"></i>
+            <span class="meta time">
             @solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
-        </span>
-        <span class="meta points">
+            </span>
+            <span class="meta points">
             @solution.getPoints
-        </span>
-    </div>
+            </span>
+        </div>
+    }
 }

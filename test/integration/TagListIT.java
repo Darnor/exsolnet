@@ -80,7 +80,7 @@ public class TagListIT extends AbstractIntegrationTest {
     public void testSortByTracking(){
         as(FRANZ, browser -> {
             browser.goTo(TAGS_PATH);
-            browser.find("a", withText("Subscription")).click();
+            browser.find("a", withText("Status")).click();
             browser.await().atMost(1, TimeUnit.SECONDS).untilPage().isLoaded();
             assertThat(browser.pageSource(), matches("Nicht mehr folgen.*Nicht mehr folgen.*Folgen.*Folgen.*Folgen"));
         });

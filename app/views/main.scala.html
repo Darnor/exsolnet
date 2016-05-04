@@ -45,7 +45,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href=@routes.ExerciseController.renderOverview()>Aufgaben</a></li>
                         <li><a href=@routes.ExerciseController.renderCreate()>Aufgabe erstellen</a></li>
-                        <li><a href=@routes.TagController.renderTagList()>Tags</a></li>
+                        <li><a href=@routes.TagController.renderTagList()>Module &amp; Tags</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>@if(user==null) { <a href="@routes.LoginController.renderLogin()">Login</a> } else { <a href="@routes.UserController.renderDashboard()">@user.getUsername @user.getPoints</a> }</li>

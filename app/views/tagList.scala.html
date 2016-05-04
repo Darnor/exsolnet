@@ -23,13 +23,13 @@
     </th>
 }
 
-@main("Tagslist", user){
+@main("Module & Tags", user){
 
-    <h1>Tags</h1>
+    <h1>Module &amp; Tags</h1>
     <form action="@routes.TagController.renderTagList()" class="form-inline" role="form">
         <div class="form-group">
             <input type="hidden" name="sort" value="@currentOrderBy" />
-            <input type="search" class="form-control" id="tagfilter" name="tags" value="@tagNameFilter" placeholder="Tagfilter"/>
+            <input type="search" class="form-control" id="tagfilter" name="tags" value="@tagNameFilter" placeholder="Name oder Abkürzung"/>
         </div>
         <input type="submit" id="submit-tagfilter" value="Suche" class="btn btn-primary"/>
     </form>
@@ -39,7 +39,7 @@
             <tr>
                 @header(1, "Name")
                 @header(2, "Aufgaben")
-                @header(3, "Subscription")
+                @header(3, "Status")
             </tr>
         </thead>
         <tbody>

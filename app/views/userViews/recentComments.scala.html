@@ -2,25 +2,28 @@
 @import java.time.format.FormatStyle
 @(comments: java.util.List[Comment])
 
+@if(comments.size == 0){
+    <p>Es wurden noch keine deiner Beiträge kommentiert.</p>
+} else {
+    @comments.map { comment =>
+        <div class="comment">
+            <span>@comment.getContent</span>
+            <p>
 
-@comments.map{ comment =>
-    <div class="comment">
-        <span>@comment.getContent</span>
-        <p>
+                <small>
+                    @comment.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
+                    -
+                    <a href="@routes.UserController.renderUser(comment.getUser.getId)">@comment.getUser.getUsername</a>
+                    auf
 
-            <small>
-                @comment.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
-                -
-                <a href="@routes.UserController.renderUser(comment.getUser.getId)">@comment.getUser.getUsername</a>
-                auf
-
-                @if(comment.getExercise != null) {
-                    <a href="@routes.ExerciseDetailController.renderExerciseDetail(comment.getExercise.getId)">@comment.getExercise.getTitle</a>
-                } else {
-                    <a href="@routes.ExerciseDetailController.renderExerciseDetail(comment.getSolution.getExercise.getId)">@comment.getSolution.getExercise.getTitle</a>
-                }
-            </small>
-        </p>
-    </div>
+                    @if(comment.getExercise != null) {
+                        <a href="@routes.ExerciseDetailController.renderExerciseDetail(comment.getExercise.getId)">@comment.getExercise.getTitle</a>
+                    } else {
+                        <a href="@routes.ExerciseDetailController.renderExerciseDetail(comment.getSolution.getExercise.getId)">@comment.getSolution.getExercise.getTitle</a>
+                    }
+                </small>
+            </p>
+        </div>
+    }
 }
 
