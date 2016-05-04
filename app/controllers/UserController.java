@@ -1,6 +1,5 @@
 package controllers;
 
-import models.Tag;
 import models.User;
 import models.builders.UserBuilder;
 import play.Logger;
@@ -20,7 +19,6 @@ import views.html.userViews.userExerciseList;
 import views.html.userViews.userSolutionList;
 
 import javax.inject.Inject;
-import java.util.List;
 
 /**
  * Controller for DashboardView
@@ -31,7 +29,7 @@ public class UserController extends Controller {
     @Inject
     FormFactory formFactory;
 
-    public static boolean validateUserForm(String username, String email, String password, String passwordCheck) {
+    static boolean validateUserForm(String username, String email, String password, String passwordCheck) {
         return password.equals(passwordCheck)
                 && username.trim().length() > 0
                 && password.trim().length() > 0
@@ -82,9 +80,8 @@ public class UserController extends Controller {
             return notFound(error404.render(currentUser, "User not found!"));
         }
         if (currentUser.getId().equals(userId)) {
-            return renderDashboard();
+            return redirect(routes.UserController.renderDashboard());
         }
-        List<Tag> tags = viewedUser.getTrackedTags();
         return ok(externalUserView.render(currentUser,
                 viewedUser,
                 followedTags.apply(currentUser, viewedUser),

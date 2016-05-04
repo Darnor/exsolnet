@@ -21,10 +21,8 @@ public class MD5Util {
     public static String md5Hex(String message) {
         try {
             return hex(MessageDigest.getInstance("MD5").digest(message.getBytes("CP1252")));
-        } catch (NoSuchAlgorithmException e) {
-            Logger.error("Exception " + e.getMessage());
-        } catch (UnsupportedEncodingException e) {
-            Logger.error("Exception " + e.getMessage());
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            Logger.error("Exception in md5Hex method", e);
         }
         return null;
     }
