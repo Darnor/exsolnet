@@ -32,10 +32,8 @@ public class Exercise extends Post {
     @OneToMany(mappedBy = "exercise")
     private List<Solution> solutions;
 
-
     @OneToMany(mappedBy = "exercise")
     private List<Vote> votes;
-
 
     @ManyToMany
     @JoinTable(

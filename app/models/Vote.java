@@ -78,7 +78,7 @@ public class Vote extends Model {
         this.user = user;
     }
 
-    private static Model.Finder<Long, Vote> find() {
+    public static Model.Finder<Long, Vote> find() {
         return new Finder<>(Vote.class);
     }
 
