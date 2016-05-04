@@ -31,7 +31,7 @@ public class TagListIT extends AbstractIntegrationTest {
             assertThat(browser.pageSource(), is(matches("input.*" + AD2_TAG_ID + ".*" + UNTRACK_STR)));
             browser.click("#track_" + AD2_TAG_ID);
 
-            browser.await().atMost(2, TimeUnit.SECONDS).until("#track_" + AD2_TAG_ID).hasAttribute("value", UNTRACK_STR);
+            browser.await().atMost(2, TimeUnit.SECONDS).until("#track_" + AD2_TAG_ID).hasAttribute("value", TRACK_STR);
 
             assertThat(browser.pageSource(), is(matches("id=\"track_" + AD2_TAG_ID + ".*value=\"" + TRACK_STR)));
         });
