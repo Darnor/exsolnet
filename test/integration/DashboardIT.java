@@ -12,8 +12,6 @@ public class DashboardIT extends AbstractIntegrationTest {
             browser.goTo("/user");
             assertThat(browser.pageSource(), matches("An1I.*1/1"));
             assertThat(browser.pageSource(), matches("SE2.*0/5"));
-
-            assertThat(browser.pageSource(), matches("HOW CAN YOU BE SO WRONG!.*Franz.*8000.*Grundlegende Mathematik"));
         });
     }
 }
