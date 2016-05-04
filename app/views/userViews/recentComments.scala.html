@@ -19,7 +19,7 @@
                     @if(comment.getExercise != null) {
                         <a href="@routes.ExerciseDetailController.renderExerciseDetail(comment.getExercise.getId)">@comment.getExercise.getTitle</a>
                     } else {
-                        <a href="@routes.ExerciseDetailController.renderExerciseDetail(comment.getSolution.getExercise.getId)">@comment.getSolution.getExercise.getTitle</a>
+                        deine Lösung zu <a href="@routes.ExerciseDetailController.renderExerciseDetail(comment.getSolution.getExercise.getId)">@comment.getSolution.getExercise.getTitle</a>
                     }
                 </small>
             </p>

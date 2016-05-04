@@ -5,8 +5,10 @@ import com.avaje.ebean.Model;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name="comment")
@@ -105,11 +107,25 @@ public class Comment extends Model {
      * @return a list of recent comments that have been added to user's posts
      */
     public static List<Comment> getRecentComments(User user) {
-        return find().where()
-                .eq("user", user)
-                .orderBy("time desc")
-                .setMaxRows(NOF_RECENT_COMMENTS)
-                .findList();
+        List<Comment> comments = new ArrayList<>();
+        comments.addAll(
+                Exercise.find().where()
+                        .eq("user_id", user.getId())
+                        .findList()
+                        .stream().flatMap(e-> e.getComments().stream())
+                        .collect(Collectors.toList())
+        );
+        comments.addAll(
+                Solution.find().where()
+                        .eq("user_id", user.getId())
+                        .findList()
+                        .stream().flatMap(e-> e.getComments().stream())
+                        .collect(Collectors.toList())
+        );
+        return comments.stream()
+                .sorted((c1, c2) -> c2.getTime().compareTo(c1.getTime()))
+                .limit(NOF_RECENT_COMMENTS)
+                .collect(Collectors.toList());
     }
 
 }
