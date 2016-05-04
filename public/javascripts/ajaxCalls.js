@@ -59,6 +59,16 @@ function trackTag(tagId) {
     xhttp.send();
 }
 
+function deleteSolution(solutionId, exerciseId) {
+    $.ajax({
+        type: "DELETE",
+        url: "/solutions/" + solutionId + "/delete",
+        complete: function (xhttp) {
+            top.location.href = "/exercises/" + exerciseId
+        }
+    });
+}
+
 function deleteExercise(exerciseId) {
     $.ajax({
         type: "DELETE",

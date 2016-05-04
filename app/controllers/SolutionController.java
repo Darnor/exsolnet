@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Exercise;
 import models.Solution;
 import models.Vote;
 import play.Logger;
@@ -23,5 +24,17 @@ public class SolutionController extends Controller {
         Solution solution = Solution.findById(solutionId);
         Vote.downvote(SessionService.getCurrentUser(),solution);
         return ok(String.valueOf(Solution.findById(solutionId).getPoints()));
+    }
+
+    /**
+     * deletes a solution cascading!
+     *
+     * @param id id of to deleting solution
+     * @return
+     */
+    public Result delete(Long id) {
+        Solution.delete(id);
+        Logger.info("Soltution " + id +" deleted by " + SessionService.getCurrentUserEmail());
+        return ok("Exercise deleted");
     }
 }

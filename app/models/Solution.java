@@ -109,4 +109,9 @@ public class Solution extends Post {
     public long getPoints() {
         return points;
     }
+
+    public static void delete(Long id) {
+        Solution solution = findById(id);
+        solution.delete();
+    }
 }

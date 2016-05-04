@@ -1,27 +1,33 @@
 @import java.time.format.DateTimeFormatter
 @import java.time.format.FormatStyle
-@(solutions: java.util.List[Solution])
+@(solutions: java.util.List[Solution], user: User, exerciseId: java.lang.Long)
 
-@for(solution <- solutions) {
-    <div class="listSolution @if(solution.isOfficial) {
-        item-green
-    } else {
-        @if(solution.getPoints < 0) {
-            item-red
+    @for(solution <- solutions) {
+        <div class="listSolution @if(solution.isOfficial) {
+            item-green
         } else {
-            item-blue
-        }
-    }">
-        <span class="item">@Html(solution.getContent)</span>
-        <span>
-            <a class="meta user" href="@routes.UserController.renderUser(solution.getUser.getId)">@snippets.gravatar(solution.getUser, 16) @solution.getUser.getUsername</a>
-        </span>
-        <i class="clock"></i>
-        <span class="meta time">@solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))</span>
-        <span id="solutionPoints@solution.getId" class="meta points">@solution.getPoints</span>
-        <div class = "box">
-            <a id="upVoteSolution@solution.getId" class = "up" onclick="upVoteSolution(@solution.getId)" >&#9650;</a>
-            <a id="downVoteSolution@solution.getId" class = "down" onclick="downVoteSolution(@solution.getId)" >&#9660;</a>
+            @if(solution.getPoints < 0) {
+                item-red
+            } else {
+                item-blue
+            }
+        }">
+            <span class="item">@Html(solution.getContent)</span>
+            <span>
+                <a class="meta user" href="@routes.UserController.renderUser(solution.getUser.getId)">@snippets.gravatar(solution.getUser, 16) @solution.getUser.getUsername</a>
+            </span>
+            <i class="clock"></i>
+            <span class="meta time">@solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))</span>
+            @if(user.isModerator || user.getId == solution.getUser.getId) {
+                <span class="meta delete">
+                    <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src='@routes.Assets.versioned("images/garbage-1.png")'"
+                    onmouseout="this.src='@routes.Assets.versioned("images/garbage.png")'" onclick="deleteSolution(@solution.getId, @exerciseId)">
+                </span>
+            }
+            <span id="solutionPoints@solution.getId" class="meta points">@solution.getPoints</span>
+            <div class = "box">
+                <a id="upVoteSolution@solution.getId" class = "up" onclick="upVoteSolution(@solution.getId)" >&#9650;</a>
+                <a id="downVoteSolution@solution.getId" class = "down" onclick="downVoteSolution(@solution.getId)" >&#9660;</a>
+            </div>
         </div>
-    </div>
-}
+    }

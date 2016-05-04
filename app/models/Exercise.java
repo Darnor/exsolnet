@@ -114,10 +114,6 @@ public class Exercise extends Post {
         return points;
     }
 
-    public static Model.Finder<Long, Exercise> find() {
-        return new Finder<>(Exercise.class);
-    }
-
     private void fillData(String title, String content, List<Tag> tags, User user) {
         this.setTitle(title);
         this.setContent(content);

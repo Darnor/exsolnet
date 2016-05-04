@@ -90,10 +90,10 @@ public class ExerciseDetailController extends Controller {
         return ok(exerciseSolutions.render(
                 SessionService.getCurrentUser(),
                 exercise,
-                exerciseSolutionList.apply(officialSolutions),
-                exerciseSolutionList.apply(topSolutions),
-                exerciseSolutionList.apply(latestSolutions),
-                exerciseSolutionList.apply(solutions)
+                exerciseSolutionList.apply(officialSolutions, SessionService.getCurrentUser(), exerciseId),
+                exerciseSolutionList.apply(topSolutions, SessionService.getCurrentUser(), exerciseId ),
+                exerciseSolutionList.apply(latestSolutions, SessionService.getCurrentUser(), exerciseId),
+                exerciseSolutionList.apply(solutions, SessionService.getCurrentUser(), exerciseId)
         ));
     }
 

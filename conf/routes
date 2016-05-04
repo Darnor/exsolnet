@@ -24,6 +24,7 @@ POST        /exercises/:id/solution         controllers.ExerciseDetailController
 
 POST        /solutions/:id/upvote           controllers.SolutionController.upVote(id: Long)
 POST        /solutions/:id/downvote         controllers.SolutionController.downVote(id: Long)
+DELETE      /solutions/:id/delete           controllers.SolutionController.delete(id: Long)
 
 GET         /tags                           controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
 GET         /tags                           controllers.TagController.renderOverview
