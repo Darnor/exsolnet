@@ -24,11 +24,13 @@ public class Tag extends Model {
         }
     }
 
+    private static final String COLUMN_TAG_ID = "id";
     private static final String COLUMN_IS_MAIN_TAG = "isMainTag";
     private static final String COLUMN_TAG_NAME = "name";
     private static final String COLUMN_TAGS = "tags";
 
     @Id
+    @Column(name = COLUMN_TAG_ID)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -87,7 +89,7 @@ public class Tag extends Model {
         this.trackings = trackings;
     }
 
-    public static Model.Finder<Long, Tag> find() {
+    private static Model.Finder<Long, Tag> find() {
         return new Finder<>(Tag.class);
     }
 
@@ -120,6 +122,10 @@ public class Tag extends Model {
      */
     public static Tag findTagByName(String name) {
         return find().where().ieq(COLUMN_TAG_NAME, name).findUnique();
+    }
+
+    public static Tag findTagById(Long id) {
+        return find().where().eq(COLUMN_TAG_ID, id).findUnique();
     }
 
     /**

@@ -28,6 +28,7 @@ GET         /tags                           controllers.TagController.renderTagL
 GET         /tags                           controllers.TagController.renderOverview
 GET         /tags/query                     controllers.TagController.suggestTags(q ?= "")
 POST        /tags/track                     controllers.TagController.processTrack(tagId: Long)
+
 GET         /login                          controllers.LoginController.renderLogin
 GET         /register                       controllers.LoginController.renderRegister
 POST        /register                       controllers.LoginController.processRegister
