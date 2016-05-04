@@ -61,7 +61,7 @@ public class UserController extends Controller {
             User.update(userId, username, email, password, false);
             return redirect(routes.UserController.renderDashboard());
         }
-        return redirect(routes.UserController.renderEdit());
+        return redirect(routes.LoginController.renderRegister());
     }
 
     public Result renderEdit() {
