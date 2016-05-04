@@ -1,6 +1,5 @@
 package controllers;
 
-import models.Comment;
 import models.Tag;
 import models.User;
 import models.builders.UserBuilder;
@@ -11,7 +10,10 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
-import views.html.*;
+import views.html.editUser;
+import views.html.error404;
+import views.html.externalUserView;
+import views.html.userDashboard;
 import views.html.userViews.followedTags;
 import views.html.userViews.recentComments;
 import views.html.userViews.userExerciseList;
@@ -45,7 +47,7 @@ public class UserController extends Controller {
         return ok(userDashboard.render(
                 currentUser,
                 followedTags.apply(currentUser, currentUser.getTrackedTags()),
-                recentComments.apply(Comment.getRecentComments(currentUser)),
+                recentComments.apply(currentUser.getRecentComments()),
                 userExerciseList.apply(currentUser.getExercises()),
                 userSolutionList.apply(currentUser.getSolutions())
         ));

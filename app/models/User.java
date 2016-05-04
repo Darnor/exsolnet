@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static models.Tracking.COLUMN_USER_ID;
 
@@ -19,6 +20,7 @@ public class User extends Model {
 
     private static final String COLUMN_EMAIL = "email";
     private static final String COLUMN_USERNAME = "username";
+    private static final int NOF_RECENT_COMMENTS = 5;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -234,5 +236,20 @@ public class User extends Model {
 
     public String getGravatarHash(){
         return MD5Util.md5Hex(getEmail());
+    }
+
+    public List<Comment> getRecentComments() {
+        Stream<Comment> recentExerciseComments = exercises.stream()
+                .parallel()
+                .flatMap(e -> e.getComments().stream());
+
+        Stream<Comment> recentSolutionComments = solutions.stream()
+                .parallel()
+                .flatMap(s -> s.getComments().stream());
+
+        return Stream.concat(recentExerciseComments, recentSolutionComments)
+                .sorted((c1, c2) -> c2.getTime().compareTo(c1.getTime()))
+                .limit(NOF_RECENT_COMMENTS)
+                .collect(Collectors.toList());
     }
 }
