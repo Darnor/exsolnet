@@ -13,7 +13,7 @@ public class ExerciseDetailIT extends AbstractIntegrationTest{
     public void test() {
         as(FRANZ, browser -> {
             browser.goTo("/exercises/8000");
-            assertThat(browser.pageSource(), matches("h1.*Basic Math.*/h1"));
+            assertThat(browser.pageSource(), matches("h1.*Grundlegende Mathematik.*/h1"));
         });
     }
 }

@@ -14,9 +14,9 @@ public class ExerciseTest extends AbstractApplicationTest {
 
     @Test
     public void testGetPagedListFilteredByTwoTags(){
-        PagedList<Exercise> page = Exercise.getPagedList(0, "title", "", new String[]{"An1I", "simple operations"}, 10);
+        PagedList<Exercise> page = Exercise.getPagedList(0, "title", "", new String[]{"An1I", "Einfache Operationen"}, 10);
         assertEquals(2, page.getList().size());
-        assertEquals("Basic Math", page.getList().get(0).getTitle());
+        assertEquals("Grundlegende Mathematik", page.getList().get(0).getTitle());
         assertEquals("XXX", page.getList().get(1).getTitle());
     }
     @Test
@@ -45,7 +45,7 @@ public class ExerciseTest extends AbstractApplicationTest {
 
     @Test
     public void testFindExerciseData(){
-        assertEquals("Basic Math",Exercise.findById(8000L).getTitle());
+        assertEquals("Grundlegende Mathematik",Exercise.findById(8000L).getTitle());
         assertEquals(null, Exercise.findById(404L));
     }
 
@@ -66,7 +66,7 @@ public class ExerciseTest extends AbstractApplicationTest {
     @Test
     public void testOtherTagExistsInExercise() {
         Exercise exercise = Exercise.findById(8000L);
-        assertEquals(1, exercise.getTags().stream().filter(t -> t.getName().equals("simple operations") && !t.isMainTag()).count());
+        assertEquals(1, exercise.getTags().stream().filter(t -> t.getName().equals("Einfache Operationen") && !t.isMainTag()).count());
         assertEquals(0, exercise.getTags().stream().filter(t -> t.getName().equals("An1I") && !t.isMainTag()).count());
         assertEquals(0, exercise.getTags().stream().filter(t -> t.getName().equals("foo") && !t.isMainTag()).count());
     }
@@ -74,7 +74,7 @@ public class ExerciseTest extends AbstractApplicationTest {
     @Test
     public void testMainTagExistsInExercise() {
         Exercise exercise = Exercise.findById(8000L);
-        assertEquals(0, exercise.getTags().stream().filter(t -> t.getName().equals("simple operations") && t.isMainTag()).count());
+        assertEquals(0, exercise.getTags().stream().filter(t -> t.getName().equals("Einfache Operationen") && t.isMainTag()).count());
         assertEquals(1, exercise.getTags().stream().filter(t -> t.getName().equals("An1I") && t.isMainTag()).count());
         assertEquals(0, exercise.getTags().stream().filter(t -> t.getName().equals("foo") && t.isMainTag()).count());
     }

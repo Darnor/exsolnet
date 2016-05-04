@@ -10,10 +10,10 @@ INSERT INTO tag VALUES (8006, 'Pattern', false);
 INSERT INTO tag VALUES (8007, 'SE1', true);
 INSERT INTO tag VALUES (8008, 'SE2', true);
 INSERT INTO tag VALUES (8009, 'Testing', false);
-INSERT INTO tag VALUES (8010, 'simple operations', false);
+INSERT INTO tag VALUES (8010, 'Einfache Operationen', false);
 INSERT INTO tag VALUES (8011, 'DMI', true);
 INSERT INTO tag VALUES (8012, 'Logik', false);
-INSERT INTO tag VALUES (8013, 'Mathematics', false);
+INSERT INTO tag VALUES (8013, 'Mathematik', false);
 INSERT INTO tag VALUES (8014, 'Software Engineering', false);
 INSERT INTO tag VALUES (8015, 'VSS', true);
 INSERT INTO tag VALUES (8016, 'APF', true);
@@ -40,7 +40,7 @@ INSERT INTO exoluser VALUES (8002, 'Blubberduck', 'blubberduck@hsr.ch', '', true
 --Exercise
 INSERT INTO exercise VALUES (8004, '<p>Was ist der Nachteil von Quicksort?</p>', '2016-02-17 12:03:12', 'Quicksort', 8003);
 INSERT INTO exercise VALUES (8003, '<p>Welche Sortierungsmethode ist die Beste?</p>', '2016-02-17 05:52:16', 'Sortieren', 8003);
-INSERT INTO exercise VALUES (8001, '<p>What''s the opposite of false?</p>', '2016-02-17 03:04:05', 'Basic Logic', 8000);
+INSERT INTO exercise VALUES (8001, '<p>Was ist das Gegenteil von false?</p>', '2016-02-17 03:04:05', 'Basic Logic', 8000);
 INSERT INTO exercise VALUES (8007, '<p>Was ist die erste Ableitung von y=5x?</p>
 
 <p>y''=???</p>', '2015-12-02 08:00:02', 'Ableitung 1a)', 8002);
@@ -89,7 +89,7 @@ INSERT INTO exercise VALUES (8002, '<p>Wie teuer ist eine Suchoperation eines AV
 
 <p>L&ouml;sung in O-Notation angeben.</p>', '2016-02-17 23:55:34', 'AVL-Tree Suchkosten', 8002);
 
-INSERT INTO exercise VALUES (8000, '<p>Whats 1+2?</p>', '2015-01-08 00:00:00', 'Basic Math', 8000);
+INSERT INTO exercise VALUES (8000, '<p>Was gibt 1+2?</p>', '2015-01-08 00:00:00', 'Grundlegende Mathematik', 8000);
 --ExcerciseTag
 INSERT INTO exercise_tag VALUES (8000, 8000);
 INSERT INTO exercise_tag VALUES (8000, 8010);
@@ -124,9 +124,9 @@ INSERT INTO exercise_tag VALUES (8012, 8003);
 --Solution
 INSERT INTO solution VALUES (8013, '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>', '2016-04-03 00:00:00', false, 8005, 8012);
 INSERT INTO solution VALUES (8014, '<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.</p>', '2016-04-03 00:00:00', false, 8007, 8012);
-INSERT INTO solution VALUES (8001, '<p>It''s 3.</p>', '2016-03-05 23:53:23', true, 8000, 8000);
-INSERT INTO solution VALUES (8002, '<p>It is true.</p>', '2016-03-27 15:07:47', false, 8001, 8001);
-INSERT INTO solution VALUES (8003, '<p>It is very true...</p>', '2016-04-02 07:44:10', false, 8001, 8000);
+INSERT INTO solution VALUES (8001, '<p>Es ist 3.</p>', '2016-03-05 23:53:23', true, 8000, 8000);
+INSERT INTO solution VALUES (8002, '<p>Ich denke es ist true.</p>', '2016-03-27 15:07:47', false, 8001, 8001);
+INSERT INTO solution VALUES (8003, '<p>Es ist true...</p>', '2016-04-02 07:44:10', false, 8001, 8000);
 INSERT INTO solution VALUES (8004, '<p>H&auml;ngt sehr von der Definiton von + ab. Standartm&auml;ssig ist es 3.</p>', '2015-02-22 22:22:22', false, 8000, 8002);
 INSERT INTO solution VALUES (8005, '<p>log(n)</p>', '2015-12-31 23:59:59', true, 8002, 8002);
 INSERT INTO solution VALUES (8015, '<p>y''=5</p>', '2015-12-04 00:00:00', true, 8007, 8002);
@@ -155,7 +155,7 @@ INSERT INTO solution VALUES (8008, '<p>a) kA</p>
 
 <p>b) kA,&nbsp;Nur f&uuml;r die L&ouml;sung hier</p>', '2016-03-19 05:59:23', false, 8005, 8011);
 INSERT INTO solution VALUES (8006, '<p>50CHF?</p>', '2016-01-01 00:00:00', true, 8002, 8001);
-INSERT INTO solution VALUES (8000, '<p>It''s obviously 4</p>', '2016-03-05 19:55:23', false, 8000, 8001);
+INSERT INTO solution VALUES (8000, '<p>Es ist nat&uuml;rlich 4</p>', '2016-03-05 19:55:23', false, 8000, 8001);
 INSERT INTO solution VALUES (8012, '<p><a href="http://www.iamhans.com">http://www.iamhans.com</a></p>', '2016-04-08 04:02:58', false, 8005, 8001);
 --Track
 INSERT INTO track VALUES (8000, 8000, 8000);
