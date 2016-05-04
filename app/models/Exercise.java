@@ -29,13 +29,14 @@ public class Exercise extends Post {
     @Formula(select = "(SELECT coalesce(sum(value),0) FROM vote v INNER JOIN exercise e ON v.exercise_id = e.id WHERE e.id = ${ta}.id)")
     private long points;
 
-    @OneToMany(mappedBy = "exercise")
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
     private List<Solution> solutions;
 
-    @OneToMany(mappedBy = "exercise")
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
     private List<Vote> votes;
 
-    @ManyToMany
+
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "exercise_tag",
             joinColumns = @JoinColumn(name = "exercise_id", referencedColumnName = "id"),
@@ -47,10 +48,10 @@ public class Exercise extends Post {
     @NotNull
     private User user;
 
-    @OneToMany(mappedBy = "exercise")
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
     private List<Report> reports;
 
-    @OneToMany(mappedBy = "exercise")
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
     public String getTitle() {
@@ -141,6 +142,15 @@ public class Exercise extends Post {
         return exercise;
     }
 
+    public static void delete(long id){
+        Exercise exercise = findById(id);
+        exercise.delete();
+    }
+
+    public static Model.Finder<Long, Exercise> find() {
+        return new Finder<>(Exercise.class);
+    }
+
     /**
      * Returns a Paged List with the given filters and order
      *
@@ -183,4 +193,5 @@ public class Exercise extends Post {
             return t1.isMainTag() ? -1 : 1;
         }).collect(Collectors.toList());
     }
+
 }

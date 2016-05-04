@@ -21,6 +21,9 @@
         <span class="meta time">
         @exercise.getTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
         </span>
+        <span class="meta delete">
+            <a href="@routes.ExerciseController.delete(exercise.getId)" data-method="Delete">Del</a>
+        </span>
 
         <div class = "box">
             <a id="upVoteExercise" class = "up" onclick="upVoteExercise(@exercise.getId)" >&#9650;</a>

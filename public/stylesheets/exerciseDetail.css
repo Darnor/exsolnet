@@ -139,6 +139,11 @@ i {
     top: 47%;
 }
 
+.delete {
+    position: absolute;
+    right:2em;
+}
+
 
 .box {
 

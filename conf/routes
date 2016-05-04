@@ -16,6 +16,7 @@ POST        /exercises/create               controllers.ExerciseController.proce
 POST        /exercises/:id/update           controllers.ExerciseController.processUpdate(id: Long)
 POST        /exercises/:id/upvote           controllers.ExerciseController.upVote(id: Long)
 POST        /exercises/:id/downvote         controllers.ExerciseController.downVote(id: Long)
+GET        /exercises/:id/delete           controllers.ExerciseController.delete(id: Long)
 
 GET         /exercises/:id                  controllers.ExerciseDetailController.renderExerciseDetail(id: Long)
 GET         /exercises/:id/createsolution   controllers.ExerciseDetailController.renderCreateSolution(id: Long)

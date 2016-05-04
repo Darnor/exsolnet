@@ -78,6 +78,18 @@ public class ExerciseController extends Controller {
     }
 
     /**
+     * deletes an exercise cascading!
+     *
+     * @param id id of to deleting exercise
+     * @return
+     */
+    public Result delete(Long id) {
+        Exercise.delete(id);
+        Logger.info("Exercise " + id +" deleted by " + SessionService.getCurrentUserEmail());
+        return redirect(routes.ExerciseController.renderOverview());
+    }
+
+    /**
      * render if create Exercise. Creates new blank exercise with id -1.
      * id -1 is important. And passes session of current user.
      *
