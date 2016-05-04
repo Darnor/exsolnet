@@ -19,11 +19,9 @@ import views.html.error404;
 import views.html.exerciseList;
 
 import javax.inject.Inject;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -59,21 +57,12 @@ public class ExerciseController extends Controller {
         tableHeaderMap.put(4, TIME_FIELD);
     }
 
-    private static List<Tag> createTagList(Tag.Type type, String... tagNames) {
-        return Arrays.asList(tagNames).stream()
-                .map(String::trim)
-                .filter(t -> t.length() > 0)
-                .distinct()
-                .map(s -> {
-                    Tag tag = Tag.findTagByName(s);
-                    return tag == null ? Tag.create(s, type) : tag;
-                })
-                .collect(Collectors.toList());
-    }
-
     private static void validateFormData(String title, String mainTag, String content) {
+        if (title == null || mainTag == null || content == null) {
+            throw new IllegalArgumentException("Formdata not valid. (null values)");
+        }
         if (title.trim().length() == 0 || mainTag.trim().length() == 0 || content.trim().length() == 0) {
-            throw new IllegalArgumentException("Formdata not valid.");
+            throw new IllegalArgumentException("Formdata not valid. (empty values)");
         }
     }
 
@@ -111,7 +100,6 @@ public class ExerciseController extends Controller {
     public Result renderOverview() {
         return renderList(0, 1, "", "");
     }
-
 
     /**
      * render the ExerciseOverview View with given Parameters
@@ -158,8 +146,13 @@ public class ExerciseController extends Controller {
 
         validateFormData(title, mainTag, content);
 
-        List<Tag> tags = createTagList(Tag.Type.MAIN, mainTag);
-        tags.addAll(createTagList(Tag.Type.NORMAL, request().body().asFormUrlEncoded().get(OTHER_TAG_FIELD)));
+        List<Tag> tags = Tag.createTagList(Tag.Type.MAIN, mainTag);
+
+        String[] otherTags = request().body().asFormUrlEncoded().get(OTHER_TAG_FIELD);
+
+        if (otherTags != null) {
+            tags.addAll(Tag.createTagList(Tag.Type.NORMAL, otherTags));
+        }
 
         if (exerciseId == null) {
             Exercise.create(title, content, tags, currentUser);

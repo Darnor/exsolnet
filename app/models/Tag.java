@@ -5,8 +5,10 @@ import models.builders.TagBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "tag")
@@ -126,5 +128,17 @@ public class Tag extends Model {
      */
     public static List<Tag> findTagsByType(Type type){
         return find().where().eq(COLUMN_IS_MAIN_TAG, type.value).orderBy(COLUMN_TAG_NAME).findList();
+    }
+
+    public static List<Tag> createTagList(Type type, String... tagNames) {
+        return Arrays.stream(tagNames)
+                .map(String::trim)
+                .filter(t -> t.length() > 0)
+                .distinct()
+                .map(s -> {
+                    Tag tag = findTagByName(s);
+                    return tag == null ? create(s, type) : tag;
+                })
+                .collect(Collectors.toList());
     }
 }
