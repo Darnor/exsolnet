@@ -9,6 +9,7 @@ import static org.fluentlenium.core.filter.FilterConstructor.withText;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
+import static play.test.Helpers.FIREFOX;
 
 public class TagListIT extends AbstractIntegrationTest {
 
@@ -20,7 +21,7 @@ public class TagListIT extends AbstractIntegrationTest {
 
     @Test
     public void testTrackUntrack() {
-        as(FRANZ, browser -> {
+        as(FRANZ,FIREFOX, browser -> {
             browser.goTo(TAGS_PATH);
             assertThat(browser.pageSource(), is(matches("input.*" + AD2_TAG_ID + ".*" + TRACK_STR)));
             browser.click("#track_" + AD2_TAG_ID);
