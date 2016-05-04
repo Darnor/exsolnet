@@ -23,7 +23,7 @@ INSERT INTO tag VALUES (8019, 'Clean Code', false);
 INSERT INTO tag VALUES (8020, 'Error Handling', false);
 INSERT INTO tag VALUES (8021, 'Funktion', false);
 INSERT INTO tag VALUES (8022, 'Allgemein', true);
---Exoluser
+--
 INSERT INTO exoluser VALUES (8000, 'Franz', 'franz@hsr.ch', '', false);
 INSERT INTO exoluser VALUES (8003, 'Simon', 'simon@hsr.ch', '', false);
 INSERT INTO exoluser VALUES (8005, 'Denarya', 'denarya@hsr.ch', '', false);
@@ -167,7 +167,7 @@ INSERT INTO track VALUES (8005, 8009, 8010);
 INSERT INTO track VALUES (8006, 8012, 8006);
 INSERT INTO track VALUES (8007, 8008, 8000);
 --Comment
-INSERT INTO comment VALUES (8000, 'Yes, yes i agree very much.', 8001, 8001, NULL, '2016-04-01 08:23:42');
+INSERT INTO comment VALUES (8000, 'Bist du dir da wirklich sicher das dies stimmt?', 8001, 8001, NULL, '2016-04-01 08:23:42');
 INSERT INTO comment VALUES (8001, 'HOW CAN YOU BE SO WRONG!', 8000, 8000, NULL, '2016-03-27 14:52:19');
 INSERT INTO comment VALUES (8002, 'Was heisst O-Notation? noch nie gehört davon..', 8001, NULL, 8002, '2016-04-07 17:55:12');
 INSERT INTO comment VALUES (8003, 'Vielleicht wäre (was sind die Kosten) besser gewesen wie (Wie teuer ist)', 8004, NULL, 8002, '2016-04-07 18:12:55');
