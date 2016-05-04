@@ -5,8 +5,10 @@ import models.Vote;
 import play.Logger;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import services.SessionService;
 
+@Security.Authenticated(Secured.class)
 public class SolutionController extends Controller {
 
     public Result upVote(Long solutionId) {
