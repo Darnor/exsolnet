@@ -78,7 +78,7 @@ public class Vote extends Model {
         this.user = user;
     }
 
-    public static Model.Finder<Long, Vote> find() {
+    private static Model.Finder<Long, Vote> find() {
         return new Finder<>(Vote.class);
     }
 
@@ -94,7 +94,7 @@ public class Vote extends Model {
         Exercise exercise = post instanceof Exercise ? (Exercise)post : ExerciseBuilder.anExercise().build();
         Solution solution = post instanceof Solution ? (Solution)post : SolutionBuilder.aSolution().build();
 
-        Vote vote = Vote.find().where().eq(COLUMN_USER_ID, user.getId()).and(eq(COLUMN_SOLUTION_ID, solution.getId()), eq(COLUMN_EXERCISE_ID, exercise.getId())).findUnique();
+        Vote vote = find().where().eq(COLUMN_USER_ID, user.getId()).and(eq(COLUMN_SOLUTION_ID, solution.getId()), eq(COLUMN_EXERCISE_ID, exercise.getId())).findUnique();
         if (vote == null) {
             VoteBuilder.aVote().withUser(user).withValue(value).withExercise(exercise).withSolution(solution).build().save();
         } else if (vote.getValue() != value) {

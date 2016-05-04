@@ -11,7 +11,7 @@ public class UserTest extends AbstractApplicationTest {
     @Test
     public void checkIfAuthenticateReturnsUserExistingWithEmail(){
         String testemail = "hans@hsr.ch";
-        User existingUser = User.findUserByEmail(testemail);
+        User existingUser = User.findByEmail(testemail);
         assertNotNull(existingUser);
         Long userId = existingUser.getId();
 
@@ -24,7 +24,7 @@ public class UserTest extends AbstractApplicationTest {
     @Test
     public void checkIfAuthenticateReturnsUserExistingWithUsername(){
         String testusername = "Hans";
-        User existingUser = User.findUserByUsername(testusername);
+        User existingUser = User.findByUsername(testusername);
         assertNotNull(existingUser);
         Long userId = existingUser.getId();
 
@@ -37,14 +37,14 @@ public class UserTest extends AbstractApplicationTest {
     @Test
     public void testHasSolved(){
         String testusername = "Franz";
-        User user = User.findUserByUsername(testusername);
+        User user = User.findByUsername(testusername);
         assertTrue(user.hasSolved(8000));
     }
 
     @Test
     public void testHasNotSolved(){
         String testusername = "Franz";
-        User user = User.findUserByUsername(testusername);
+        User user = User.findByUsername(testusername);
         assertFalse(user.hasSolved(8007));
     }
 
@@ -53,9 +53,9 @@ public class UserTest extends AbstractApplicationTest {
         String testUserFranz = "Franz";
         String testUserHans = "Hans";
         String testUserBlubberduck = "Blubberduck";
-        User userFranz = User.findUserByUsername(testUserFranz);
-        User userHans = User.findUserByUsername(testUserHans);
-        User userBlubberduck = User.findUserByUsername(testUserBlubberduck);
+        User userFranz = User.findByUsername(testUserFranz);
+        User userHans = User.findByUsername(testUserHans);
+        User userBlubberduck = User.findByUsername(testUserBlubberduck);
         assertEquals(-1,userFranz.getPoints());
         assertEquals(-13,userHans.getPoints());
         assertEquals(8,userBlubberduck.getPoints());

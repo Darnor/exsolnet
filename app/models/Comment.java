@@ -96,6 +96,10 @@ public class Comment extends Model {
         this.solution = solution;
     }
 
+    public static Model.Finder<Long, Comment> find(){
+        return new Model.Finder<>(Comment.class);
+    }
+
     /**
      * @param user
      * @return a list of recent comments that have been added to user's posts
@@ -106,10 +110,6 @@ public class Comment extends Model {
                 .orderBy("time desc")
                 .setMaxRows(NOF_RECENT_COMMENTS)
                 .findList();
-    }
-
-    public static Model.Finder<Long, Comment> find(){
-        return new Model.Finder<>(Comment.class);
     }
 
 }

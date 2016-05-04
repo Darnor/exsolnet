@@ -13,7 +13,7 @@ public class SolutionTest extends AbstractApplicationTest {
     @Test
     @Ignore("Claudia pls fix")
     public void testCreateSolutions() {
-        Solution.create("content", Exercise.findById(8000L), User.findUserByUsername("Franz"));
+        Solution.create("content", Exercise.findById(8000L), User.findByUsername("Franz"));
         List<Solution> fromdb = Exercise.findById(8000L).getSolutions();
         assertEquals("It's obviously 4", fromdb.get(0).getContent());
         assertEquals("content", fromdb.get(1).getContent());

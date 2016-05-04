@@ -86,14 +86,14 @@ public class Solution extends Post {
         this.votes = votes;
     }
 
+    public static Model.Finder<Long, Solution> find() {
+        return new Finder<>(Solution.class);
+    }
+
     public static Solution create(String content, Exercise exercise, User user) {
         Solution solution = SolutionBuilder.aSolution().withExercise(exercise).withContent(content).withUser(user).build();
         solution.save();
         return solution;
-    }
-
-    public static Model.Finder<Long, Solution> find() {
-        return new Finder<>(Solution.class);
     }
 
     /**
@@ -103,11 +103,10 @@ public class Solution extends Post {
      * @return the solution from the db with the given id, null if it doesnt exist, nullpointer exception if id is null
      */
     public static Solution findById(Long id) {
-        return find().where().eq("id", id).findUnique();
+        return find().byId(id);
     }
 
     public long getPoints() {
         return points;
     }
-
 }

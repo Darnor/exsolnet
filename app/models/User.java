@@ -10,6 +10,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static models.Tracking.COLUMN_USER_ID;
+
 @Entity
 @Table(name = "exoluser")
 public class User extends Model {
@@ -55,7 +57,7 @@ public class User extends Model {
     private List<Vote> votes;
 
     @OneToMany
-    @JoinColumn(name = Tracking.COLUMN_USER_ID)
+    @JoinColumn(name = COLUMN_USER_ID)
     private List<Tracking> trackings;
 
     public Long getId() {
@@ -158,6 +160,10 @@ public class User extends Model {
         return solutions.stream().filter(s -> s.getExercise().getTags().contains(tag)).count();
     }
 
+    public static Model.Finder<Long, User> find() {
+        return new Finder<>(User.class);
+    }
+
     /**
      * Authenticates the user depending on email/Username and password combination.
      * Password is ignored for now, should in later stages be hashed and compared with value in database
@@ -169,7 +175,7 @@ public class User extends Model {
      * @return user
      */
     public static User authenticate(String userLogin, String password) {
-        User user = userLogin.contains("@") ? findUserByEmail(userLogin) : findUserByUsername(userLogin);
+        User user = userLogin.contains("@") ? findByEmail(userLogin) : findByUsername(userLogin);
         return user != null && user.password.equals(password) ? user : null;
     }
 
@@ -179,7 +185,7 @@ public class User extends Model {
      * @param email
      * @return User
      */
-    public static User findUserByEmail(String email) {
+    public static User findByEmail(String email) {
         return find().where().ieq(COLUMN_EMAIL, email).findUnique();
     }
 
@@ -189,7 +195,7 @@ public class User extends Model {
      * @param username
      * @return User
      */
-    public static User findUserByUsername(String username) {
+    public static User findByUsername(String username) {
         return find().where().ieq(COLUMN_USERNAME, username).findUnique();
     }
 
@@ -221,14 +227,7 @@ public class User extends Model {
         user.update();
     }
 
-    /**
-     * Return Finder Object for DB's queries.
-     * <p>
-     * CARE: should not be used! may be removed on next version
-     *
-     * @return Finder for User Models
-     */
-    public static Model.Finder<Long, User> find() {
-        return new Finder<>(User.class);
+    public static User findById(Long id) {
+        return find().byId(id);
     }
 }

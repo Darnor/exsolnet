@@ -124,7 +124,7 @@ public class ExerciseController extends Controller {
      */
     public Result renderEdit(long id) {
         User currentUser = SessionService.getCurrentUser();
-        Exercise exercise = Exercise.find().byId(id);
+        Exercise exercise = Exercise.findById(id);
 
         if (exercise == null) {
             return notFound(error404.render(currentUser, "Aufgabe nicht gefunden"));

@@ -75,7 +75,7 @@ public class UserController extends Controller {
 
     public Result renderUser(long userId) {
         User currentUser = SessionService.getCurrentUser();
-        User viewedUser = User.find().byId(userId);
+        User viewedUser = User.findById(userId);
         if (currentUser == null || viewedUser == null) {
             return notFound(error404.render(currentUser, "User not found!"));
         }

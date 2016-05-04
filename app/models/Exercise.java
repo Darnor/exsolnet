@@ -115,6 +115,10 @@ public class Exercise extends Post {
         return points;
     }
 
+    public static Model.Finder<Long, Exercise> find() {
+        return new Finder<>(Exercise.class);
+    }
+
     private void fillData(String title, String content, List<Tag> tags, User user) {
         this.setTitle(title);
         this.setContent(content);
@@ -130,17 +134,13 @@ public class Exercise extends Post {
     }
 
     public static Exercise update(long id, String title, String content, List<Tag> tags, User user) {
-        Exercise exercise = find().byId(id);
+        Exercise exercise = findById(id);
         if (exercise == null) {
             throw new IllegalArgumentException("Invalid exercise id");
         }
         exercise.fillData(title, content, tags, user);
         exercise.update();
         return exercise;
-    }
-
-    public static Model.Finder<Long, Exercise> find() {
-        return new Finder<>(Exercise.class);
     }
 
     /**
@@ -169,7 +169,7 @@ public class Exercise extends Post {
      * @return the exercise from the db with the given id, null if it doesnt exist, nullpointer exception if id is null
      */
     public static Exercise findById(Long id) {
-        return find().where().eq("id", id).findUnique();
+        return find().byId(id);
     }
 
     /**

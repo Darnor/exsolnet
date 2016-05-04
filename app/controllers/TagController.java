@@ -57,7 +57,7 @@ public class TagController extends Controller {
      */
     public Result processTrack(Long tagId) {
         User currentUser = SessionService.getCurrentUser();
-        Tag tag = Tag.findTagById(tagId);
+        Tag tag = Tag.findById(tagId);
         Tracking tracking = currentUser.getTrackings().stream().filter(t -> t.getTag().getId().equals(tag.getId())).findFirst().orElse(null);
         if (tracking == null) {
             TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build().save();

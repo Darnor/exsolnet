@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.support.ui.Select;
 
+import static models.Exercise.find;
 import static org.hamcrest.core.StringContains.containsString;
 import static play.test.Helpers.FIREFOX;
 
@@ -36,7 +37,7 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
 
             browser.submit("#save");
 
-            Exercise newExercise = Exercise.find().where().eq("title", title).findUnique();
+            Exercise newExercise = find().where().eq("title", title).findUnique();
             Assert.assertNotNull(newExercise);
             Assert.assertEquals(title,newExercise.getTitle());
             Assert.assertThat(newExercise.getContent(),containsString(content));
@@ -47,7 +48,7 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
     @Test
     public void testUpdate() {
         as(FRANZ, FIREFOX, browser -> {
-            Exercise updateExercise = Exercise.find().where().eq("id", 8000L).findUnique();
+            Exercise updateExercise = Exercise.findById(8000L);
 
             Assert.assertNotNull(updateExercise);
 
@@ -59,7 +60,7 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
             fillCKEditor(browser, content);
             browser.submit("#save");
 
-            Exercise newExercise = Exercise.find().where().eq("id", 8000L).findUnique();
+            Exercise newExercise = Exercise.findById(8000L);
 
             Assert.assertNotNull(newExercise);
             Assert.assertEquals(newExercise.getTitle(), title);

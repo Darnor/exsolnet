@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
 @Table(name="track")
 public class Tracking extends Model {
 
-    public static final String COLUMN_TAG_ID = "tag_id";
-    public static final String COLUMN_USER_ID = "user_id";
+    static final String COLUMN_TAG_ID = "tag_id";
+    static final String COLUMN_USER_ID = "user_id";
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
