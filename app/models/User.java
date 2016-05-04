@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.Formula;
 import models.builders.UserBuilder;
+import util.MD5Util;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -229,5 +230,9 @@ public class User extends Model {
 
     public static User findById(Long id) {
         return find().byId(id);
+    }
+
+    public String getGravatarHash(){
+        return MD5Util.md5Hex(getEmail());
     }
 }

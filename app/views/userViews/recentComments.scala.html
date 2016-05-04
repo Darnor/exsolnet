@@ -13,7 +13,7 @@
                 <small>
                     @comment.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
                     -
-                    <a href="@routes.UserController.renderUser(comment.getUser.getId)">@comment.getUser.getUsername</a>
+                    <a href="@routes.UserController.renderUser(comment.getUser.getId)">@snippets.gravatar(comment.getUser, 16) @comment.getUser.getUsername</a>
                     auf
 
                     @if(comment.getExercise != null) {

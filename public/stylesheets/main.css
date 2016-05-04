@@ -98,3 +98,8 @@ body {
 .selected{
     font-weight: bold;
 }
+
+.user-section img{
+    padding-right: 2rem;
+
+}

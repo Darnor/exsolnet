@@ -3,6 +3,9 @@
 @main(user.getUsername, user){
 
     <div class="user-section">
+        <div class="pull-left">
+            @snippets.gravatar(user, 100)
+        </div>
         <h1>@user.getUsername</h1>
         <form>
             <button formmethod="GET" type="submit" id="btn_edit" class="btn btn-default" formaction="@routes.UserController.renderEdit()">Edit</button>
@@ -10,7 +13,7 @@
         </form>
     </div>
 
-    <h3>Deine gefolgten Tags</h3>
+    <h3 stlye="clear:both">Deine gefolgten Tags</h3>
     <div class="followed-tags">
         @followedTags
     </div>

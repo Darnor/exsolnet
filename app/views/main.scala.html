@@ -48,7 +48,15 @@
                         <li><a href=@routes.TagController.renderTagList()>Module &amp; Tags</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li>@if(user==null) { <a href="@routes.LoginController.renderLogin()">Login</a> } else { <a href="@routes.UserController.renderDashboard()">@user.getUsername @user.getPoints</a> }</li>
+                        <li>@if(user==null) {
+                            <a href="@routes.LoginController.renderLogin()">Login</a>
+                        } else {
+                            <a href="@routes.UserController.renderDashboard()">
+                                @snippets.gravatar(user, 16)
+                                @user.getUsername
+                                @user.getPoints
+                            </a>
+                        }</li>
                     </ul>
                 </div>
             </div>
