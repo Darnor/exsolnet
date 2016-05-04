@@ -1,6 +1,6 @@
-function upVoteSolution(id){
+function upVoteSolution(id) {
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
+    xhttp.onreadystatechange = function () {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
             document.getElementById("solutionPoints" + id).innerHTML = xhttp.responseText;
         }
@@ -9,9 +9,9 @@ function upVoteSolution(id){
     xhttp.send();
 }
 
-function downVoteSolution(id){
+function downVoteSolution(id) {
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
+    xhttp.onreadystatechange = function () {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
             document.getElementById("solutionPoints" + id).innerHTML = xhttp.responseText;
         }
@@ -20,9 +20,9 @@ function downVoteSolution(id){
     xhttp.send();
 }
 
-function upVoteExercise(id){
+function upVoteExercise(id) {
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
+    xhttp.onreadystatechange = function () {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
             document.getElementById("exercisePoints").innerHTML = xhttp.responseText;
         }
@@ -31,9 +31,9 @@ function upVoteExercise(id){
     xhttp.send();
 }
 
-function downVoteExercise(id){
+function downVoteExercise(id) {
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
+    xhttp.onreadystatechange = function () {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
             document.getElementById("exercisePoints").innerHTML = xhttp.responseText;
         }
@@ -42,19 +42,29 @@ function downVoteExercise(id){
     xhttp.send();
 }
 
-function trackTag(tagId){
+function trackTag(tagId) {
     var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
+    xhttp.onreadystatechange = function () {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
-            if(document.getElementById("track_" + tagId).getAttribute("class") == "btn btn-success btn-block"){
-                document.getElementById("track_" + tagId).setAttribute("class","btn btn-primary btn-block");
-                document.getElementById("track_" + tagId).setAttribute("value","Folgen");
-            }else{
-                document.getElementById("track_" + tagId).setAttribute("class","btn btn-success btn-block");
-                document.getElementById("track_" + tagId).setAttribute("value","Nicht mehr folgen");
+            if (document.getElementById("track_" + tagId).getAttribute("class") == "btn btn-success btn-block") {
+                document.getElementById("track_" + tagId).setAttribute("class", "btn btn-primary btn-block");
+                document.getElementById("track_" + tagId).setAttribute("value", "Folgen");
+            } else {
+                document.getElementById("track_" + tagId).setAttribute("class", "btn btn-success btn-block");
+                document.getElementById("track_" + tagId).setAttribute("value", "Nicht mehr folgen");
             }
         }
     };
     xhttp.open("POST", "/tags/track?tagId=" + tagId, true);
     xhttp.send();
+}
+
+function deleteExercise(exerciseId) {
+    $.ajax({
+        type: "DELETE",
+        url: "/exercises/" + exerciseId + "/delete",
+        complete: function (xhttp) {
+            top.location.href = "/exercises"
+        }
+    });
 }

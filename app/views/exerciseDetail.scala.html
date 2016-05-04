@@ -21,9 +21,12 @@
         <span class="meta time">
         @exercise.getTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
         </span>
-        <span class="meta delete">
-            <a href="@routes.ExerciseController.delete(exercise.getId)" data-method="Delete">Del</a>
-        </span>
+        @if(user.isModerator || user.getId == exercise.getUser.getId) {
+            <span class="meta delete">
+                <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src='@routes.Assets.versioned("images/garbage-1.png")'"
+                onmouseout="this.src='@routes.Assets.versioned("images/garbage.png")'" onclick="deleteExercise(@exercise.getId)">
+            </span>
+        }
 
         <div class = "box">
             <a id="upVoteExercise" class = "up" onclick="upVoteExercise(@exercise.getId)" >&#9650;</a>

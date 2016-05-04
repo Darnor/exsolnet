@@ -142,8 +142,17 @@ i {
 .delete {
     position: absolute;
     right:2em;
+    height:20px;
+    display: inline-block;
 }
 
+.delete > img {
+    height: 100%;
+}
+
+.delete:hover {
+    cursor: pointer;
+}
 
 .box {
 

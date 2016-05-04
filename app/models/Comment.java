@@ -24,7 +24,7 @@ public class Comment extends Model {
     @NotNull
     private User user;
 
-    @OneToMany(mappedBy = "comment")
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
     private List<Report> reports;
 
     @ManyToOne

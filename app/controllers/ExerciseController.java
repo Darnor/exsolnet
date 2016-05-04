@@ -86,7 +86,7 @@ public class ExerciseController extends Controller {
     public Result delete(Long id) {
         Exercise.delete(id);
         Logger.info("Exercise " + id +" deleted by " + SessionService.getCurrentUserEmail());
-        return redirect(routes.ExerciseController.renderOverview());
+        return ok("Exercise deleted");
     }
 
     /**
