@@ -18,7 +18,7 @@
             }">
             <div class="container-fluid">
                 <div class="row">
-                    <input class="input_title" oninvalid="this.setCustomValidity('Bitte einen Titel setzten.')" required id="title" placeholder="Titel der Aufgabe" type="text" name="title" value="@exercise.getTitle"/>
+                    <input class="input_title" oninvalid="setCustomValidity('Bitte einen Titel setzen.')" oninput="setCustomValidity('')" required id="title" placeholder="Titel der Aufgabe" type="text" name="title" value="@exercise.getTitle"/>
 
                     <textarea name="content" required id="content" rows="10" cols="80">
                     @exercise.getContent
@@ -26,7 +26,6 @@
                     <script>
                             CKEDITOR.replace('content');
                     </script>
-
 
                     <div class="form-group  input_tag_top">
                         <label for="maintag">Modul: </label>
