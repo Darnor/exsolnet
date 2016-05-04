@@ -2,7 +2,7 @@
 
 @main(user.getUsername, user){
 
-    <h1>Benutzerinfos:</h1>
+    <h3>Benutzerinfos:</h3>
     <li>
         Benutzername: @viewedUser.getUsername
     </li>
@@ -10,22 +10,17 @@
         Punkte: @viewedUser.getPoints
     </li>
 
-
-    <h1>@viewedUser.getUsername's gefolgte Tags:</h1>
+    <h3>@viewedUser.getUsername's gefolgte Tags:</h3>
     <div class="followed-tags">
         @followedTags
     </div>
 
-    @if(viewedUser.getComments.size > 0) {
-        <h1>@viewedUser.getUsername's letzte Kommentare:</h1>
-        <div class="recent-comments">
+    <h3>@viewedUser.getUsername's letzte Kommentare:</h3>
+    <div class="recent-comments">
         @recentComments
-        </div>
-    }
+    </div>
 
-
-
-    <h1>@viewedUser.getUsername's erstellte Übungen</h1>
+    <h3>@viewedUser.getUsername's erstellte Übungen</h3>
     <div class="user-exercises">
         @userExercises
     </div>

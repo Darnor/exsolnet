@@ -1,34 +1,38 @@
 @import java.time.format.DateTimeFormatter
-@(exercises: java.util.List[Exercise])
+@(user: User, viewedUser: User)
 
-@if(exercises.size() == 0){
+@if(user == viewedUser && viewedUser.getExercises.size == 0){
     <p>Du hast noch keine Aufgaben erstellt. Klicke <a href="@routes.ExerciseController.renderCreate()">hier</a>,
         um eine neue Aufgabe zu erstellen.</p>
 } else {
-    @exercises.map { exercise =>
-        <div class="exercisedetail @if(exercise.getPoints < 0) { item-red } else {
-            @if(exercise.getPoints > 0) { item-green } else { item-blue}
-        }">
-            <span class="item" >
-                <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">
-                @exercise.getTitle
-                </a>
-                <p>@exercise.getTags.map(x => x.getName).mkString(", ")</p>
-            </span>
-            <span class="meta user">
-                <a href="@routes.UserController.renderUser(exercise.getUser.getId)">
-                @exercise.getUser.getUsername
-                </a>
-            </span>
-            <span class="meta count">
-            @exercise.getSolutions.size
-            </span>
-            <span class="meta points">
-            @exercise.getPoints
-            </span>
-            <span class="meta time">
-            @exercise.getTime().format(DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm:ss"))
-            </span>
-        </div>
+    @if(viewedUser.getExercises.size == 0) {
+        <p>@viewedUser.getUsername hat noch keine Aufgaben erstellt.</p>
+    } else {
+        @viewedUser.getExercises.map { exercise =>
+            <div class="exercisedetail @if(exercise.getPoints < 0) { item-red } else {
+                @if(exercise.getPoints > 0) { item-green } else { item-blue}
+            }">
+                <span class="item" >
+                    <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">
+                    @exercise.getTitle
+                    </a>
+                    <p>@exercise.getTags.map(x => x.getName).mkString(", ")</p>
+                </span>
+                <span class="meta user">
+                    <a href="@routes.UserController.renderUser(exercise.getUser.getId)">
+                    @exercise.getUser.getUsername
+                    </a>
+                </span>
+                <span class="meta count">
+                @exercise.getSolutions.size
+                </span>
+                <span class="meta points">
+                @exercise.getPoints
+                </span>
+                <span class="meta time">
+                @exercise.getTime().format(DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm:ss"))
+                </span>
+            </div>
+        }
     }
 }

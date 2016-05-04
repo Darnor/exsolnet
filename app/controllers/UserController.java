@@ -46,9 +46,9 @@ public class UserController extends Controller {
         User currentUser = SessionService.getCurrentUser();
         return ok(userDashboard.render(
                 currentUser,
-                followedTags.apply(currentUser, currentUser.getTrackedTags()),
-                recentComments.apply(currentUser.getRecentComments()),
-                userExerciseList.apply(currentUser.getExercises()),
+                followedTags.apply(currentUser, currentUser),
+                recentComments.apply(currentUser, currentUser),
+                userExerciseList.apply(currentUser, currentUser),
                 userSolutionList.apply(currentUser.getSolutions())
         ));
     }
@@ -87,9 +87,9 @@ public class UserController extends Controller {
         List<Tag> tags = viewedUser.getTrackedTags();
         return ok(externalUserView.render(currentUser,
                 viewedUser,
-                followedTags.apply(viewedUser, tags),
-                recentComments.apply(viewedUser.getComments()),
-                userExerciseList.apply(viewedUser.getExercises())
+                followedTags.apply(currentUser, viewedUser),
+                recentComments.apply(currentUser, viewedUser),
+                userExerciseList.apply(currentUser, viewedUser)
         ));
     }
 }

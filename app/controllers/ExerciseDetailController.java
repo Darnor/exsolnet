@@ -18,7 +18,6 @@ import views.html.exerciseViews.exerciseSolutionList;
 import javax.inject.Inject;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Security.Authenticated(Secured.class)
 public class ExerciseDetailController extends Controller {
@@ -103,10 +102,7 @@ public class ExerciseDetailController extends Controller {
     }
 
     static List<Solution> getFirstNoOfSolutions(List<Solution> solutions, int n) {
-        return IntStream.range(0, n)
-                .mapToObj(i -> (solutions.size() > i) ? solutions.get(i) : null)
-                .filter(s -> s != null)
-                .collect(Collectors.toList());
+        return solutions.stream().limit(n).collect(Collectors.toList());
     }
 
     static List<Solution> getTimeSortedSolutions(List<Solution> solutions) {

@@ -1,18 +1,22 @@
-@(user: User, tags: java.util.List[Tag])
+@(user: User, viewedUser: User)
 
-@if(tags.size == 0){
+@if(user == viewedUser && viewedUser.getTrackedTags.size == 0){
     <p>Du kannst Module und Tags die Dich interessieren hier anzeigen lassen, um schnell Zugriff darauf zu erhalten
         und anzuzeigen, wie viele Aufgaben du noch zu lösen hast.
         Klicke <a href="@routes.TagController.renderOverview()">hier</a>, um Module zu finden.</p>
 } else {
-<ul>
-    @tags.map{ tag =>
-        <li>
-            <a href="@routes.ExerciseController.renderList(0, 0, "", tag.getName)">
-            @tag.getName
-            </a>
-            (@user.getNofCompletedExercisesByTag(tag)/@tag.getExercises.size())
-        </li>
+    @if(viewedUser.getTrackedTags.size() == 0) {
+        <p>@viewedUser.getUsername folgt noch keinen Tags.</p>
+    } else {
+        <ul>
+        @viewedUser.getTrackedTags.map { tag =>
+            <li>
+                <a href="@routes.ExerciseController.renderList(0, 0, "", tag.getName)">
+                @tag.getName
+                </a>
+                (@user.getNofCompletedExercisesByTag(tag)/@tag.getExercises.size())
+            </li>
+        }
+        </ul>
     }
-</ul>
 }

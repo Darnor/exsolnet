@@ -5,8 +5,8 @@ import models.builders.*;
 import org.junit.Test;
 import play.twirl.api.Content;
 import views.html.userDashboard;
-import views.html.userViews.recentComments;
 import views.html.userViews.followedTags;
+import views.html.userViews.recentComments;
 import views.html.userViews.userExerciseList;
 import views.html.userViews.userSolutionList;
 
@@ -30,9 +30,9 @@ public class DashboardViewTest extends AbstractViewTest{
         User user = UserBuilder.anUser().withId(1L).withUsername("Franz").build();
         Content html = userDashboard.render(
                 user,
-                followedTags.render(user, new ArrayList<>()),
-                recentComments.render(new ArrayList<>()),
-                userExerciseList.render(new ArrayList<>()),
+                followedTags.render(user, user),
+                recentComments.render(user, user),
+                userExerciseList.render(user, user),
                 userSolutionList.render(new ArrayList<>())
         );
         assertEquals("text/html", html.contentType());
@@ -64,11 +64,16 @@ public class DashboardViewTest extends AbstractViewTest{
 
         User user = anUser().withId(1L).withSolutions(solutions).build();
 
+        Tracking t1 = TrackingBuilder.aTracking().withId(1L).withUser(user).withTag(aTag).build();
+        Tracking t2 = TrackingBuilder.aTracking().withId(2L).withUser(user).withTag(bTag).build();
+
+        user.setTrackings(Arrays.asList(t1, t2));
+
         Content html = userDashboard.render(
                 user,
-                followedTags.render(user, Arrays.asList(aTag, bTag)),
-                recentComments.render(new ArrayList<>()),
-                userExerciseList.render(new ArrayList<>()),
+                followedTags.render(user, user),
+                recentComments.render(user, user),
+                userExerciseList.render(user, user),
                 userSolutionList.render(new ArrayList<>())
         );
         assertEquals("text/html", html.contentType());
@@ -89,11 +94,15 @@ public class DashboardViewTest extends AbstractViewTest{
         comments.add(comment.but().withContent("Comment 4").build());
         comments.add(comment.but().withContent("Comment 5").build());
 
+        Exercise e1 = ExerciseBuilder.anExercise().withId(1L).withUser(commenter).withComments(comments).build();
+
+        commenter.setExercises(Arrays.asList(e1));
+
         Content html = userDashboard.render(
                 commenter,
-                followedTags.render(commenter, new ArrayList<>()),
-                recentComments.render(comments),
-                userExerciseList.render(new ArrayList<>()),
+                followedTags.render(commenter, commenter),
+                recentComments.render(commenter, commenter),
+                userExerciseList.render(commenter, commenter),
                 userSolutionList.render(new ArrayList<>())
         );
         assertEquals("text/html", html.contentType());
@@ -115,11 +124,15 @@ public class DashboardViewTest extends AbstractViewTest{
         comments.add(comment.but().withContent("Comment 4").build());
         comments.add(comment.but().withContent("Comment 5").build());
 
+        Solution s1 = SolutionBuilder.aSolution().withId(1L).withUser(commenter).withComments(comments).build();
+
+        commenter.setSolutions(Arrays.asList(s1));
+
         Content html = userDashboard.render(
                 commenter,
-                followedTags.render(commenter, new ArrayList<>()),
-                recentComments.render(comments),
-                userExerciseList.render(new ArrayList<>()),
+                followedTags.render(commenter, commenter),
+                recentComments.render(commenter, commenter),
+                userExerciseList.render(commenter, commenter),
                 userSolutionList.render(new ArrayList<>())
         );
         assertEquals("text/html", html.contentType());
