@@ -86,7 +86,7 @@ public class ExerciseController extends Controller {
      */
     public Result delete(Long id) {
         User currentUser = SessionService.getCurrentUser();
-        if (currentUser.isModerator() || currentUser.getId() == Exercise.findById(id).getUser().getId()) {
+        if (currentUser.isModerator() || currentUser.getId().equals(Exercise.findById(id).getUser().getId())) {
             Exercise.delete(id);
             Logger.info("Exercise " + id + " deleted by " + SessionService.getCurrentUserEmail());
             return ok("Exercise deleted");

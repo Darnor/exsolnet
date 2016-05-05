@@ -24,14 +24,31 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.ExerciseController.delete(8000L))
-                            .session("connected", "Mario")
+                            .session("connected", "mario@hsr.ch")
             );
-            assertThat(result.body().dataStream().toString(), is("not allowed"));
             assertThat(result.status(), is(UNAUTHORIZED));
         });
     }
 
     @Test
-    public void
+    public void testModeratorDelete() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.ExerciseController.delete(8002L))
+                            .session("connected", "blubberduck@hsr.ch")
+            );
+            assertThat(result.status(), is(OK));
+        });
+    }
 
+    @Test
+    public void testAuthorizedOnAllowedDeleteAtempt() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.ExerciseController.delete(8000L))
+                            .session("connected", "franz@hsr.ch")
+            );
+            assertThat(result.status(), is(OK));
+        });
+    }
 }

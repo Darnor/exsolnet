@@ -97,9 +97,9 @@ public class ExerciseTest extends AbstractApplicationTest {
         assertNotNull(Exercise.findById(exerciseIdToDelete));
         Exercise.delete(8000L);
         assertNull(Exercise.findById(exerciseIdToDelete));
-        assertNull(Solution.find().where().eq("exercise_id", exerciseIdToDelete));
-        assertNull(Vote.find().where().eq("exercise_id", exerciseIdToDelete));
-        assertNull(Report.find().where().eq("exercise_id", exerciseIdToDelete));
-        assertNull(Comment.find().where().eq("exercise_id", exerciseIdToDelete));
+        assertNull(Solution.find().where().eq("exercise_id", exerciseIdToDelete).findUnique());
+        assertNull(Vote.find().where().eq("exercise_id", exerciseIdToDelete).findUnique());
+        assertNull(Report.find().where().eq("exercise_id", exerciseIdToDelete).findUnique());
+        assertNull(Comment.find().where().eq("exercise_id", exerciseIdToDelete).findUnique());
     }
 }
