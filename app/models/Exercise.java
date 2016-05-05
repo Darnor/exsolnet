@@ -138,6 +138,10 @@ public class Exercise extends Post {
         return exercise;
     }
 
+    /**
+     * Delete exercise cascading
+     * @param id exerciseId to delete
+     */
     public static void delete(long id){
         Exercise exercise = findById(id);
         exercise.delete();

@@ -79,14 +79,20 @@ public class ExerciseController extends Controller {
 
     /**
      * deletes an exercise cascading!
+     * checks if user is moderator or owner of exercise
      *
      * @param id id of to deleting exercise
      * @return
      */
     public Result delete(Long id) {
-        Exercise.delete(id);
-        Logger.info("Exercise " + id +" deleted by " + SessionService.getCurrentUserEmail());
-        return ok("Exercise deleted");
+        User currentUser = SessionService.getCurrentUser();
+        if (currentUser.isModerator() || currentUser.getId() == Exercise.findById(id).getUser().getId()) {
+            Exercise.delete(id);
+            Logger.info("Exercise " + id + " deleted by " + SessionService.getCurrentUserEmail());
+            return ok("Exercise deleted");
+        }else{
+            return unauthorized("not allowed");
+        }
     }
 
     /**
@@ -175,6 +181,7 @@ public class ExerciseController extends Controller {
 
     /**
      * Create a new exercise from the Form Data
+     *
      * @return redirect to the exercise overview
      */
     public Result processCreate() {

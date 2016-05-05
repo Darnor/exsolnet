@@ -9,6 +9,8 @@ import org.junit.Test;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class ExerciseTest extends AbstractApplicationTest {
 
@@ -87,5 +89,17 @@ public class ExerciseTest extends AbstractApplicationTest {
     @Test
     public void testPointsNoVotes(){
         assertEquals(0, Exercise.findById(8008L).getPoints());
+    }
+
+    @Test
+    public void testCascadingDelete(){
+        long exerciseIdToDelete = 8000L;
+        assertNotNull(Exercise.findById(exerciseIdToDelete));
+        Exercise.delete(8000L);
+        assertNull(Exercise.findById(exerciseIdToDelete));
+        assertNull(Solution.find().where().eq("exercise_id", exerciseIdToDelete));
+        assertNull(Vote.find().where().eq("exercise_id", exerciseIdToDelete));
+        assertNull(Report.find().where().eq("exercise_id", exerciseIdToDelete));
+        assertNull(Comment.find().where().eq("exercise_id", exerciseIdToDelete));
     }
 }

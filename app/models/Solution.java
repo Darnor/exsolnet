@@ -110,6 +110,10 @@ public class Solution extends Post {
         return points;
     }
 
+    /**
+     * deletes Solution cascading
+     * @param id solutionId to delete
+     */
     public static void delete(Long id) {
         Solution solution = findById(id);
         solution.delete();

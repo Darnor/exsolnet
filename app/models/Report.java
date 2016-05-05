@@ -93,4 +93,8 @@ public class Report extends Model {
     public void setComment(Comment comment) {
         this.comment = comment;
     }
+
+    public static Model.Finder<Long, Report> find() {
+        return new Finder<>(Report.class);
+    }
 }
