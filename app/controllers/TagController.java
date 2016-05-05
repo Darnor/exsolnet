@@ -85,7 +85,7 @@ public class TagController extends Controller {
         return ok(tagList.render(currentUser, tags, trackedTags, orderBy, tagNameFilter));
     }
 
-    public Result queryTagName(String tagName) {
+    public Result processTagNameQuery(String tagName) {
         return ok(Json.toJson(Tag.getSuggestedTags(tagName).stream().map(t -> new TagEntry(t.getName())).collect(Collectors.toList())));
     }
 

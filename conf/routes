@@ -28,7 +28,7 @@ DELETE      /solutions/:id/delete           controllers.SolutionController.proce
 
 GET         /tags                           controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
 GET         /tags                           controllers.TagController.renderOverview
-GET         /tags/query                     controllers.TagController.queryTagName(q ?= "")
+GET         /tags/query                     controllers.TagController.processTagNameQuery(q ?= "")
 POST        /tags/track                     controllers.TagController.processTrack(tagId: Long)
 
 GET         /login                          controllers.LoginController.renderLogin

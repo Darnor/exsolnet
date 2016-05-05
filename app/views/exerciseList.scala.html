@@ -29,7 +29,7 @@
         <input type="hidden" name="sort" value="@currentOrderBy" />
         <input type="search" class="form-control" id="title-filter" name="title" value="@currentTitleFilter" placeholder="Titel-Filter"/>
         <p>Tag-Filter: </p>
-        <input type="search" class="form-control" id="tag-filter-list" name="tags" value="@currentTagFilter" placeholder="Tag-Filter" data-route="@routes.TagController.queryTagName("")"/>
+        <input type="search" class="form-control" id="tag-filter-list" name="tags" value="@currentTagFilter" placeholder="Tag-Filter" data-route="@routes.TagController.processTagNameQuery("")"/>
         <input type="submit" class="btn btn-primary btn-default" id="submit-filter" value="Suche"/>
     </form>
 
