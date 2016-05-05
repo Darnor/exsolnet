@@ -64,7 +64,7 @@ public class SecuredAuthenticatorTest {
     public void authenticateWithUserFormData(){
         running(fakeApplication(), () -> {
             Result result = route(
-                    fakeRequest(routes.LoginController.login())
+                    fakeRequest(routes.LoginController.processLogin())
                             .bodyForm(ImmutableMap.of(
                                     "emailorusername", "Franz",
                                     "password", ""

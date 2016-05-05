@@ -32,7 +32,7 @@ public class LoginController extends Controller {
      * redirect to the user dashboard
      * @return Result
      */
-    public Result login() {
+    public Result processLogin() {
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String name = requestData.get("emailorusername");
         String password = requestData.get("password");
@@ -70,7 +70,7 @@ public class LoginController extends Controller {
      * logout the user
      * @return Result
      */
-    public Result logout() {
+    public Result processLogout() {
         SessionService.clear();
         return redirect(routes.UserController.renderDashboard());
     }

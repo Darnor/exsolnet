@@ -23,7 +23,7 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
     public void testUnauthorizedOnUnallowedDeleteAtempt() {
         running(fakeApplication(), () -> {
             Result result = route(
-                    fakeRequest(routes.ExerciseController.delete(8000L))
+                    fakeRequest(routes.ExerciseController.processDelete(8000L))
                             .session("connected", "mario@hsr.ch")
             );
             assertThat(result.status(), is(UNAUTHORIZED));
@@ -34,7 +34,7 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
     public void testModeratorDelete() {
         running(fakeApplication(), () -> {
             Result result = route(
-                    fakeRequest(routes.ExerciseController.delete(8002L))
+                    fakeRequest(routes.ExerciseController.processDelete(8002L))
                             .session("connected", "blubberduck@hsr.ch")
             );
             assertThat(result.status(), is(OK));
@@ -45,7 +45,7 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
     public void testAuthorizedOnAllowedDeleteAtempt() {
         running(fakeApplication(), () -> {
             Result result = route(
-                    fakeRequest(routes.ExerciseController.delete(8000L))
+                    fakeRequest(routes.ExerciseController.processDelete(8000L))
                             .session("connected", "franz@hsr.ch")
             );
             assertThat(result.status(), is(OK));

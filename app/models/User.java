@@ -205,11 +205,11 @@ public class User extends Model {
     /**
      * Checks if the User has solved the exercise
      *
-     * @param id of the exercise
+     * @param exerciseId of the exercise
      * @return boolean
      */
-    public boolean hasSolved(long id) {
-        return solutions.stream().filter(s -> s.getExercise().getId().equals(id)).findFirst().orElse(null) != null;
+    public boolean hasSolved(long exerciseId) {
+        return solutions.stream().parallel().filter(s -> s.getExercise().getId().equals(exerciseId)).findFirst().orElse(null) != null;
     }
 
     public static User create(String username, String email, String password, boolean isModerator) {

@@ -82,17 +82,16 @@ public class ExerciseController extends Controller {
      * checks if user is moderator or owner of exercise
      *
      * @param id id of to deleting exercise
-     * @return
+     * @return ok if exercise has been deleted or unauthorized if user is not allowed to delete this exercise
      */
-    public Result delete(Long id) {
+    public Result processDelete(Long id) {
         User currentUser = SessionService.getCurrentUser();
         if (currentUser.isModerator() || currentUser.getId().equals(Exercise.findById(id).getUser().getId())) {
             Exercise.delete(id);
-            Logger.info("Exercise " + id + " deleted by " + SessionService.getCurrentUserEmail());
+            Logger.info("Exercise " + id + " deleted by " + currentUser.getEmail());
             return ok("Exercise deleted");
-        }else{
-            return unauthorized("not allowed");
         }
+        return unauthorized("not allowed");
     }
 
     /**
@@ -200,14 +199,14 @@ public class ExerciseController extends Controller {
         return redirect(routes.ExerciseController.renderOverview());
     }
 
-    public Result upVote(Long exerciseId) {
+    public Result processUpvote(Long exerciseId) {
         Logger.info("Up Vote Exercise " + exerciseId);
         Exercise exercise = Exercise.findById(exerciseId);
         Vote.upvote(SessionService.getCurrentUser(), exercise);
         return ok(String.valueOf(Exercise.findById(exerciseId).getPoints()));
     }
 
-    public Result downVote(Long exerciseId) {
+    public Result processDownvote(Long exerciseId) {
         Logger.info("Down Vote Exercise " + exerciseId);
         Exercise exercise = Exercise.findById(exerciseId);
         Vote.downvote(SessionService.getCurrentUser(), exercise);

@@ -12,14 +12,14 @@ import services.SessionService;
 @Security.Authenticated(Secured.class)
 public class SolutionController extends Controller {
 
-    public Result upVote(Long solutionId) {
+    public Result processUpvote(Long solutionId) {
         Logger.info("Up Vote Solution " + solutionId);
         Solution solution = Solution.findById(solutionId);
         Vote.upvote(SessionService.getCurrentUser(), solution);
         return ok(String.valueOf(Solution.findById(solutionId).getPoints()));
     }
 
-    public Result downVote(Long solutionId) {
+    public Result processDownvote(Long solutionId) {
         Logger.info("Down Vote Solution " + solutionId);
         Solution solution = Solution.findById(solutionId);
         Vote.downvote(SessionService.getCurrentUser(), solution);
@@ -30,16 +30,15 @@ public class SolutionController extends Controller {
      * deletes a solution cascading!
      *
      * @param id id of to deleting solution
-     * @return
+     * @return ok if solution has been deleted or unauthorized if user is not allowed to delete this solution
      */
-    public Result delete(Long id) {
+    public Result processDelete(Long id) {
         User currentUser = SessionService.getCurrentUser();
-        if (currentUser.isModerator() || currentUser.getId() == Solution.findById(id).getUser().getId()) {
+        if (currentUser.isModerator() || currentUser.getId().equals(Solution.findById(id).getUser().getId())) {
             Solution.delete(id);
-            Logger.info("Solution " + id + " deleted by " + SessionService.getCurrentUserEmail());
+            Logger.info("Solution " + id + " deleted by " + currentUser.getEmail());
             return ok("Solution deleted");
-        } else {
-            return unauthorized("not allowed");
         }
+        return unauthorized("not allowed");
     }
 }

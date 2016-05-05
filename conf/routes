@@ -12,30 +12,30 @@ GET         /exercises                      controllers.ExerciseController.rende
 GET         /exercises                      controllers.ExerciseController.renderOverview
 GET         /exercises/create               controllers.ExerciseController.renderCreate
 GET         /exercises/:id/edit             controllers.ExerciseController.renderEdit(id: Long)
-DELETE      /exercises/:id/delete           controllers.ExerciseController.delete(id: Long)
+DELETE      /exercises/:id/delete           controllers.ExerciseController.processDelete(id: Long)
 POST        /exercises/create               controllers.ExerciseController.processCreate
 POST        /exercises/:id/update           controllers.ExerciseController.processUpdate(id: Long)
-POST        /exercises/:id/upvote           controllers.ExerciseController.upVote(id: Long)
-POST        /exercises/:id/downvote         controllers.ExerciseController.downVote(id: Long)
+POST        /exercises/:id/upvote           controllers.ExerciseController.processUpvote(id: Long)
+POST        /exercises/:id/downvote         controllers.ExerciseController.processDownvote(id: Long)
 
 GET         /exercises/:id                  controllers.ExerciseDetailController.renderExerciseDetail(id: Long)
 GET         /exercises/:id/createsolution   controllers.ExerciseDetailController.renderCreateSolution(id: Long)
 POST        /exercises/:id/solution         controllers.ExerciseDetailController.processUpdate(id: Long)
 
-POST        /solutions/:id/upvote           controllers.SolutionController.upVote(id: Long)
-POST        /solutions/:id/downvote         controllers.SolutionController.downVote(id: Long)
-DELETE      /solutions/:id/delete           controllers.SolutionController.delete(id: Long)
+POST        /solutions/:id/upvote           controllers.SolutionController.processUpvote(id: Long)
+POST        /solutions/:id/downvote         controllers.SolutionController.processDownvote(id: Long)
+DELETE      /solutions/:id/delete           controllers.SolutionController.processDelete(id: Long)
 
 GET         /tags                           controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
 GET         /tags                           controllers.TagController.renderOverview
-GET         /tags/query                     controllers.TagController.suggestTags(q ?= "")
+GET         /tags/query                     controllers.TagController.queryTagName(q ?= "")
 POST        /tags/track                     controllers.TagController.processTrack(tagId: Long)
 
 GET         /login                          controllers.LoginController.renderLogin
 GET         /register                       controllers.LoginController.renderRegister
 POST        /register                       controllers.LoginController.processRegister
-POST        /login                          controllers.LoginController.login
-POST        /logout                         controllers.LoginController.logout
+POST        /login                          controllers.LoginController.processLogin
+POST        /logout                         controllers.LoginController.processLogout
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                   controllers.Assets.versioned(path="/public", file: Asset)

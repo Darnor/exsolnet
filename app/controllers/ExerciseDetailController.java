@@ -75,6 +75,7 @@ public class ExerciseDetailController extends Controller {
      */
     public Result renderSolutions(Long exerciseId) {
         Exercise exercise = Exercise.findById(exerciseId);
+        User currentUser = SessionService.getCurrentUser();
 
         List<Solution> solutions = getPointSortedSolutions(exercise.getSolutions());
 
@@ -88,12 +89,12 @@ public class ExerciseDetailController extends Controller {
         solutions.removeAll(latestSolutions);
 
         return ok(exerciseSolutions.render(
-                SessionService.getCurrentUser(),
+                currentUser,
                 exercise,
-                exerciseSolutionList.apply(officialSolutions, SessionService.getCurrentUser(), exerciseId),
-                exerciseSolutionList.apply(topSolutions, SessionService.getCurrentUser(), exerciseId ),
-                exerciseSolutionList.apply(latestSolutions, SessionService.getCurrentUser(), exerciseId),
-                exerciseSolutionList.apply(solutions, SessionService.getCurrentUser(), exerciseId)
+                exerciseSolutionList.apply(officialSolutions, currentUser, exerciseId),
+                exerciseSolutionList.apply(topSolutions, currentUser, exerciseId ),
+                exerciseSolutionList.apply(latestSolutions, currentUser, exerciseId),
+                exerciseSolutionList.apply(solutions, currentUser, exerciseId)
         ));
     }
 

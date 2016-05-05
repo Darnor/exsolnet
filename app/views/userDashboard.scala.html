@@ -9,7 +9,7 @@
         <h1>@user.getUsername</h1>
         <form>
             <button formmethod="GET" type="submit" id="btn_edit" class="btn btn-default" formaction="@routes.UserController.renderEdit()">Edit</button>
-            <button formmethod="POST" type="submit" id="btn_logout" class="btn btn-default" formaction="@routes.LoginController.logout()">Logout</button>
+            <button formmethod="POST" type="submit" id="btn_logout" class="btn btn-default" formaction="@routes.LoginController.processLogout()">Logout</button>
         </form>
     </div>
 
