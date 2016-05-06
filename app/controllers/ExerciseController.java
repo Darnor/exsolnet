@@ -90,8 +90,9 @@ public class ExerciseController extends Controller {
             Exercise.delete(id);
             Logger.info("Exercise " + id + " deleted by " + currentUser.getEmail());
             return ok("Exercise deleted");
-        }
-        return unauthorized("not allowed");
+        }else{
+            return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Aufgabe zu editieren"));
+				}
     }
 
     /**
@@ -148,7 +149,7 @@ public class ExerciseController extends Controller {
         }
 
         if (!exercise.getUser().getId().equals(currentUser.getId())) {
-            return notFound(error403.render(currentUser, "Keine Berechtigungen diese Aufgabe zu editieren"));
+            return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Aufgabe zu editieren"));
         }
 
         return ok(editExercise.render(currentUser, exercise, Tag.findTagsByType(Tag.Type.MAIN), Tag.findTagsByType(Tag.Type.NORMAL)));
