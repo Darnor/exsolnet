@@ -92,14 +92,10 @@ public class ExerciseTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void testCascadingDelete(){
+    public void testExerciseDelete(){
         long exerciseIdToDelete = 8000L;
         assertNotNull(Exercise.findById(exerciseIdToDelete));
-        Exercise.delete(8000L);
+        Exercise.delete(exerciseIdToDelete);
         assertNull(Exercise.findById(exerciseIdToDelete));
-        assertNull(Solution.find().where().eq("exercise_id", exerciseIdToDelete).findUnique());
-        assertNull(Vote.find().where().eq("exercise_id", exerciseIdToDelete).findUnique());
-        assertNull(Report.find().where().eq("exercise_id", exerciseIdToDelete).findUnique());
-        assertNull(Comment.find().where().eq("exercise_id", exerciseIdToDelete).findUnique());
     }
 }

@@ -42,13 +42,13 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void testAuthorizedOnAllowedDeleteAtempt() {
+    public void testUnauthorizedOnUnallowedDeleteAtemptSameUser() {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.ExerciseController.processDelete(8000L))
                             .session("connected", "franz@hsr.ch")
             );
-            assertThat(result.status(), is(OK));
+            assertThat(result.status(), is(UNAUTHORIZED));
         });
     }
 }
