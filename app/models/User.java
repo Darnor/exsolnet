@@ -88,6 +88,7 @@ public class User extends Model {
     }
 
     public List<Exercise> getExercises() {
+        exercises.removeIf(exercise -> exercise.isDeleted());
         return Collections.unmodifiableList(exercises);
     }
 
@@ -96,6 +97,7 @@ public class User extends Model {
     }
 
     public List<Solution> getSolutions() {
+        solutions.removeIf(solution -> solution.isDeleted());
         return Collections.unmodifiableList(solutions);
     }
 

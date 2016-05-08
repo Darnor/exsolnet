@@ -38,6 +38,9 @@ public class Solution extends Post {
     @Formula(select = "(SELECT coalesce(sum(value),0) FROM vote v INNER JOIN solution s ON v.solution_id = s.id WHERE s.id = ${ta}.id)")
     private long points;
 
+    @Column(columnDefinition = "boolean NOT NULL DEFAULT FALSE")
+    private boolean deleted;
+
     public User getUser() {
         return user;
     }
@@ -52,6 +55,14 @@ public class Solution extends Post {
 
     public void setExercise(Exercise exercise) {
         this.exercise = exercise;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 
     public boolean isOfficial() {
