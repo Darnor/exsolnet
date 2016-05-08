@@ -65,6 +65,9 @@
             @if(flash.containsKey("success")){
                 <div class="alert alert-success">
                 @flash.get("success")
+                    @if(flash.get("success").contains("gelöscht")){
+                        <button style="margin-left: 5px" class="btn-primary">Rückgängig</button>
+                    }
                 </div>
             }
             @if(flash.containsKey("error")){

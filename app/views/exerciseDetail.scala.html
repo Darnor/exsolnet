@@ -21,7 +21,7 @@
         <span class="meta time">
         @exercise.getTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
         </span>
-        @if(user.isModerator || user.getId == exercise.getUser.getId) {
+        @if(user.isModerator) {
             <span class="meta delete">
                 <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src='@routes.Assets.versioned("images/garbage-1.png")'"
                 onmouseout="this.src='@routes.Assets.versioned("images/garbage.png")'" onclick="deleteExercise(@exercise.getId)">

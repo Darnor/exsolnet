@@ -54,6 +54,9 @@ public class Exercise extends Post {
     @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
+    @Column(columnDefinition = "boolean NOT NULL DEFAULT FALSE")
+    private boolean deleted;
+
     public String getTitle() {
         return title;
     }
@@ -114,6 +117,14 @@ public class Exercise extends Post {
         return points;
     }
 
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     private void fillData(String title, String content, List<Tag> tags, User user) {
         this.setTitle(title);
         this.setContent(content);
@@ -144,7 +155,8 @@ public class Exercise extends Post {
      */
     public static void delete(long id){
         Exercise exercise = findById(id);
-        exercise.delete();
+        exercise.setDeleted(true);
+        exercise.save();
     }
 
     public static Model.Finder<Long, Exercise> find() {
@@ -167,6 +179,7 @@ public class Exercise extends Post {
         if (!"".equals(tagFilter[0])) {
             query.where().in("tags.name", Arrays.asList(tagFilter));
         }
+        query.where().eq("deleted", false);
         return query.orderBy(orderBy).findPagedList(pageNr, pageSize);
     }
 
@@ -177,7 +190,12 @@ public class Exercise extends Post {
      * @return the exercise from the db with the given id, null if it doesnt exist, nullpointer exception if id is null
      */
     public static Exercise findById(Long id) {
-        return find().byId(id);
+        Exercise exercise = find().byId(id);
+        if(exercise == null){
+            return null;
+        }else {
+            return exercise.isDeleted() ? null : exercise;
+        }
     }
 
     /**

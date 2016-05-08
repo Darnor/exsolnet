@@ -37,6 +37,7 @@ public class SolutionController extends Controller {
         if (currentUser.isModerator() || currentUser.getId().equals(Solution.findById(id).getUser().getId())) {
             Solution.delete(id);
             Logger.info("Solution " + id + " deleted by " + currentUser.getEmail());
+            flash("success", "Lösung gelöscht");
             return ok("Solution deleted");
         }
         return unauthorized("not allowed");
