@@ -1,5 +1,5 @@
 @(exercise: Exercise, user: User = null)
-<div class="list exercise-card @if(user != null && exercise.isSolvedBy(user)){item-blue} else {item-green}">
+<div class="list exercise-card @if(user != null && exercise.isSolvedBy(user)){item-blue} else {item-green}" onclick="window.location='@routes.ExerciseController.renderDetail(exercise.getId)'">
     <span class="item">
         <p class="title">
             <a href="@routes.ExerciseController.renderDetail(exercise.getId)">

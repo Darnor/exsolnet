@@ -5,9 +5,9 @@
         findest du eine Liste von interessanten Aufgaben.</p>
 } else {
     @for(solution <- solutions) {
-        <div class="listSolution  item-green">
+        <div class="listSolution list item-green" onclick="window.location='@routes.ExerciseController.renderDetail(solution.getExercise.getId)#s@solution.getId'">
             <span class="item" >
-                <a href="@routes.ExerciseController.renderDetail(solution.getExercise.getId)">@solution.getExercise.getTitle</a>
+                <a href="@routes.ExerciseController.renderDetail(solution.getExercise.getId)#s@solution.getId">@solution.getExercise.getTitle</a>
             </span>
             <span class="item"> @Html(solution.getContent) </span>
             <span class="meta user"> @snippets.userLink(solution.getUser) </span>
