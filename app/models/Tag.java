@@ -1,5 +1,6 @@
 package models;
 
+import com.avaje.ebean.Expr;
 import com.avaje.ebean.Model;
 import models.builders.TagBuilder;
 
@@ -123,7 +124,7 @@ public class Tag extends Model {
      * @return list of all tags that start with tagName
      */
     public static List<Tag> getSuggestedTags(String tagName) {
-        return find().where().istartsWith(COLUMN_NAME, tagName).orderBy(COLUMN_NAME).findList();
+        return find().where().or(Expr.istartsWith(COLUMN_NAME, tagName),Expr.istartsWith(COLUMN_LONGNAME,tagName)).orderBy(COLUMN_NAME).findList();
     }
 
     /**

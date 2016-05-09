@@ -86,13 +86,15 @@ public class TagController extends Controller {
     }
 
     public Result processTagNameQuery(String tagName) {
-        return ok(Json.toJson(Tag.getSuggestedTags(tagName).stream().map(t -> new TagEntry(t.getName())).collect(Collectors.toList())));
+        return ok(Json.toJson(Tag.getSuggestedTags(tagName).stream().map(t -> new TagEntry(t.getName(),t.getLongName())).collect(Collectors.toList())));
     }
 
     private class TagEntry{
         public final String name;
-        TagEntry(String name) {
+        public final String longname;
+        TagEntry(String name, String longname) {
             this.name = name;
+            this.longname = longname;
         }
     }
 }

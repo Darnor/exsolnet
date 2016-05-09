@@ -18,6 +18,7 @@ var DEFAULT_SETTINGS = {
     searchDelay: 300,
     minChars: 1,
     propertyToSearch: "name",
+    propertyToSearch2: "longname",
     jsonContainer: null,
 
 	// Display settings
@@ -43,7 +44,12 @@ var DEFAULT_SETTINGS = {
     idPrefix: "token-input-",
 
 	// Formatters
-    resultsFormatter: function(item){ return "<li>" + item[this.propertyToSearch]+ "</li>" },
+    resultsFormatter: function(item){
+        if(item[this.propertyToSearch2]==null){
+            return "<li>" + item[this.propertyToSearch]+ "</li>"
+        }else
+            return "<li>" + item[this.propertyToSearch]+ " - <span class='input-tag-longname'>" + item[this.propertyToSearch2] + "</span></li>"
+    },
     tokenFormatter: function(item) { return "<li><p>" + item[this.propertyToSearch] + "</p></li>" },
 
 	// Callbacks

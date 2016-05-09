@@ -101,5 +101,8 @@ body {
 
 .user-section img{
     padding-right: 2rem;
+}
 
+.input-tag-longname{
+    color: #95979d;
 }
