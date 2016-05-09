@@ -13,10 +13,6 @@ import views.html.editUser;
 import views.html.error404;
 import views.html.externalUserView;
 import views.html.userDashboard;
-import views.html.userViews.followedTags;
-import views.html.userViews.recentComments;
-import views.html.userViews.userExerciseList;
-import views.html.userViews.userSolutionList;
 
 import javax.inject.Inject;
 
@@ -29,19 +25,8 @@ public class UserController extends Controller {
     @Inject
     FormFactory formFactory;
 
-    /**
-     * Render the user dashboard route
-     * @return the result
-     */
     public Result renderDashboard() {
-        User currentUser = SessionService.getCurrentUser();
-        return ok(userDashboard.render(
-                currentUser,
-                followedTags.apply(currentUser, currentUser),
-                recentComments.apply(currentUser, currentUser),
-                userExerciseList.apply(currentUser, currentUser),
-                userSolutionList.apply(currentUser.getValidSolutions())
-        ));
+        return ok(userDashboard.render(SessionService.getCurrentUser()));
     }
 
     static boolean validateUserForm(String username, String email, String password, String passwordCheck) {
@@ -82,11 +67,6 @@ public class UserController extends Controller {
         if (currentUser.getId().equals(userId)) {
             return redirect(routes.UserController.renderDashboard());
         }
-        return ok(externalUserView.render(currentUser,
-                viewedUser,
-                followedTags.apply(currentUser, viewedUser),
-                recentComments.apply(currentUser, viewedUser),
-                userExerciseList.apply(currentUser, viewedUser)
-        ));
+        return ok(externalUserView.render(currentUser, viewedUser));
     }
 }

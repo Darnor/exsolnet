@@ -1,4 +1,4 @@
-@(user: User, viewedUser: User, followedTags: Html, recentComments: Html, userExercises: Html)
+@(user: User, viewedUser: User)
 
 @main(user.getUsername, user){
 
@@ -12,16 +12,16 @@
 
     <h3>@viewedUser.getUsername's gefolgte Tags:</h3>
     <div class="followed-tags">
-        @followedTags
+        @userViews.followedTags(user, viewedUser)
     </div>
 
     <h3>@viewedUser.getUsername's letzte Kommentare:</h3>
     <div class="recent-comments">
-        @recentComments
+        @userViews.recentComments(user, viewedUser)
     </div>
 
     <h3>@viewedUser.getUsername's erstellte Übungen</h3>
     <div class="user-exercises">
-        @userExercises
+        @userViews.userExerciseList(user, viewedUser)
     </div>
 }

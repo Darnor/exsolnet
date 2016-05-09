@@ -1,16 +1,16 @@
-@(solutions: java.util.List[Solution])
+@(user: User)
 
-@if(solutions.size() == 0){
+@if(user.getValidSolutions.size() == 0){
     <p>Du hast noch keine Aufgaben gelöst. <a href="@routes.ExerciseController.renderOverview()">Hier</a>
         findest du eine Liste von interessanten Aufgaben.</p>
 } else {
-    @for(solution <- solutions) {
+    @for(solution <- user.getValidSolutions) {
         <div class="listSolution list item-green" onclick="window.location='@routes.ExerciseController.renderDetail(solution.getExercise.getId)#s@solution.getId'">
             <span class="item" >
                 <a href="@routes.ExerciseController.renderDetail(solution.getExercise.getId)#s@solution.getId">@solution.getExercise.getTitle</a>
             </span>
             <span class="item"> @Html(solution.getContent) </span>
-            <span class="meta user"> @snippets.userLink(solution.getUser) </span>
+            <span class="meta user"> @snippets.userLink(user) </span>
             <span class="meta time"> @snippets.longDate(solution.getTime) </span>
             <div class="box boxnovote">
                 <span class="points">

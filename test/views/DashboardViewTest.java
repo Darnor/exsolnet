@@ -5,10 +5,6 @@ import models.builders.*;
 import org.junit.Test;
 import play.twirl.api.Content;
 import views.html.userDashboard;
-import views.html.userViews.followedTags;
-import views.html.userViews.recentComments;
-import views.html.userViews.userExerciseList;
-import views.html.userViews.userSolutionList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,13 +24,7 @@ public class DashboardViewTest extends AbstractViewTest{
     @Test
     public void usernameIsRendered() {
         User user = UserBuilder.anUser().withId(1L).withUsername("Franz").build();
-        Content html = userDashboard.render(
-                user,
-                followedTags.render(user, user),
-                recentComments.render(user, user),
-                userExerciseList.render(user, user),
-                userSolutionList.render(new ArrayList<>())
-        );
+        Content html = userDashboard.render(user);
         assertEquals("text/html", html.contentType());
         assertThat(html.body(), containsString("Franz"));
     }
@@ -64,8 +54,8 @@ public class DashboardViewTest extends AbstractViewTest{
         bTag.setExercises(exercisesB);
 
         List<Solution> solutions = new ArrayList<>();
-        solutions.add(SolutionBuilder.aSolution().withId(1L).withExercise(exercisesB.get(0)).build());
-        solutions.add(SolutionBuilder.aSolution().withId(2L).withExercise(exercisesB.get(2)).build());
+        solutions.add(SolutionBuilder.aSolution().withId(1L).withExercise(exercisesB.get(0)).withContent("").build());
+        solutions.add(SolutionBuilder.aSolution().withId(2L).withExercise(exercisesB.get(2)).withContent("").build());
 
         User user = anUser().withId(1L).withSolutions(solutions).build();
 
@@ -74,13 +64,7 @@ public class DashboardViewTest extends AbstractViewTest{
 
         user.setTrackings(Arrays.asList(t1, t2));
 
-        Content html = userDashboard.render(
-                user,
-                followedTags.render(user, user),
-                recentComments.render(user, user),
-                userExerciseList.render(user, user),
-                userSolutionList.render(new ArrayList<>())
-        );
+        Content html = userDashboard.render(user);
         assertEquals("text/html", html.contentType());
         assertThat(html.body(), matches("<a href=.*/exercises.*tags=A.*>.*A.*</a>.*0/2"));
         assertThat(html.body(), matches("<a href=.*/exercises.*tags=B.*>.*B.*</a>.*2/3"));
@@ -103,13 +87,7 @@ public class DashboardViewTest extends AbstractViewTest{
 
         commenter.setExercises(Arrays.asList(e1));
 
-        Content html = userDashboard.render(
-                commenter,
-                followedTags.render(commenter, commenter),
-                recentComments.render(commenter, commenter),
-                userExerciseList.render(commenter, commenter),
-                userSolutionList.render(new ArrayList<>())
-        );
+        Content html = userDashboard.render(commenter);
         assertEquals("text/html", html.contentType());
         assertThat(html.body(), matches("Comment 1.*Hans.*auf.*Basic Math.*"));
     }
@@ -129,17 +107,16 @@ public class DashboardViewTest extends AbstractViewTest{
         comments.add(comment.but().withContent("Comment 4").build());
         comments.add(comment.but().withContent("Comment 5").build());
 
-        Solution s1 = SolutionBuilder.aSolution().withId(1L).withUser(commenter).withComments(comments).build();
+        Exercise exercise = ExerciseBuilder.anExercise().withId(1L).build();
 
-        commenter.setSolutions(Arrays.asList(s1));
+        Solution s1 = SolutionBuilder.aSolution().withId(1L).withUser(commenter).withComments(comments).withExercise(exercise).build();
 
-        Content html = userDashboard.render(
-                commenter,
-                followedTags.render(commenter, commenter),
-                recentComments.render(commenter, commenter),
-                userExerciseList.render(commenter, commenter),
-                userSolutionList.render(new ArrayList<>())
-        );
+        List<Solution> solutions = new ArrayList<>();
+        solutions.add(s1);
+
+        commenter.setSolutions(solutions);
+
+        Content html = userDashboard.render(commenter);
         assertEquals("text/html", html.contentType());
         assertThat(html.body(), matches("Comment 1.*Hans.*auf.*Basic Math.*"));
     }

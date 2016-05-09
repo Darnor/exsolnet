@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.Formula;
 import models.builders.UserBuilder;
+import play.Logger;
 import util.MD5Util;
 
 import javax.persistence.*;
@@ -13,7 +14,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static models.Tracking.COLUMN_USER_ID;
-import static org.postgresql.hostchooser.HostRequirement.master;
 
 @Entity
 @Table(name = "exoluser")
