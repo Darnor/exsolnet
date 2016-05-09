@@ -1,6 +1,9 @@
 package controllers;
 
-import models.*;
+import models.Exercise;
+import models.Solution;
+import models.User;
+import models.Vote;
 import models.builders.SolutionBuilder;
 import play.Logger;
 import play.data.FormFactory;
@@ -42,14 +45,14 @@ public class SolutionController extends Controller {
      * @return ok if solution has been deleted or unauthorized if user is not allowed to delete this solution
      */
     public Result processDelete(Long id) {
-        long exercise_id = Solution.findValidById(id).getExercise().getId();
+        long exerciseId = Solution.findValidById(id).getExercise().getId();
         User currentUser = SessionService.getCurrentUser();
         if (currentUser.isModerator() || currentUser.getId().equals(Solution.findValidById(id).getUser().getId())) {
             Solution.delete(id);
             Logger.info("Solution " + id + " deleted by " + currentUser.getEmail());
             flash("success", "Lösung gelöscht");
             flash("solution_id", "" + id);
-            return redirect(routes.ExerciseController.renderDetail(exercise_id));
+            return redirect(routes.ExerciseController.renderDetail(exerciseId));
         }
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Lösung löschen"));
     }
@@ -61,12 +64,12 @@ public class SolutionController extends Controller {
      * @return
      */
     public Result processUndo(Long id) {
-        long exercise_id = Solution.findById(id).getExercise().getId();
+        long exerciseId = Solution.findById(id).getExercise().getId();
         User currentUser = SessionService.getCurrentUser();
         if (currentUser.isModerator() || currentUser.getId().equals(Solution.findById(id).getUser().getId())) {
             Solution.undoDelete(id);
             Logger.info("Solution " + id + " undo deletion by " + currentUser.getEmail());
-            return redirect(routes.ExerciseController.renderDetail(exercise_id));
+            return redirect(routes.ExerciseController.renderDetail(exerciseId));
         }
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen das Löschen dieser Lösung rückgängig zu machen"));
     }
@@ -74,11 +77,11 @@ public class SolutionController extends Controller {
     /**
      * renders an Formular with the Solution for edit
      *
-     * @param SolutionId the id of the Solution
+     * @param solutionId the id of the Solution
      * @return Result View of the detailed exercise with a edit solution formular.
      */
-    public Result renderUpdate(Long SolutionId) {
-        Solution solution = Solution.findById(SolutionId);
+    public Result renderUpdate(Long solutionId) {
+        Solution solution = Solution.findById(solutionId);
         return ok(editSolution.render(SessionService.getCurrentUser(), solution.getExercise(),solution));
     }
 
