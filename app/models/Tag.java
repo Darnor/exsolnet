@@ -28,6 +28,7 @@ public class Tag extends Model {
 
     private static final String COLUMN_IS_MAIN_TAG = "isMainTag";
     private static final String COLUMN_NAME = "name";
+    private static final String COLUMN_LONGNAME = "longname";
     private static final String COLUMN_TAGS = "tags";
 
     @Id
@@ -37,6 +38,9 @@ public class Tag extends Model {
     @Column(name = COLUMN_NAME, unique = true)
     @NotNull
     private String name;
+
+    @Column(name = COLUMN_LONGNAME, nullable = true)
+    private String longname;
 
     @Column(name = COLUMN_IS_MAIN_TAG)
     @NotNull
@@ -71,6 +75,14 @@ public class Tag extends Model {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getLongName() {
+        return longname;
+    }
+
+    public void setLongName(String longname) {
+        this.longname = longname;
     }
 
     public List<Exercise> getExercises() {
