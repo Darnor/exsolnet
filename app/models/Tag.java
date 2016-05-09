@@ -27,14 +27,14 @@ public class Tag extends Model {
     }
 
     private static final String COLUMN_IS_MAIN_TAG = "isMainTag";
-    private static final String COLUMN_TAG_NAME = "name";
+    private static final String COLUMN_NAME = "name";
     private static final String COLUMN_TAGS = "tags";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = COLUMN_TAG_NAME, unique = true)
+    @Column(name = COLUMN_NAME, unique = true)
     @NotNull
     private String name;
 
@@ -100,7 +100,7 @@ public class Tag extends Model {
     }
 
     public static List<Tag> getFilteredTags(String tagNameFilter) {
-        return find().where().icontains(COLUMN_TAG_NAME, tagNameFilter).orderBy(COLUMN_TAG_NAME).findList();
+        return find().where().icontains(COLUMN_NAME, tagNameFilter).orderBy(COLUMN_NAME).findList();
     }
 
     /**
@@ -111,7 +111,7 @@ public class Tag extends Model {
      * @return list of all tags that start with tagName
      */
     public static List<Tag> getSuggestedTags(String tagName) {
-        return find().where().istartsWith(COLUMN_TAG_NAME, tagName).orderBy(COLUMN_TAG_NAME).findList();
+        return find().where().istartsWith(COLUMN_NAME, tagName).orderBy(COLUMN_NAME).findList();
     }
 
     /**
@@ -121,7 +121,7 @@ public class Tag extends Model {
      * @return the tag or null if it doesnt exist
      */
     public static Tag findTagByName(String name) {
-        return find().where().ieq(COLUMN_TAG_NAME, name).findUnique();
+        return find().where().ieq(COLUMN_NAME, name).findUnique();
     }
 
     public static Tag findById(Long id) {
@@ -133,7 +133,7 @@ public class Tag extends Model {
      * @return all tags based in their types
      */
     public static List<Tag> findTagsByType(Type type){
-        return find().where().eq(COLUMN_IS_MAIN_TAG, type.value).orderBy(COLUMN_TAG_NAME).findList();
+        return find().where().eq(COLUMN_IS_MAIN_TAG, type.value).orderBy(COLUMN_NAME).findList();
     }
 
     public static List<Tag> createTagList(Type type, String... tagNames) {

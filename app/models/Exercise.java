@@ -19,7 +19,11 @@ import java.util.stream.Collectors;
 @Table(name = "exercise")
 public class Exercise extends Post {
 
+    private static final String COLUMN_TITLE = "title";
+    private static final String COLUMN_DELETED = "deleted";
+
     @Constraints.Required
+    @Column(name = COLUMN_TITLE)
     @NotNull
     private String title;
 
@@ -54,7 +58,7 @@ public class Exercise extends Post {
     @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    @Column(columnDefinition = "boolean NOT NULL DEFAULT FALSE")
+    @Column(columnDefinition = "boolean NOT NULL DEFAULT FALSE", name = COLUMN_DELETED)
     private boolean deleted;
 
     public String getTitle() {
@@ -175,11 +179,11 @@ public class Exercise extends Post {
      */
     public static PagedList<Exercise> getPagedList(int pageNr, String orderBy, String titleFilter, String[] tagFilter, int pageSize) {
         Query<Exercise> query = Ebean.createQuery(Exercise.class);
-        query.where().icontains("title", titleFilter);
+        query.where().icontains(COLUMN_TITLE, titleFilter);
         if (!"".equals(tagFilter[0])) {
             query.where().in("tags.name", Arrays.asList(tagFilter));
         }
-        query.where().eq("deleted", false);
+        query.where().eq(COLUMN_DELETED, false);
         return query.orderBy(orderBy).findPagedList(pageNr, pageSize);
     }
 
@@ -191,11 +195,7 @@ public class Exercise extends Post {
      */
     public static Exercise findById(Long id) {
         Exercise exercise = find().byId(id);
-        if(exercise == null){
-            return null;
-        }else {
-            return exercise.isDeleted() ? null : exercise;
-        }
+        return (exercise == null || exercise.isDeleted()) ? null : exercise;
     }
 
     /**
