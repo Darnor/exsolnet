@@ -20,7 +20,7 @@
             @if(user.isModerator || user.getId == solution.getUser.getId) {
                 <span class="meta delete">
                     <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src = '@routes.Assets.versioned("images/garbage-1.png")'"
-                    onmouseout="this.src = '@routes.Assets.versioned("images/garbage.png")'" onclick="deleteSolution(@solution.getId, @exerciseId)"
+                    onmouseout="this.src = '@routes.Assets.versioned("images/garbage.png")'" onclick="deleteSolution(@solution.getId, @exerciseId)"/>
                 </span>
             }
             <div class = "box">
