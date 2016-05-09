@@ -9,6 +9,7 @@ import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
 import views.html.error403;
+import views.html.editSolution;
 
 @Security.Authenticated(Secured.class)
 public class SolutionController extends Controller {
@@ -62,4 +63,16 @@ public class SolutionController extends Controller {
         }
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen das Löschen dieser Lösung rückgängig zu machen"));
     }
+
+    /**
+     * renders an Formular with the Solution for edit
+     *
+     * @param SolutionId the id of the Solution
+     * @return Result View of the detailed exercise with a edit solution formular.
+     */
+    public Result renderEditSolution(Long SolutionId) {
+        Solution solution = Solution.findById(SolutionId);
+        return ok(editSolution.render(SessionService.getCurrentUser(), solution.getExercise(),solution));
+    }
+
 }

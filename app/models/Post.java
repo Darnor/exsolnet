@@ -21,6 +21,9 @@ public class Post extends Model {
     @NotNull
     private LocalDateTime time = LocalDateTime.now();
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime lastchanged;
+
     public Long getId() {
         return id;
     }
@@ -43,5 +46,13 @@ public class Post extends Model {
 
     public void setTime(LocalDateTime time) {
         this.time = time;
+    }
+
+    public LocalDateTime getLastChanged() {
+        return lastchanged;
+    }
+
+    public void setLastChanged(LocalDateTime time) {
+        this.lastchanged = lastchanged;
     }
 }

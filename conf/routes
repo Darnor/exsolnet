@@ -25,9 +25,16 @@ POST        /exercises/:id/solution              controllers.ExerciseDetailContr
 POST        /exercises/:id/commentExercise  controllers.ExerciseDetailController.createCommentExercise(id: Long)
 POST        /exercises/:id/commentSolution  controllers.ExerciseDetailController.createCommentSolution(id: Long)
 
+<<<<<<< cc332f22a27099a351973e7bc368435243c8ad01
 POST        /solutions/:id/upvote                controllers.SolutionController.processUpvote(id: Long)
 POST        /solutions/:id/downvote              controllers.SolutionController.processDownvote(id: Long)
 GET         /solutions/:id/delete                controllers.SolutionController.processDelete(id: Long)
+=======
+GET         /solutions/:id/edit             controllers.SolutionController.renderEditSolution(id: Long)
+POST        /solutions/:id/upvote           controllers.SolutionController.processUpvote(id: Long)
+POST        /solutions/:id/downvote         controllers.SolutionController.processDownvote(id: Long)
+DELETE      /solutions/:id/delete           controllers.SolutionController.processDelete(id: Long)
+>>>>>>> add lastchangedfield to exercise/solution
 
 GET         /tags                                controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
 GET         /tags                                controllers.TagController.renderOverview
