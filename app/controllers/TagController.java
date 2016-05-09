@@ -22,6 +22,22 @@ public class TagController extends Controller {
     private static final String TAG_ORDER = "tagOrder";
 
     /**
+     * @param tagId Long containing the Tag Id which needs to be tracked or if tracked untracked
+     * @return renders the tagList again
+     */
+    public Result processTrack(Long tagId) {
+        User currentUser = SessionService.getCurrentUser();
+        Tag tag = Tag.findById(tagId);
+        Tracking tracking = currentUser.getTrackings().stream().filter(t -> t.getTag().getId().equals(tag.getId())).findFirst().orElse(null);
+        if (tracking == null) {
+            TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build().save();
+        } else {
+            tracking.delete();
+        }
+        return redirect(routes.TagController.renderTagList(Integer.parseInt(session(TAG_ORDER)), session(TAG_FILTER)));
+    }
+
+    /**
      * return a sorted list depending on the orderBy value
      * per default the list is sorted by the first column aka the tag name
      *
@@ -49,22 +65,6 @@ public class TagController extends Controller {
         }
 
         return tags;
-    }
-
-    /**
-     * @param tagId Long containing the Tag Id which needs to be tracked or if tracked untracked
-     * @return renders the tagList again
-     */
-    public Result processTrack(Long tagId) {
-        User currentUser = SessionService.getCurrentUser();
-        Tag tag = Tag.findById(tagId);
-        Tracking tracking = currentUser.getTrackings().stream().filter(t -> t.getTag().getId().equals(tag.getId())).findFirst().orElse(null);
-        if (tracking == null) {
-            TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build().save();
-        } else {
-            tracking.delete();
-        }
-        return redirect(routes.TagController.renderTagList(Integer.parseInt(session(TAG_ORDER)), session(TAG_FILTER)));
     }
 
     public Result renderOverview() {

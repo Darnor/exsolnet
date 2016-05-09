@@ -143,11 +143,15 @@ public class Exercise extends Post {
         return exercise;
     }
 
-    public static Exercise update(long id, String title, String content, List<Tag> tags, User user) {
-        Exercise exercise = findById(id);
+    private static void throwIfExerciseNull(Exercise exercise) {
         if (exercise == null) {
             throw new IllegalArgumentException("Invalid exercise id");
         }
+    }
+
+    public static Exercise update(long id, String title, String content, List<Tag> tags, User user) {
+        Exercise exercise = findById(id);
+        throwIfExerciseNull(exercise);
         exercise.fillData(title, content, tags, user);
         exercise.update();
         return exercise;
@@ -159,6 +163,7 @@ public class Exercise extends Post {
      */
     public static void delete(long id){
         Exercise exercise = findById(id);
+        throwIfExerciseNull(exercise);
         exercise.setDeleted(true);
         exercise.save();
     }

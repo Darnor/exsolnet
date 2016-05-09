@@ -29,13 +29,6 @@ public class UserController extends Controller {
     @Inject
     FormFactory formFactory;
 
-    static boolean validateUserForm(String username, String email, String password, String passwordCheck) {
-        return password.equals(passwordCheck)
-                && username.trim().length() > 0
-                && password.trim().length() > 0
-                && email.contains("@");
-   }
-
     /**
      * Render the user dashboard route
      * @return the result
@@ -49,6 +42,13 @@ public class UserController extends Controller {
                 userExerciseList.apply(currentUser, currentUser),
                 userSolutionList.apply(currentUser.getSolutions())
         ));
+    }
+
+    static boolean validateUserForm(String username, String email, String password, String passwordCheck) {
+        return password.equals(passwordCheck)
+                && username.trim().length() > 0
+                && password.trim().length() > 0
+                && email.contains("@");
     }
 
     public Result processUpdate(long userId) {

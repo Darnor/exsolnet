@@ -57,26 +57,6 @@ public class ExerciseController extends Controller {
         tableHeaderMap.put(4, TIME_FIELD);
     }
 
-    private static void validateFormData(String title, String mainTag, String content) {
-        if (title == null || mainTag == null || content == null) {
-            throw new IllegalArgumentException("Formdata not valid. (null values)");
-        }
-        if (title.trim().length() == 0 || mainTag.trim().length() == 0 || content.trim().length() == 0) {
-            throw new IllegalArgumentException("Formdata not valid. (empty values)");
-        }
-    }
-
-    /**
-     * Converts the order-Id to the orderBy string
-     *
-     * @param order the orderID from the HTML-table
-     * @return the order-by-attribute-string
-     */
-    static String getOrderByAttributeString(int order) {
-        String result = tableHeaderMap.get(Math.abs(order));
-        return order < 0 ? result + " desc" : result;
-    }
-
     /**
      * deletes an exercise cascading!
      * checks if user is moderator or owner of exercise
@@ -120,6 +100,17 @@ public class ExerciseController extends Controller {
     }
 
     /**
+     * Converts the order-Id to the orderBy string
+     *
+     * @param order the orderID from the HTML-table
+     * @return the order-by-attribute-string
+     */
+    static String getOrderByAttributeString(int order) {
+        String result = tableHeaderMap.get(Math.abs(order));
+        return order < 0 ? result + " desc" : result;
+    }
+
+    /**
      * render the ExerciseOverview View with given Parameters
      *
      * @param page        the Pagenumber of the list
@@ -153,6 +144,15 @@ public class ExerciseController extends Controller {
         }
 
         return ok(editExercise.render(currentUser, exercise, Tag.findTagsByType(Tag.Type.MAIN), Tag.findTagsByType(Tag.Type.NORMAL)));
+    }
+
+    private static void validateFormData(String title, String mainTag, String content) {
+        if (title == null || mainTag == null || content == null) {
+            throw new IllegalArgumentException("Formdata not valid. (null values)");
+        }
+        if (title.trim().length() == 0 || mainTag.trim().length() == 0 || content.trim().length() == 0) {
+            throw new IllegalArgumentException("Formdata not valid. (empty values)");
+        }
     }
 
     private void bindForm(Long exerciseId) {
