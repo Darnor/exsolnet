@@ -203,3 +203,7 @@
     text-shadow: 0px 2px 2px black;
     cursor: pointer;
 }
+.boxnovote{
+    margin-top: -1em !important; /* just eyeballing it */
+
+}
