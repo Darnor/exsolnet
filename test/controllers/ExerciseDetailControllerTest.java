@@ -18,7 +18,7 @@ public class ExerciseDetailControllerTest extends AbstractApplicationTest {
     @Test
     @Ignore("Fix Solution getPoints first.")
     public void testSortSolutionsWithMoreThanTwoSolutionsAndOfficialSolution(){
-        List<Solution> sortedSolutions = ExerciseDetailController.getOfficialSolutions(Exercise.findById(8005L).getSolutions());
+        List<Solution> sortedSolutions = ExerciseDetailController.getOfficialSolutions(Exercise.findValidById(8005L).getSolutions());
 
         // First element should be official
         assertTrue(sortedSolutions.get(0).isOfficial());

@@ -48,7 +48,7 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
     @Test
     public void testUpdate() {
         as(FRANZ, FIREFOX, browser -> {
-            Exercise updateExercise = Exercise.findById(8000L);
+            Exercise updateExercise = Exercise.findValidById(8000L);
 
             Assert.assertNotNull(updateExercise);
 
@@ -60,7 +60,7 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
             fillCKEditor(browser, content);
             browser.submit("#save");
 
-            Exercise newExercise = Exercise.findById(8000L);
+            Exercise newExercise = Exercise.findValidById(8000L);
 
             Assert.assertNotNull(newExercise);
             Assert.assertEquals(newExercise.getTitle(), title);

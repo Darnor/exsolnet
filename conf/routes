@@ -12,6 +12,7 @@ GET         /exercises                           controllers.ExerciseController.
 GET         /exercises/create                    controllers.ExerciseController.renderCreate
 GET         /exercises/:id/edit                  controllers.ExerciseController.renderEdit(id: Long)
 GET         /exercises/:id/delete                controllers.ExerciseController.processDelete(id: Long)
+GET         /exercises/:id/undoDelete            controllers.ExerciseController.processUndo(id: Long)
 
 POST        /exercises/create                    controllers.ExerciseController.processCreate
 POST        /exercises/:id/update                controllers.ExerciseController.processUpdate(id: Long)

@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class Exercise extends Post {
 
     private static final String COLUMN_TITLE = "title";
-    private static final String COLUMN_DELETED = "deleted";
+    private static final String COLUMN_VALID = "valid";
 
     @Constraints.Required
     @Column(name = COLUMN_TITLE)
@@ -58,8 +58,8 @@ public class Exercise extends Post {
     @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    @Column(columnDefinition = "boolean NOT NULL DEFAULT FALSE", name = COLUMN_DELETED)
-    private boolean deleted;
+    @Column(columnDefinition = "boolean NOT NULL DEFAULT TRUE", name = COLUMN_VALID)
+    private boolean valid;
 
     public String getTitle() {
         return title;
@@ -121,12 +121,12 @@ public class Exercise extends Post {
         return points;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    public boolean isValid() {
+        return valid;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     private void fillData(String title, String content, List<Tag> tags, User user) {
@@ -150,7 +150,7 @@ public class Exercise extends Post {
     }
 
     public static Exercise update(long id, String title, String content, List<Tag> tags, User user) {
-        Exercise exercise = findById(id);
+        Exercise exercise = findValidById(id);
         throwIfExerciseNull(exercise);
         exercise.fillData(title, content, tags, user);
         exercise.update();
@@ -162,9 +162,16 @@ public class Exercise extends Post {
      * @param id exerciseId to delete
      */
     public static void delete(long id){
+        Exercise exercise = findValidById(id);
+        throwIfExerciseNull(exercise);
+        exercise.setValid(false);
+        exercise.save();
+    }
+
+    public static void undoDelete(long id){
         Exercise exercise = findById(id);
         throwIfExerciseNull(exercise);
-        exercise.setDeleted(true);
+        exercise.setValid(true);
         exercise.save();
     }
 
@@ -188,19 +195,28 @@ public class Exercise extends Post {
         if (!"".equals(tagFilter[0])) {
             query.where().in("tags.name", Arrays.asList(tagFilter));
         }
-        query.where().eq(COLUMN_DELETED, false);
+        query.where().eq(COLUMN_VALID, true);
         return query.orderBy(orderBy).findPagedList(pageNr, pageSize);
     }
 
     /**
-     * the data of the exercise with the given id
+     * the data of the valid exercise with the given id
      *
      * @param id the id of the exercise
      * @return the exercise from the db with the given id, null if it doesnt exist, nullpointer exception if id is null
      */
-    public static Exercise findById(Long id) {
+    public static Exercise findValidById(Long id) {
         Exercise exercise = find().byId(id);
-        return (exercise == null || exercise.isDeleted()) ? null : exercise;
+        return (exercise == null || !exercise.isValid()) ? null : exercise;
+    }
+
+    /**
+     * data of any exercise valid and non valid
+     * @param id
+     * @return
+     */
+    public static Exercise findById(Long id){
+        return find().byId(id);
     }
 
     /**

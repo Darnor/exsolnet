@@ -6,24 +6,15 @@ import play.mvc.Result;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
 import static play.test.Helpers.*;
 
-public class ExerciseControllerTest extends AbstractApplicationTest {
-
-    @Test
-    public void testGetOrderByAttributeString() {
-        assertEquals("title", ExerciseController.getOrderByAttributeString(1));
-        assertEquals("solutionCount", ExerciseController.getOrderByAttributeString(2));
-        assertEquals("points", ExerciseController.getOrderByAttributeString(3));
-        assertEquals("time", ExerciseController.getOrderByAttributeString(4));
-    }
+public class SolutionControllerTest extends AbstractApplicationTest {
 
     @Test
     public void testUnauthorizedOnUnallowedDeleteAttempt() {
         running(fakeApplication(), () -> {
             Result result = route(
-                    fakeRequest(routes.ExerciseController.processDelete(8000L))
+                    fakeRequest(routes.SolutionController.processDelete(8000L))
                             .session("connected", "mario@hsr.ch")
             );
             assertThat(result.status(), is(UNAUTHORIZED));
@@ -34,7 +25,7 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
     public void testModeratorDelete() {
         running(fakeApplication(), () -> {
             Result result = route(
-                    fakeRequest(routes.ExerciseController.processDelete(8002L))
+                    fakeRequest(routes.SolutionController.processDelete(8002L))
                             .session("connected", "blubberduck@hsr.ch")
             );
             assertThat(result.status(), is(SEE_OTHER));
@@ -42,13 +33,13 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void testUnauthorizedOnUnallowedDeleteAttemptSameUser() {
+    public void testOkOnAllowedDeleteAttemptFromOwner() {
         running(fakeApplication(), () -> {
             Result result = route(
-                    fakeRequest(routes.ExerciseController.processDelete(8000L))
+                    fakeRequest(routes.SolutionController.processDelete(8001L))
                             .session("connected", "franz@hsr.ch")
             );
-            assertThat(result.status(), is(UNAUTHORIZED));
+            assertThat(result.status(), is(SEE_OTHER));
         });
     }
 }

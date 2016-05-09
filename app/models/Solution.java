@@ -38,8 +38,8 @@ public class Solution extends Post {
     @Formula(select = "(SELECT coalesce(sum(value),0) FROM vote v INNER JOIN solution s ON v.solution_id = s.id WHERE s.id = ${ta}.id)")
     private long points;
 
-    @Column(columnDefinition = "boolean NOT NULL DEFAULT FALSE")
-    private boolean deleted;
+    @Column(columnDefinition = "boolean NOT NULL DEFAULT TRUE")
+    private boolean valid;
 
     public User getUser() {
         return user;
@@ -57,12 +57,12 @@ public class Solution extends Post {
         this.exercise = exercise;
     }
 
-    public boolean isDeleted() {
-        return deleted;
+    public boolean isValid() {
+        return valid;
     }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
+    public void setValid(boolean valid) {
+        this.valid = valid;
     }
 
     public boolean isOfficial() {
@@ -113,8 +113,13 @@ public class Solution extends Post {
      * @param id the id of the solution
      * @return the solution from the db with the given id, null if it doesnt exist, nullpointer exception if id is null
      */
-    public static Solution findById(Long id) {
-        return find().byId(id);
+    public static Solution findValidById(Long id) {
+        Solution solution = find().byId(id);
+        return (solution == null || !solution.isValid()) ? null : solution;
+    }
+
+    public static Solution findById(Long id){
+       return find().byId(id);
     }
 
     public long getPoints() {
@@ -122,11 +127,30 @@ public class Solution extends Post {
     }
 
     /**
-     * deletes Solution cascading
+     * deletes Solution
      * @param id solutionId to delete
      */
     public static void delete(Long id) {
+        Solution solution = findValidById(id);
+        throwIfSolutionNull(solution);
+        solution.setValid(false);
+        solution.save();
+    }
+
+    /**
+     * undo deletion of Solution
+     * @param id solutionId to delete
+     */
+    public static void undoDelete(Long id) {
         Solution solution = findById(id);
-        solution.delete();
+        throwIfSolutionNull(solution);
+        solution.setValid(true);
+        solution.save();
+    }
+
+    private static void throwIfSolutionNull(Solution solution) {
+        if (solution == null) {
+            throw new IllegalArgumentException("Invalid solution id");
+        }
     }
 }

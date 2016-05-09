@@ -66,14 +66,30 @@ public class ExerciseController extends Controller {
      */
     public Result processDelete(Long id) {
         User currentUser = SessionService.getCurrentUser();
-        Logger.info("Exercise " + id + " deleted by " + currentUser.getEmail());
         if (currentUser.isModerator()) {
             Exercise.delete(id);
             Logger.info("Exercise " + id + " deleted by " + currentUser.getEmail());
             flash("success", "Aufgabe gelöscht");
+            flash("post_id", "" + id);
             return redirect(routes.ExerciseController.renderOverview());
         }
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Aufgabe zu editieren"));
+    }
+
+    /**
+     * undo deletion of exercise
+     *
+     * @param id id of deleted exercise
+     * @return
+     */
+    public Result processUndo(Long id) {
+        User currentUser = SessionService.getCurrentUser();
+        if (currentUser.isModerator()) {
+            Exercise.undoDelete(id);
+            Logger.info("Exercise " + id + " undo deletion by " + currentUser.getEmail());
+            return redirect(routes.ExerciseDetailController.renderExerciseDetail(id));
+        }
+        return unauthorized(error403.render(currentUser, "Keine Berechtigungen das Löschen dieser Aufgabe rückgängig zu machen"));
     }
 
     /**
@@ -134,7 +150,7 @@ public class ExerciseController extends Controller {
      */
     public Result renderEdit(long id) {
         User currentUser = SessionService.getCurrentUser();
-        Exercise exercise = Exercise.findById(id);
+        Exercise exercise = Exercise.findValidById(id);
 
         if (exercise == null) {
             return notFound(error404.render(currentUser, "Aufgabe nicht gefunden"));
@@ -203,15 +219,15 @@ public class ExerciseController extends Controller {
 
     public Result processUpvote(Long exerciseId) {
         Logger.info("Up Vote Exercise " + exerciseId);
-        Exercise exercise = Exercise.findById(exerciseId);
+        Exercise exercise = Exercise.findValidById(exerciseId);
         Vote.upvote(SessionService.getCurrentUser(), exercise);
-        return ok(String.valueOf(Exercise.findById(exerciseId).getPoints()));
+        return ok(String.valueOf(Exercise.findValidById(exerciseId).getPoints()));
     }
 
     public Result processDownvote(Long exerciseId) {
         Logger.info("Down Vote Exercise " + exerciseId);
-        Exercise exercise = Exercise.findById(exerciseId);
+        Exercise exercise = Exercise.findValidById(exerciseId);
         Vote.downvote(SessionService.getCurrentUser(), exercise);
-        return ok(String.valueOf(Exercise.findById(exerciseId).getPoints()));
+        return ok(String.valueOf(Exercise.findValidById(exerciseId).getPoints()));
     }
 }

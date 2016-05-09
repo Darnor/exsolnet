@@ -2,15 +2,14 @@ package models;
 
 import com.avaje.ebean.PagedList;
 import helper.AbstractApplicationTest;
+import helper.DatabaseHelper;
 import models.builders.ExerciseBuilder;
 import models.builders.TagBuilder;
 import org.junit.Test;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 public class ExerciseTest extends AbstractApplicationTest {
 
@@ -21,6 +20,7 @@ public class ExerciseTest extends AbstractApplicationTest {
         assertEquals("Grundlegende Mathematik", page.getList().get(0).getTitle());
         assertEquals("XXX", page.getList().get(1).getTitle());
     }
+
     @Test
     public void testGetPagedOrderedByTitleDesc(){
         PagedList<Exercise> page = Exercise.getPagedList(0, "title desc", "", new String[]{""}, 5);
@@ -46,9 +46,20 @@ public class ExerciseTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void testGetPagedListFilteredByTwoTagsNotShowDeletedExercises(){
+        PagedList<Exercise> page = Exercise.getPagedList(0, "title", "", new String[]{"An1I", "Einfache Operationen"}, 10);
+        assertEquals(2, page.getList().size());
+        Exercise.delete(page.getList().get(0).getId());
+        page = Exercise.getPagedList(0, "title", "", new String[]{"An1I", "Einfache Operationen"}, 10);
+        assertEquals(1, page.getList().size());
+
+        DatabaseHelper.cleanDB(app);
+    }
+
+    @Test
     public void testFindExerciseData(){
-        assertEquals("Grundlegende Mathematik",Exercise.findById(8000L).getTitle());
-        assertEquals(null, Exercise.findById(404L));
+        assertEquals("Grundlegende Mathematik",Exercise.findValidById(8000L).getTitle());
+        assertNull(Exercise.findValidById(404L));
     }
 
     @Test
@@ -67,7 +78,7 @@ public class ExerciseTest extends AbstractApplicationTest {
 
     @Test
     public void testOtherTagExistsInExercise() {
-        Exercise exercise = Exercise.findById(8000L);
+        Exercise exercise = Exercise.findValidById(8000L);
         assertEquals(1, exercise.getTags().stream().filter(t -> t.getName().equals("Einfache Operationen") && !t.isMainTag()).count());
         assertEquals(0, exercise.getTags().stream().filter(t -> t.getName().equals("An1I") && !t.isMainTag()).count());
         assertEquals(0, exercise.getTags().stream().filter(t -> t.getName().equals("foo") && !t.isMainTag()).count());
@@ -75,7 +86,7 @@ public class ExerciseTest extends AbstractApplicationTest {
 
     @Test
     public void testMainTagExistsInExercise() {
-        Exercise exercise = Exercise.findById(8000L);
+        Exercise exercise = Exercise.findValidById(8000L);
         assertEquals(0, exercise.getTags().stream().filter(t -> t.getName().equals("Einfache Operationen") && t.isMainTag()).count());
         assertEquals(1, exercise.getTags().stream().filter(t -> t.getName().equals("An1I") && t.isMainTag()).count());
         assertEquals(0, exercise.getTags().stream().filter(t -> t.getName().equals("foo") && t.isMainTag()).count());
@@ -83,19 +94,35 @@ public class ExerciseTest extends AbstractApplicationTest {
 
     @Test
     public void testPoints(){
-        assertEquals(-5, Exercise.findById(8012L).getPoints());
+        assertEquals(-5, Exercise.findValidById(8012L).getPoints());
     }
 
     @Test
     public void testPointsNoVotes(){
-        assertEquals(0, Exercise.findById(8008L).getPoints());
+        assertEquals(0, Exercise.findValidById(8008L).getPoints());
     }
 
     @Test
     public void testExerciseDelete(){
         long exerciseIdToDelete = 8000L;
-        assertNotNull(Exercise.findById(exerciseIdToDelete));
+        assertNotNull(Exercise.findValidById(exerciseIdToDelete));
         Exercise.delete(exerciseIdToDelete);
-        assertNull(Exercise.findById(exerciseIdToDelete));
+        assertNull(Exercise.findValidById(exerciseIdToDelete));
+
+        DatabaseHelper.cleanDB(app);
     }
+
+    @Test
+    public void testExerciseDeleteAndUndo() {
+        long exerciseIdToDelete = 8000L;
+        assertNotNull(Exercise.findValidById(exerciseIdToDelete));
+        Exercise.delete(exerciseIdToDelete);
+        assertNull(Exercise.findValidById(exerciseIdToDelete));
+        Exercise.undoDelete(exerciseIdToDelete);
+        assertNotNull(Exercise.findValidById(exerciseIdToDelete));
+
+        DatabaseHelper.cleanDB(app);
+    }
+
+
 }

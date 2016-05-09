@@ -40,7 +40,7 @@ public class ExerciseDetailController extends Controller {
      */
     public Result renderExerciseDetail(Long id) {
         User user = SessionService.getCurrentUser();
-        Exercise exercise = Exercise.findById(id);
+        Exercise exercise = Exercise.findValidById(id);
         if (exercise != null) {
             return user.hasSolved(id) ? renderSolutions(id) : renderExerciseNotSolved(id);
         }
@@ -55,7 +55,7 @@ public class ExerciseDetailController extends Controller {
      * @return Result View of the detailed exercise with no Solution and an Info
      */
     public Result renderExerciseNotSolved(long exerciseId) {
-        return ok(exerciseNotSolved.render(SessionService.getCurrentUser(), Exercise.findById(exerciseId)));
+        return ok(exerciseNotSolved.render(SessionService.getCurrentUser(), Exercise.findValidById(exerciseId)));
     }
 
     /**
@@ -65,7 +65,7 @@ public class ExerciseDetailController extends Controller {
      * @return Result View of the detailed exercise with a create solution formular.
      */
     public Result renderCreateSolution(long exerciseId) {
-        return ok(editSolution.render(SessionService.getCurrentUser(), Exercise.findById(exerciseId), SolutionBuilder.aSolution().build()));
+        return ok(editSolution.render(SessionService.getCurrentUser(), Exercise.findValidById(exerciseId), SolutionBuilder.aSolution().build()));
     }
 
     /**
@@ -75,7 +75,7 @@ public class ExerciseDetailController extends Controller {
      * @return Result view of the exercise with all solutions and comments.
      */
     public Result renderSolutions(Long exerciseId) {
-        Exercise exercise = Exercise.findById(exerciseId);
+        Exercise exercise = Exercise.findValidById(exerciseId);
         User currentUser = SessionService.getCurrentUser();
 
         List<Solution> solutions = getPointSortedSolutions(exercise.getSolutions());
@@ -126,7 +126,7 @@ public class ExerciseDetailController extends Controller {
      * @return Result view of the exercise with all solutions and comments
      */
     public Result processUpdate(Long exerciseId) {
-        Solution.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), Exercise.findById(exerciseId), SessionService.getCurrentUser());
+        Solution.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), Exercise.findValidById(exerciseId), SessionService.getCurrentUser());
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
     }
 
