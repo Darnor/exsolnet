@@ -242,7 +242,7 @@ public class ExerciseController extends Controller {
         User user = SessionService.getCurrentUser();
         Exercise exercise = Exercise.findValidById(id);
         if (exercise != null) {
-            return user.hasSolved(id) ? renderSolutions(id) : renderExerciseNotSolved(id);
+            return (user.hasSolved(id) || user.isModerator()) ? renderSolutions(id) : renderExerciseNotSolved(id);
         }
         return notFound(error404.render(user, "Diese Aufgabe existiert nicht"));
     }
