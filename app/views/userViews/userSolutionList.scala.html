@@ -23,9 +23,11 @@
             <span class="meta time">
             @solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
             </span>
-            <span class="meta points">
-            @solution.getPoints
-            </span>
+            <div class="box">
+                <span class="meta points">
+                @solution.getPoints
+                </span>
+            </div>
         </div>
     }
 }

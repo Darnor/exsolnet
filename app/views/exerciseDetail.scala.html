@@ -15,9 +15,6 @@
         <span class="text-center meta count">
         @exercise.getSolutions.size
         </span>
-        <span id="exercisePoints" class="text-center meta points">
-        @exercise.getPoints
-        </span>
         <span class="meta time">
         @exercise.getTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
         </span>
@@ -30,6 +27,9 @@
 
         <div class = "box">
             <a id="upVoteExercise" class = "up" onclick="upVoteExercise(@exercise.getId)" >&#9650;</a>
+            <span id="exercisePoints" class="text-center points">
+            @exercise.getPoints
+            </span>
             <a id="downVoteExercise" class = "down" onclick="downVoteExercise(@exercise.getId)" >&#9660;</a>
         </div>
     </div>

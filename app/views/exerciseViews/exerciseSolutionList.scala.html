@@ -24,9 +24,9 @@
                     onmouseout="this.src='@routes.Assets.versioned("images/garbage.png")'" onclick="deleteSolution(@solution.getId, @exerciseId)">
                 </span>
             }
-            <span id="solutionPoints@solution.getId" class="meta points">@solution.getPoints</span>
             <div class = "box">
                 <a id="upVoteSolution@solution.getId" class = "up" onclick="upVoteSolution(@solution.getId)" >&#9650;</a>
+                <span id="solutionPoints@solution.getId" class="points">@solution.getPoints</span>
                 <a id="downVoteSolution@solution.getId" class = "down" onclick="downVoteSolution(@solution.getId)" >&#9660;</a>
             </div>
         </div>

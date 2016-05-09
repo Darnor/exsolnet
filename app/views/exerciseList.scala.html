@@ -60,12 +60,14 @@
                 <span class="text-center meta solutioncount">
                 @exercise.getSolutions.size
                 </span>
-                <span class="text-center meta points">
-                @exercise.getPoints
-                </span>
                 <span class="meta time">
                 @exercise.getTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
                 </span>
+                <div class="box">
+                    <span class="text-center points">
+                    @exercise.getPoints
+                    </span>
+                </div>
             </div>
         </a>
     }
