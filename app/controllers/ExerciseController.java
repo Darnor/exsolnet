@@ -71,7 +71,7 @@ public class ExerciseController extends Controller {
             Logger.info("Exercise " + id + " deleted by " + currentUser.getEmail());
             flash("success", "Aufgabe gelöscht");
             flash("post_id", "" + id);
-            return redirect(routes.ExerciseController.renderOverview());
+            return redirect(routes.UserController.renderDashboard());
         }
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Aufgabe zu editieren"));
     }

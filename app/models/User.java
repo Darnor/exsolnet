@@ -162,7 +162,12 @@ public class User extends Model {
     }
 
     public long getNofCompletedExercisesByTag(Tag tag) {
-        return getValidSolutions().stream().filter(s -> s.getExercise().getTags().contains(tag)).count();
+        return getValidSolutions().stream().filter(s -> {
+            if(s.getExercise().isValid()){
+               return s.getExercise().getTags().contains(tag);
+            }
+            return false;
+        }).count();
     }
 
     public static Model.Finder<Long, User> find() {
