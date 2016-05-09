@@ -9,6 +9,7 @@ import java.util.List;
 public class TagBuilder {
     private Long id;
     private String name;
+    private String longname;
     private boolean isMainTag;
     private List<Exercise> exercises;
     private List<Tracking> trackings;
@@ -30,6 +31,11 @@ public class TagBuilder {
         return this;
     }
 
+    public TagBuilder withLongName(String longname) {
+        this.longname = longname;
+        return this;
+    }
+
     public TagBuilder withIsMainTag(boolean isMainTag) {
         this.isMainTag = isMainTag;
         return this;
@@ -46,13 +52,14 @@ public class TagBuilder {
     }
 
     public TagBuilder but() {
-        return aTag().withId(id).withName(name).withIsMainTag(isMainTag).withExercises(exercises).withTrackings(trackings);
+        return aTag().withId(id).withName(name).withLongName(longname).withIsMainTag(isMainTag).withExercises(exercises).withTrackings(trackings);
     }
 
     public Tag build() {
         Tag tag = new Tag();
         tag.setId(id);
         tag.setName(name);
+        tag.setLongName(longname);
         tag.setIsMainTag(isMainTag);
         tag.setExercises(exercises);
         tag.setTrackings(trackings);
