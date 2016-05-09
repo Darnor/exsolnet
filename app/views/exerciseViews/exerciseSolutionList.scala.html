@@ -20,7 +20,7 @@
             @if(user.isModerator || user.getId == solution.getUser.getId) {
                 <span class="meta delete">
                     <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src = '@routes.Assets.versioned("images/garbage-1.png")'"
-                    onmouseout="this.src = '@routes.Assets.versioned("images/garbage.png")'" onclick="deleteSolution(@solution.getId, @exerciseId)
+                    onmouseout="this.src = '@routes.Assets.versioned("images/garbage.png")'" onclick="deleteSolution(@solution.getId, @exerciseId)"
                 </span>
             }
             <div class = "box">
@@ -47,19 +47,19 @@
                 </div>
             }
 
-        <div class="buttondetail">
-            <form method="POST" action="@routes.ExerciseDetailController.createCommentSolution(solution.getId)">
+            <div class="buttondetail">
+                <form method="POST" action="@routes.ExerciseDetailController.createCommentSolution(solution.getId)">
 
-            <div class="input-group">
+                <div class="input-group">
 
-                    <input type="text" class="form-control" id="content" name="content" placeholder="Neuer Kommentar">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default pull-right" type="submit">Speichern</button>
-                    </span>
+                        <input type="text" class="form-control" id="content" name="content" placeholder="Neuer Kommentar">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default pull-right" type="submit">Speichern</button>
+                        </span>
+                </div>
+                </form>
+
             </div>
-            </form>
-
-        </div>
         </div>
 
     }
