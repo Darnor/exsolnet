@@ -1,18 +1,23 @@
 @(user: User, exercise: Exercise, solution: Solution)
 @exerciseDetail(user, exercise) {
+    <script src="@routes.Assets.versioned("javascripts/ajaxCalls.js")" type="text/javascript"></script>
+    <script src="@routes.Assets.versioned("ckeditor/ckeditor.js")" type="text/javascript"></script>
+
     <h2>Deine Lösung:</h2>
     <form method="POST" action="@routes.ExerciseDetailController.processUpdate(exercise.getId)">
         <div>
-            <textarea name="content" id="content" rows="10" cols="80">
+            <textarea name="content" id="contentsol" rows="10" cols="80">
                @solution.getContent
             </textarea>
+            <script>
+                    CKEDITOR.replace( 'contentsol' );
+            </script>
+
             <div class="checkbox">
                 <label><input type="checkbox" name="isOfficial"> Dies ist die Musterlösung</label>
                 <p> <small>Markiere dieses Feld, wenn dies die offizielle Lösung von deinem Dozenten, beziehungsweise des Erstellers der Übung ist. </small></p>
             </div>
-            <script>
-                    CKEDITOR.replace( 'content' );
-            </script>
+
 
             <button class="btn btn-primary btn-lg btn-block" id="save">Speichern</button>
         </div>
