@@ -36,7 +36,7 @@
                             @if(exercise.getTags.contains(tag)){
                             <option selected value=@tag.getName>@tag.getName</option>
                             } else{
-                            <option value=@tag.getName>@tag.getName</option>
+                            <option value=@tag.getName>@tag.getName @tag.getLongName</option>
                             }
                         }
 
