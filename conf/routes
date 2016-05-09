@@ -24,12 +24,13 @@ GET         /exercises/:id/createsolution       controllers.ExerciseDetailContro
 POST        /exercises/:id/solution             controllers.ExerciseDetailController.processUpdate(id: Long)
 POST        /exercises/:id/commentExercise      controllers.ExerciseDetailController.createCommentExercise(id: Long)
 POST        /exercises/:id/commentSolution      controllers.ExerciseDetailController.createCommentSolution(id: Long)
-POST        /exercises/:id/updateComment    controllers.ExerciseDetailController.updateComment(id: Long)
+POST        /exercises/:id/updateComment        controllers.ExerciseDetailController.updateComment(id: Long)
 
 GET         /solutions/:id/edit                 controllers.SolutionController.renderEditSolution(id: Long)
 POST        /solutions/:id/upvote               controllers.SolutionController.processUpvote(id: Long)
 POST        /solutions/:id/downvote             controllers.SolutionController.processDownvote(id: Long)
 GET         /solutions/:id/delete               controllers.SolutionController.processDelete(id: Long)
+GET         /solutions/:id/undoDelete           controllers.SolutionController.processUndo(id: Long)
 
 GET         /tags                               controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
 GET         /tags                               controllers.TagController.renderOverview

@@ -41,7 +41,7 @@ public class SolutionController extends Controller {
             Solution.delete(id);
             Logger.info("Solution " + id + " deleted by " + currentUser.getEmail());
             flash("success", "Lösung gelöscht");
-            flash("post_id", "" + id);
+            flash("solution_id", "" + id);
             return redirect(routes.ExerciseDetailController.renderExerciseDetail(exercise_id));
         }
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Lösung löschen"));
@@ -54,9 +54,9 @@ public class SolutionController extends Controller {
      * @return
      */
     public Result processUndo(Long id) {
-        long exercise_id = Solution.findValidById(id).getExercise().getId();
+        long exercise_id = Solution.findById(id).getExercise().getId();
         User currentUser = SessionService.getCurrentUser();
-        if (currentUser.isModerator() || currentUser.getId().equals(Solution.findValidById(id).getUser().getId())) {
+        if (currentUser.isModerator() || currentUser.getId().equals(Solution.findById(id).getUser().getId())) {
             Solution.undoDelete(id);
             Logger.info("Solution " + id + " undo deletion by " + currentUser.getEmail());
             return redirect(routes.ExerciseDetailController.renderExerciseDetail(exercise_id));
