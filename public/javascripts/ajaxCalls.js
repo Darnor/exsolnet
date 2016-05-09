@@ -49,24 +49,32 @@ function downVoteExercise(id) {
 function changecolorSolution(value, id, kind) {
 
     if (value == 1) {
-        if (document.getElementById("upVote"+kind + id).classList.contains("upcolor")) {
-            document.getElementById("upVote"+kind + id).classList.add("defaultcolor");
-            document.getElementById("upVote"+kind + id).classList.remove("upcolor");
+        if (document.getElementById("upVote" + kind + id).classList.contains("upcolor")) {
+            document.getElementById("upVote" + kind + id).classList.add("defaultcolor");
+            document.getElementById("upVote" + kind + id).classList.remove("upcolor");
         }
         else {
-            document.getElementById("upVote"+kind + id).classList.remove("defaultcolor");
-            document.getElementById("upVote"+kind + id).classList.add("upcolor");
+            if (document.getElementById("downVote" + kind + id).classList.contains("downcolor")) {
+                document.getElementById("downVote" + kind + id).classList.remove("downcolor");
+                document.getElementById("downVote" + kind + id).classList.add("defaultcolor");
+            }
+            document.getElementById("upVote" + kind + id).classList.remove("defaultcolor");
+            document.getElementById("upVote" + kind + id).classList.add("upcolor");
         }
     }
     if (value == -1) {
 
-        if (document.getElementById("downVote"+kind + id).classList.contains("downcolor")) {
-            document.getElementById("downVote"+kind + id).classList.add("defaultcolor");
-            document.getElementById("downVote"+kind + id).classList.remove("downcolor");
+        if (document.getElementById("downVote" + kind + id).classList.contains("downcolor")) {
+            document.getElementById("downVote" + kind + id).classList.add("defaultcolor");
+            document.getElementById("downVote" + kind + id).classList.remove("downcolor");
         }
         else {
-            document.getElementById("downVote"+kind + id).classList.add("downcolor");
-            document.getElementById("downVote"+kind + id).classList.remove("defaultcolor");
+            if (document.getElementById("upVote" + kind + id).classList.contains("upcolor")) {
+                document.getElementById("upVote" + kind + id).classList.remove("upcolor");
+                document.getElementById("upVote" + kind + id).classList.add("defaultcolor");
+            }
+            document.getElementById("downVote" + kind + id).classList.add("downcolor");
+            document.getElementById("downVote" + kind + id).classList.remove("defaultcolor");
         }
     }
 
