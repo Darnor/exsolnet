@@ -162,4 +162,13 @@ public class Solution extends Post {
             throw new IllegalArgumentException("Invalid solution id");
         }
     }
+
+    public Integer hasVoted(Long userId) {
+        for (Vote vote : getVotes()) {
+            if (vote.getUser().getId().equals(userId)){
+                return vote.getValue();
+            }
+        }
+        return 0;
+    }
 }

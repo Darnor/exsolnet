@@ -160,16 +160,17 @@ public class Exercise extends Post {
 
     /**
      * Delete exercise cascading
+     *
      * @param id exerciseId to delete
      */
-    public static void delete(long id){
+    public static void delete(long id) {
         Exercise exercise = findValidById(id);
         throwIfExerciseNull(exercise);
         exercise.setValid(false);
         exercise.save();
     }
 
-    public static void undoDelete(long id){
+    public static void undoDelete(long id) {
         Exercise exercise = findById(id);
         throwIfExerciseNull(exercise);
         exercise.setValid(true);
@@ -213,10 +214,11 @@ public class Exercise extends Post {
 
     /**
      * data of any exercise valid and non valid
+     *
      * @param id
      * @return
      */
-    public static Exercise findById(Long id){
+    public static Exercise findById(Long id) {
         return find().byId(id);
     }
 
@@ -242,4 +244,12 @@ public class Exercise extends Post {
         return solutions.stream().filter(s -> s.getUser().getId().equals(user.getId())).count() > 0;
     }
 
+    public Integer hasVoted(Long userId) {
+        for (Vote vote : getVotes()) {
+            if (vote.getUser().getId().equals(userId)){
+                return vote.getValue();
+            }
+        }
+        return 0;
+    }
 }

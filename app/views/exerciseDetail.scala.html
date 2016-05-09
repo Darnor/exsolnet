@@ -40,11 +40,21 @@
             </a>
         }
         <div class = "box">
-            <a id="upVoteExercise" class = "up" onclick="upVoteExercise(@exercise.getId)" >&#9650;</a>
+            @if(exercise.hasVoted(user.getId)>0) {
+                <a id="upVoteExercise" class = "up upcolor" onclick="upVoteExercise(@exercise.getId)" >&#9650;</a>
+            }else{
+                 <a id="upVoteExercise" class = "up defaultcolor" onclick="upVoteExercise(@exercise.getId)" >&#9650;</a>
+            }
+
+
             <span id="exercisePoints" class="text-center points">
             @exercise.getPoints
             </span>
-            <a id="downVoteExercise" class = "down" onclick="downVoteExercise(@exercise.getId)" >&#9660;</a>
+            @if(exercise.hasVoted(user.getId)<0) {
+                <a id="downVoteExercise" class = "down downcolor" onclick="downVoteExercise(@exercise.getId)" >&#9660;</a>
+            }else{
+                <a id="downVoteExercise" class = "down defaultcolor" onclick="downVoteExercise(@exercise.getId)" >&#9660;</a>
+            }
         </div>
 
     </div>

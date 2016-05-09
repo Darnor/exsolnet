@@ -78,10 +78,11 @@
     inset -3em 0 0 -.3em rgba(0, 0, 0, .05);
 }
 
+/* now orange ^^*/
 .item-red {
     box-shadow: 0 .0625em .125em rgba(0, 0, 0, .125),
     inset 0 -.25em 0 -.125em rgba(0, 0, 0, .125),
-    inset 1em 0 0 -.7em rgba(210, 15, 0, .5),
+    inset 1em 0 0 -.7em rgba(210, 127, 0, 0.5),
     inset -3em 0 0 -.3em rgba(0, 0, 0, .05);
 }
 
@@ -175,24 +176,29 @@
     margin-top: -2.3em; /* just eyeballing it */
 }
 
-.box > .up {
+.box > .upcolor {
     color:#00a47a;
 }
 
 .box > .up:hover {
-    color:#00fdbc;
+    color:#00a47a;
     font-size:1.1em;
     text-shadow: 0px 2px 2px black;
     cursor: pointer;
 }
 
 
-.box >.down {
+.box >.defaultcolor{
+    color: grey;
+}
+
+.box >.downcolor {
     color:#e75a48;
 
 }
 
 .box >.down:hover {
+    color:#e75a48;
     font-size:1.1em;
     text-shadow: 0px 2px 2px black;
     cursor: pointer;
