@@ -13,7 +13,7 @@
 
         </span>
 
-        <span><a class="meta user" href="@routes.UserController.renderUser(comment.getUser.getId)">@comment.getUser.getUsername</a></span>
+        <span class="meta user"> @snippets.userLink(user) </span>
         <span class="meta time">
             @snippets.longDate(comment.getTime)
         </span>

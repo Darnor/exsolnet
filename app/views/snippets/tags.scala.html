@@ -1,0 +1,4 @@
+@(tags: java.util.List[Tag])
+@tags.map{ tag =>
+    <a class="tag" href="@routes.ExerciseController.renderList(0, 0, "", tag.getName)">@tag.getName</a>
+}
