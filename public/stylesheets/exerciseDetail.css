@@ -3,13 +3,36 @@
     position: relative;
     padding: .75em 5em .75em 1em;
     border-radius: .25em;
-    margin-bottom: .5em;
+    margin-bottom: 0em;
     background: #fff;
     box-shadow: /* regular  */ 0 .0625em .125em rgba(0, 0, 0, .125),
-        /* inset  */ inset 0 -.25em 0 -.125em rgba(0, 0, 0, .125),
-        /* arrow background (right) */ inset -2em 0 0 -.3em rgba(0, 0, 0, .05);
+         /* arrow background (right) */ inset -2em 0 0 -.3em rgba(0, 0, 0, .05);
 
 }
+#collapseOne > .panel-body{
+    padding:0px;
+}
+.commentdetail, .buttondetail{
+    display: block;
+    position: relative;
+    padding: .75em 5em .75em 1em;
+    border-radius: .25em;
+    margin-bottom: .5em;
+    background: #fff;
+}
+.commentdetail {
+    border-bottom:1px solid lightgrey;
+}
+.comment{
+    font-size: 14px;
+}
+.comment > .panel-body{
+    background: grey;
+}
+.comment > .panel-heading > .panel-title{
+    font-size: 14px;
+}
+
 .list,.listSolution {
     display: block;
     position: relative;

@@ -1,5 +1,4 @@
-@import java.time.format.DateTimeFormatter
-@import java.time.format.FormatStyle
+@import java.time.format.{DateTimeFormatter, FormatStyle}
 @(user: User, exercise: Exercise)(solutionsContent: Html)
 @main(exercise.getTitle, user) {
     <div class="exercisedetail">
@@ -32,6 +31,41 @@
             </span>
             <a id="downVoteExercise" class = "down" onclick="downVoteExercise(@exercise.getId)" >&#9660;</a>
         </div>
+
     </div>
+
+        <div class="comment panel  panel-default">
+            <div class="panel-heading">
+                <p class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Kommentare Zur Aufgabe</a>
+                </p>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse">
+                <div class="panel-body">
+                    @exercise.getComments.map { comment =>
+
+                        <div class="commentdetail">
+                            <span class="item"> @comment.getContent</span>
+                            <span><a class="meta user" href="@routes.UserController.renderUser(comment.getUser.getId)">@comment.getUser.getUsername</a></span>
+                            <span class="meta time">
+                            @comment.getTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
+                            </span>
+                        </div>
+                    }
+
+                    <div class="buttondetail">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="comment" name="comment" placeholder="Neuer Kommentar">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">Speichern</button>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     @solutionsContent
 }

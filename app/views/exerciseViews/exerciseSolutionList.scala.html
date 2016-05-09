@@ -1,5 +1,4 @@
-@import java.time.format.DateTimeFormatter
-@import java.time.format.FormatStyle
+@import java.time.format.{DateTimeFormatter, FormatStyle}
 @(solutions: java.util.List[Solution], user: User, exerciseId: java.lang.Long)
 
     @for(solution <- solutions) {
@@ -20,8 +19,8 @@
             <span class="meta time">@solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))</span>
             @if(user.isModerator || user.getId == solution.getUser.getId) {
                 <span class="meta delete">
-                    <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src='@routes.Assets.versioned("images/garbage-1.png")'"
-                    onmouseout="this.src='@routes.Assets.versioned("images/garbage.png")'" onclick="deleteSolution(@solution.getId, @exerciseId)">
+                    <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src = '@routes.Assets.versioned("images/garbage-1.png")'"
+                    onmouseout="this.src = '@routes.Assets.versioned("images/garbage.png")'" onclick="deleteSolution(@solution.getId, @exerciseId)
                 </span>
             }
             <div class = "box">
@@ -29,5 +28,6 @@
                 <span id="solutionPoints@solution.getId" class="points">@solution.getPoints</span>
                 <a id="downVoteSolution@solution.getId" class = "down" onclick="downVoteSolution(@solution.getId)" >&#9660;</a>
             </div>
+
         </div>
     }
