@@ -26,15 +26,15 @@
 
             <div class = "box">
             @if(solution.hasVoted(user.getId)>0) {
-                <a id="upVoteSolution@solution.getId" class = "up upcolor" onclick="upVoteSolution(@solution.getId)" >&#9650;</a>
+                <a id="upVoteSolution@solution.getId" class = "up upcolor" onclick="upVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
             }else{
-                <a id="upVoteSolution@solution.getId" class = "up defaultcolor" onclick="upVoteSolution(@solution.getId)" >&#9650;</a>
+                <a id="upVoteSolution@solution.getId" class = "up defaultcolor" onclick="upVoteSolution(@solution.getId)"><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
             }
                 <span id="solutionPoints@solution.getId" class="points">@solution.getPoints</span>
                 @if(solution.hasVoted(user.getId)<0) {
-                    <a id="downVoteSolution@solution.getId" class = "down downcolor" onclick="downVoteSolution(@solution.getId)" >&#9660;</a>
+                    <a id="downVoteSolution@solution.getId" class = "down downcolor" onclick="downVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
                 }else{
-                    <a id="downVoteSolution@solution.getId" class = "down defaultcolor" onclick="downVoteSolution(@solution.getId)" >&#9660;</a>
+                    <a id="downVoteSolution@solution.getId" class = "down defaultcolor" onclick="downVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
                 }
             </div>
 

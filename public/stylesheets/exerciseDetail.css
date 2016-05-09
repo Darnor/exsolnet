@@ -1,7 +1,8 @@
 .hiddenComment {
-    display:none;
+    display: none;
 }
-.exercisedetail{
+
+.exercisedetail {
     display: block;
     position: relative;
     padding: .75em 5em .75em 1em;
@@ -9,30 +10,32 @@
     border-radius: .25em;
     background: #fff;
     box-shadow: /* regular  */ 0 .0625em .125em rgba(0, 0, 0, .125),
-         /* arrow background (right) */ inset -3em 0 0 -.3em rgba(0, 0, 0, .05);
+        /* arrow background (right) */ inset -3em 0 0 -.3em rgba(0, 0, 0, .05);
 
 }
 
-.commentdetail, .buttondetail{
+.commentdetail, .buttondetail {
     display: block;
     position: relative;
     padding: .75em 5em .75em 1em;
     border-radius: .25em;
     background: #f2f2f2;
-    border-bottom:1px solid #fff;
+    border-bottom: 1px solid #fff;
 }
 
-.comment{
+.comment {
     font-size: 14px;
 }
-.comment > .panel-body{
+
+.comment > .panel-body {
     background: grey;
 }
-.comment > .panel-heading > .panel-title{
+
+.comment > .panel-heading > .panel-title {
     font-size: 14px;
 }
 
-.list,.listSolution {
+.list, .listSolution {
     display: block;
     position: relative;
     padding: .75em 5em .75em 1em;
@@ -51,13 +54,16 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
-.list:hover{
+
+.list:hover {
     background: lightgrey;
     cursor: pointer;
 }
-.list > a:hover{
+
+.list > a:hover {
     text-decoration: none;
 }
+
 .item:after {
     content: '';
     display: block;
@@ -91,11 +97,12 @@
     font-size: .8em;
     margin-left: .75em;
 }
-.title{
+
+.title {
     margin-bottom: 3px;
 }
 
-.meta .tag{
+.meta .tag {
     margin-left: .5em;
 }
 
@@ -106,6 +113,7 @@
 .time:before {
     font-weight: normal;
 }
+
 .count:before {
     content: 'Anzahl Lösungen: ';
     font-weight: normal;
@@ -153,7 +161,7 @@
 .delete {
     position: absolute;
     right: 3.5em;
-    height:20px;
+    height: 20px;
     display: inline-block;
 }
 
@@ -182,37 +190,42 @@
     position: absolute;
     right: 1.167em;
     top: 50%;
-    margin-top: -2.3em; /* just eyeballing it */
+    margin-top: -2.6em; /* just eyeballing it */
 }
 
 .box > .upcolor {
-    color:#00a47a;
+    color: #00FF00;
 }
 
 .box > .up:hover {
-    color:#00a47a;
-    font-size:1.1em;
+    color: #00FF00;
+    font-size: 1.1em;
     text-shadow: 0px 2px 2px black;
     cursor: pointer;
 }
 
-
-.box >.defaultcolor{
+.box > .defaultcolor {
     color: grey;
 }
 
-.box >.downcolor {
-    color:#e75a48;
+.box > .downcolor {
+    color: #FF6600;
 
 }
 
-.box >.down:hover {
-    color:#e75a48;
-    font-size:1.1em;
+.box > .down:hover {
+    color: #FF6600;
+    font-size: 1.1em;
     text-shadow: 0px 2px 2px black;
     cursor: pointer;
 }
-.boxnovote{
+
+.boxnovote {
     margin-top: -1em !important; /* just eyeballing it */
 
+}
+
+.glyphicon {
+
+    font-size: 1.5em;
 }

@@ -45,9 +45,9 @@
         }
         <div class = "box">
             @if(exercise.hasVoted(user.getId)>0) {
-                <a id="upVoteExercise" class = "up upcolor" onclick="upVoteExercise(@exercise.getId)" >&#9650;</a>
+                <a id="upVoteExercise" class = "up upcolor" onclick="upVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
             }else{
-                 <a id="upVoteExercise" class = "up defaultcolor" onclick="upVoteExercise(@exercise.getId)" >&#9650;</a>
+                 <a id="upVoteExercise" class = "up defaultcolor" onclick="upVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
             }
 
 
@@ -55,9 +55,9 @@
             @exercise.getPoints
             </span>
             @if(exercise.hasVoted(user.getId)<0) {
-                <a id="downVoteExercise" class = "down downcolor" onclick="downVoteExercise(@exercise.getId)" >&#9660;</a>
+                <a id="downVoteExercise" class = "down downcolor" onclick="downVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
             }else{
-                <a id="downVoteExercise" class = "down defaultcolor" onclick="downVoteExercise(@exercise.getId)" >&#9660;</a>
+                <a id="downVoteExercise" class = "down defaultcolor" onclick="downVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
             }
         </div>
 
