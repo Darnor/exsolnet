@@ -58,15 +58,16 @@
             </div>
         }
         <div class="buttondetail">
-            <div class="input-group">
-                <form method="POST" action="@routes.ExerciseDetailController.createCommentExercise(exercise.getId)">
+            <form method="POST" action="@routes.ExerciseDetailController.createCommentExercise(exercise.getId)">
 
-                    <input type="text" class="form-control" id="comment" name="content" placeholder="Neuer Kommentar">
+            <div class="input-group">
+
+                    <input type="text" class="form-control" id="content" name="content" placeholder="Neuer Kommentar">
                     <span class="input-group-btn">
-                        <button class="btn btn-default pull-right" type="button">Speichern</button>
+                        <button class="btn btn-default pull-right" type="submit" >Speichern</button>
                     </span>
-                </form>
             </div>
+            </form>
 
 
         </div>

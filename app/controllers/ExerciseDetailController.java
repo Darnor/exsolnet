@@ -130,12 +130,12 @@ public class ExerciseDetailController extends Controller {
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
     }
 
-    public Result createCommentSolution(Long exerciseId) {
+    public Result createCommentExercise(Long exerciseId) {
         Comment.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), Exercise.findById(exerciseId), SessionService.getCurrentUser());
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
     }
 
-    public Result createCommentExercise(Long solutionId) {
+    public Result createCommentSolution(Long solutionId) {
         Solution solution = Solution.findById(solutionId);
         Comment.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), solution, SessionService.getCurrentUser());
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise().getId()));
