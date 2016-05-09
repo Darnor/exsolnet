@@ -47,7 +47,7 @@
         @tags.map{ tag =>
             <tr>
                 <td>
-                    <a href="@routes.ExerciseController.renderList(0, 0, "", tag.getName)">@tag.getName</a>
+                    <a href="@routes.ExerciseController.renderList(0, 0, "", tag.getName)">@tag.getName</a> @if(tag.getLongName){ <span class="input-tag-longname">- @tag.getLongName</span>}
                 </td>
                 <td>
                     @tag.getExercises.size
