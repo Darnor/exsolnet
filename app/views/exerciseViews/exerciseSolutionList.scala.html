@@ -12,15 +12,12 @@
                     onmouseout="this.src='@routes.Assets.versioned("images/garbage.png")'" >
                 </a>
             }
-<<<<<<< c32f3a94d70cbe33c8a2cc190e363a6508563566
             @if(solution.isOfficial){
                 <strong>
                     <span title="Die Musterlösung ist die vom Dozenten/Ersteller abgegebene Lösung." class="meta official">Musterlösung <span class="glyphicon glyphicon-ok"></span> </span>
                 </strong>
             }
-=======
 
->>>>>>> vote highlite
             <div class = "box">
             @if(solution.hasVoted(user.getId)>0) {
                 <a id="upVoteSolution@solution.getId" class = "up upcolor" onclick="upVoteSolution(@solution.getId)" >&#9650;</a>
