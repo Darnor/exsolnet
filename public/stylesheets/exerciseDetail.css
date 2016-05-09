@@ -99,12 +99,11 @@
     margin-left: .5em;
 }
 
-.maintag,.time {
+.maintag {
     font-weight: bold;
 }
 
 .time:before {
-    content: 'Eingereicht: ';
     font-weight: normal;
 }
 .count:before {

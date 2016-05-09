@@ -4,7 +4,13 @@
         <div class="listSolution @if(solution.isOfficial) {item-red} else {@if(user.getId == solution.getUser.getId){item-blue} else {item-green}}" id="s@solution.getId">
             <span class="item">@Html(solution.getContent)</span>
             <span class="meta user">@snippets.userLink(solution.getUser)</span>
-            <span class="meta time">@snippets.longDate(solution.getTime)</span>
+            <span class="meta time">
+                @if(solution.getLastChanged==null){
+                     Eingereicht: @snippets.longDate(solution.getTime)
+                }else{
+                     Zuletzt geändert: @snippets.longDate(solution.getLastChanged)
+                }
+            </span>
             @if(user.isModerator || user.getId == solution.getUser.getId) {
                 <a class="meta btn edit" href="@routes.SolutionController.renderUpdate(solution.getId)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
                 <a href="@routes.SolutionController.processDelete(solution.getId)" class="meta delete">

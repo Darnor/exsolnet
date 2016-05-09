@@ -52,7 +52,7 @@ public class Post extends Model {
         return lastchanged;
     }
 
-    public void setLastChanged(LocalDateTime time) {
+    public void setLastChanged(LocalDateTime lastchanged) {
         this.lastchanged = lastchanged;
     }
 }
