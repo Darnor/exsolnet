@@ -1,0 +1,4 @@
+@import java.time.format.DateTimeFormatter
+@import java.time.format.FormatStyle
+@(date: java.time.LocalDateTime)
+@date.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))

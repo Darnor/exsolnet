@@ -1,0 +1,29 @@
+@(exercise: Exercise)
+<a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">
+    <div class="list  @if(exercise.getPoints < 0) {
+        item-red
+    } else {
+        @if(exercise.getPoints > 0) {
+            item-green
+        } else { item-blue}
+    }">
+        <span class="item">
+            <p class="title">@exercise.getTitle</p>
+            <p class="meta tag maintag">@exercise.getTagsSortedByTagType.filter(x => x.isMainTag).map(x => x.getName).mkString(", ") </p>
+            <p class="meta tag">@exercise.getTagsSortedByTagType.filter(x => !x.isMainTag).map(x => x.getName).mkString(", ")</p>
+        </span>
+
+        <span class="meta user">@snippets.userLink(exercise.getUser)</span>
+        <span class="text-center meta solutioncount">
+        @exercise.getSolutions.size
+        </span>
+        <span class="meta time">
+            @snippets.longDate(exercise.getTime)
+        </span>
+        <div class="box">
+            <span class="text-center points">
+            @exercise.getPoints
+            </span>
+        </div>
+    </div>
+</a>

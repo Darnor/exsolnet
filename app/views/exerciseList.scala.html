@@ -1,4 +1,3 @@
-@import java.time.format.{DateTimeFormatter, FormatStyle}
 @(user: User, currentPage: com.avaje.ebean.PagedList[Exercise], currentOrderBy: Int, currentTitleFilter: String, currentTagFilter: String)
 
 @****************************************
@@ -42,34 +41,7 @@
     </div>
 
     @for(exercise <- currentPage.getList) {
-        <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">
-            <div class="list  @if(exercise.getPoints < 0) {
-                item-red
-            } else {
-                @if(exercise.getPoints > 0) {
-                    item-green
-                } else { item-blue}
-            }">
-                <span class="item">
-                    <p class="title">@exercise.getTitle</p>
-                    <p class="meta tag maintag">@exercise.getTagsSortedByTagType.filter(x => x.isMainTag).map(x => x.getName).mkString(", ") </p>
-                    <p class="meta tag">@exercise.getTagsSortedByTagType.filter(x => !x.isMainTag).map(x => x.getName).mkString(", ")</p>
-                </span>
-
-                <span><a class="meta user" href="@routes.UserController.renderUser(exercise.getUser.getId)">@snippets.gravatar(exercise.getUser, 16) @exercise.getUser.getUsername</a></span>
-                <span class="text-center meta solutioncount">
-                @exercise.getSolutions.size
-                </span>
-                <span class="meta time">
-                @exercise.getTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
-                </span>
-                <div class="box">
-                    <span class="text-center points">
-                    @exercise.getPoints
-                    </span>
-                </div>
-            </div>
-        </a>
+        @snippets.exerciseCard(exercise)
     }
 
     <div id="pagination" class="pagination">

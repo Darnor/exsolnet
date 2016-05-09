@@ -1,6 +1,3 @@
-@import java.time.format.DateTimeFormatter
-@import java.time.format.FormatStyle
-
 @(user: User, viewedUser: User)
 
 @if(user == viewedUser && viewedUser.getRecentComments.size == 0){
@@ -15,11 +12,10 @@
                     <span>@comment.getContent</span>
                     <p>
                         <small>
-                            @comment.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
+                            @snippets.longDate(comment.getTime)
                             -
-                            <a href="@routes.UserController.renderUser(comment.getUser.getId)">@snippets.gravatar(comment.getUser, 16) @comment.getUser.getUsername</a>
+                            @snippets.userLink(comment.getUser)
                             auf
-
                             @if(comment.getExercise != null) {
                                 <a href="@routes.ExerciseDetailController.renderExerciseDetail(comment.getExercise.getId)">@comment.getExercise.getTitle</a>
                             } else {

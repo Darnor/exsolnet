@@ -1,4 +1,3 @@
-@import java.time.format.DateTimeFormatter
 @(user: User, viewedUser: User)
 
 @if(user == viewedUser && viewedUser.getExercises.size == 0){
@@ -9,32 +8,7 @@
         <p>@viewedUser.getUsername hat noch keine Aufgaben erstellt.</p>
     } else {
         @viewedUser.getExercises.map { exercise =>
-            <div class="exercisedetail @if(exercise.getPoints < 0) { item-red } else {
-                @if(exercise.getPoints > 0) { item-green } else { item-blue}
-            }">
-                <span class="item" >
-                    <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">
-                    @exercise.getTitle
-                    </a>
-                    <p>@exercise.getTags.map(x => x.getName).mkString(", ")</p>
-                </span>
-                <span class="meta user">
-                    <a href="@routes.UserController.renderUser(exercise.getUser.getId)">
-                    @exercise.getUser.getUsername
-                    </a>
-                </span>
-                <span class="meta count">
-                @exercise.getSolutions.size
-                </span>
-                <span class="meta time">
-                @exercise.getTime().format(DateTimeFormatter.ofPattern("d MMM yyyy - hh:mm:ss"))
-                </span>
-                <div class="box">
-                    <span class="meta points">
-                    @exercise.getPoints
-                    </span>
-                </div>
-            </div>
+                @snippets.exerciseCard(exercise)
         }
     }
 }

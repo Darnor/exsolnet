@@ -1,0 +1,2 @@
+@(user: User, cssClass: String = "")
+<a class="@cssClass" href="@routes.UserController.renderUser(user.getId)">@snippets.gravatar(user, 16) @user.getUsername</a>
