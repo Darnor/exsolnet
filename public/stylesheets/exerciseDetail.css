@@ -48,7 +48,6 @@
 .item {
     color: #000;
     display: block;
-    white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
 }

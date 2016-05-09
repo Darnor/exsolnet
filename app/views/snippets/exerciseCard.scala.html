@@ -14,7 +14,7 @@
     <span class="meta user">@snippets.userLink(exercise.getUser)</span>
     <span class="text-center meta solutioncount">
         @exercise.getSolutions.size @if(exercise.getSolutions.size == 1) { Lösung } else { Lösungen }
-        @if(user != null && exercise.isSolvedBy(user)){ <span class="glyphicon glyphicon-ok"></span> }
+        @if(user != null && exercise.isSolvedBy(user)){ <span title="Du hast diese Aufgabe gelöst" class="glyphicon glyphicon-ok"></span> }
     </span>
     <span class="meta time">
         @snippets.longDate(exercise.getTime)

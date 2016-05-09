@@ -1,7 +1,7 @@
 @(solutions: java.util.List[Solution], user: User, exerciseId: java.lang.Long)
 
     @for(solution <- solutions) {
-        <div class="listSolution item-green">
+        <div class="listSolution @if(solution.isOfficial) {item-red} else {@if(user.getId == solution.getUser.getId){item-blue} else {item-green}}">
             <span class="item">@Html(solution.getContent)</span>
             <span class="meta user">@snippets.userLink(solution.getUser)</span>
             <span class="meta time">@snippets.longDate(solution.getTime)</span>
@@ -11,6 +11,11 @@
                     <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src='@routes.Assets.versioned("images/garbage-1.png")'"
                     onmouseout="this.src='@routes.Assets.versioned("images/garbage.png")'" >
                 </a>
+            }
+            @if(solution.isOfficial){
+                <strong>
+                    <span title="Die Musterlösung ist die vom Dozenten/Ersteller abgegebene Lösung." class="meta official">Musterlösung <span class="glyphicon glyphicon-ok"></span> </span>
+                </strong>
             }
             <div class = "box">
                 <a id="upVoteSolution@solution.getId" class = "up" onclick="upVoteSolution(@solution.getId)" >&#9650;</a>
