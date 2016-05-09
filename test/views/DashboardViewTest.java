@@ -51,16 +51,21 @@ public class DashboardViewTest extends AbstractViewTest{
         Exercise exerciseD = ExerciseBuilder.anExercise().withId(4L).withTags(Arrays.asList(bTag)).build();
         Exercise exerciseE = ExerciseBuilder.anExercise().withId(5L).withTags(Arrays.asList(bTag)).build();
 
-        List<Exercise> exercisesA = Arrays.asList(exerciseA, exerciseB);
-        List<Exercise> exercisesB = Arrays.asList(exerciseC, exerciseD, exerciseE);
+        List<Exercise> exercisesA = new ArrayList<>();
+        exercisesA.add(exerciseA);
+        exercisesA.add(exerciseB);
+
+        List<Exercise> exercisesB = new ArrayList<>();
+        exercisesB.add(exerciseC);
+        exercisesB.add(exerciseD);
+        exercisesB.add(exerciseE);
 
         aTag.setExercises(exercisesA);
         bTag.setExercises(exercisesB);
 
-        List<Solution> solutions = Arrays.asList(
-                SolutionBuilder.aSolution().withId(1L).withExercise(exercisesB.get(0)).build(),
-                SolutionBuilder.aSolution().withId(2L).withExercise(exercisesB.get(2)).build()
-        );
+        List<Solution> solutions = new ArrayList<>();
+        solutions.add(SolutionBuilder.aSolution().withId(1L).withExercise(exercisesB.get(0)).build());
+        solutions.add(SolutionBuilder.aSolution().withId(2L).withExercise(exercisesB.get(2)).build());
 
         User user = anUser().withId(1L).withSolutions(solutions).build();
 

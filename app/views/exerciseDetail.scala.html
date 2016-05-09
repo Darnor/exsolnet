@@ -6,6 +6,11 @@
                 $("#" + divId).toggle();
 
             }
+
+            function toggler2(divId) {
+                $("." + divId).toggle();
+
+            }
     </script>
     <div class="exercisedetail">
         <h1>@exercise.getTitle</h1>
@@ -48,16 +53,11 @@
 
         @exercise.getComments.map { comment =>
 
-            <div class="commentdetail">
-                <span class="item"> @comment.getContent</span>
-                <span><a class="meta user" href="@routes.UserController.renderUser(comment.getUser.getId)">@comment.getUser.getUsername</a></span>
-                <span class="meta time">
-                @comment.getTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
-                </span>
-            </div>
+            @snippets.comment(comment, user)
+
         }
         <div class="buttondetail">
-            <form method="POST" action="@routes.ExerciseDetailController.createCommentExercise(exercise.getId)">
+            <form method="POST" action="@routes.CommentController.processCreateExerciseComment(exercise.getId)">
 
                 <div class="input-group">
 

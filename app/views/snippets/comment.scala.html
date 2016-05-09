@@ -1,0 +1,22 @@
+@(comment: Comment, user: User)
+<div class="commentdetail">
+
+    <div class="editcomment@comment.getId">
+        <span class="item">
+            @comment.getContent
+            @if(user.getId == comment.getUser.getId) {
+
+                <a class="pull-right" href="#"  onclick="toggler2('editcomment@comment.getId')">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                </a>
+            }
+
+        </span>
+
+        <span><a class="meta user" href="@routes.UserController.renderUser(comment.getUser.getId)">@comment.getUser.getUsername</a></span>
+        <span class="meta time">
+            @snippets.longDate(comment.getTime)
+        </span>
+    </div>
+    @snippets.editcomment(comment)
+</div>

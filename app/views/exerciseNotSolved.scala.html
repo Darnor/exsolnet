@@ -9,5 +9,5 @@
     @if(exercise.getSolutions.size() >= 2){
         <p>Diese Aufgabe besitzt bereits @exercise.getSolutions.size() Lösungen. Um diese Lösungen einsehen zu können, musst du erst deine eigene Lösung erstellen</p>
     }
-    <a href="@routes.ExerciseDetailController.renderCreateSolution(exercise.getId())" class="btn btn-primary btn-lg btn-block">Aufgabe Lösen</a>
+    <a href="@routes.SolutionController.renderCreate(exercise.getId())" class="btn btn-primary btn-lg btn-block">Aufgabe Lösen</a>
 }

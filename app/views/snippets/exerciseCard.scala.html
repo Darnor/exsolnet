@@ -2,7 +2,7 @@
 <div class="list exercise-card @if(user != null && exercise.isSolvedBy(user)){item-blue} else {item-green}">
     <span class="item">
         <p class="title">
-            <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">
+            <a href="@routes.ExerciseController.renderDetail(exercise.getId)">
                 @exercise.getTitle
             </a>
         </p>

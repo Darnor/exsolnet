@@ -99,15 +99,52 @@ public class Comment extends Model {
         return new Model.Finder<>(Comment.class);
     }
 
+    /**
+     * The Comment with the given id
+     * @param id the id of the comment
+     * @return the comment or null if not found.
+     */
+    public static Comment findById(Long id) {
+        Comment comment = find().byId(id);
+        return (comment == null ) ? null : comment;
+    }
+
+    /**
+     * Create new comment for a Exercise
+     * @param content the comment
+     * @param exercise the associated exercise
+     * @param user the user who created the comment
+     * @return the created commit
+     */
     public static Comment create(String content, Exercise exercise, User user) {
         Comment comment = CommentBuilder.aComment().withExercise(exercise).withContent(content).withUser(user).build();
         comment.save();
         return comment;
     }
 
+    /**
+     * Create a new comment for a Solution
+     * @param content the comment
+     * @param solution the associated solution
+     * @param user the user who created the comment
+     * @return the created comment
+     */
     public static Comment create(String content, Solution solution, User user) {
         Comment comment = CommentBuilder.aComment().withSolution(solution).withContent(content).withUser(user).build();
         comment.save();
+        return comment;
+    }
+
+    /**
+     * Update a comment with a new content
+     * @param commentId the id of the comment
+     * @param content the new content of the comment
+     * @return the updated comment
+     */
+    public static Comment updateContent(Long commentId, String content){
+        Comment comment = findById(commentId);
+        comment.setContent(content);
+        comment.update();
         return comment;
     }
 }
