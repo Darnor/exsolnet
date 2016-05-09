@@ -1,6 +1,5 @@
 package models;
 
-import com.avaje.ebean.Expr;
 import com.avaje.ebean.Model;
 import models.builders.TagBuilder;
 
@@ -11,6 +10,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.avaje.ebean.Expr.icontains;
+import static com.avaje.ebean.Expr.istartsWith;
 import static models.Tracking.COLUMN_TAG_ID;
 
 @Entity
@@ -113,7 +114,7 @@ public class Tag extends Model {
     }
 
     public static List<Tag> getFilteredTags(String tagNameFilter) {
-        return find().where().icontains(COLUMN_NAME, tagNameFilter).orderBy(COLUMN_NAME).findList();
+        return find().where().or(icontains(COLUMN_NAME, tagNameFilter), icontains(COLUMN_LONGNAME, tagNameFilter)).orderBy(COLUMN_NAME).findList();
     }
 
     /**
@@ -124,7 +125,7 @@ public class Tag extends Model {
      * @return list of all tags that start with tagName
      */
     public static List<Tag> getSuggestedTags(String tagName) {
-        return find().where().or(Expr.istartsWith(COLUMN_NAME, tagName),Expr.istartsWith(COLUMN_LONGNAME,tagName)).orderBy(COLUMN_NAME).findList();
+        return find().where().or(istartsWith(COLUMN_NAME, tagName), istartsWith(COLUMN_LONGNAME,tagName)).orderBy(COLUMN_NAME).findList();
     }
 
     /**
