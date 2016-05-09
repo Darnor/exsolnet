@@ -99,6 +99,11 @@ public class Comment extends Model {
         return new Model.Finder<>(Comment.class);
     }
 
+    public static Comment findById(Long id) {
+        Comment comment = find().byId(id);
+        return (comment == null ) ? null : comment;
+    }
+
     public static Comment create(String content, Exercise exercise, User user) {
         Comment comment = CommentBuilder.aComment().withExercise(exercise).withContent(content).withUser(user).build();
         comment.save();
@@ -108,6 +113,13 @@ public class Comment extends Model {
     public static Comment create(String content, Solution solution, User user) {
         Comment comment = CommentBuilder.aComment().withSolution(solution).withContent(content).withUser(user).build();
         comment.save();
+        return comment;
+    }
+
+    public static Comment updateContent(Long commentId, String content){
+        Comment comment = findById(commentId);
+        comment.setContent(content);
+        comment.update();
         return comment;
     }
 }

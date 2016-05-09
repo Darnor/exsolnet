@@ -24,6 +24,7 @@ GET         /exercises/:id/createsolution       controllers.ExerciseDetailContro
 POST        /exercises/:id/solution             controllers.ExerciseDetailController.processUpdate(id: Long)
 POST        /exercises/:id/commentExercise      controllers.ExerciseDetailController.createCommentExercise(id: Long)
 POST        /exercises/:id/commentSolution      controllers.ExerciseDetailController.createCommentSolution(id: Long)
+POST        /exercises/:id/updateComment    controllers.ExerciseDetailController.updateComment(id: Long)
 
 GET         /solutions/:id/edit                 controllers.SolutionController.renderEditSolution(id: Long)
 POST        /solutions/:id/upvote               controllers.SolutionController.processUpvote(id: Long)

@@ -5,6 +5,7 @@ import models.Exercise;
 import models.Solution;
 import models.User;
 import models.builders.SolutionBuilder;
+import play.Logger;
 import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -139,5 +140,21 @@ public class ExerciseDetailController extends Controller {
         Solution solution = Solution.findById(solutionId);
         Comment.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), solution, SessionService.getCurrentUser());
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise().getId()));
+    }
+
+    public Result updateComment(Long commentId) {
+        Comment comment = Comment.findById(commentId);
+        if(comment.getUser().getId().equals(SessionService.getCurrentUser().getId())){
+            Comment.updateContent(commentId, formFactory.form().bindFromRequest().get(CONTENT_FIELD));
+            Logger.debug("Comment: "+commentId+" updated with content: "+formFactory.form().bindFromRequest().get(CONTENT_FIELD));
+        }
+        else{
+            Logger.error("User: "+SessionService.getCurrentUser().getId()+" tried to edit comment: "+commentId+" from user: "+comment.getUser().getId());
+        }
+        if(comment.getExercise()!=null)
+            return redirect(routes.ExerciseDetailController.renderExerciseDetail(comment.getExercise().getId()));
+        if(comment.getSolution() != null)
+            return redirect(routes.ExerciseDetailController.renderExerciseDetail(comment.getSolution().getExercise().getId()));
+        return null;
     }
 }
