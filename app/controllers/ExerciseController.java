@@ -1,10 +1,7 @@
 package controllers;
 
 import com.avaje.ebean.PagedList;
-import models.Exercise;
-import models.Tag;
-import models.User;
-import models.Vote;
+import models.*;
 import models.builders.ExerciseBuilder;
 import play.Logger;
 import play.data.DynamicForm;
@@ -13,15 +10,14 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
-import views.html.editExercise;
-import views.html.error403;
-import views.html.error404;
-import views.html.exerciseList;
+import views.html.*;
+import views.html.exerciseViews.exerciseSolutionList;
 
 import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -43,6 +39,9 @@ public class ExerciseController extends Controller {
 
     private static final String TAG_NAME_DELIMITER = ",";
     private static final int PAGE_SIZE = 10;
+
+    private static final int NO_OF_LATEST_SOLUTIONS = 2;
+    private static final int NO_OF_TOP_SOLTUIONS = 1;
 
     /**
      * Map the Id of the html exercise-table to their Model-Attribute-name
@@ -87,7 +86,7 @@ public class ExerciseController extends Controller {
         if (currentUser.isModerator()) {
             Exercise.undoDelete(id);
             Logger.info("Exercise " + id + " undo deletion by " + currentUser.getEmail());
-            return redirect(routes.ExerciseDetailController.renderExerciseDetail(id));
+            return redirect(routes.ExerciseController.renderDetail(id));
         }
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen das Löschen dieser Aufgabe rückgängig zu machen"));
     }
@@ -229,5 +228,89 @@ public class ExerciseController extends Controller {
         Exercise exercise = Exercise.findValidById(exerciseId);
         Vote.downvote(SessionService.getCurrentUser(), exercise);
         return ok(String.valueOf(Exercise.findValidById(exerciseId).getPoints()));
+    }
+
+    /**
+     * renders the exercise Details. If the user has solved the exercise, renders additional all soultions with
+     * comments. If the user hasn't solved the exercise, renders an create solution formular.
+     *
+     * @param id the id of the Exercise
+     * @return Result View of the Detailed Exercise with Solution Formular or SolutionsList if the User has already
+     * solved the Exercise
+     */
+    public Result renderDetail(Long id) {
+        User user = SessionService.getCurrentUser();
+        Exercise exercise = Exercise.findValidById(id);
+        if (exercise != null) {
+            return user.hasSolved(id) ? renderSolutions(id) : renderExerciseNotSolved(id);
+        }
+        return notFound(error404.render(user, "Diese Aufgabe existiert nicht"));
+    }
+
+    /**
+     * renders the exercise details with an Info (like you have to solve the exercise first before looking
+     * at other solutions
+     *
+     * @param exerciseId the id of the Exercise
+     * @return Result View of the detailed exercise with no Solution and an Info
+     */
+    public Result renderExerciseNotSolved(long exerciseId) {
+        return ok(exerciseNotSolved.render(SessionService.getCurrentUser(), Exercise.findValidById(exerciseId)));
+    }
+
+    public Result createComment(Long exerciseId) {
+        Comment.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), Exercise.findById(exerciseId), SessionService.getCurrentUser());
+        return redirect(routes.ExerciseController.renderDetail(exerciseId));
+    }
+
+    /**
+     * renders the exercise details with all solutions and comments
+     *
+     * @param exerciseId the id of the Exercise
+     * @return Result view of the exercise with all solutions and comments.
+     */
+    public Result renderSolutions(Long exerciseId) {
+        Exercise exercise = Exercise.findValidById(exerciseId);
+        User currentUser = SessionService.getCurrentUser();
+
+        List<Solution> solutions = getPointSortedSolutions(exercise.getSolutions());
+
+        List<Solution> officialSolutions = getOfficialSolutions(solutions);
+        solutions.removeAll(officialSolutions);
+
+        List<Solution> topSolutions = getFirstNoOfSolutions(solutions, NO_OF_TOP_SOLTUIONS);
+        solutions.removeAll(topSolutions);
+
+        List<Solution> latestSolutions = getFirstNoOfSolutions(getTimeSortedSolutions(solutions), NO_OF_LATEST_SOLUTIONS);
+        solutions.removeAll(latestSolutions);
+
+        return ok(exerciseSolutions.render(
+                currentUser,
+                exercise,
+                exerciseSolutionList.apply(officialSolutions, currentUser, exerciseId),
+                exerciseSolutionList.apply(topSolutions, currentUser, exerciseId),
+                exerciseSolutionList.apply(latestSolutions, currentUser, exerciseId),
+                exerciseSolutionList.apply(solutions, currentUser, exerciseId)
+        ));
+    }
+
+    static List<Solution> getOfficialSolutions(List<Solution> solutions) {
+        return solutions.stream().filter(Solution::isOfficial).collect(Collectors.toList());
+    }
+
+    static List<Solution> getFirstNoOfSolutions(List<Solution> solutions, int n) {
+        return solutions.stream().limit(n).collect(Collectors.toList());
+    }
+
+    static List<Solution> getTimeSortedSolutions(List<Solution> solutions) {
+        return solutions.stream()
+                .sorted((s1, s2) -> s2.getTime().compareTo(s1.getTime()))
+                .collect(Collectors.toList());
+    }
+
+    static List<Solution> getPointSortedSolutions(List<Solution> solutions) {
+        return solutions.stream()
+                .sorted((s1, s2) -> s1.getPoints() > s2.getPoints() ? -1 : s1.getPoints() < s2.getPoints() ? 1 : 0)
+                .collect(Collectors.toList());
     }
 }

@@ -42,7 +42,7 @@
     </div>
 
     @for(exercise <- currentPage.getList) {
-        <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">
+        <a href="@routes.ExerciseController.renderDetail(exercise.getId)">
             <div class="list  @if(exercise.getPoints < 0) {
                 item-red
             } else {

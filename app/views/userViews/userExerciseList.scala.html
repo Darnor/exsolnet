@@ -13,7 +13,7 @@
                 @if(exercise.getPoints > 0) { item-green } else { item-blue}
             }">
                 <span class="item" >
-                    <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">
+                    <a href="@routes.ExerciseController.renderDetail(exercise.getId)">
                     @exercise.getTitle
                     </a>
                     <p>@exercise.getTags.map(x => x.getName).mkString(", ")</p>

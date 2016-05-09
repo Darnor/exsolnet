@@ -6,6 +6,7 @@ import models.builders.SolutionBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -104,6 +105,14 @@ public class Solution extends Post {
     public static Solution create(String content, Exercise exercise, User user) {
         Solution solution = SolutionBuilder.aSolution().withExercise(exercise).withContent(content).withUser(user).build();
         solution.save();
+        return solution;
+    }
+
+    public static Solution update(long id, String content) {
+        Solution solution = Solution.findById(id);
+        solution.setContent(content);
+        solution.setLastChanged(LocalDateTime.now());
+        solution.update();
         return solution;
     }
 

@@ -11,7 +11,7 @@
             @if(solution.isOfficial) { item-green } else { item-blue }
         }">
             <span class="item" >
-                <a href="@routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise.getId)">@solution.getExercise.getTitle</a>
+                <a href="@routes.ExerciseController.renderDetail(solution.getExercise.getId)">@solution.getExercise.getTitle</a>
             </span>
             <span class="item">
             @Html(solution.getContent)

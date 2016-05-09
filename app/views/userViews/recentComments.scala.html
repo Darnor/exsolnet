@@ -21,9 +21,9 @@
                             auf
 
                             @if(comment.getExercise != null) {
-                                <a href="@routes.ExerciseDetailController.renderExerciseDetail(comment.getExercise.getId)">@comment.getExercise.getTitle</a>
+                                <a href="@routes.ExerciseController.renderDetail(comment.getExercise.getId)">@comment.getExercise.getTitle</a>
                             } else {
-                                deine Lösung zu <a href="@routes.ExerciseDetailController.renderExerciseDetail(comment.getSolution.getExercise.getId)">@comment.getSolution.getExercise.getTitle</a>
+                                deine Lösung zu <a href="@routes.ExerciseController.renderDetail(comment.getSolution.getExercise.getId)">@comment.getSolution.getExercise.getTitle</a>
                             }
                         </small>
                     </p>
