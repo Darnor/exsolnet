@@ -2,12 +2,10 @@
 
 @if(solutions.size() == 0){
     <p>Du hast noch keine Aufgaben gelöst. <a href="@routes.ExerciseController.renderOverview()">Hier</a>
-        findest du eine Liste von interessanten aufgaben.</p>
+        findest du eine Liste von interessanten Aufgaben.</p>
 } else {
     @for(solution <- solutions) {
-        <div class="listSolution  @if(solution.getPoints < 0) { item-red } else {
-            @if(solution.isOfficial) { item-green } else { item-blue }
-        }">
+        <div class="listSolution  item-green">
             <span class="item" >
                 <a href="@routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise.getId)">@solution.getExercise.getTitle</a>
             </span>

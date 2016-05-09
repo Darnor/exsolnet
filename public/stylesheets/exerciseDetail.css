@@ -87,23 +87,15 @@
 }
 
 .meta {
-    margin-left: .25em;
+    font-size: .8em;
+    margin-left: .75em;
 }
 .title{
     margin-bottom: 3px;
 }
 
-.user,
-.time,
-.count,
-i {
-    font-size: 8px;
-    font-size: .5em;
-    line-height: 2; /* 16 "px" */
-}
-.tag{
-    font-size: 10px;
-    margin-bottom: 0px;
+.meta .tag{
+    margin-left: .5em;
 }
 
 .maintag,.time {

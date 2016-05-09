@@ -1,4 +1,4 @@
 @(user: User, size: Int)
 @if(user != null && user.getEmail != null){
-    <img class="pull-left" src="https://www.gravatar.com/avatar/@user.getGravatarHash?d=retro&s=@size"/>
+    <img src="https://www.gravatar.com/avatar/@user.getGravatarHash?d=retro&s=@size"/>
 }

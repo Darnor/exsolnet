@@ -88,7 +88,7 @@ public class User extends Model {
     }
 
     public List<Exercise> getExercises() {
-        exercises.removeIf(exercise -> exercise.isValid());
+        //exercises.removeIf(exercise -> exercise.isValid());
         return Collections.unmodifiableList(exercises);
     }
 
@@ -97,7 +97,7 @@ public class User extends Model {
     }
 
     public List<Solution> getSolutions() {
-        solutions.removeIf(solution -> solution.isValid());
+        //solutions.removeIf(solution -> solution.isValid());
         return Collections.unmodifiableList(solutions);
     }
 

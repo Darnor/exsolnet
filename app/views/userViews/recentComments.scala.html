@@ -12,8 +12,6 @@
                     <span>@comment.getContent</span>
                     <p>
                         <small>
-                            @snippets.longDate(comment.getTime)
-                            -
                             @snippets.userLink(comment.getUser)
                             auf
                             @if(comment.getExercise != null) {
@@ -21,6 +19,8 @@
                             } else {
                                 deine Lösung zu <a href="@routes.ExerciseDetailController.renderExerciseDetail(comment.getSolution.getExercise.getId)">@comment.getSolution.getExercise.getTitle</a>
                             }
+                            -
+                            @snippets.longDate(comment.getTime)
                         </small>
                     </p>
                 </div>
