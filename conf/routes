@@ -29,9 +29,9 @@ POST        /solutions/:id/upvote                   controllers.SolutionControll
 POST        /solutions/:id/downvote                 controllers.SolutionController.processDownvote(id: Long)
 POST        /exercises/:id/solution/create          controllers.SolutionController.processCreate(id: Long)
 
-POST        /exercises/:id/updateComment            controllers.CommentController.updateComment(id: Long)
-POST        /exercises/:id/solution/comment/create  controllers.CommentController.createSolutionComment(id: Long)
-POST        /exercises/:id/comment/create           controllers.CommentController.createExerciseComment(id: Long)
+POST        /exercises/:id/updateComment            controllers.CommentController.processUpdate(id: Long)
+POST        /exercises/:id/solution/comment/create  controllers.CommentController.processCreateSolutionComment(id: Long)
+POST        /exercises/:id/comment/create           controllers.CommentController.processCreateExerciseComment(id: Long)
 
 GET         /tags                                   controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
 GET         /tags                                   controllers.TagController.renderOverview

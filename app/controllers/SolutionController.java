@@ -112,11 +112,4 @@ public class SolutionController extends Controller {
     public Result renderCreate(long exerciseId) {
         return ok(editSolution.render(SessionService.getCurrentUser(), Exercise.findValidById(exerciseId), SolutionBuilder.aSolution().build()));
     }
-
-    public Result createComment(Long solutionId) {
-        Solution solution = Solution.findById(solutionId);
-        Comment.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), solution, SessionService.getCurrentUser());
-        return redirect(routes.ExerciseController.renderDetail(solution.getExercise().getId()));
-    }
-
 }

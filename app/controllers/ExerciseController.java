@@ -258,11 +258,6 @@ public class ExerciseController extends Controller {
         return ok(exerciseNotSolved.render(SessionService.getCurrentUser(), Exercise.findValidById(exerciseId)));
     }
 
-    public Result createComment(Long exerciseId) {
-        Comment.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), Exercise.findById(exerciseId), SessionService.getCurrentUser());
-        return redirect(routes.ExerciseController.renderDetail(exerciseId));
-    }
-
     /**
      * renders the exercise details with all solutions and comments
      *

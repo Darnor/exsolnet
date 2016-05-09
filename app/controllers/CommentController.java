@@ -22,30 +22,29 @@ public class CommentController extends Controller {
     @Inject
     FormFactory formFactory;
 
-    public Result createExerciseComment(Long exerciseId) {
+    public Result processCreateExerciseComment(Long exerciseId) {
         Comment.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), Exercise.findById(exerciseId), SessionService.getCurrentUser());
         return redirect(routes.ExerciseController.renderDetail(exerciseId));
     }
 
-    public Result createSolutionComment(Long solutionId) {
+    public Result processCreateSolutionComment(Long solutionId) {
         Solution solution = Solution.findById(solutionId);
         Comment.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), solution, SessionService.getCurrentUser());
         return redirect(routes.ExerciseController.renderDetail(solution.getExercise().getId()));
     }
 
-    public Result updateComment(Long commentId) {
+    public Result processUpdate(Long commentId) {
         Comment comment = Comment.findById(commentId);
         User user = SessionService.getCurrentUser();
-        if(comment.getUser().getId().equals(user.getId())){
+        if(comment.getUser().getId().equals(user.getId())) {
             Comment.updateContent(commentId, formFactory.form().bindFromRequest().get(CONTENT_FIELD));
             Logger.debug("Comment: "+commentId+" updated with content: "+formFactory.form().bindFromRequest().get(CONTENT_FIELD));
-        }
-        else{
+        } else {
             Logger.error("User: "+user.getId()+" tried to edit comment: "+commentId+" from user: "+comment.getUser().getId());
         }
         if(comment.getExercise()!=null) {
             return redirect(routes.ExerciseController.renderDetail(comment.getExercise().getId()));
-        }else if(comment.getSolution() != null) {
+        } else if(comment.getSolution() != null) {
             return redirect(routes.ExerciseController.renderDetail(comment.getSolution().getExercise().getId()));
         }
         return notFound(error404.render(user,"Bearbeiteter Kommentar ist keiner Aufgabe oder Lösung zugewiesen"));
