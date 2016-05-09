@@ -1,51 +1,45 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
-GET         /                                    controllers.UserController.renderDashboard
-GET         /user                                controllers.UserController.renderDashboard
-GET         /user/edit                           controllers.UserController.renderEdit
-GET         /user/:id                            controllers.UserController.renderUser(id: Long)
-POST        /user/update                         controllers.UserController.processUpdate(id: Long)
+GET         /                                   controllers.UserController.renderDashboard
+GET         /user                               controllers.UserController.renderDashboard
+GET         /user/edit                          controllers.UserController.renderEdit
+GET         /user/:id                           controllers.UserController.renderUser(id: Long)
+POST        /user/update                        controllers.UserController.processUpdate(id: Long)
 
-GET         /exercises                           controllers.ExerciseController.renderList(page:Int ?= 0, sort:Int ?=1, title ?= "", tags ?="")
-GET         /exercises                           controllers.ExerciseController.renderOverview
-GET         /exercises/create                    controllers.ExerciseController.renderCreate
-GET         /exercises/:id/edit                  controllers.ExerciseController.renderEdit(id: Long)
-GET         /exercises/:id/delete                controllers.ExerciseController.processDelete(id: Long)
-GET         /exercises/:id/undoDelete            controllers.ExerciseController.processUndo(id: Long)
+GET         /exercises                          controllers.ExerciseController.renderList(page:Int ?= 0, sort:Int ?=1, title ?= "", tags ?="")
+GET         /exercises                          controllers.ExerciseController.renderOverview
+GET         /exercises/create                   controllers.ExerciseController.renderCreate
+GET         /exercises/:id/edit                 controllers.ExerciseController.renderEdit(id: Long)
+GET         /exercises/:id/delete               controllers.ExerciseController.processDelete(id: Long)
+GET         /exercises/:id/undoDelete           controllers.ExerciseController.processUndo(id: Long)
 
-POST        /exercises/create                    controllers.ExerciseController.processCreate
-POST        /exercises/:id/update                controllers.ExerciseController.processUpdate(id: Long)
-POST        /exercises/:id/upvote                controllers.ExerciseController.processUpvote(id: Long)
-POST        /exercises/:id/downvote              controllers.ExerciseController.processDownvote(id: Long)
+POST        /exercises/create                   controllers.ExerciseController.processCreate
+POST        /exercises/:id/update               controllers.ExerciseController.processUpdate(id: Long)
+POST        /exercises/:id/upvote               controllers.ExerciseController.processUpvote(id: Long)
+POST        /exercises/:id/downvote             controllers.ExerciseController.processDownvote(id: Long)
 
-GET         /exercises/:id                       controllers.ExerciseDetailController.renderExerciseDetail(id: Long)
-GET         /exercises/:id/createsolution        controllers.ExerciseDetailController.renderCreateSolution(id: Long)
-POST        /exercises/:id/solution              controllers.ExerciseDetailController.processUpdate(id: Long)
-POST        /exercises/:id/commentExercise  controllers.ExerciseDetailController.createCommentExercise(id: Long)
-POST        /exercises/:id/commentSolution  controllers.ExerciseDetailController.createCommentSolution(id: Long)
+GET         /exercises/:id                      controllers.ExerciseDetailController.renderExerciseDetail(id: Long)
+GET         /exercises/:id/createsolution       controllers.ExerciseDetailController.renderCreateSolution(id: Long)
+POST        /exercises/:id/solution             controllers.ExerciseDetailController.processUpdate(id: Long)
+POST        /exercises/:id/commentExercise      controllers.ExerciseDetailController.createCommentExercise(id: Long)
+POST        /exercises/:id/commentSolution      controllers.ExerciseDetailController.createCommentSolution(id: Long)
 
-<<<<<<< cc332f22a27099a351973e7bc368435243c8ad01
-POST        /solutions/:id/upvote                controllers.SolutionController.processUpvote(id: Long)
-POST        /solutions/:id/downvote              controllers.SolutionController.processDownvote(id: Long)
-GET         /solutions/:id/delete                controllers.SolutionController.processDelete(id: Long)
-=======
-GET         /solutions/:id/edit             controllers.SolutionController.renderEditSolution(id: Long)
-POST        /solutions/:id/upvote           controllers.SolutionController.processUpvote(id: Long)
-POST        /solutions/:id/downvote         controllers.SolutionController.processDownvote(id: Long)
-DELETE      /solutions/:id/delete           controllers.SolutionController.processDelete(id: Long)
->>>>>>> add lastchangedfield to exercise/solution
+GET         /solutions/:id/edit                 controllers.SolutionController.renderEditSolution(id: Long)
+POST        /solutions/:id/upvote               controllers.SolutionController.processUpvote(id: Long)
+POST        /solutions/:id/downvote             controllers.SolutionController.processDownvote(id: Long)
+GET         /solutions/:id/delete               controllers.SolutionController.processDelete(id: Long)
 
-GET         /tags                                controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
-GET         /tags                                controllers.TagController.renderOverview
-GET         /tags/query                          controllers.TagController.processTagNameQuery(q ?= "")
-POST        /tags/track                          controllers.TagController.processTrack(tagId: Long)
+GET         /tags                               controllers.TagController.renderTagList(sort:Int ?= 1, tags ?= "")
+GET         /tags                               controllers.TagController.renderOverview
+GET         /tags/query                         controllers.TagController.processTagNameQuery(q ?= "")
+POST        /tags/track                         controllers.TagController.processTrack(tagId: Long)
 
-GET         /login                               controllers.LoginController.renderLogin
-GET         /register                            controllers.LoginController.renderRegister
-POST        /register                            controllers.LoginController.processRegister
-POST        /login                               controllers.LoginController.processLogin
-POST        /logout                              controllers.LoginController.processLogout
+GET         /login                              controllers.LoginController.renderLogin
+GET         /register                           controllers.LoginController.renderRegister
+POST        /register                           controllers.LoginController.processRegister
+POST        /login                              controllers.LoginController.processLogin
+POST        /logout                             controllers.LoginController.processLogout
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file                        controllers.Assets.versioned(path="/public", file: Asset)
+GET         /assets/*file                       controllers.Assets.versioned(path="/public", file: Asset)
