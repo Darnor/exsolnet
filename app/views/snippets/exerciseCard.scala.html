@@ -1,5 +1,5 @@
-@(exercise: Exercise)
-<div class="list item-green exercise-card">
+@(exercise: Exercise, user: User = null)
+<div class="list exercise-card @if(user != null && exercise.isSolvedBy(user)){item-blue} else {item-green}">
     <span class="item">
         <p class="title">
             <a href="@routes.ExerciseDetailController.renderExerciseDetail(exercise.getId)">
@@ -13,7 +13,8 @@
 
     <span class="meta user">@snippets.userLink(exercise.getUser)</span>
     <span class="text-center meta solutioncount">
-    @exercise.getSolutions.size @if(exercise.getSolutions.size == 1) { Lösung } else { Lösungen }
+        @exercise.getSolutions.size @if(exercise.getSolutions.size == 1) { Lösung } else { Lösungen }
+        @if(user != null && exercise.isSolvedBy(user)){ <span class="glyphicon glyphicon-ok"></span> }
     </span>
     <span class="meta time">
         @snippets.longDate(exercise.getTime)

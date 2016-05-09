@@ -41,7 +41,7 @@
     </div>
 
     @for(exercise <- currentPage.getList) {
-        @snippets.exerciseCard(exercise)
+        @snippets.exerciseCard(exercise, user)
     }
 
     <div id="pagination" class="pagination">

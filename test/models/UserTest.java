@@ -60,4 +60,18 @@ public class UserTest extends AbstractApplicationTest {
         assertEquals(-13,userHans.getPoints());
         assertEquals(8,userBlubberduck.getPoints());
     }
+
+    @Test
+    public void testIsSolved(){
+        User franz = User.findByUsername("Franz");
+        Exercise ex = Exercise.findById(8001L);
+        assertTrue("Franz has solved Exercise 8001", ex.isSolvedBy(franz));
+    }
+
+    @Test
+    public void testIsNotSolved(){
+        User franz = User.findByUsername("Franz");
+        Exercise ex = Exercise.findById(8007L);
+        assertFalse("Franz has not solved Exercise 8007", ex.isSolvedBy(franz));
+    }
 }

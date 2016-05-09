@@ -8,7 +8,7 @@
         <p>@viewedUser.getUsername hat noch keine Aufgaben erstellt.</p>
     } else {
         @viewedUser.getExercises.map { exercise =>
-                @snippets.exerciseCard(exercise)
+                @snippets.exerciseCard(exercise, user)
         }
     }
 }

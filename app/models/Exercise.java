@@ -233,4 +233,12 @@ public class Exercise extends Post {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * @param user
+     * @return whether this exercise is solved by given user
+     */
+    public boolean isSolvedBy(User user){
+        return solutions.stream().filter(s -> s.getUser().getId().equals(user.getId())).count() > 0;
+    }
+
 }
