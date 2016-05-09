@@ -53,6 +53,7 @@
 }
 .list:hover{
     background: lightgrey;
+    cursor: pointer;
 }
 .list > a:hover{
     text-decoration: none;
