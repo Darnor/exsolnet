@@ -1,7 +1,7 @@
 @(comment: Comment)
 <div class="hiddenComment editcomment@comment.getId" id="editcomment@comment.getId">
     <div class="buttondetail " >
-        <form method="POST" action="@routes.ExerciseDetailController.updateComment(comment.getId)">
+        <form method="POST" action="@routes.CommentController.updateComment(comment.getId)">
             <div class="input-group">
                 <input type="text" class="form-control" id="content" name="content" value="@comment.getContent"/>
                     <span class="input-group-btn">
