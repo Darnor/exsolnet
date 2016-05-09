@@ -18,10 +18,10 @@
             <i class="clock"></i>
             <span class="meta time">@solution.getTime.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))</span>
             @if(user.isModerator || user.getId == solution.getUser.getId) {
-                <span class="meta delete">
-                    <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src = '@routes.Assets.versioned("images/garbage-1.png")'"
-                    onmouseout="this.src = '@routes.Assets.versioned("images/garbage.png")'" onclick="deleteSolution(@solution.getId, @exerciseId)"/>
-                </span>
+                <a href="@routes.SolutionController.processDelete(solution.getId)" class="meta delete">
+                    <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src='@routes.Assets.versioned("images/garbage-1.png")'"
+                    onmouseout="this.src='@routes.Assets.versioned("images/garbage.png")'" >
+                </a>
             }
             <div class = "box">
                 <a id="upVoteSolution@solution.getId" class = "up" onclick="upVoteSolution(@solution.getId)" >&#9650;</a>

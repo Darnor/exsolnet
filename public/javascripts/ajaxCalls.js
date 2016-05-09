@@ -58,23 +58,3 @@ function trackTag(tagId) {
     xhttp.open("POST", "/tags/track?tagId=" + tagId, true);
     xhttp.send();
 }
-
-function deleteSolution(solutionId, exerciseId) {
-    $.ajax({
-        type: "DELETE",
-        url: "/solutions/" + solutionId + "/delete",
-        complete: function (xhttp) {
-            top.location.href = "/exercises/" + exerciseId
-        }
-    });
-}
-
-function deleteExercise(exerciseId) {
-    $.ajax({
-        type: "DELETE",
-        url: "/exercises/" + exerciseId + "/delete",
-        complete: function (xhttp) {
-            top.location.href = "/exercises"
-        }
-    });
-}

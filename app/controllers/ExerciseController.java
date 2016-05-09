@@ -66,11 +66,12 @@ public class ExerciseController extends Controller {
      */
     public Result processDelete(Long id) {
         User currentUser = SessionService.getCurrentUser();
+        Logger.info("Exercise " + id + " deleted by " + currentUser.getEmail());
         if (currentUser.isModerator()) {
             Exercise.delete(id);
             Logger.info("Exercise " + id + " deleted by " + currentUser.getEmail());
             flash("success", "Aufgabe gelöscht");
-            return ok("Exercise deleted");
+            return redirect(routes.ExerciseController.renderOverview());
         }
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Aufgabe zu editieren"));
     }

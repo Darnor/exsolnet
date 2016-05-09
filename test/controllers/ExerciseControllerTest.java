@@ -37,7 +37,7 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
                     fakeRequest(routes.ExerciseController.processDelete(8002L))
                             .session("connected", "blubberduck@hsr.ch")
             );
-            assertThat(result.status(), is(OK));
+            assertThat(result.status(), is(PERMANENT_REDIRECT));
         });
     }
 

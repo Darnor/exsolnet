@@ -29,10 +29,10 @@
             Kommentare <span class="badge">@exercise.getComments.size()</span></a>
 
         @if(user.isModerator) {
-            <span class="meta delete">
-                <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src = '@routes.Assets.versioned("images/garbage-1.png")'"
-                onmouseout="this.src = '@routes.Assets.versioned("images/garbage.png")'" onclick="deleteExercise(@exercise.getId)">
-            </span>
+            <a href="@routes.ExerciseController.processDelete(exercise.getId)" class="meta delete">
+                <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src='@routes.Assets.versioned("images/garbage-1.png")'"
+                onmouseout="this.src='@routes.Assets.versioned("images/garbage.png")'" >
+            </a>
         }
 
         <div class = "box">

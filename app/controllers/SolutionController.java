@@ -33,12 +33,13 @@ public class SolutionController extends Controller {
      * @return ok if solution has been deleted or unauthorized if user is not allowed to delete this solution
      */
     public Result processDelete(Long id) {
+        long exercise_id = Solution.findById(id).getExercise().getId();
         User currentUser = SessionService.getCurrentUser();
         if (currentUser.isModerator() || currentUser.getId().equals(Solution.findById(id).getUser().getId())) {
             Solution.delete(id);
             Logger.info("Solution " + id + " deleted by " + currentUser.getEmail());
             flash("success", "Lösung gelöscht");
-            return ok("Solution deleted");
+            return redirect(routes.ExerciseDetailController.renderExerciseDetail(exercise_id));
         }
         return unauthorized("not allowed");
     }
