@@ -1,6 +1,7 @@
 package models;
 
 import com.avaje.ebean.Model;
+import models.builders.CommentBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -96,5 +97,17 @@ public class Comment extends Model {
 
     public static Model.Finder<Long, Comment> find(){
         return new Model.Finder<>(Comment.class);
+    }
+
+    public static Comment create(String content, Exercise exercise, User user) {
+        Comment comment = CommentBuilder.aComment().withExercise(exercise).withContent(content).withUser(user).build();
+        comment.save();
+        return comment;
+    }
+
+    public static Comment create(String content, Solution solution, User user) {
+        Comment comment = CommentBuilder.aComment().withSolution(solution).withContent(content).withUser(user).build();
+        comment.save();
+        return comment;
     }
 }

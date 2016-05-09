@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Comment;
 import models.Exercise;
 import models.Solution;
 import models.User;
@@ -92,7 +93,7 @@ public class ExerciseDetailController extends Controller {
                 currentUser,
                 exercise,
                 exerciseSolutionList.apply(officialSolutions, currentUser, exerciseId),
-                exerciseSolutionList.apply(topSolutions, currentUser, exerciseId ),
+                exerciseSolutionList.apply(topSolutions, currentUser, exerciseId),
                 exerciseSolutionList.apply(latestSolutions, currentUser, exerciseId),
                 exerciseSolutionList.apply(solutions, currentUser, exerciseId)
         ));
@@ -127,5 +128,16 @@ public class ExerciseDetailController extends Controller {
     public Result processUpdate(Long exerciseId) {
         Solution.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), Exercise.findById(exerciseId), SessionService.getCurrentUser());
         return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
+    }
+
+    public Result createCommentSolution(Long exerciseId) {
+        Comment.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), Exercise.findById(exerciseId), SessionService.getCurrentUser());
+        return redirect(routes.ExerciseDetailController.renderExerciseDetail(exerciseId));
+    }
+
+    public Result createCommentExercise(Long solutionId) {
+        Solution solution = Solution.findById(solutionId);
+        Comment.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), solution, SessionService.getCurrentUser());
+        return redirect(routes.ExerciseDetailController.renderExerciseDetail(solution.getExercise().getId()));
     }
 }

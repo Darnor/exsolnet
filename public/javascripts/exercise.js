@@ -8,6 +8,7 @@
         });
     });
 
+
     function createTagFilter(id) {
         var result = [];
         var tagString = $(id).attr('rel');

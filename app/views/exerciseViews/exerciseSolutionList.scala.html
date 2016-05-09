@@ -29,5 +29,37 @@
                 <a id="downVoteSolution@solution.getId" class = "down" onclick="downVoteSolution(@solution.getId)" >&#9660;</a>
             </div>
 
+            <a class="pull-right" href="#" onclick="toggler('solution@solution.getId')" >Kommentare <span class="badge">@solution.getComments.size()</span></a>
+
+
         </div>
+        <div id="solution@solution.getId" class="hiddenComment">
+
+
+            @solution.getComments.map { comment =>
+
+                <div class="commentdetail">
+                    <span class="item"> @comment.getContent</span>
+                    <span><a class="meta user" href="@routes.UserController.renderUser(comment.getUser.getId)">@comment.getUser.getUsername</a></span>
+                    <span class="meta time">
+                    @comment.getTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
+                    </span>
+                </div>
+            }
+
+        <div class="buttondetail">
+            <div class="input-group">
+                <form method="POST" action="@routes.ExerciseDetailController.createCommentSolution(solution.getId)">
+
+                    <input type="text" class="form-control" id="comment" name="comment" placeholder="Neuer Kommentar">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default pull-right" type="button">Speichern</button>
+                    </span>
+                </form>
+            </div>
+
+
+        </div>
+        </div>
+
     }

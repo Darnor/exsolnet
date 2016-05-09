@@ -1,9 +1,16 @@
 @import java.time.format.{DateTimeFormatter, FormatStyle}
 @(user: User, exercise: Exercise)(solutionsContent: Html)
 @main(exercise.getTitle, user) {
+    <script type="text/javascript">
+            function toggler(divId) {
+                $("#" + divId).toggle();
+
+            }
+    </script>
     <div class="exercisedetail">
         <h1>@exercise.getTitle</h1>
         <p>@Html(exercise.getContent)</p>
+
 
         <span class="meta">
             <p class="meta tag maintag">@exercise.getTagsSortedByTagType.filter(x => x.isMainTag).map(x => x.getName).mkString(", ") </p>
@@ -17,10 +24,14 @@
         <span class="meta time">
         @exercise.getTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
         </span>
+
+        <a class="pull-right" href="#" onclick="toggler('exerciseComment')" >
+            Kommentare <span class="badge">@exercise.getComments.size()</span></a>
+
         @if(user.isModerator) {
             <span class="meta delete">
-                <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src='@routes.Assets.versioned("images/garbage-1.png")'"
-                onmouseout="this.src='@routes.Assets.versioned("images/garbage.png")'" onclick="deleteExercise(@exercise.getId)">
+                <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src = '@routes.Assets.versioned("images/garbage-1.png")'"
+                onmouseout="this.src = '@routes.Assets.versioned("images/garbage.png")'" onclick="deleteExercise(@exercise.getId)">
             </span>
         }
 
@@ -33,39 +44,33 @@
         </div>
 
     </div>
+    <div id="exerciseComment" class="hiddenComment">
 
-        <div class="comment panel  panel-default">
-            <div class="panel-heading">
-                <p class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Kommentare Zur Aufgabe</a>
-                </p>
+
+        @exercise.getComments.map { comment =>
+
+            <div class="commentdetail">
+                <span class="item"> @comment.getContent</span>
+                <span><a class="meta user" href="@routes.UserController.renderUser(comment.getUser.getId)">@comment.getUser.getUsername</a></span>
+                <span class="meta time">
+                @comment.getTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
+                </span>
             </div>
-            <div id="collapseOne" class="panel-collapse collapse">
-                <div class="panel-body">
-                    @exercise.getComments.map { comment =>
+        }
+        <div class="buttondetail">
+            <div class="input-group">
+                <form method="POST" action="@routes.ExerciseDetailController.createCommentExercise(exercise.getId)">
 
-                        <div class="commentdetail">
-                            <span class="item"> @comment.getContent</span>
-                            <span><a class="meta user" href="@routes.UserController.renderUser(comment.getUser.getId)">@comment.getUser.getUsername</a></span>
-                            <span class="meta time">
-                            @comment.getTime().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT).withLocale(Locale.GERMAN))
-                            </span>
-                        </div>
-                    }
-
-                    <div class="buttondetail">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="comment" name="comment" placeholder="Neuer Kommentar">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">Speichern</button>
-                            </span>
-                        </div>
-
-                    </div>
-                </div>
+                    <input type="text" class="form-control" id="comment" name="content" placeholder="Neuer Kommentar">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default pull-right" type="button">Speichern</button>
+                    </span>
+                </form>
             </div>
+
+
         </div>
 
-
+    </div>
     @solutionsContent
 }
