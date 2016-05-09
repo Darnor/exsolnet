@@ -10,6 +10,7 @@ import play.data.validation.Constraints;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -154,6 +155,7 @@ public class Exercise extends Post {
         Exercise exercise = findValidById(id);
         throwIfExerciseNull(exercise);
         exercise.fillData(title, content, tags, user);
+        exercise.setLastChanged(LocalDateTime.now());
         exercise.update();
         return exercise;
     }
