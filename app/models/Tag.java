@@ -88,6 +88,7 @@ public class Tag extends Model {
     }
 
     public List<Exercise> getExercises() {
+        exercises.removeIf(exercise -> !exercise.isValid());
         return Collections.unmodifiableList(exercises);
     }
 

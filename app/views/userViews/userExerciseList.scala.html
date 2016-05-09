@@ -1,14 +1,14 @@
 @import java.time.format.DateTimeFormatter
 @(user: User, viewedUser: User)
 
-@if(user == viewedUser && viewedUser.getExercises.size == 0){
+@if(user == viewedUser && viewedUser.getValidExercises.size == 0){
     <p>Du hast noch keine Aufgaben erstellt. Klicke <a href="@routes.ExerciseController.renderCreate()">hier</a>,
         um eine neue Aufgabe zu erstellen.</p>
 } else {
-    @if(viewedUser.getExercises.size == 0) {
+    @if(viewedUser.getValidExercises.size == 0) {
         <p>@viewedUser.getUsername hat noch keine Aufgaben erstellt.</p>
     } else {
-        @viewedUser.getExercises.map { exercise =>
+        @viewedUser.getValidExercises.map { exercise =>
             <div class="exercisedetail @if(exercise.getPoints < 0) { item-red } else {
                 @if(exercise.getPoints > 0) { item-green } else { item-blue}
             }">

@@ -39,7 +39,7 @@ public class Solution extends Post {
     private long points;
 
     @Column(columnDefinition = "boolean NOT NULL DEFAULT TRUE")
-    private boolean valid;
+    private boolean valid = true;
 
     public User getUser() {
         return user;

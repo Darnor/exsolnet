@@ -40,7 +40,7 @@ public class UserController extends Controller {
                 followedTags.apply(currentUser, currentUser),
                 recentComments.apply(currentUser, currentUser),
                 userExerciseList.apply(currentUser, currentUser),
-                userSolutionList.apply(currentUser.getSolutions())
+                userSolutionList.apply(currentUser.getValidSolutions())
         ));
     }
 

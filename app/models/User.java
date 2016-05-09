@@ -87,8 +87,8 @@ public class User extends Model {
         isModerator = moderator;
     }
 
-    public List<Exercise> getExercises() {
-        exercises.removeIf(exercise -> exercise.isValid());
+    public List<Exercise> getValidExercises() {
+        exercises.removeIf(exercise -> !exercise.isValid());
         return Collections.unmodifiableList(exercises);
     }
 
@@ -96,8 +96,8 @@ public class User extends Model {
         this.exercises = exercises;
     }
 
-    public List<Solution> getSolutions() {
-        solutions.removeIf(solution -> solution.isValid());
+    public List<Solution> getValidSolutions() {
+        solutions.removeIf(solution -> !solution.isValid());
         return Collections.unmodifiableList(solutions);
     }
 
@@ -162,7 +162,7 @@ public class User extends Model {
     }
 
     public long getNofCompletedExercisesByTag(Tag tag) {
-        return solutions.stream().filter(s -> s.getExercise().getTags().contains(tag)).count();
+        return getValidSolutions().stream().filter(s -> s.getExercise().getTags().contains(tag)).count();
     }
 
     public static Model.Finder<Long, User> find() {
@@ -211,7 +211,7 @@ public class User extends Model {
      * @return boolean
      */
     public boolean hasSolved(long exerciseId) {
-        return solutions.stream().parallel().filter(s -> s.getExercise().getId().equals(exerciseId)).findFirst().orElse(null) != null;
+        return getValidSolutions().stream().parallel().filter(s -> s.getExercise().getId().equals(exerciseId)).findFirst().orElse(null) != null;
     }
 
     public static User create(String username, String email, String password, boolean isModerator) {

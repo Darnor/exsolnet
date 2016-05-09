@@ -59,7 +59,7 @@ public class Exercise extends Post {
     private List<Comment> comments;
 
     @Column(columnDefinition = "boolean NOT NULL DEFAULT TRUE", name = COLUMN_VALID)
-    private boolean valid;
+    private boolean valid = true;
 
     public String getTitle() {
         return title;
@@ -78,6 +78,7 @@ public class Exercise extends Post {
     }
 
     public List<Solution> getSolutions() {
+        solutions.removeIf(solution -> !solution.isValid());
         return Collections.unmodifiableList(solutions);
     }
 
