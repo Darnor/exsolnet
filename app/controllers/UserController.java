@@ -37,6 +37,7 @@ public class UserController extends Controller {
         User currentUser = SessionService.getCurrentUser();
 
         if (!currentUser.getId().equals(userId)) {
+            Logger.warn(currentUser.getEmail() + " tried to access an non-existing userId");
             return unauthorized(error403.render(currentUser, "Kein Zugriff auf dieses Benutzerkonto."));
         }
 
@@ -45,19 +46,27 @@ public class UserController extends Controller {
         String email = requestData.get("email");
         String password = requestData.get("password");
         String passwordCheck = requestData.get("password-check");
+
         if(validateUserForm(username, email, password, passwordCheck)) {
+            Logger.debug(currentUser.getUsername() + " is now known as " + username);
             User.update(userId, username, email, password, false);
+            Logger.debug("User updated.");
             return redirect(routes.UserController.renderDashboard());
         }
+
+        Logger.error("New userdata could not be verified, redirecting to the edit page agian.");
         return redirect(routes.UserController.renderEdit());
     }
 
     public Result renderEdit() {
         User currentUser = SessionService.getCurrentUser();
+
         if (currentUser == null) {
-            currentUser = UserBuilder.anUser().withUsername("").withEmail("").build();
+            Logger.debug("No user logged in, creating an empty user.");
+            currentUser = UserBuilder.anUser().build();
         }
-        Logger.info(currentUser.getEmail() + " tried to render the user edit form.");
+
+        Logger.debug(currentUser.getEmail() + " tried to render the user edit form.");
         return ok(editUser.render(currentUser));
     }
 
@@ -65,11 +74,15 @@ public class UserController extends Controller {
         User currentUser = SessionService.getCurrentUser();
         User viewedUser = User.findById(userId);
         if (currentUser == null || viewedUser == null) {
+            Logger.error("Current or viewed user could not be found.");
             return notFound(error404.render(currentUser, "User not found!"));
         }
         if (currentUser.getId().equals(userId)) {
+            Logger.debug(currentUser.getUsername() + " accessed the dashboard.");
             return redirect(routes.UserController.renderDashboard());
         }
+
+        Logger.debug(currentUser.getUsername() + " accessed the dashboard of " + viewedUser.getUsername());
         return ok(externalUserView.render(currentUser, viewedUser));
     }
 }

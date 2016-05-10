@@ -38,11 +38,12 @@ public class LoginController extends Controller {
         String password = requestData.get("password");
         User user = User.authenticate(name, password);
         if (user == null) {
-            Logger.warn(name + " tried to log in.");
+            Logger.warn(name + " failed to log in.");
             return redirect(routes.LoginController.renderLogin());
         }
+
         SessionService.createSession(user.getEmail());
-        Logger.info(user.getEmail() + " is logged in");
+        Logger.debug(user.getEmail() + " is logged in");
         return redirect(routes.UserController.renderDashboard());
     }
 
@@ -56,12 +57,15 @@ public class LoginController extends Controller {
         String email = requestData.get("email");
         String password = requestData.get("password");
         String passwordCheck = requestData.get("password-check");
+
         if(UserController.validateUserForm(username, email, password, passwordCheck)) {
             User user = User.create(username, email, password, false);
-            Logger.info("New user with name " + user.getUsername() + " just registered.");
+            Logger.debug("New user with name " + user.getUsername() + " just registered.");
             SessionService.createSession(user.getEmail());
             return redirect(routes.UserController.renderDashboard());
         }
+
+        Logger.debug("Registration failed. Reloading with username and email.");
         return redirect(routes.LoginController.renderRegister(username, email));
     }
 
@@ -71,6 +75,7 @@ public class LoginController extends Controller {
      * @return Result
      */
     public Result processLogout() {
+        Logger.debug(SessionService.getCurrentUserEmail() + " just logged out.");
         SessionService.clear();
         return redirect(routes.UserController.renderDashboard());
     }

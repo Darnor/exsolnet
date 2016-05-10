@@ -2,6 +2,7 @@ package security;
 
 import com.google.common.collect.ImmutableMap;
 import controllers.routes;
+import helper.AbstractApplicationTest;
 import org.junit.Test;
 import play.mvc.Result;
 import services.SessionService;
@@ -13,7 +14,7 @@ import static play.mvc.Http.Status.SEE_OTHER;
 import static play.test.Helpers.*;
 
 
-public class SecuredAuthenticatorTest {
+public class SecuredAuthenticatorTest extends AbstractApplicationTest {
 
     @Test
     public void authenticateFailureOnExerciseController(){
