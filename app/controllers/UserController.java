@@ -42,7 +42,7 @@ public class UserController extends Controller {
 
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String username = requestData.get("username");
-        String email = requestData.get("password");
+        String email = requestData.get("email");
         String password = requestData.get("password");
         String passwordCheck = requestData.get("password-check");
         if(validateUserForm(username, email, password, passwordCheck)) {

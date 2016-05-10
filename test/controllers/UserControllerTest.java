@@ -57,4 +57,37 @@ public class UserControllerTest extends AbstractApplicationTest {
             assertThat(result.status(), is(UNAUTHORIZED));
         });
     }
+
+    @Test
+    public void testRenderAuthoriedExternalUser() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.UserController.renderUser(8000L))
+                            .session("connected", "franz@hsr.ch")
+            );
+            assertThat(result.status(), is(SEE_OTHER));
+        });
+    }
+
+    @Test
+    public void testRenderUserDashboard() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.UserController.renderUser(8000L))
+                            .session("connected", "simon@hsr.ch")
+            );
+            assertThat(result.status(), is(OK));
+        });
+    }
+
+    @Test
+    public void testRenderUnauthorized() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.UserController.renderUser(-1))
+                            .session("connected", "simon@hsr.ch")
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
 }
