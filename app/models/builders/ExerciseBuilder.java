@@ -11,7 +11,6 @@ public class ExerciseBuilder {
     private List<Vote> votes;
     private List<Tag> tags;
     private User user;
-    private List<Report> reports;
     private List<Comment> comments;
     private Long id;
     private String content;
@@ -49,11 +48,6 @@ public class ExerciseBuilder {
         return this;
     }
 
-    public ExerciseBuilder withReports(List<Report> reports) {
-        this.reports = reports;
-        return this;
-    }
-
     public ExerciseBuilder withComments(List<Comment> comments) {
         this.comments = comments;
         return this;
@@ -75,7 +69,7 @@ public class ExerciseBuilder {
     }
 
     public ExerciseBuilder but() {
-        return anExercise().withTitle(title).withSolutions(solutions).withVotes(votes).withTags(tags).withUser(user).withReports(reports).withComments(comments).withId(id).withContent(content).withTime(time);
+        return anExercise().withTitle(title).withSolutions(solutions).withVotes(votes).withTags(tags).withUser(user).withComments(comments).withId(id).withContent(content).withTime(time);
     }
 
     public Exercise build() {
@@ -85,7 +79,6 @@ public class ExerciseBuilder {
         exercise.setVotes(votes);
         exercise.setTags(tags);
         exercise.setUser(user);
-        exercise.setReports(reports);
         exercise.setComments(comments);
         exercise.setId(id);
         exercise.setContent(content);

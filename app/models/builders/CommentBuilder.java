@@ -1,15 +1,16 @@
 package models.builders;
 
-import models.*;
+import models.Comment;
+import models.Exercise;
+import models.Solution;
+import models.User;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class CommentBuilder {
     private Long id;
     private String content;
     private User user;
-    private List<Report> reports;
     private Solution solution;
     private Exercise exercise;
     private LocalDateTime time = LocalDateTime.now();
@@ -36,11 +37,6 @@ public class CommentBuilder {
         return this;
     }
 
-    public CommentBuilder withReports(List<Report> reports) {
-        this.reports = reports;
-        return this;
-    }
-
     public CommentBuilder withSolution(Solution solution) {
         this.solution = solution;
         return this;
@@ -57,7 +53,7 @@ public class CommentBuilder {
     }
 
     public CommentBuilder but() {
-        return aComment().withId(id).withContent(content).withUser(user).withReports(reports).withSolution(solution).withExercise(exercise).withTime(time);
+        return aComment().withId(id).withContent(content).withUser(user).withSolution(solution).withExercise(exercise).withTime(time);
     }
 
     public Comment build() {
@@ -65,7 +61,6 @@ public class CommentBuilder {
         comment.setId(id);
         comment.setContent(content);
         comment.setUser(user);
-        comment.setReports(reports);
         comment.setSolution(solution);
         comment.setExercise(exercise);
         comment.setTime(time);

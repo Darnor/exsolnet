@@ -49,9 +49,7 @@ public class CommentTest extends AbstractApplicationTest {
         Assert.assertEquals(old.getId(),updated.getId());
         Assert.assertEquals(old.getUser(),updated.getUser());
         Assert.assertEquals(old.getSolution(),updated.getSolution());
-        Assert.assertEquals(old.getReports(),updated.getReports());
         Assert.assertEquals(old.getTime(),updated.getTime());
-
     }
 }
 

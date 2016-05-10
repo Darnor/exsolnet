@@ -27,13 +27,10 @@ public class Solution extends Post {
     @NotNull
     private User user;
 
-    @OneToMany(mappedBy = "solution", cascade = CascadeType.ALL)
-    private List<Report> reports;
-
-    @OneToMany(mappedBy = "solution", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "solution")
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "solution", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "solution")
     private List<Vote> votes;
 
     @Formula(select = "(SELECT coalesce(sum(value),0) FROM vote v INNER JOIN solution s ON v.solution_id = s.id WHERE s.id = ${ta}.id)")
@@ -72,14 +69,6 @@ public class Solution extends Post {
 
     public void setIsOfficial(boolean isOfficial) {
         this.isOfficial = isOfficial;
-    }
-
-    public List<Report> getReports() {
-        return Collections.unmodifiableList(reports);
-    }
-
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
     }
 
     public List<Comment> getComments() {

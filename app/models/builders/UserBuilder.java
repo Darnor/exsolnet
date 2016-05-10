@@ -12,7 +12,6 @@ public class UserBuilder {
     private boolean isModerator;
     private List<Exercise> exercises;
     private List<Solution> solutions;
-    private List<Report> reports;
     private List<Comment> comments;
     private List<Vote> votes;
     private List<Tracking> trackings;
@@ -59,11 +58,6 @@ public class UserBuilder {
         return this;
     }
 
-    public UserBuilder withReports(List<Report> reports) {
-        this.reports = reports;
-        return this;
-    }
-
     public UserBuilder withComments(List<Comment> comments) {
         this.comments = comments;
         return this;
@@ -80,7 +74,7 @@ public class UserBuilder {
     }
 
     public UserBuilder but() {
-        return anUser().withId(id).withUsername(username).withEmail(email).withPassword(password).withIsModerator(isModerator).withExercises(exercises).withSolutions(solutions).withReports(reports).withComments(comments).withVotes(votes).withTrackings(trackings);
+        return anUser().withId(id).withUsername(username).withEmail(email).withPassword(password).withIsModerator(isModerator).withExercises(exercises).withSolutions(solutions).withComments(comments).withVotes(votes).withTrackings(trackings);
     }
 
     public User build() {
@@ -92,7 +86,6 @@ public class UserBuilder {
         user.setIsModerator(isModerator);
         user.setExercises(exercises);
         user.setSolutions(solutions);
-        user.setReports(reports);
         user.setComments(comments);
         user.setVotes(votes);
         user.setTrackings(trackings);

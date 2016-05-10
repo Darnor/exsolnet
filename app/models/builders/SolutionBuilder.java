@@ -9,7 +9,6 @@ public class SolutionBuilder {
     private boolean isOfficial;
     private Exercise exercise;
     private User user;
-    private List<Report> reports;
     private List<Comment> comments;
     private List<Vote> votes;
     private Long id;
@@ -35,11 +34,6 @@ public class SolutionBuilder {
 
     public SolutionBuilder withUser(User user) {
         this.user = user;
-        return this;
-    }
-
-    public SolutionBuilder withReports(List<Report> reports) {
-        this.reports = reports;
         return this;
     }
 
@@ -69,7 +63,7 @@ public class SolutionBuilder {
     }
 
     public SolutionBuilder but() {
-        return aSolution().withIsOfficial(isOfficial).withExercise(exercise).withUser(user).withReports(reports).withComments(comments).withVotes(votes).withId(id).withContent(content).withTime(time);
+        return aSolution().withIsOfficial(isOfficial).withExercise(exercise).withUser(user).withComments(comments).withVotes(votes).withId(id).withContent(content).withTime(time);
     }
 
     public Solution build() {
@@ -77,7 +71,6 @@ public class SolutionBuilder {
         solution.setIsOfficial(isOfficial);
         solution.setExercise(exercise);
         solution.setUser(user);
-        solution.setReports(reports);
         solution.setComments(comments);
         solution.setVotes(votes);
         solution.setId(id);

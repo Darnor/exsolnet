@@ -34,10 +34,10 @@ public class Exercise extends Post {
     @Formula(select = "(SELECT coalesce(sum(value),0) FROM vote v INNER JOIN exercise e ON v.exercise_id = e.id WHERE e.id = ${ta}.id)")
     private long points;
 
-    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "exercise")
     private List<Solution> solutions;
 
-    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "exercise")
     private List<Vote> votes;
 
 
@@ -52,9 +52,6 @@ public class Exercise extends Post {
     @JoinColumn(name = "user_id")
     @NotNull
     private User user;
-
-    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
-    private List<Report> reports;
 
     @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL)
     private List<Comment> comments;
@@ -93,14 +90,6 @@ public class Exercise extends Post {
 
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
-    }
-
-    public List<Report> getReports() {
-        return Collections.unmodifiableList(reports);
-    }
-
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
     }
 
     public List<Comment> getComments() {

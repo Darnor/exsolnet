@@ -52,9 +52,6 @@ public class User extends Model {
     private List<Solution> solutions;
 
     @OneToMany(mappedBy = "user")
-    private List<Report> reports;
-
-    @OneToMany(mappedBy = "user")
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "user")
@@ -112,14 +109,6 @@ public class User extends Model {
 
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
-    }
-
-    public List<Report> getReports() {
-        return Collections.unmodifiableList(reports);
-    }
-
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
     }
 
     public List<Tracking> getTrackings() {

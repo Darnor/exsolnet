@@ -6,8 +6,6 @@ import models.builders.CommentBuilder;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
 
 @Entity
 @Table(name="comment")
@@ -24,9 +22,6 @@ public class Comment extends Model {
     @JoinColumn(name="user_id")
     @NotNull
     private User user;
-
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
-    private List<Report> reports;
 
     @ManyToOne
     @JoinColumn(name="solution_id")
@@ -53,14 +48,6 @@ public class Comment extends Model {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public List<Report> getReports() {
-        return Collections.unmodifiableList(reports);
-    }
-
-    public void setReports(List<Report> reports) {
-        this.reports = reports;
     }
 
     public User getUser() {
