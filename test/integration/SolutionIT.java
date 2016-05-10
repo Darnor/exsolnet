@@ -2,6 +2,8 @@ package integration;
 
 import org.junit.Test;
 
+import java.util.concurrent.TimeUnit;
+
 import static helper.RegexMatcher.matches;
 import static org.fluentlenium.core.filter.FilterConstructor.withId;
 import static org.fluentlenium.core.filter.FilterConstructor.withText;
@@ -17,7 +19,7 @@ public class SolutionIT extends AbstractIntegrationTest {
             browser.goTo("/exercises/8000");
             browser.click("a",withId("solution-8001"));
 
-            browser.await().untilPage().isLoaded();
+            browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
 
             fillCKEditor(browser, content);
 
@@ -35,7 +37,7 @@ public class SolutionIT extends AbstractIntegrationTest {
 
             browser.click("a",withText("Aufgabe Lösen"));
 
-            browser.await().untilPage().isLoaded();
+            browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
 
             fillCKEditor(browser, content);
 
