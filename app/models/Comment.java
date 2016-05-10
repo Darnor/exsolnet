@@ -92,8 +92,7 @@ public class Comment extends Model {
      * @return the comment or null if not found.
      */
     public static Comment findById(Long id) {
-        Comment comment = find().byId(id);
-        return (comment == null ) ? null : comment;
+        return find().byId(id);
     }
 
     /**

@@ -46,8 +46,8 @@ public class LoginController extends Controller {
         return redirect(routes.UserController.renderDashboard());
     }
 
-    public Result renderRegister() {
-        return ok(editUser.render(UserBuilder.anUser().withUsername("").withEmail("").build()));
+    public Result renderRegister(String username, String email) {
+        return ok(editUser.render(UserBuilder.anUser().withUsername(username).withEmail(email).build()));
     }
 
     public Result processRegister() {
@@ -62,7 +62,7 @@ public class LoginController extends Controller {
             SessionService.createSession(user.getEmail());
             return redirect(routes.UserController.renderDashboard());
         }
-        return redirect(routes.LoginController.renderLogin());
+        return redirect(routes.LoginController.renderRegister(username, email));
     }
 
     /**

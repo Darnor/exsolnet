@@ -39,7 +39,7 @@ GET         /tags/query                             controllers.TagController.pr
 POST        /tags/track                             controllers.TagController.processTrack(tagId: Long)
 
 GET         /login                                  controllers.LoginController.renderLogin
-GET         /register                               controllers.LoginController.renderRegister
+GET         /register                               controllers.LoginController.renderRegister(username ?= "", email ?= "")
 POST        /register                               controllers.LoginController.processRegister
 POST        /login                                  controllers.LoginController.processLogin
 POST        /logout                                 controllers.LoginController.processLogout

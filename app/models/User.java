@@ -3,7 +3,6 @@ package models;
 import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.Formula;
 import models.builders.UserBuilder;
-import play.Logger;
 import util.MD5Util;
 
 import javax.persistence.*;

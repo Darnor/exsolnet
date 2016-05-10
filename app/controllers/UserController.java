@@ -9,10 +9,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
-import views.html.editUser;
-import views.html.error404;
-import views.html.externalUserView;
-import views.html.userDashboard;
+import views.html.*;
 
 import javax.inject.Inject;
 
@@ -21,6 +18,11 @@ import javax.inject.Inject;
  */
 @Security.Authenticated(Secured.class)
 public class UserController extends Controller {
+
+    private static final String USERNAME_FIELD = "username";
+    private static final String EMAIL_FIELD = "email";
+    private static final String PASSWORD_FIELD = "password";
+    private static final String PASSWORD_CHECK_FIELD = "password-check";
 
     @Inject
     FormFactory formFactory;
@@ -37,16 +39,22 @@ public class UserController extends Controller {
     }
 
     public Result processUpdate(long userId) {
+        User currentUser = SessionService.getCurrentUser();
+
+        if (!currentUser.getId().equals(userId)) {
+            return unauthorized(error403.render(currentUser, "Kein Zugriff auf dieses Benutzerkonto."));
+        }
+
         DynamicForm requestData = formFactory.form().bindFromRequest();
-        String username = requestData.get("username");
-        String email = requestData.get("email");
-        String password = requestData.get("password");
-        String passwordCheck = requestData.get("password-check");
+        String username = requestData.get(USERNAME_FIELD);
+        String email = requestData.get(EMAIL_FIELD);
+        String password = requestData.get(PASSWORD_FIELD);
+        String passwordCheck = requestData.get(PASSWORD_CHECK_FIELD);
         if(validateUserForm(username, email, password, passwordCheck)) {
             User.update(userId, username, email, password, false);
             return redirect(routes.UserController.renderDashboard());
         }
-        return redirect(routes.LoginController.renderRegister());
+        return redirect(routes.UserController.renderEdit());
     }
 
     public Result renderEdit() {

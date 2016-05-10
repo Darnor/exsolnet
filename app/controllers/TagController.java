@@ -9,6 +9,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
+import views.html.error404;
 import views.html.tagList;
 
 import java.util.Collections;
@@ -28,12 +29,19 @@ public class TagController extends Controller {
     public Result processTrack(Long tagId) {
         User currentUser = SessionService.getCurrentUser();
         Tag tag = Tag.findById(tagId);
+
+        if (tag == null) {
+            return notFound(error404.render(currentUser, "Das zu trackende Tag wurde nicht gefunden."));
+        }
+
         Tracking tracking = currentUser.getTrackings().stream().filter(t -> t.getTag().getId().equals(tag.getId())).findFirst().orElse(null);
+
         if (tracking == null) {
             TrackingBuilder.aTracking().withTag(tag).withUser(currentUser).build().save();
         } else {
             tracking.delete();
         }
+
         return redirect(routes.TagController.renderTagList(Integer.parseInt(session(TAG_ORDER)), session(TAG_FILTER)));
     }
 
