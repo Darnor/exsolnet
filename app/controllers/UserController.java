@@ -19,11 +19,6 @@ import javax.inject.Inject;
 @Security.Authenticated(Secured.class)
 public class UserController extends Controller {
 
-    private static final String USERNAME_FIELD = "username";
-    private static final String EMAIL_FIELD = "email";
-    private static final String PASSWORD_FIELD = "password";
-    private static final String PASSWORD_CHECK_FIELD = "password-check";
-
     @Inject
     FormFactory formFactory;
 
@@ -46,10 +41,10 @@ public class UserController extends Controller {
         }
 
         DynamicForm requestData = formFactory.form().bindFromRequest();
-        String username = requestData.get(USERNAME_FIELD);
-        String email = requestData.get(EMAIL_FIELD);
-        String password = requestData.get(PASSWORD_FIELD);
-        String passwordCheck = requestData.get(PASSWORD_CHECK_FIELD);
+        String username = requestData.get("username");
+        String email = requestData.get("password");
+        String password = requestData.get("password");
+        String passwordCheck = requestData.get("password-check");
         if(validateUserForm(username, email, password, passwordCheck)) {
             User.update(userId, username, email, password, false);
             return redirect(routes.UserController.renderDashboard());
