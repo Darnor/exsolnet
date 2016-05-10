@@ -12,7 +12,7 @@
                 }
             </span>
             @if(user.isModerator || user.getId == solution.getUser.getId) {
-                <a class="meta btn edit" href="@routes.SolutionController.renderUpdate(solution.getId)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+                <a class="meta btn edit" id="solution-@solution.getId" href="@routes.SolutionController.renderUpdate(solution.getId)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
                 <a href="@routes.SolutionController.processDelete(solution.getId)" class="meta delete">
                     <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src='@routes.Assets.versioned("images/garbage-1.png")'"
                     onmouseout="this.src='@routes.Assets.versioned("images/garbage.png")'" >

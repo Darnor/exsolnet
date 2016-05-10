@@ -51,4 +51,16 @@ public class SolutionTest extends AbstractApplicationTest {
         DatabaseHelper.cleanDB(app);
     }
 
+    @Test
+    public void testEditSolution(){
+        long solutionIdToEdit = 8001L;
+        String newContent = "<p>Hans war hier</p>";
+        assertNotNull(Solution.findValidById(solutionIdToEdit));
+        assertNull(Solution.findValidById(solutionIdToEdit).getLastChanged());
+        Solution.update(8001L,newContent);
+        assertEquals(newContent,Solution.findValidById(solutionIdToEdit).getContent());
+        assertNotNull(Solution.findValidById(solutionIdToEdit).getLastChanged());
+
+        DatabaseHelper.cleanDB(app);
+    }
 }
