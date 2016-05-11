@@ -159,6 +159,9 @@ INSERT INTO solution VALUES (8008, '<p>a) kA</p>
 INSERT INTO solution VALUES (8006, '<p>50CHF?</p>', '2016-01-01 00:00:00', NULL, true, 8002, 8001);
 INSERT INTO solution VALUES (8000, '<p>Es ist nat&uuml;rlich 4</p>', '2016-03-05 19:55:23', NULL, false, 8000, 8001);
 INSERT INTO solution VALUES (8012, '<p><a href="http://www.iamhans.com">http://www.iamhans.com</a></p>', '2016-04-08 04:02:58', NULL, false, 8005, 8001);
+INSERT INTO solution VALUES (7999, '<p>Wer weiss das schon.</p>', '2016-01-03 00:00:00', NULL, true, 8000, 8000, FALSE);
+INSERT INTO solution VALUES (7998, '<p>Auch keine Antwort</p>', '2016-02-01 00:00:00', NULL, true, 8002, 8001, FALSE);
+INSERT INTO solution VALUES (7997, '<p>Gelöscht</p>', '2016-03-03 00:00:00', NULL, true, 8001, 8004, FALSE);
 --Track
 INSERT INTO track VALUES (8000, 8000, 8000);
 INSERT INTO track VALUES (8001, 8002, 8002);

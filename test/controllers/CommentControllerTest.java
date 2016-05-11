@@ -3,7 +3,6 @@ package controllers;
 import helper.AbstractApplicationTest;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import play.mvc.Result;
 
@@ -48,6 +47,30 @@ public class CommentControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void testCreateSolutionCommentInvalidIdNonModerator() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.CommentController.processCreateSolutionComment(-1))
+                            .session("connected", "franz@hsr.ch")
+                            .bodyForm(form)
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
+    public void testCreateSolutionCommentInvalidIdModerator() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.CommentController.processCreateSolutionComment(-1))
+                            .session("connected", "blubberduck@hsr.ch")
+                            .bodyForm(form)
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
     public void testAuthorizedCreateSolutionComment() {
         running(fakeApplication(), () -> {
             Result result = route(
@@ -63,7 +86,6 @@ public class CommentControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    @Ignore("Not implemented yet")
     public void testUnauthorizedCreateSolutionComment() {
         running(fakeApplication(), () -> {
             Result result = route(
@@ -91,7 +113,6 @@ public class CommentControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    @Ignore("Not implemented yet")
     public void testUnuthorizedCommentUpdate() {
         running(fakeApplication(), () -> {
             Result result = route(
@@ -104,7 +125,6 @@ public class CommentControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    @Ignore("Fix the code!")
     public void testUnknownExerciseOrSolutionCommentUpdate() {
         running(fakeApplication(), () -> {
             Result result = route(

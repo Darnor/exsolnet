@@ -13,6 +13,7 @@ import play.mvc.Security;
 import services.SessionService;
 import views.html.editSolution;
 import views.html.error403;
+import views.html.error404;
 
 import javax.inject.Inject;
 
@@ -64,13 +65,21 @@ public class SolutionController extends Controller {
      * @return
      */
     public Result processUndo(Long id) {
-        long exerciseId = Solution.findById(id).getExercise().getId();
         User currentUser = SessionService.getCurrentUser();
+        Solution solution = Solution.findById(id);
+
+        if (solution == null) {
+            return notFound(error404.render(currentUser, "Lösung nicht gefunden"));
+        }
+
+        long exerciseId = solution.getExercise().getId();
+
         if (currentUser.isModerator() || currentUser.getId().equals(Solution.findById(id).getUser().getId())) {
             Solution.undoDelete(id);
             Logger.info("Solution " + id + " undo deletion by " + currentUser.getEmail());
             return redirect(routes.ExerciseController.renderDetail(exerciseId));
         }
+
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen das Löschen dieser Lösung rückgängig zu machen"));
     }
 
