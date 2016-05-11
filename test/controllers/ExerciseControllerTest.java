@@ -163,21 +163,6 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    @Ignore("Not implemented")
-    public void testRenderEditFakeSession() {
-        running(fakeApplication(), () -> {
-            Result result = route(
-                    fakeRequest(routes.ExerciseController.renderEdit(8000))
-                            .session("connected", "l337hax03r@h4xr.ch")
-            );
-            Optional<String> location = result.redirectLocation();
-            assertTrue(location.isPresent());
-            assertThat(location.get(), is("/login"));
-            assertThat(result.status(), is(SEE_OTHER));
-        });
-    }
-
-    @Test
     public void testRenderDetail() {
         running(fakeApplication(), () -> {
             Result result = route(

@@ -3,7 +3,6 @@ package controllers;
 import helper.AbstractApplicationTest;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import play.mvc.Result;
 
@@ -131,41 +130,11 @@ public class UserControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    @Ignore("Not implemented")
-    public void testRenderUserFakeSession() {
-        running(fakeApplication(), () -> {
-            Result result = route(
-                    fakeRequest(routes.UserController.renderUser(8000L))
-                            .session("connected", "hax03133616")
-            );
-            Optional<String> location = result.redirectLocation();
-            assertTrue(location.isPresent());
-            assertThat(location.get(), is("/login"));
-            assertThat(result.status(), is(SEE_OTHER));
-        });
-    }
-
-    @Test
     public void testRenderEditUnauthorized() {
         System.out.println("TEST");
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.UserController.renderEdit())
-            );
-            Optional<String> location = result.redirectLocation();
-            assertTrue(location.isPresent());
-            assertThat(location.get(), is("/login"));
-            assertThat(result.status(), is(SEE_OTHER));
-        });
-    }
-
-    @Test
-    @Ignore("Not implemented")
-    public void testRenderEditFakeSession() {
-        running(fakeApplication(), () -> {
-            Result result = route(
-                    fakeRequest(routes.UserController.renderEdit())
-                            .session("connected", "hax0rl33716")
             );
             Optional<String> location = result.redirectLocation();
             assertTrue(location.isPresent());
