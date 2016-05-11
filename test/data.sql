@@ -90,6 +90,8 @@ INSERT INTO exercise VALUES (8002, '<p>Wie teuer ist eine Suchoperation eines AV
 <p>L&ouml;sung in O-Notation angeben.</p>', '2016-02-17 23:55:34', NULL, 'AVL-Tree Suchkosten', 8002);
 
 INSERT INTO exercise VALUES (8000, '<p>Was gibt 1+2?</p>', '2015-01-08 00:00:00', NULL, 'Grundlegende Mathematik', 8000);
+INSERT INTO exercise VALUES (7999, '<p>Kein Text</p>', '2016-02-17 08:43:12', NULL, 'Quicksort', 8000, FALSE);
+INSERT INTO exercise VALUES (7998, '<p>Auch kein Text.</p>', '2016-04-17 08:43:12', NULL, 'Quicksort', 8000, FALSE);
 --ExcerciseTag
 INSERT INTO exercise_tag VALUES (8000, 8000);
 INSERT INTO exercise_tag VALUES (8000, 8010);

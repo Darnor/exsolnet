@@ -70,7 +70,7 @@ public class ExerciseController extends Controller {
             Logger.info("Exercise " + id + " deleted by " + currentUser.getEmail());
             flash("success", "Aufgabe gelöscht");
             flash("exercise_id", "" + id);
-            return redirect(routes.UserController.renderDashboard());
+            return redirect(routes.ExerciseController.renderOverview());
         }
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Aufgabe zu editieren"));
     }
@@ -155,11 +155,11 @@ public class ExerciseController extends Controller {
             return notFound(error404.render(currentUser, "Aufgabe nicht gefunden"));
         }
 
-        if (!exercise.getUser().getId().equals(currentUser.getId())) {
-            return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Aufgabe zu editieren"));
+        if (exercise.getUser().getId().equals(currentUser.getId()) || currentUser.isModerator()) {
+            return ok(editExercise.render(currentUser, exercise, Tag.findTagsByType(Tag.Type.MAIN), Tag.findTagsByType(Tag.Type.NORMAL)));
         }
 
-        return ok(editExercise.render(currentUser, exercise, Tag.findTagsByType(Tag.Type.MAIN), Tag.findTagsByType(Tag.Type.NORMAL)));
+        return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Aufgabe zu editieren"));
     }
 
     private static void validateFormData(String title, String mainTag, String content) {

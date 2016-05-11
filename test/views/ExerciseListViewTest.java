@@ -1,7 +1,6 @@
 package views;
 
 import com.avaje.ebean.PagedList;
-import helper.DatabaseHelper;
 import models.Exercise;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -13,16 +12,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class ExerciseListViewTest extends AbstractViewTest {
-    static PagedList<Exercise> pagedExerciseList;
-    static PagedList<Exercise> pageZero;
-    static PagedList<Exercise> pageOne;
+    private static PagedList<Exercise> pagedExerciseList;
+    private static PagedList<Exercise> pageZero;
+    private static PagedList<Exercise> pageOne;
 
     @BeforeClass
     public static void setUpBeforeClass(){
-        DatabaseHelper.cleanDB(app);
-        pagedExerciseList = Exercise.find().where().orderBy("title").findPagedList(0,2);
-        pageZero = Exercise.find().where().orderBy("title").findPagedList(0,10);
-        pageOne = Exercise.find().where().orderBy("title").findPagedList(1,10);
+        pagedExerciseList = Exercise.find().where().eq("valid", true).orderBy("title").findPagedList(0,2);
+        pageZero = Exercise.find().where().eq("valid", true).orderBy("title").findPagedList(0,10);
+        pageOne = Exercise.find().where().eq("valid", true).orderBy("title").findPagedList(1,10);
     }
 
     @Test

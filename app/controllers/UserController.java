@@ -1,7 +1,6 @@
 package controllers;
 
 import models.User;
-import models.builders.UserBuilder;
 import play.Logger;
 import play.data.DynamicForm;
 import play.data.FormFactory;
@@ -60,12 +59,6 @@ public class UserController extends Controller {
 
     public Result renderEdit() {
         User currentUser = SessionService.getCurrentUser();
-
-        if (currentUser == null) {
-            Logger.debug("Cannot edit not logged in user.");
-            return notFound(error404.render(UserBuilder.anUser().build(), "User not found!"));
-        }
-
         Logger.debug(currentUser.getEmail() + " wants to edit the profile");
         return ok(editUser.render(currentUser));
     }
@@ -73,8 +66,8 @@ public class UserController extends Controller {
     public Result renderUser(long userId) {
         User currentUser = SessionService.getCurrentUser();
         User viewedUser = User.findById(userId);
-        if (currentUser == null || viewedUser == null) {
-            Logger.error("Current or viewed user could not be found.");
+        if (viewedUser == null) {
+            Logger.error("Viewed user could not be found.");
             return notFound(error404.render(currentUser, "User not found!"));
         }
         if (currentUser.getId().equals(userId)) {

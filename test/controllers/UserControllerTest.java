@@ -3,6 +3,7 @@ package controllers;
 import helper.AbstractApplicationTest;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import play.mvc.Result;
 
@@ -130,13 +131,17 @@ public class UserControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    @Ignore("Not implemented")
     public void testRenderUserFakeSession() {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.UserController.renderUser(8000L))
                             .session("connected", "hax03133616")
             );
-            assertThat(result.status(), is(NOT_FOUND));
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/login"));
+            assertThat(result.status(), is(SEE_OTHER));
         });
     }
 
@@ -155,14 +160,17 @@ public class UserControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void testRenderEditNonExistingSession() {
-        System.out.println("TEST");
+    @Ignore("Not implemented")
+    public void testRenderEditFakeSession() {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.UserController.renderEdit())
                             .session("connected", "hax0rl33716")
             );
-            assertThat(result.status(), is(NOT_FOUND));
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/login"));
+            assertThat(result.status(), is(SEE_OTHER));
         });
     }
 

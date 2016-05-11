@@ -184,11 +184,10 @@ public class Exercise extends Post {
      */
     public static PagedList<Exercise> getPagedList(int pageNr, String orderBy, String titleFilter, String[] tagFilter, int pageSize) {
         Query<Exercise> query = Ebean.createQuery(Exercise.class);
-        query.where().icontains(COLUMN_TITLE, titleFilter);
+        query.where().icontains(COLUMN_TITLE, titleFilter).eq(COLUMN_VALID, true);
         if (!"".equals(tagFilter[0])) {
             query.where().in("tags.name", Arrays.asList(tagFilter));
         }
-        query.where().eq(COLUMN_VALID, true);
         return query.orderBy(orderBy).findPagedList(pageNr, pageSize);
     }
 
