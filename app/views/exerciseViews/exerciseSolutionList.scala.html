@@ -46,7 +46,7 @@
 
 
             @solution.getComments.map { comment =>
-                @snippets.comment(comment, user)
+                @snippets.comment(comment, comment.getUser)
             }
 
             <div class="buttondetail">
