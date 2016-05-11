@@ -3,6 +3,7 @@ package controllers;
 import com.avaje.ebean.PagedList;
 import models.*;
 import models.builders.ExerciseBuilder;
+import models.builders.SolutionBuilder;
 import play.Logger;
 import play.data.DynamicForm;
 import play.data.FormFactory;
@@ -31,6 +32,7 @@ public class ExerciseController extends Controller {
 
     private static final String TITLE_FIELD = "title";
     private static final String CONTENT_FIELD = "content";
+    private static final String SOLUTION_CONTENT_FIELD = "contentsol";
     private static final String MAIN_TAG_FIELD = "maintag";
     private static final String OTHER_TAG_FIELD = "othertag";
     private static final String SOLUTION_COUNT_FIELD = "solutionCount";
@@ -101,6 +103,7 @@ public class ExerciseController extends Controller {
         return ok(editExercise.render(
                 SessionService.getCurrentUser(),
                 ExerciseBuilder.anExercise().build(),
+                SolutionBuilder.aSolution().build(),
                 Tag.findTagsByType(Tag.Type.MAIN),
                 Tag.findTagsByType(Tag.Type.NORMAL)
         ));
@@ -156,9 +159,8 @@ public class ExerciseController extends Controller {
         }
 
         if (exercise.getUser().getId().equals(currentUser.getId()) || currentUser.isModerator()) {
-            return ok(editExercise.render(currentUser, exercise, Tag.findTagsByType(Tag.Type.MAIN), Tag.findTagsByType(Tag.Type.NORMAL)));
+            return ok(editExercise.render(currentUser, exercise, null, Tag.findTagsByType(Tag.Type.MAIN), Tag.findTagsByType(Tag.Type.NORMAL)));
         }
-
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Aufgabe zu editieren"));
     }
 
@@ -189,7 +191,9 @@ public class ExerciseController extends Controller {
         }
 
         if (exerciseId == null) {
-            Exercise.create(title, content, tags, currentUser);
+            String solutionContent = requestData.get(SOLUTION_CONTENT_FIELD);
+            Exercise exercise = Exercise.create(title, content, tags, currentUser);
+            Solution.create(solutionContent,exercise,currentUser);
         } else {
             Exercise.update(exerciseId, title, content, tags, currentUser);
         }

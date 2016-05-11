@@ -1,5 +1,5 @@
 @import java.util
-@(user: User, exercise: Exercise, maintags: util.List[Tag], othertags: util.List[Tag])
+@(user: User, exercise: Exercise, solution: Solution, maintags: util.List[Tag], othertags: util.List[Tag])
 
 @main(if(exercise.getId == null) {
     "Aufgabe erstellen"
@@ -19,7 +19,7 @@
             <div class="container-fluid">
                 <div class="row">
                     <input class="input_title" oninvalid="setCustomValidity('Bitte einen Titel setzen.')" oninput="setCustomValidity('')" required id="title" placeholder="Titel der Aufgabe" type="text" name="title" value="@exercise.getTitle"/>
-
+                    <h3>Beschreibung der Aufgabe:</h3>
                     <textarea name="content" required id="content" rows="10" cols="80">
                     @exercise.getContent
                     </textarea>
@@ -57,6 +57,20 @@
                         </select>
                     </div>
 
+                    @if(exercise.getId == null){
+                        <h3>Deine Lösung zur Aufgabe:</h3>
+                        <textarea name="contentsol" id="contentsol" rows="10" cols="80">
+                        @solution.getContent
+                        </textarea>
+                        <script>
+                                CKEDITOR.replace( 'contentsol' );
+                        </script>
+
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="isOfficial"> Dies ist die Musterlösung</label>
+                            <p> <small>Markiere dieses Feld, wenn dies die offizielle Lösung von deinem Dozenten, beziehungsweise des Erstellers der Übung ist. </small></p>
+                        </div>
+                    }
 
                     <input type="submit" class="btn btn-primary btn-lg btn-block btn-create-exercise" id="save" value="Speichern"/>
                 </div>
