@@ -23,6 +23,7 @@ public abstract class AbstractIntegrationTest extends AbstractApplicationTest {
     public static void as(String username, Class<? extends WebDriver> driver, final Consumer<TestBrowser> block){
         running(testServer(3333, fakeApplication()), driver, browser -> {
             browser.goTo("http://localhost:3333/");
+            browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
             browser.fill("#email").with(username);
             browser.submit("#btn_login");
             assertNotEquals("Login failed!", "/login", browser.url());
