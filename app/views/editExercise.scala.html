@@ -20,12 +20,14 @@
                 <div class="row">
                     <input class="input_title" oninvalid="setCustomValidity('Bitte einen Titel setzen.')" oninput="setCustomValidity('')" required id="title" placeholder="Titel der Aufgabe" type="text" name="title" value="@exercise.getTitle"/>
                     <h3>Beschreibung der Aufgabe:</h3>
-                    <textarea name="content" required id="content" rows="10" cols="80">
-                    @exercise.getContent
-                    </textarea>
-                    <script>
-                            CKEDITOR.replace('content');
-                    </script>
+                    <div id="exercise_content">
+                        <textarea name="content" required id="content" rows="10" cols="80">
+                        @exercise.getContent
+                        </textarea>
+                        <script>
+                                CKEDITOR.replace('content');
+                        </script>
+                    </div>
 
                     <div class="form-group  input_tag_top">
                         <label for="maintag">Modul: </label>
@@ -59,12 +61,14 @@
 
                     @if(exercise.getId == null){
                         <h3>Deine Lösung zur Aufgabe:</h3>
-                        <textarea name="contentsol" id="contentsol" rows="10" cols="80">
-                        @solution.getContent
-                        </textarea>
-                        <script>
-                                CKEDITOR.replace( 'contentsol' );
-                        </script>
+                        <div id="solution_content">
+                            <textarea name="contentsol" id="contentsol" rows="10" cols="80">
+                            @solution.getContent
+                            </textarea>
+                            <script>
+                                    CKEDITOR.replace( 'contentsol' );
+                            </script>
+                        </div>
 
                         <div class="checkbox">
                             <label><input type="checkbox" name="isOfficial"> Dies ist die Musterlösung</label>

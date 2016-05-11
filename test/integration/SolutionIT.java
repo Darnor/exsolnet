@@ -21,7 +21,7 @@ public class SolutionIT extends AbstractIntegrationTest {
 
             browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
 
-            fillCKEditor(browser, content);
+            fillCKEditor(browser, content, "solution_content");
 
             browser.submit("#save");
 
@@ -39,7 +39,7 @@ public class SolutionIT extends AbstractIntegrationTest {
 
             browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
 
-            fillCKEditor(browser, content);
+            fillCKEditor(browser, content, "solution_content");
 
             browser.submit("#save");
 

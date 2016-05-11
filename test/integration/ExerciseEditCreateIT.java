@@ -19,6 +19,7 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
             String mainTag = "An1I" ;
             String[] otherTags = {"Tree", "Pattern"};
             String content = "En neue Event wo i erstell.";
+            String solutionContent = "testlösung";
 
             browser.goTo("/exercises/create");
 
@@ -33,7 +34,8 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
                 dropdownother.selectByValue(tag);
             }
 
-            fillCKEditor(browser, content);
+            fillCKEditor(browser, content,"exercise_content");
+            fillCKEditor(browser, solutionContent,"solution_content");
 
             browser.submit("#save");
 
@@ -57,7 +59,7 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
 
             browser.goTo("/exercises/8000/edit");
             browser.fill("#title").with(title);
-            fillCKEditor(browser, content);
+            fillCKEditor(browser, content, "exercise_content");
             browser.submit("#save");
 
             Exercise newExercise = Exercise.findValidById(8000L);

@@ -178,6 +178,15 @@ public class ExerciseController extends Controller {
         }
     }
 
+    private static void validateSolutionFormData(String solutionContent){
+        if (solutionContent == null) {
+            throw new IllegalArgumentException("Formdata not valid. (null values)");
+        }
+        if (solutionContent.trim().length() == 0) {
+            throw new IllegalArgumentException("Formdata not valid. (empty values)");
+        }
+    }
+
     private void bindForm(Long exerciseId) {
         User currentUser = SessionService.getCurrentUser();
         DynamicForm requestData = formFactory.form().bindFromRequest();
@@ -197,6 +206,7 @@ public class ExerciseController extends Controller {
 
         if (exerciseId == null) {
             String solutionContent = requestData.get(SOLUTION_CONTENT_FIELD);
+            validateSolutionFormData(solutionContent);
             Exercise exercise = Exercise.create(title, content, tags, currentUser);
             Solution.create(solutionContent,exercise,currentUser);
         } else {

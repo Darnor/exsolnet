@@ -37,9 +37,9 @@ public abstract class AbstractIntegrationTest extends AbstractApplicationTest {
         element.sendKeys(Keys.ENTER);
     }
 
-    protected static void fillCKEditor(TestBrowser browser, String content) {
+    protected static void fillCKEditor(TestBrowser browser, String content, String editorTyp) {
         WebDriver driver = browser.getDriver();
-        WebElement iframe = driver.findElement(By.tagName("iframe"));
+        WebElement iframe = driver.findElement(By.id(editorTyp)).findElement(By.tagName("iframe"));
         driver.switchTo().frame(iframe);
         WebElement contentInput = driver.findElement(By.tagName("body"));
         contentInput.clear();

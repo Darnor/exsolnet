@@ -10,13 +10,14 @@
             @routes.SolutionController.processCreate(exercise.getId)
         }">
         <div>
-            <textarea name="content" id="contentsol" rows="10" cols="80">
-               @solution.getContent
-            </textarea>
-            <script>
-                    CKEDITOR.replace( 'contentsol' );
-            </script>
-
+            <div id="solution_content">
+                <textarea name="content" id="contentsol" rows="10" cols="80">
+                   @solution.getContent
+                </textarea>
+                <script>
+                        CKEDITOR.replace( 'contentsol' );
+                </script>
+            </div>
             <div class="checkbox">
                 <label><input type="checkbox" name="isOfficial"> Dies ist die Musterlösung</label>
                 <p> <small>Markiere dieses Feld, wenn dies die offizielle Lösung von deinem Dozenten, beziehungsweise des Erstellers der Übung ist. </small></p>
