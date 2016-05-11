@@ -71,6 +71,30 @@ public class CommentControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void testCreateExerciseCommentInvalidIdNonModerator() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.CommentController.processCreateExerciseComment(-1))
+                            .session("connected", "franz@hsr.ch")
+                            .bodyForm(form)
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
+    public void testCreateExerciseCommentInvalidIdModerator() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.CommentController.processCreateExerciseComment(-1))
+                            .session("connected", "blubberduck@hsr.ch")
+                            .bodyForm(form)
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
     public void testAuthorizedCreateSolutionComment() {
         running(fakeApplication(), () -> {
             Result result = route(

@@ -1,7 +1,6 @@
 package controllers;
 
 import helper.AbstractApplicationTest;
-import org.junit.Ignore;
 import org.junit.Test;
 import play.mvc.Result;
 
@@ -71,7 +70,6 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    @Ignore("Not implemented yet")
     public void testModeratorDeleteUndoNonExisting() {
         running(fakeApplication(), () -> {
             Result result = route(
