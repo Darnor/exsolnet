@@ -1,6 +1,7 @@
 package views;
 
 import com.avaje.ebean.PagedList;
+import helper.DatabaseHelper;
 import models.Exercise;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -18,6 +19,7 @@ public class ExerciseListViewTest extends AbstractViewTest {
 
     @BeforeClass
     public static void setUpBeforeClass(){
+        DatabaseHelper.cleanDB(app);
         pagedExerciseList = Exercise.find().where().eq("valid", true).orderBy("title").findPagedList(0,2);
         pageZero = Exercise.find().where().eq("valid", true).orderBy("title").findPagedList(0,10);
         pageOne = Exercise.find().where().eq("valid", true).orderBy("title").findPagedList(1,10);

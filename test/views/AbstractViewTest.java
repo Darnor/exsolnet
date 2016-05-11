@@ -11,9 +11,6 @@ import java.util.Map;
 
 import static org.mockito.Mockito.mock;
 
-/**
- * Created by tourn on 25.4.16.
- */
 public abstract class AbstractViewTest {
     public static Application app;
     private final Http.Request request = mock(Http.Request.class);
