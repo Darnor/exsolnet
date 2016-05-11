@@ -92,6 +92,7 @@ public class LoginControllerTest extends AbstractApplicationTest {
     @Test
     public void testRegisterFailedEmptyPassword() {
         form.replace("password", "");
+        form.replace("password-check", "");
 
         running(fakeApplication(), () -> {
             Result result = route(
@@ -111,6 +112,60 @@ public class LoginControllerTest extends AbstractApplicationTest {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.LoginController.processRegister())
+                            .bodyForm(form)
+            );
+            assertThat(result.status(), is(SEE_OTHER));
+            assertThat(result.session(), is(new HashMap<>()));
+        });
+    }
+
+    @Test
+    public void testUserLoginValidEmail() {
+        form.clear();
+        form.put("emailorusername", "franz@hsr.ch");
+        form.put("password", "");
+
+        Map<String, String> session = new HashMap<>();
+        session.put("connected", "franz@hsr.ch");
+
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.LoginController.processLogin())
+                            .bodyForm(form)
+            );
+            assertThat(result.status(), is(SEE_OTHER));
+            assertThat(result.session(), is(session));
+        });
+    }
+
+    @Test
+    public void testUserLoginValidUserName() {
+        form.clear();
+        form.put("emailorusername", "franz");
+        form.put("password", "");
+
+        Map<String, String> session = new HashMap<>();
+        session.put("connected", "franz@hsr.ch");
+
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.LoginController.processLogin())
+                            .bodyForm(form)
+            );
+            assertThat(result.status(), is(SEE_OTHER));
+            assertThat(result.session(), is(session));
+        });
+    }
+
+    @Test
+    public void testUserLoginInvalidData() {
+        form.clear();
+        form.put("emailorusername", "hax0r-1337");
+        form.put("password", "");
+
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.LoginController.processLogin())
                             .bodyForm(form)
             );
             assertThat(result.status(), is(SEE_OTHER));
