@@ -66,7 +66,7 @@ public class UserControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void testUnauthorizedUserUpdate() {
+    public void testNotAuthorizedUserUpdate() {
         form.replace("username", "Antonius96");
         form.replace("email", "antoniues.antoni@hsr.ch");
 
@@ -81,7 +81,7 @@ public class UserControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void testRenderAuthoriedExternalUser() {
+    public void testRenderExternalUser() {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.UserController.renderUser(8000L))
@@ -106,13 +106,74 @@ public class UserControllerTest extends AbstractApplicationTest {
     }
 
     @Test
-    public void testRenderUnauthorized() {
+    public void testRenderNotExistingUser() {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.UserController.renderUser(-1))
                             .session("connected", "simon@hsr.ch")
             );
             assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
+    public void testRenderUserUnauthorized() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.UserController.renderUser(8000L))
+            );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/login"));
+            assertThat(result.status(), is(SEE_OTHER));
+        });
+    }
+
+    @Test
+    public void testRenderUserFakeSession() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.UserController.renderUser(8000L))
+                            .session("connected", "hax03133616")
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
+    public void testRenderEditUnauthorized() {
+        System.out.println("TEST");
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.UserController.renderEdit())
+            );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/login"));
+            assertThat(result.status(), is(SEE_OTHER));
+        });
+    }
+
+    @Test
+    public void testRenderEditNonExistingSession() {
+        System.out.println("TEST");
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.UserController.renderEdit())
+                            .session("connected", "hax0rl33716")
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
+    public void testRenderEditAuthorized() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.UserController.renderEdit())
+                            .session("connected", "simon@hsr.ch")
+            );
+            assertThat(result.status(), is(OK));
         });
     }
 }

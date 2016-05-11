@@ -62,11 +62,11 @@ public class UserController extends Controller {
         User currentUser = SessionService.getCurrentUser();
 
         if (currentUser == null) {
-            Logger.debug("No user logged in, creating an empty user.");
-            currentUser = UserBuilder.anUser().build();
+            Logger.debug("Cannot edit not logged in user.");
+            return notFound(error404.render(UserBuilder.anUser().build(), "User not found!"));
         }
 
-        Logger.debug(currentUser.getEmail() + " tried to render the user edit form.");
+        Logger.debug(currentUser.getEmail() + " wants to edit the profile");
         return ok(editUser.render(currentUser));
     }
 
