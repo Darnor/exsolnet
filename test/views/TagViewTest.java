@@ -25,7 +25,7 @@ public class TagViewTest extends AbstractViewTest{
     public void testTagExist() {
         Tag aTag = TagBuilder.aTag().withName("Mathematics").build();
         Tag bTag = TagBuilder.aTag().withName("Software Engineering").build();
-        Content html = tagList.render(UserBuilder.anUser().build(), Arrays.asList(aTag, bTag), new ArrayList<>(), 1, "");
+        Content html = tagList.render(UserBuilder.anUser().withUsername("Hans").build(), Arrays.asList(aTag, bTag), new ArrayList<>(), 1, "");
         assertEquals("text/html", html.contentType());
         assertThat(html.body(), containsString("Mathematics"));
         assertThat(html.body(), containsString("Software Engineering"));
@@ -36,7 +36,7 @@ public class TagViewTest extends AbstractViewTest{
         Tag aTag = TagBuilder.aTag().withName("Mathematics").withId(1L).build();
         Tag bTag = TagBuilder.aTag().withName("Software Engineering").withId(2L).build();
 
-        User testUser = UserBuilder.anUser().withEmail("Peter").withId(1L).build();
+        User testUser = UserBuilder.anUser().withEmail("Peter").withUsername("Peter").withId(1L).build();
 
         Tracking aTracking = TrackingBuilder.aTracking().withId(1L).withUser(testUser).withTag(aTag).build();
 

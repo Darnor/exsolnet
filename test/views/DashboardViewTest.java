@@ -57,7 +57,7 @@ public class DashboardViewTest extends AbstractViewTest{
         solutions.add(SolutionBuilder.aSolution().withId(1L).withExercise(exercisesB.get(0)).withContent("").build());
         solutions.add(SolutionBuilder.aSolution().withId(2L).withExercise(exercisesB.get(2)).withContent("").build());
 
-        User user = anUser().withId(1L).withSolutions(solutions).build();
+        User user = anUser().withId(1L).withUsername("Hans").withSolutions(solutions).build();
 
         Tracking t1 = TrackingBuilder.aTracking().withId(1L).withUser(user).withTag(aTag).build();
         Tracking t2 = TrackingBuilder.aTracking().withId(2L).withUser(user).withTag(bTag).build();
