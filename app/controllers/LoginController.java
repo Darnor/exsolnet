@@ -60,7 +60,7 @@ public class LoginController extends Controller {
 
         if(UserController.validateUserForm(username, email, password, passwordCheck)) {
             User user = User.create(username, email, password, false);
-            Logger.debug("New user with name " + user.getUsername() + " just registered.");
+            Logger.debug("New user with name " + user.getUsername() + " and email " + user.getEmail() + " just registered.");
             SessionService.createSession(user.getEmail());
             return redirect(routes.UserController.renderDashboard());
         }

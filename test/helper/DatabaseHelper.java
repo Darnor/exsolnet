@@ -4,9 +4,6 @@ import com.avaje.ebean.Ebean;
 import org.apache.commons.io.FileUtils;
 import play.Application;
 
-/**
- * Created by tourn on 25.4.16.
- */
 public class DatabaseHelper {
     public static void cleanDB(Application app) {
         try {

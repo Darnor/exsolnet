@@ -30,7 +30,7 @@ public class UserController extends Controller {
         return password.equals(passwordCheck)
                 && username.trim().length() > 0
                 && password.trim().length() > 0
-                && email.contains("@");
+                && email.matches("[A-Za-z.\\-_]+@[A-Za-z.\\-_]+\\.\\w{2,}");
     }
 
     public Result processUpdate(long userId) {
