@@ -1,4 +1,10 @@
 @(title: String, user: User)(content: Html)
+    @****************************************
+    * Helper highlighting nav-bar       *
+    ****************************************@
+    @highlightLI(titleString: String) = {
+        <li class="@if(titleString.equals(title)) @{"active"}">
+    }
 
 <!DOCTYPE html>
 <html lang="en">
@@ -49,15 +55,15 @@
             <div class="container">
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href=@routes.ExerciseController.renderOverview()>Aufgaben</a></li>
-                        <li><a href=@routes.ExerciseController.renderCreate()>Aufgabe erstellen</a></li>
-                        <li><a href=@routes.TagController.renderTagList()>Module &amp; Tags</a></li>
+                        @highlightLI("Aufgaben")<a href=@routes.ExerciseController.renderOverview()>Aufgaben</a></li>
+                        @highlightLI("Aufgabe erstellen")<a href=@routes.ExerciseController.renderCreate()>Aufgabe erstellen</a></li>
+                        @highlightLI("Module & Tags")<a href=@routes.TagController.renderTagList()>Module &amp; Tags</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li>@if(user==null) {
-                            <a href="@routes.LoginController.renderLogin()">Login</a>
+                        @if(user==null) {
+                            @highlightLI("Login")<a href="@routes.LoginController.renderLogin()">Login</a>
                         } else {
-                            <a href="@routes.UserController.renderDashboard()">
+                            @highlightLI(user.getUsername)<a href="@routes.UserController.renderDashboard()">
                                 @snippets.gravatar(user, 16)
                                 @user.getUsername
                                 @user.getPoints
