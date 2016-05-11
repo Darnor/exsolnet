@@ -9,9 +9,11 @@ import play.mvc.Result;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static play.test.Helpers.*;
 
 public class CommentControllerTest extends AbstractApplicationTest {
@@ -38,6 +40,9 @@ public class CommentControllerTest extends AbstractApplicationTest {
                             .session("connected", "franz@hsr.ch")
                             .bodyForm(form)
             );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/exercises/8000"));
             assertThat(result.status(), is(SEE_OTHER));
         });
     }
@@ -50,6 +55,9 @@ public class CommentControllerTest extends AbstractApplicationTest {
                             .session("connected", "franz@hsr.ch")
                             .bodyForm(form)
             );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/exercises/8001"));
             assertThat(result.status(), is(SEE_OTHER));
         });
     }
@@ -75,6 +83,9 @@ public class CommentControllerTest extends AbstractApplicationTest {
                             .session("connected", "franz@hsr.ch")
                             .bodyForm(form)
             );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/exercises/8000"));
             assertThat(result.status(), is(SEE_OTHER));
         });
     }

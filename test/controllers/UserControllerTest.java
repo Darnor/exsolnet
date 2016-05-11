@@ -8,9 +8,11 @@ import play.mvc.Result;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static play.test.Helpers.*;
 
 public class UserControllerTest extends AbstractApplicationTest {
@@ -39,6 +41,26 @@ public class UserControllerTest extends AbstractApplicationTest {
                             .session("connected", "franz@hsr.ch")
                             .bodyForm(form)
             );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/"));
+            assertThat(result.status(), is(SEE_OTHER));
+        });
+    }
+
+    @Test
+    public void testAuthorizedFailedUserUpdate() {
+        form.replace("username", "");
+
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.UserController.processUpdate(8000))
+                            .session("connected", "franz@hsr.ch")
+                            .bodyForm(form)
+            );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/user/edit"));
             assertThat(result.status(), is(SEE_OTHER));
         });
     }
@@ -65,6 +87,9 @@ public class UserControllerTest extends AbstractApplicationTest {
                     fakeRequest(routes.UserController.renderUser(8000L))
                             .session("connected", "franz@hsr.ch")
             );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/"));
             assertThat(result.status(), is(SEE_OTHER));
         });
     }

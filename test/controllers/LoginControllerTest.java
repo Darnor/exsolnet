@@ -8,9 +8,11 @@ import play.mvc.Result;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static play.test.Helpers.*;
 
 public class LoginControllerTest extends AbstractApplicationTest {
@@ -41,6 +43,9 @@ public class LoginControllerTest extends AbstractApplicationTest {
                     fakeRequest(routes.LoginController.processRegister())
                             .bodyForm(form)
             );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/"));
             assertThat(result.status(), is(SEE_OTHER));
             assertThat(result.session(), is(session));
         });
@@ -55,6 +60,9 @@ public class LoginControllerTest extends AbstractApplicationTest {
                     fakeRequest(routes.LoginController.processRegister())
                             .bodyForm(form)
             );
+                        Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/register?email=testUser%40test.test"));
             assertThat(result.status(), is(SEE_OTHER));
             assertThat(result.session(), is(new HashMap<>()));
         });
@@ -69,6 +77,9 @@ public class LoginControllerTest extends AbstractApplicationTest {
                     fakeRequest(routes.LoginController.processRegister())
                             .bodyForm(form)
             );
+                        Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/register?username=testUser99"));
             assertThat(result.status(), is(SEE_OTHER));
             assertThat(result.session(), is(new HashMap<>()));
         });
@@ -83,7 +94,9 @@ public class LoginControllerTest extends AbstractApplicationTest {
                     fakeRequest(routes.LoginController.processRegister())
                             .bodyForm(form)
             );
-
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/register?username=testUser99&email=a%40a"));
             assertThat(result.status(), is(SEE_OTHER));
             assertThat(result.session(), is(new HashMap<>()));
         });
@@ -99,6 +112,9 @@ public class LoginControllerTest extends AbstractApplicationTest {
                     fakeRequest(routes.LoginController.processRegister())
                             .bodyForm(form)
             );
+                        Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/register?username=testUser99&email=testUser%40test.test"));
             assertThat(result.status(), is(SEE_OTHER));
             assertThat(result.session(), is(new HashMap<>()));
         });
@@ -114,6 +130,9 @@ public class LoginControllerTest extends AbstractApplicationTest {
                     fakeRequest(routes.LoginController.processRegister())
                             .bodyForm(form)
             );
+                        Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/register?username=testUser99&email=testUser%40test.test"));
             assertThat(result.status(), is(SEE_OTHER));
             assertThat(result.session(), is(new HashMap<>()));
         });
@@ -133,6 +152,9 @@ public class LoginControllerTest extends AbstractApplicationTest {
                     fakeRequest(routes.LoginController.processLogin())
                             .bodyForm(form)
             );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/"));
             assertThat(result.status(), is(SEE_OTHER));
             assertThat(result.session(), is(session));
         });
@@ -152,6 +174,9 @@ public class LoginControllerTest extends AbstractApplicationTest {
                     fakeRequest(routes.LoginController.processLogin())
                             .bodyForm(form)
             );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/"));
             assertThat(result.status(), is(SEE_OTHER));
             assertThat(result.session(), is(session));
         });
@@ -168,8 +193,23 @@ public class LoginControllerTest extends AbstractApplicationTest {
                     fakeRequest(routes.LoginController.processLogin())
                             .bodyForm(form)
             );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/login"));
             assertThat(result.status(), is(SEE_OTHER));
             assertThat(result.session(), is(new HashMap<>()));
+        });
+    }
+
+    @Test
+    public void testRenderRegister() {
+        form.clear();
+
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.LoginController.renderRegister("", ""))
+            );
+            assertThat(result.status(), is(OK));
         });
     }
 }

@@ -7,9 +7,11 @@ import play.mvc.Result;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertTrue;
 import static play.test.Helpers.*;
 
 public class TagControllerTest extends AbstractApplicationTest {
@@ -31,6 +33,9 @@ public class TagControllerTest extends AbstractApplicationTest {
                     fakeRequest(routes.TagController.processTrack(8000))
                             .session(sessionMap)
             );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/tags"));
             assertThat(result.status(), is(SEE_OTHER));
         });
     }
