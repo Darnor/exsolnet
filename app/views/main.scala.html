@@ -3,7 +3,7 @@
     * Helper highlighting nav-bar       *
     ****************************************@
     @highlightLI(titleString: String) = {
-        <li class="@if(titleString.equals(title)) @{"active"}">
+        <li class="@if(titleString != null && titleString.equals(title)) @{"active"}">
     }
 
 <!DOCTYPE html>
