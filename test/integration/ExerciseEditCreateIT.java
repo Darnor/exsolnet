@@ -34,8 +34,8 @@ public class ExerciseEditCreateIT extends AbstractIntegrationTest {
                 dropdownother.selectByValue(tag);
             }
 
-            fillCKEditor(browser, content,"exercise_content");
-            fillCKEditor(browser, solutionContent,"solution_content");
+            fillCKEditor(browser, content, "exercise_content");
+            fillCKEditor(browser, solutionContent, "solution_content");
 
             browser.submit("#save");
 

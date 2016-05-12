@@ -31,7 +31,7 @@ public class ExerciseController extends Controller {
     FormFactory formFactory;
 
     private static final String TITLE_FIELD = "title";
-    private static final String CONTENT_FIELD = "content";
+    private static final String EXERCISE_CONTENT_FIELD = "content";
     private static final String SOLUTION_CONTENT_FIELD = "contentsol";
     private static final String MAIN_TAG_FIELD = "maintag";
     private static final String OTHER_TAG_FIELD = "othertag";
@@ -192,8 +192,13 @@ public class ExerciseController extends Controller {
         User currentUser = SessionService.getCurrentUser();
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String title = requestData.get(TITLE_FIELD);
-        String content = requestData.get(CONTENT_FIELD);
+        String content = requestData.get(EXERCISE_CONTENT_FIELD);
         String mainTag = requestData.get(MAIN_TAG_FIELD);
+
+        Logger.debug("Binding form with data: ");
+        Logger.debug("Title: " + title);
+        Logger.debug("Content: " + content);
+        Logger.debug("mainTag: " + mainTag);
 
         validateFormData(title, mainTag, content);
 
@@ -207,10 +212,10 @@ public class ExerciseController extends Controller {
 
         if (exerciseId == null) {
             String solutionContent = requestData.get(SOLUTION_CONTENT_FIELD);
-            Boolean isOfficial = requestData.get(OFFICIAL_FIELD).equals("on");
+            boolean isOfficial = requestData.get(OFFICIAL_FIELD) != null;
             validateSolutionFormData(solutionContent);
             Exercise exercise = Exercise.create(title, content, tags, currentUser);
-            Solution.create(solutionContent,exercise,currentUser,isOfficial);
+            Solution.create(solutionContent, exercise, currentUser, isOfficial);
         } else {
             Exercise.update(exerciseId, title, content, tags, currentUser);
         }
