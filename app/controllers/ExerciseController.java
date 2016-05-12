@@ -232,7 +232,7 @@ public class ExerciseController extends Controller {
      */
     public Result processUpdate(long exerciseId) {
         bindForm(exerciseId);
-        return redirect(routes.ExerciseController.renderOverview());
+        return redirect(routes.ExerciseController.renderDetail(exerciseId));
     }
 
     public Result processUpvote(Long exerciseId) {

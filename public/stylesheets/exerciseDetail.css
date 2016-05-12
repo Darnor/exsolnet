@@ -173,13 +173,17 @@
     cursor: pointer;
 }
 
-.edit {
+/*.edit {
     position: absolute;
     top: 5px;
     right: 1.7em;
     font-size: 1.2em;
     color: black;
     display: inline-block;
+}*/
+
+.edit{
+ margin-right: 1em;
 }
 
 .box {

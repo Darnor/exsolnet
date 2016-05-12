@@ -1,4 +1,3 @@
-@import java.time.format.{DateTimeFormatter, FormatStyle}
 @(user: User, exercise: Exercise)(solutionsContent: Html)
 @main(exercise.getTitle, user) {
     <script type="text/javascript">
@@ -24,35 +23,43 @@
         @exercise.getSolutions.size
         </span>
         <span class="meta time">
-            @if(exercise.getLastChanged==null){
-                Eingereicht: @snippets.longDate(exercise.getTime)
-            }else{
-                Zuletzt geändert: @snippets.longDate(exercise.getLastChanged)
-            }
+        @if(exercise.getLastChanged == null) {
+            Eingereicht: @snippets.longDate(exercise.getTime)
+        } else {
+            Zuletzt geändert: @snippets.longDate(exercise.getLastChanged)
+        }
         </span>
+
         <a class="pull-right" href="#" onclick="toggler('exerciseComment')" >
             Kommentare <span class="badge">@exercise.getComments.size()</span></a>
 
+        <a class="pull-right meta edit" id="exercise-@exercise.getId" href="@routes.ExerciseController.renderEdit(exercise.getId)">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
+
+
+
         @if(user.isModerator) {
-            <a href="@routes.ExerciseController.processDelete(exercise.getId)" class="meta delete">
-                <img src="@routes.Assets.versioned("images/garbage.png")" onmouseover="this.src='@routes.Assets.versioned("images/garbage-1.png")'"
-                onmouseout="this.src='@routes.Assets.versioned("images/garbage.png")'" >
-            </a>
+            <a href="@routes.ExerciseController.processDelete(exercise.getId)" class="meta pull-right edit">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </a>                        
         }
+
+
         <div class = "box">
-            @if(exercise.hasVoted(user.getId)>0) {
+            @if(exercise.hasVoted(user.getId) > 0) {
                 <a id="upVoteExercise" class = "up upcolor" onclick="upVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
-            }else{
-                 <a id="upVoteExercise" class = "up defaultcolor" onclick="upVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
+            } else {
+                <a id="upVoteExercise" class = "up defaultcolor" onclick="upVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
             }
 
 
             <span id="exercisePoints" class="text-center points">
             @exercise.getPoints
             </span>
-            @if(exercise.hasVoted(user.getId)<0) {
+
+            @if(exercise.hasVoted(user.getId) < 0) {
                 <a id="downVoteExercise" class = "down downcolor" onclick="downVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
-            }else{
+            } else {
                 <a id="downVoteExercise" class = "down defaultcolor" onclick="downVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
             }
         </div>
@@ -82,5 +89,6 @@
         </div>
 
     </div>
+
     @solutionsContent
 }
