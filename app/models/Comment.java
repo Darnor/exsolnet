@@ -34,6 +34,9 @@ public class Comment extends Model {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime time = LocalDateTime.now();
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private LocalDateTime lastchanged;
+
     public String getContent() {
         return content;
     }
@@ -80,6 +83,14 @@ public class Comment extends Model {
 
     public void setSolution(Solution solution) {
         this.solution = solution;
+    }
+
+    public LocalDateTime getLastChanged() {
+        return lastchanged;
+    }
+
+    public void setLastChanged(LocalDateTime lastchanged) {
+        this.lastchanged = lastchanged;
     }
 
     public static Model.Finder<Long, Comment> find(){
@@ -130,6 +141,7 @@ public class Comment extends Model {
     public static Comment updateContent(Long commentId, String content){
         Comment comment = findById(commentId);
         comment.setContent(content);
+        comment.setLastChanged(LocalDateTime.now());
         comment.update();
         return comment;
     }

@@ -14,7 +14,11 @@
 
         <span class="meta user"> @snippets.userLink(comment.getUser) </span>
         <span class="meta time">
-            @snippets.longDate(comment.getTime)
+            @if(comment.getLastChanged==null){
+                Eingereicht: @snippets.longDate(comment.getTime)
+            }else{
+                Zuletzt geändert: @snippets.longDate(comment.getLastChanged)
+            }
         </span>
     </div>
     @snippets.editcomment(comment)
