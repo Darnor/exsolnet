@@ -89,6 +89,10 @@
         </div>
 
     </div>
+    @if(user.isModerator && !user.hasSolved(exercise.getId) ) {
+        <a href="@routes.SolutionController.renderCreate(exercise.getId)" class="btn btn-primary btn-lg btn-block">
+            Aufgabe Lösen</a>
+    }
 
     @solutionsContent
 }

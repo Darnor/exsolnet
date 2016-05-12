@@ -265,6 +265,7 @@ public class ExerciseController extends Controller {
         if (exercise != null) {
             return (user.hasSolved(id) || user.isModerator()) ? renderSolutions(id) : renderExerciseNotSolved(id);
         }
+
         return notFound(error404.render(user, "Diese Aufgabe existiert nicht"));
     }
 
