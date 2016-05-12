@@ -245,7 +245,9 @@ public class Exercise extends Post {
 
     public Boolean hasOfficial() {
         for (Solution s : solutions) {
-            if (s.isOfficial() && s.isValid()) return true;
+            if (s.isOfficial() && s.isValid()) {
+                return true;
+            }
         }
         return false;
     }

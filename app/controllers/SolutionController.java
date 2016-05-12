@@ -105,9 +105,7 @@ public class SolutionController extends Controller {
      */
     public Result processCreate(Long exerciseId) {
         DynamicForm requestData = formFactory.form().bindFromRequest();
-        Boolean isOfficial  =false;
-        if(requestData.get(OFFICIAL_FIELD)!=null)
-            isOfficial = requestData.get(OFFICIAL_FIELD).equals("on");
+        boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
         String content = requestData.get(CONTENT_FIELD);
         Solution.create(content, Exercise.findValidById(exerciseId), SessionService.getCurrentUser(), isOfficial);
         return redirect(routes.ExerciseController.renderDetail(exerciseId));
@@ -121,9 +119,7 @@ public class SolutionController extends Controller {
      */
     public Result processUpdate(Long solutionId) {
         DynamicForm requestData = formFactory.form().bindFromRequest();
-        Boolean isOfficial = false;
-        if (requestData.get(OFFICIAL_FIELD) != null)
-            isOfficial = requestData.get(OFFICIAL_FIELD).equals("on");
+        boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
         String content = requestData.get(CONTENT_FIELD);
 
         Solution.update(solutionId, content, isOfficial);

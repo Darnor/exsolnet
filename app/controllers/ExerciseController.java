@@ -212,7 +212,7 @@ public class ExerciseController extends Controller {
 
         if (exerciseId == null) {
             String solutionContent = requestData.get(SOLUTION_CONTENT_FIELD);
-            boolean isOfficial = requestData.get(OFFICIAL_FIELD) != null;
+            boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
             validateSolutionFormData(solutionContent);
             Exercise exercise = Exercise.create(title, content, tags, currentUser);
             Solution.create(solutionContent, exercise, currentUser, isOfficial);
