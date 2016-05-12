@@ -4,7 +4,7 @@
     <script src="@routes.Assets.versioned("ckeditor/ckeditor.js")" type="text/javascript"></script>
 
     <h2>Deine Lösung:</h2>
-    <form method="POST" action="@if(user.hasSolved(exercise.getId)){
+    <form method="POST" action="@if(user.hasSolved(exercise.getId) || (user.isModerator && solution.getId!=null)){
             @routes.SolutionController.processUpdate(solution.getId)
         }else{
             @routes.SolutionController.processCreate(exercise.getId)
