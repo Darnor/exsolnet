@@ -18,11 +18,12 @@
                         CKEDITOR.replace( 'contentsol' );
                 </script>
             </div>
-            <div class="checkbox">
-                <label><input type="checkbox" name="isOfficial"> Dies ist die Musterlösung</label>
-                <p> <small>Markiere dieses Feld, wenn dies die offizielle Lösung von deinem Dozenten, beziehungsweise des Erstellers der Übung ist. </small></p>
-            </div>
-
+            @if(((user.isModerator() || user.getId == exercise.getUser().getId) && (!exercise.hasOfficial())) || solution.isOfficial){
+                <div class="checkbox">
+                    <label><input type="checkbox" name="isOfficial" @if(solution.isOfficial){checked}> Dies ist die Musterlösung</label>
+                    <p> <small>Markiere dieses Feld, wenn dies die offizielle Lösung von deinem Dozenten, beziehungsweise des Erstellers der Übung ist. </small></p>
+                </div>
+            }
 
             <button class="btn btn-primary btn-lg btn-block" id="save">Speichern</button>
         </div>

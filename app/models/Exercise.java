@@ -230,16 +230,23 @@ public class Exercise extends Post {
      * @param user
      * @return whether this exercise is solved by given user
      */
-    public boolean isSolvedBy(User user){
+    public boolean isSolvedBy(User user) {
         return solutions.stream().filter(s -> s.getUser().getId().equals(user.getId())).count() > 0;
     }
 
     public Integer hasVoted(Long userId) {
         for (Vote vote : getVotes()) {
-            if (vote.getUser().getId().equals(userId)){
+            if (vote.getUser().getId().equals(userId)) {
                 return vote.getValue();
             }
         }
         return 0;
+    }
+
+    public Boolean hasOfficial() {
+        for (Solution s : solutions) {
+            if (s.isOfficial() && s.isValid()) return true;
+        }
+        return false;
     }
 }

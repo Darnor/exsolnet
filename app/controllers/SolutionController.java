@@ -6,6 +6,7 @@ import models.User;
 import models.Vote;
 import models.builders.SolutionBuilder;
 import play.Logger;
+import play.data.DynamicForm;
 import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -21,6 +22,8 @@ import javax.inject.Inject;
 public class SolutionController extends Controller {
 
     private static final String CONTENT_FIELD = "content";
+    private static final String OFFICIAL_FIELD = "isOfficial";
+
 
     @Inject
     FormFactory formFactory;
@@ -91,7 +94,7 @@ public class SolutionController extends Controller {
      */
     public Result renderUpdate(Long solutionId) {
         Solution solution = Solution.findById(solutionId);
-        return ok(editSolution.render(SessionService.getCurrentUser(), solution.getExercise(),solution));
+        return ok(editSolution.render(SessionService.getCurrentUser(), solution.getExercise(), solution));
     }
 
     /**
@@ -101,7 +104,12 @@ public class SolutionController extends Controller {
      * @return Result view of the exercise with all solutions and comments
      */
     public Result processCreate(Long exerciseId) {
-        Solution.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), Exercise.findValidById(exerciseId), SessionService.getCurrentUser());
+        DynamicForm requestData = formFactory.form().bindFromRequest();
+        Boolean isOfficial  =false;
+        if(requestData.get(OFFICIAL_FIELD)!=null)
+            isOfficial = requestData.get(OFFICIAL_FIELD).equals("on");
+        String content = requestData.get(CONTENT_FIELD);
+        Solution.create(content, Exercise.findValidById(exerciseId), SessionService.getCurrentUser(), isOfficial);
         return redirect(routes.ExerciseController.renderDetail(exerciseId));
     }
 
@@ -112,13 +120,20 @@ public class SolutionController extends Controller {
      * @return Result view of the exercise with all solutions and comments
      */
     public Result processUpdate(Long solutionId) {
-        Solution.update(solutionId, formFactory.form().bindFromRequest().get(CONTENT_FIELD));
+        DynamicForm requestData = formFactory.form().bindFromRequest();
+        Boolean isOfficial = false;
+        if (requestData.get(OFFICIAL_FIELD) != null)
+            isOfficial = requestData.get(OFFICIAL_FIELD).equals("on");
+        String content = requestData.get(CONTENT_FIELD);
+
+        Solution.update(solutionId, content, isOfficial);
         return redirect(routes.ExerciseController.renderDetail(Solution.findById(solutionId).getExercise().getId()));
     }
 
     /**
      * renders the exercise details with a create solution formular
-     ** @param exerciseId the id of the Exercise
+     * * @param exerciseId the id of the Exercise
+     *
      * @return Result View of the detailed exercise with a create solution formular.
      */
     public Result renderCreate(long exerciseId) {

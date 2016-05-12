@@ -91,16 +91,24 @@ public class Solution extends Post {
         return new Finder<>(Solution.class);
     }
 
-    public static Solution create(String content, Exercise exercise, User user) {
-        Solution solution = SolutionBuilder.aSolution().withExercise(exercise).withContent(content).withUser(user).build();
+    public static Solution create(String content, Exercise exercise, User user, Boolean isOfficial) {
+        Solution solution = SolutionBuilder.aSolution().withExercise(exercise).withContent(content).withUser(user).withIsOfficial(isOfficial).build();
         solution.save();
         return solution;
     }
 
+    public static Solution create(String content, Exercise exercise, User user) {
+        return create(content, exercise, user, false);
+    }
+
     public static Solution update(long id, String content) {
+        return update(id,content,false);
+    }
+    public static Solution update(long id, String content, Boolean isOfficial) {
         Solution solution = Solution.findById(id);
         solution.setContent(content);
         solution.setLastChanged(LocalDateTime.now());
+        solution.setIsOfficial(isOfficial);
         solution.update();
         return solution;
     }
@@ -116,8 +124,8 @@ public class Solution extends Post {
         return (solution == null || !solution.isValid()) ? null : solution;
     }
 
-    public static Solution findById(Long id){
-       return find().byId(id);
+    public static Solution findById(Long id) {
+        return find().byId(id);
     }
 
     public long getPoints() {
@@ -126,6 +134,7 @@ public class Solution extends Post {
 
     /**
      * deletes Solution
+     *
      * @param id solutionId to delete
      */
     public static void delete(Long id) {
@@ -137,6 +146,7 @@ public class Solution extends Post {
 
     /**
      * undo deletion of Solution
+     *
      * @param id solutionId to delete
      */
     public static void undoDelete(Long id) {
@@ -154,7 +164,7 @@ public class Solution extends Post {
 
     public Integer hasVoted(Long userId) {
         for (Vote vote : getVotes()) {
-            if (vote.getUser().getId().equals(userId)){
+            if (vote.getUser().getId().equals(userId)) {
                 return vote.getValue();
             }
         }

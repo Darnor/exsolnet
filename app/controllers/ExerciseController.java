@@ -38,6 +38,7 @@ public class ExerciseController extends Controller {
     private static final String SOLUTION_COUNT_FIELD = "solutionCount";
     private static final String POINTS_FIELD = "points";
     private static final String TIME_FIELD = "time";
+    private static final String OFFICIAL_FIELD = "isOfficial";
 
     private static final String TAG_NAME_DELIMITER = ",";
     private static final int PAGE_SIZE = 10;
@@ -206,9 +207,10 @@ public class ExerciseController extends Controller {
 
         if (exerciseId == null) {
             String solutionContent = requestData.get(SOLUTION_CONTENT_FIELD);
+            Boolean isOfficial = requestData.get(OFFICIAL_FIELD).equals("on");
             validateSolutionFormData(solutionContent);
             Exercise exercise = Exercise.create(title, content, tags, currentUser);
-            Solution.create(solutionContent,exercise,currentUser);
+            Solution.create(solutionContent,exercise,currentUser,isOfficial);
         } else {
             Exercise.update(exerciseId, title, content, tags, currentUser);
         }

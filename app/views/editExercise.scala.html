@@ -71,7 +71,7 @@
                         </div>
 
                         <div class="checkbox">
-                            <label><input type="checkbox" name="isOfficial"> Dies ist die Musterlösung</label>
+                            <label><input id="isOfficial" type="checkbox" name="isOfficial" @if(solution.isOfficial){checked}> Dies ist die Musterlösung</label>
                             <p> <small>Markiere dieses Feld, wenn dies die offizielle Lösung von deinem Dozenten, beziehungsweise des Erstellers der Übung ist. </small></p>
                         </div>
                     }
