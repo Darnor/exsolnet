@@ -26,6 +26,14 @@ public class Tracking extends Model {
     @NotNull
     private User user;
 
+    public static Tracking findById(Long id) {
+        return find().byId(id);
+    }
+
+    public static Model.Finder<Long, Tracking> find() {
+        return new Finder<>(Tracking.class);
+    }
+
     public Long getId() {
         return id;
     }

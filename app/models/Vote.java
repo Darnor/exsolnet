@@ -38,6 +38,10 @@ public class Vote extends Model {
     @NotNull
     private User user;
 
+    public static Vote findById(Long id) {
+        return find().byId(id);
+    }
+
     public Long getId() {
         return id;
     }
