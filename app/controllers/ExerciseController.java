@@ -204,7 +204,7 @@ public class ExerciseController extends Controller {
         try {
             validateFormData(title, mainTag, content);
         } catch (IllegalArgumentException e) {
-            Logger.error("Exercise form data not valid", e);
+            Logger.error("Exercise form data not valid");
             flash(FLASH_ERROR, "Eingegebene Aufgabendaten sind nicht vollständig.");
             throw e;
         }
@@ -223,7 +223,7 @@ public class ExerciseController extends Controller {
             try {
                 validateSolutionFormData(solutionContent);
             } catch (IllegalArgumentException e) {
-                Logger.error("Created solution not valid", e);
+                Logger.error("Created solution not valid");
                 flash(FLASH_ERROR, "Lösung darf nicht leer sein.");
                 throw e;
             }

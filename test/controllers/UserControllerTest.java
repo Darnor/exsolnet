@@ -141,7 +141,6 @@ public class UserControllerTest extends AbstractApplicationTest {
 
     @Test
     public void testRenderEditUnauthorized() {
-        System.out.println("TEST");
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.UserController.renderEdit())

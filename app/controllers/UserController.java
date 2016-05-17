@@ -57,7 +57,7 @@ public class UserController extends Controller {
             return redirect(routes.UserController.renderDashboard());
         }
 
-        Logger.error("New userdata could not be verified, redirecting to the edit page agian.");
+        Logger.error("New userdata could not be verified, redirecting to the edit page again.");
         return redirect(routes.UserController.renderEdit());
     }
 
