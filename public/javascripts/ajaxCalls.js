@@ -48,7 +48,7 @@ function downVoteExercise(id) {
 }
 function changecolorSolution(value, id, kind) {
 
-    if (value == 1) {
+    if (value === 1) {
         if (document.getElementById("upVote" + kind + id).classList.contains("upcolor")) {
             document.getElementById("upVote" + kind + id).classList.add("defaultcolor");
             document.getElementById("upVote" + kind + id).classList.remove("upcolor");
@@ -62,7 +62,7 @@ function changecolorSolution(value, id, kind) {
             document.getElementById("upVote" + kind + id).classList.add("upcolor");
         }
     }
-    if (value == -1) {
+    if (value === -1) {
 
         if (document.getElementById("downVote" + kind + id).classList.contains("downcolor")) {
             document.getElementById("downVote" + kind + id).classList.add("defaultcolor");
@@ -83,8 +83,8 @@ function changecolorSolution(value, id, kind) {
 function trackTag(tagId) {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
-            if (document.getElementById("track_" + tagId).getAttribute("class") == "btn btn-success btn-block") {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+            if (document.getElementById("track_" + tagId).getAttribute("class") === "btn btn-success btn-block") {
                 document.getElementById("track_" + tagId).setAttribute("class", "btn btn-primary btn-block");
                 document.getElementById("track_" + tagId).setAttribute("value", "Folgen");
             } else {
