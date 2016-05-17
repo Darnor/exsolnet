@@ -34,9 +34,9 @@
             }
                 <span id="solutionPoints@solution.getId" class="points">@solution.getPoints</span>
                 @if(solution.hasVoted(user.getId)<0) {
-                    <a id="downVoteSolution@solution.getId" class = "down downcolor" data-toggle="tooltip" title="Vote Zurücknehmen" onclick="downVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
+                    <a id="downVoteSolution@solution.getId" class = "down downcolor" data-toggle="tooltip" title="Vote Zurücknehmen" data-placement="bottom" onclick="downVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
                 }else{
-                    <a id="downVoteSolution@solution.getId" class = "down defaultcolor" data-toggle="tooltip" title="Downvoten" onclick="downVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
+                    <a id="downVoteSolution@solution.getId" class = "down defaultcolor" data-toggle="tooltip" title="Downvoten" data-placement="bottom" onclick="downVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
                 }
             </div>
 

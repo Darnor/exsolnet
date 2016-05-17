@@ -58,9 +58,9 @@
             </span>
 
             @if(exercise.hasVoted(user.getId) < 0) {
-                <a id="downVoteExercise" class = "down downcolor" data-toggle="tooltip" title="Vote zurücknehmen" onclick="downVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
+                <a id="downVoteExercise" class = "down downcolor" data-toggle="tooltip" title="Vote zurücknehmen" data-placement="bottom" onclick="downVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
             } else {
-                <a id="downVoteExercise" class = "down defaultcolor" data-toggle="tooltip" title="Downvoten" onclick="downVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
+                <a id="downVoteExercise" class = "down defaultcolor" data-toggle="tooltip" title="Downvoten" data-placement="bottom" onclick="downVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
             }
         </div>
 
