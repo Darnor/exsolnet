@@ -30,7 +30,7 @@
                     </div>
 
                     <div class="form-group  input_tag_top">
-                        <label for="maintag">Modul: </label>
+                        <label for="maintag" data-toggle="tooltip" title="Hier kannst du ein Modul aussuchen, zu welchem deine Aufgabe gehört.">Modul: </label>
 
 
                         <select name="maintag" id="maintag" style="width: 50%" class="tags-basic-single">
@@ -46,8 +46,7 @@
 
                     </div>
                     <div class="form-group input_tag">
-                        <label for="othertag">Tags:</label>
-
+                        <label for="othertag" data-toggle="tooltip" title="Tags sind Schlüsselwörter um deine Aufgabe später besser finden zu können. In der folgenden Liste kannst du entweder aus bereits vorhandenen Tags auswählen und/oder neue Tags eingeben welche gleichzeitig mit deiner Aufgabe erstellt werden.">Tags:</label>
                         <select name="othertag" id="othertag" style="width: 100%" class="tags-tokenizer" multiple>
                         @for(tag <- othertags) {
                             @if(exercise.getTags.contains(tag)){
