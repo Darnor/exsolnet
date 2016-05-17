@@ -41,6 +41,7 @@ public class LoginController extends Controller {
         User user = User.authenticate(name, password);
         if (user == null) {
             Logger.warn(name + " failed to log in.");
+            flash(FLASH_ERROR, "Falscher Benutzername oder Passwort");
             return redirect(routes.LoginController.renderLogin());
         }
 
@@ -51,6 +52,28 @@ public class LoginController extends Controller {
 
     public Result renderRegister(String username, String email) {
         return ok(editUser.render(UserBuilder.anUser().withUsername(username).withEmail(email).build()));
+    }
+
+    private void setFlashError(String email, String username, String password, String passwordCheck) {
+        if (User.findByEmail(email) != null || User.findByUsername(username) != null) {
+            flash(FLASH_ERROR, "Benutzer existiert bereits");
+        }
+
+        if (username == null || username.trim().isEmpty()) {
+            flash(FLASH_ERROR, "Benutzername darf nicht leer sein.");
+        }
+
+        if (password == null || password.trim().isEmpty()) {
+            flash(FLASH_ERROR, "Passwort darf nicht leer sein.");
+        }
+
+        if (!password.equals(passwordCheck)) {
+            flash(FLASH_ERROR, "Passwort stimmt nicht überein.");
+        }
+
+        if (email == null || !UserController.validateEmailFormat(email)) {
+            flash(FLASH_ERROR, "E-mailformat ist nicht korrekt.");
+        }
     }
 
     public Result processRegister() {
@@ -69,25 +92,8 @@ public class LoginController extends Controller {
 
         Logger.debug("Registration failed. Reloading with username and email.");
 
-        if (User.findByEmail(email) != null || User.findByUsername(username) != null) {
-            flash(FLASH_ERROR, "Benutzer existiert bereits");
-        }
+        setFlashError(email, username, password, passwordCheck);
 
-        if (username == null || username.trim().isEmpty()) {
-            flash(FLASH_ERROR, "Benutzername darf nicht leer sein.");
-        }
-
-        if (password == null || password.trim().isEmpty()) {
-            flash(FLASH_ERROR, "Passwort darf nicht leer sein.");
-        }
-
-        if (passwordCheck == null || !passwordCheck.equals(password)) {
-            flash(FLASH_ERROR, "Passwort stimmt nicht überein.");
-        }
-
-        if (email == null || !UserController.validateEmailFormat(email)) {
-            flash(FLASH_ERROR, "E-mailformat ist nicht korrekt.");
-        }
         return redirect(routes.LoginController.renderRegister(username, email));
     }
 
