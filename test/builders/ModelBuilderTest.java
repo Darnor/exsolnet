@@ -88,6 +88,7 @@ public class ModelBuilderTest extends AbstractApplicationTest {
                 .withContent("content").withUser(user).withComments(comments)
                 .withExercise(exercise).withId(666L).withTime(now).withVotes(votes)
                 .build();
+
         Assert.assertEquals("666", solution.getId().toString());
         Assert.assertEquals("content", solution.getContent());
         Assert.assertEquals(now, solution.getTime());
