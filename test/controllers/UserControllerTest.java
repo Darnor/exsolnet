@@ -1,6 +1,7 @@
 package controllers;
 
 import helper.AbstractApplicationTest;
+import models.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,6 +13,8 @@ import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static play.test.Helpers.*;
 
@@ -36,15 +39,21 @@ public class UserControllerTest extends AbstractApplicationTest {
     @Test
     public void testAuthorizedUserUpdate() {
         running(fakeApplication(), () -> {
+            assertNotNull(User.findByEmail("hans@hsr.ch"));
+            assertNull(User.findByEmail(form.get("email")));
             Result result = route(
-                    fakeRequest(routes.UserController.processUpdate(8000))
-                            .session("connected", "franz@hsr.ch")
+                    fakeRequest(routes.UserController.processUpdate(8001))
+                            .session("connected", "hans@hsr.ch")
                             .bodyForm(form)
             );
             Optional<String> location = result.redirectLocation();
             assertTrue(location.isPresent());
             assertThat(location.get(), is("/"));
             assertThat(result.status(), is(SEE_OTHER));
+            User user = User.findByEmail(form.get("email"));
+            assertNull(User.findByEmail("hans@hsr.ch"));
+            assertNotNull(user);
+            assertThat(user.getUsername(), is(form.get("username")));
         });
     }
 
@@ -62,6 +71,7 @@ public class UserControllerTest extends AbstractApplicationTest {
             assertTrue(location.isPresent());
             assertThat(location.get(), is("/user/edit"));
             assertThat(result.status(), is(SEE_OTHER));
+            assertNotNull(User.findByEmail("franz@hsr.ch"));
         });
     }
 
