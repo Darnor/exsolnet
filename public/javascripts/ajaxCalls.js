@@ -86,27 +86,27 @@ function changecolorSolution(value, id, kind) {
 function updateTooltipText(value, id, kind){
     if (value === 1) {
         if (document.getElementById("upVote" + kind + id).classList.contains("upcolor")) {
-            document.getElementById("upVote" + kind + id).setAttribute("title","Vote zurücknehmen");
-            document.getElementById("downVote" + kind + id).setAttribute("title","Downvote");
+            document.getElementById("upVote" + kind + id).setAttribute("data-original-title","Vote zurücknehmen");
+            document.getElementById("downVote" + kind + id).setAttribute("data-original-title","Downvote");
         }
         else {
             if (document.getElementById("downVote" + kind + id).classList.contains("downcolor")) {
-                document.getElementById("downVote" + kind + id).setAttribute("title","Vote zurücknehmen");
+                document.getElementById("downVote" + kind + id).setAttribute("data-original-title","Vote zurücknehmen");
             }
-            document.getElementById("upVote" + kind + id).setAttribute("title","Upvote");
+            document.getElementById("upVote" + kind + id).setAttribute("data-original-title","Upvote");
         }
     }
     if (value === -1) {
 
         if (document.getElementById("downVote" + kind + id).classList.contains("downcolor")) {
-            document.getElementById("downVote" + kind + id).setAttribute("title","Vote zurücknehmen");
-            document.getElementById("upVote" + kind + id).setAttribute("title","Upvote");
+            document.getElementById("downVote" + kind + id).setAttribute("data-original-title","Vote zurücknehmen");
+            document.getElementById("upVote" + kind + id).setAttribute("data-original-title","Upvote");
         }
         else {
             if (document.getElementById("upVote" + kind + id).classList.contains("upcolor")) {
-                document.getElementById("upVote" + kind + id).setAttribute("title","Vote zurücknehmen");
+                document.getElementById("upVote" + kind + id).setAttribute("data-original-title","Vote zurücknehmen");
             }
-            document.getElementById("downVote" + kind + id).setAttribute("title","Downvote");
+            document.getElementById("downVote" + kind + id).setAttribute("data-original-title","Downvote");
         }
     }
 }
@@ -127,3 +127,7 @@ function trackTag(tagId) {
     xhttp.open("POST", "/tags/track?tagId=" + tagId, true);
     xhttp.send();
 }
+
+$(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+});
