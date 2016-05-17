@@ -8,6 +8,7 @@ function upVoteSolution(id) {
     xhttp.open("POST", "/solutions/" + id + "/upvote", true);
     xhttp.send();
     changecolorSolution(1, id, "Solution");
+    updateTooltipText(1, id, "Solution");
 }
 
 function downVoteSolution(id) {
@@ -20,6 +21,7 @@ function downVoteSolution(id) {
     xhttp.open("POST", "/solutions/" + id + "/downvote", true);
     xhttp.send();
     changecolorSolution(-1, id, "Solution");
+    updateTooltipText(-1, id, "Solution");
 }
 
 function upVoteExercise(id) {
@@ -32,7 +34,7 @@ function upVoteExercise(id) {
     xhttp.open("POST", "/exercises/" + id + "/upvote", true);
     xhttp.send();
     changecolorSolution(1, "", "Exercise");
-
+    updateTooltipText(1, "", "Exercise");
 }
 
 function downVoteExercise(id) {
@@ -45,7 +47,9 @@ function downVoteExercise(id) {
     xhttp.open("POST", "/exercises/" + id + "/downvote", true);
     xhttp.send();
     changecolorSolution(-1, "", "Exercise");
+    updateTooltipText(-1, "", "Exercise");
 }
+
 function changecolorSolution(value, id, kind) {
 
     if (value === 1) {
@@ -77,7 +81,34 @@ function changecolorSolution(value, id, kind) {
             document.getElementById("downVote" + kind + id).classList.remove("defaultcolor");
         }
     }
+}
 
+function updateTooltipText(value, id, kind){
+    if (value === 1) {
+        if (document.getElementById("upVote" + kind + id).classList.contains("upcolor")) {
+            document.getElementById("upVote" + kind + id).setAttribute("title","Vote zurücknehmen");
+            document.getElementById("downVote" + kind + id).setAttribute("title","Downvote");
+        }
+        else {
+            if (document.getElementById("downVote" + kind + id).classList.contains("downcolor")) {
+                document.getElementById("downVote" + kind + id).setAttribute("title","Vote zurücknehmen");
+            }
+            document.getElementById("upVote" + kind + id).setAttribute("title","Upvote");
+        }
+    }
+    if (value === -1) {
+
+        if (document.getElementById("downVote" + kind + id).classList.contains("downcolor")) {
+            document.getElementById("downVote" + kind + id).setAttribute("title","Vote zurücknehmen");
+            document.getElementById("upVote" + kind + id).setAttribute("title","Upvote");
+        }
+        else {
+            if (document.getElementById("upVote" + kind + id).classList.contains("upcolor")) {
+                document.getElementById("upVote" + kind + id).setAttribute("title","Vote zurücknehmen");
+            }
+            document.getElementById("downVote" + kind + id).setAttribute("title","Downvote");
+        }
+    }
 }
 
 function trackTag(tagId) {
