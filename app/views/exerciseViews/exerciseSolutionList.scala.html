@@ -1,4 +1,4 @@
-@(solutions: java.util.List[Solution], user: User, exerciseId: java.lang.Long)
+@(user: User, solutions: java.util.List[Solution])
 
 @for(solution <- solutions) {
         <div class="listSolution @if(solution.isOfficial) {item-red} else {@if(user.getId == solution.getUser.getId){item-blue} else {item-green}}" id="s@solution.getId">

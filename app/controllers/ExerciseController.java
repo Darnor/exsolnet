@@ -12,7 +12,6 @@ import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
 import views.html.*;
-import views.html.exerciseViews.exerciseSolutionList;
 
 import javax.inject.Inject;
 import java.util.HashMap;
@@ -309,10 +308,10 @@ public class ExerciseController extends Controller {
         return ok(exerciseSolutions.render(
                 currentUser,
                 exercise,
-                exerciseSolutionList.apply(officialSolutions, currentUser, exerciseId),
-                exerciseSolutionList.apply(topSolutions, currentUser, exerciseId),
-                exerciseSolutionList.apply(latestSolutions, currentUser, exerciseId),
-                exerciseSolutionList.apply(solutions, currentUser, exerciseId)
+                officialSolutions,
+                topSolutions,
+                latestSolutions,
+                solutions
         ));
     }
 
