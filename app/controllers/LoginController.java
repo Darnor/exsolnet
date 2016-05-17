@@ -14,6 +14,8 @@ import views.html.login;
 
 public class LoginController extends Controller {
 
+    private static final String FLASH_ERROR = "error";
+
     @Inject
     FormFactory formFactory;
 
@@ -66,6 +68,26 @@ public class LoginController extends Controller {
         }
 
         Logger.debug("Registration failed. Reloading with username and email.");
+
+        if (User.findByEmail(email) != null || User.findByUsername(username) != null) {
+            flash(FLASH_ERROR, "Benutzer existiert bereits");
+        }
+
+        if (username == null || username.trim().isEmpty()) {
+            flash(FLASH_ERROR, "Benutzername darf nicht leer sein.");
+        }
+
+        if (password == null || password.trim().isEmpty()) {
+            flash(FLASH_ERROR, "Passwort darf nicht leer sein.");
+        }
+
+        if (passwordCheck == null || !passwordCheck.equals(password)) {
+            flash(FLASH_ERROR, "Passwort stimmt nicht überein.");
+        }
+
+        if (email == null || !UserController.validateEmailFormat(email)) {
+            flash(FLASH_ERROR, "E-mailformat ist nicht korrekt.");
+        }
         return redirect(routes.LoginController.renderRegister(username, email));
     }
 

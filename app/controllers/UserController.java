@@ -25,11 +25,15 @@ public class UserController extends Controller {
         return ok(userDashboard.render(SessionService.getCurrentUser()));
     }
 
+    static boolean validateEmailFormat(String email) {
+        return email.matches("[A-Za-z.\\-_]+@[A-Za-z.\\-_]+\\.\\w{2,}");
+    }
+
     static boolean validateUserForm(String username, String email, String password, String passwordCheck) {
         return password.equals(passwordCheck)
                 && username.trim().length() > 0
                 && password.trim().length() > 0
-                && email.matches("[A-Za-z.\\-_]+@[A-Za-z.\\-_]+\\.\\w{2,}");
+                && validateEmailFormat(email);
     }
 
     public Result processUpdate(long userId) {
