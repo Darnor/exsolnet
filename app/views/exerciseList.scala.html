@@ -28,9 +28,9 @@
         <input type="hidden" name="sort" value="@currentOrderBy" />
         <input type="search" class="form-control" id="title-filter" name="title" value="@currentTitleFilter" placeholder="Titel-Filter"/>
         <div class="display-inline">
-            <div>
+            <label data-toggle="tooltip" title="Hier kannst du die Aufgaben nach Modulen und Tags filtern um deine gewünschte Aufgabe besser zu finden.">
                 Tag-Filter:
-            </div>
+            </label>
             <div class="tag-input-list">
                 <input type="search" class="form-control" id="tag-filter-list" name="tags" value="@currentTagFilter" placeholder="Tag-Filter" data-route="@routes.TagController.processTagNameQuery("")"/>
             </div>
