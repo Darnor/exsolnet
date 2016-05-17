@@ -45,6 +45,8 @@ public class ExerciseController extends Controller {
     private static final int NO_OF_LATEST_SOLUTIONS = 2;
     private static final int NO_OF_TOP_SOLTUIONS = 1;
 
+    private static final String FLASH_ERROR = "error";
+
     /**
      * Map the Id of the html exercise-table to their Model-Attribute-name
      */
@@ -173,7 +175,7 @@ public class ExerciseController extends Controller {
         if (title == null || mainTag == null || content == null) {
             throw new IllegalArgumentException("Formdata not valid. (null values)");
         }
-        if (title.trim().length() == 0 || mainTag.trim().length() == 0 || content.trim().length() == 0) {
+        if (title.trim().isEmpty() || mainTag.trim().isEmpty() || content.trim().isEmpty()) {
             throw new IllegalArgumentException("Formdata not valid. (empty values)");
         }
     }
@@ -182,7 +184,7 @@ public class ExerciseController extends Controller {
         if (solutionContent == null) {
             throw new IllegalArgumentException("Formdata not valid. (null values)");
         }
-        if (solutionContent.trim().length() == 0) {
+        if (solutionContent.trim().isEmpty()) {
             throw new IllegalArgumentException("Formdata not valid. (empty values)");
         }
     }
@@ -199,7 +201,13 @@ public class ExerciseController extends Controller {
         Logger.debug("Content: " + content);
         Logger.debug("mainTag: " + mainTag);
 
-        validateFormData(title, mainTag, content);
+        try {
+            validateFormData(title, mainTag, content);
+        } catch (IllegalArgumentException e) {
+            Logger.error("Exercise form data not valid", e);
+            flash(FLASH_ERROR, "Eingegebene Aufgabendaten sind nicht vollständig.");
+            throw e;
+        }
 
         List<Tag> tags = Tag.createTagList(Tag.Type.MAIN, mainTag);
 
@@ -212,7 +220,13 @@ public class ExerciseController extends Controller {
         if (exerciseId == null) {
             String solutionContent = requestData.get(SOLUTION_CONTENT_FIELD);
             boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
-            validateSolutionFormData(solutionContent);
+            try {
+                validateSolutionFormData(solutionContent);
+            } catch (IllegalArgumentException e) {
+                Logger.error("Created solution not valid", e);
+                flash(FLASH_ERROR, "Lösung darf nicht leer sein.");
+                throw e;
+            }
             Exercise exercise = Exercise.create(title, content, tags, currentUser);
             Solution.create(solutionContent, exercise, currentUser, isOfficial);
         } else {
@@ -226,7 +240,12 @@ public class ExerciseController extends Controller {
      * @return redirect to the exercise overview
      */
     public Result processCreate() {
-        bindForm(null);
+        try {
+            bindForm(null);
+        } catch (IllegalArgumentException e) {
+            Logger.error("Error when trying to bind the form", e);
+            return redirect(routes.ExerciseController.renderCreate());
+        }
         return redirect(routes.ExerciseController.renderOverview());
     }
 
@@ -237,7 +256,12 @@ public class ExerciseController extends Controller {
      * @return redirect to the exercise overview
      */
     public Result processUpdate(long exerciseId) {
-        bindForm(exerciseId);
+        try {
+            bindForm(exerciseId);
+        } catch (IllegalArgumentException e) {
+            Logger.error("Error when trying to bind the form", e);
+            return redirect(routes.ExerciseController.renderEdit(exerciseId));
+        }
         return redirect(routes.ExerciseController.renderDetail(exerciseId));
     }
 
