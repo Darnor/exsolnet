@@ -83,7 +83,7 @@ public class LoginController extends Controller {
         String password = requestData.get("password");
         String passwordCheck = requestData.get("password-check");
 
-        if(UserController.validateUserForm(username, email, password, passwordCheck)) {
+        if(UserController.validateUserForm(username, password, passwordCheck) && UserController.validateEmailFormat(email) && User.findByEmail(email) == null) {
             User user = User.create(username, email, password, false);
             Logger.debug("New user with name " + user.getUsername() + " and email " + user.getEmail() + " just registered.");
             SessionService.createSession(user.getEmail());

@@ -214,13 +214,12 @@ public class User extends Model {
         return user;
     }
 
-    public static void update(Long id, String username, String email, String password, boolean isModerator) {
+    public static void update(Long id, String username, String password, boolean isModerator) {
         User user = find().byId(id);
         if (user == null) {
             throw new IllegalArgumentException("Not a valid user");
         }
         user.setUsername(username);
-        user.setEmail(email);
         user.setPassword(password);
         user.setIsModerator(isModerator);
         user.update();

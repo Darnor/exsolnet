@@ -13,9 +13,7 @@ import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static play.test.Helpers.*;
 
 public class UserControllerTest extends AbstractApplicationTest {
@@ -41,6 +39,7 @@ public class UserControllerTest extends AbstractApplicationTest {
         running(fakeApplication(), () -> {
             assertNotNull(User.findByEmail("hans@hsr.ch"));
             assertNull(User.findByEmail(form.get("email")));
+            assertNull(User.findByUsername(form.get("username")));
             Result result = route(
                     fakeRequest(routes.UserController.processUpdate(8001))
                             .session("connected", "hans@hsr.ch")
@@ -50,8 +49,9 @@ public class UserControllerTest extends AbstractApplicationTest {
             assertTrue(location.isPresent());
             assertThat(location.get(), is("/"));
             assertThat(result.status(), is(SEE_OTHER));
-            User user = User.findByEmail(form.get("email"));
-            assertNull(User.findByEmail("hans@hsr.ch"));
+            User user = User.findByUsername(form.get("username"));
+            assertNotNull(User.findByEmail("hans@hsr.ch"));
+            assertNull(User.findByUsername("hans"));
             assertNotNull(user);
             assertThat(user.getUsername(), is(form.get("username")));
         });

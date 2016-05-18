@@ -26,14 +26,14 @@ public class UserController extends Controller {
     }
 
     static boolean validateEmailFormat(String email) {
-        return email.matches("[A-Za-z.\\-_]+@[A-Za-z.\\-_]+\\.\\w{2,}");
+        return email.matches("^[A-Za-z.\\-_]+@[A-Za-z.\\-_]+\\.[A-Za-z]{2,}$");
     }
 
-    static boolean validateUserForm(String username, String email, String password, String passwordCheck) {
+    static boolean validateUserForm(String username, String password, String passwordCheck) {
         return password.equals(passwordCheck)
                 && username.trim().length() > 0
                 && password.trim().length() > 0
-                && validateEmailFormat(email);
+                && User.findByUsername(username) == null;
     }
 
     public Result processUpdate(long userId) {
@@ -46,13 +46,17 @@ public class UserController extends Controller {
 
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String username = requestData.get("username");
-        String email = requestData.get("email");
         String password = requestData.get("password");
         String passwordCheck = requestData.get("password-check");
 
-        if(validateUserForm(username, email, password, passwordCheck)) {
+        if (password.equals(passwordCheck) && password.isEmpty()) {
+            password = currentUser.getPassword();
+            passwordCheck = currentUser.getPassword();
+        }
+
+        if(validateUserForm(username, password, passwordCheck)) {
             Logger.debug(currentUser.getUsername() + " is now known as " + username);
-            User.update(userId, username, email, password, false);
+            User.update(userId, username, password, false);
             Logger.debug("User updated.");
             return redirect(routes.UserController.renderDashboard());
         }
