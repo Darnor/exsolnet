@@ -19,7 +19,7 @@ import javax.inject.Inject;
 public class CommentController extends Controller {
 
     private static final String CONTENT_FIELD = "content";
-    private static final String COMMENT_NOT_FOUND = "Der Kommentar konnte nicht gefunden werden."
+    private static final String COMMENT_NOT_FOUND = "Der Kommentar konnte nicht gefunden werden.";
 
     @Inject
     FormFactory formFactory;
