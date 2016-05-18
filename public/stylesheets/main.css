@@ -1,9 +1,9 @@
-/*dont make it ugly round*/
+/*dont make it ugly round*//*
 *{
     -webkit-border-radius: 0 !important;
     -moz-border-radius: 0 !important;
        : 0 !important;
-}
+}*/
 
 .topheader {
     background-color: #558B2F;
