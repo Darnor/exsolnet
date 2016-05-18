@@ -117,3 +117,7 @@ body {
     margin-top: 4rem;
     clear: both;
 }
+
+.hero-unit{
+    background-color: white;
+}
