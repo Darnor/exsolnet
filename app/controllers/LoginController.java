@@ -10,6 +10,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import services.SessionService;
 import views.html.editUser;
+import views.html.info;
 import views.html.login;
 
 public class LoginController extends Controller {
@@ -26,7 +27,9 @@ public class LoginController extends Controller {
     public Result renderLogin() {
         return SessionService.getCurrentUser() != null ? redirect(routes.UserController.renderDashboard()) : ok(login.render(SessionService.getCurrentUser()));
     }
-
+    public Result renderInfo() {
+        return ok(info.render(SessionService.getCurrentUser()));
+    }
     /**
      * Parses the body and puts including Form values into User Object
      * Authenticates the user based on email and password.
