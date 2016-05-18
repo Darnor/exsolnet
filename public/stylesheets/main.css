@@ -131,3 +131,6 @@ body {
     max-width: 400px;
     margin: 50px auto 0;
 }
+.text-primary {
+    color: #f05f40;
+}
