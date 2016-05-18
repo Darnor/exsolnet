@@ -171,7 +171,7 @@ public class Comment extends Model {
     /**
      * deletes Comment
      *
-     * @param id solutionId to delete
+     * @param id commentId to delete
      */
     public static void delete(Long id) {
         Comment comment = findValidById(id);
@@ -183,7 +183,7 @@ public class Comment extends Model {
     /**
      * undo deletion of Comment
      *
-     * @param id solutionId to delete
+     * @param id commentId to delete
      */
     public static void undoDelete(Long id) {
         Comment comment = findById(id);

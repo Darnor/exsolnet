@@ -109,7 +109,7 @@ public class CommentController extends Controller {
      * undo deletion of comment
      *
      * @param id id of deleted comment
-     * @return
+     * @return ok if comment has been undo deleted or unauthorized if user is not allowed to undo delete this comment
      */
     public Result processUndo(Long id) {
         User currentUser = SessionService.getCurrentUser();
