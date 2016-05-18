@@ -32,8 +32,7 @@ public class UserController extends Controller {
     static boolean validateUserForm(String username, String password, String passwordCheck) {
         return password.equals(passwordCheck)
                 && username.trim().length() > 0
-                && password.trim().length() > 0
-                && User.findByUsername(username) == null;
+                && password.trim().length() > 0;
     }
 
     public Result processUpdate(long userId) {
