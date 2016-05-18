@@ -72,6 +72,7 @@ public class Solution extends Post {
     }
 
     public List<Comment> getComments() {
+        comments.removeIf(comment -> !comment.isValid());
         return Collections.unmodifiableList(comments);
     }
 

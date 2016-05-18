@@ -84,6 +84,9 @@
                         @if(flash.containsKey("solution_id")){
                             <a href="@routes.SolutionController.processUndo(flash.get("solution_id").toLong)"  style="margin-left: 5px" class="btn btn-primary">Rückgängig</a>
                         }
+                        @if(flash.containsKey("comment_id")){
+                            <a href="@routes.CommentController.processUndo(flash.get("comment_id").toLong)"  style="margin-left: 5px" class="btn btn-primary">Rückgängig</a>
+                        }
                     }
                 </div>
             }

@@ -57,7 +57,7 @@ public class CommentController extends Controller {
     }
 
     public Result processUpdate(Long commentId) {
-        Comment comment = Comment.findById(commentId);
+        Comment comment = Comment.findValidById(commentId);
         User user = SessionService.getCurrentUser();
 
         if (comment == null) {
@@ -78,5 +78,61 @@ public class CommentController extends Controller {
             return redirect(routes.ExerciseController.renderDetail(comment.getSolution().getExercise().getId()));
         }
         return notFound(error404.render(user,"Der zu bearbeitete Kommentar ist keiner Aufgabe oder Lösung zugewiesen"));
+    }
+
+    /**
+     * deletes a comment!
+     *
+     * @param id id of to deleting comment
+     * @return ok if comment has been deleted or unauthorized if user is not allowed to delete this comment
+     */
+    public Result processDelete(Long id) {
+        long exerciseId = 0;
+        Comment comment = Comment.findValidById(id);
+        if(comment.getExercise() != null){
+            exerciseId = comment.getExercise().getId();
+        }else if(comment.getSolution() != null){
+            exerciseId = comment.getSolution().getExercise().getId();
+        }
+        User currentUser = SessionService.getCurrentUser();
+        if (currentUser.isModerator() || currentUser.getId().equals(Comment.findValidById(id).getUser().getId())) {
+            Comment.delete(id);
+            Logger.info("Comment " + id + " deleted by " + currentUser.getEmail());
+            flash("success", "Kommentar gelöscht");
+            flash("comment_id", "" + id);
+            return redirect(routes.ExerciseController.renderDetail(exerciseId));
+        }
+        return unauthorized(error403.render(currentUser, "Keine Berechtigungen diesen Kommentar löschen"));
+    }
+
+    /**
+     * undo deletion of comment
+     *
+     * @param id id of deleted comment
+     * @return
+     */
+    public Result processUndo(Long id) {
+        User currentUser = SessionService.getCurrentUser();
+        Comment comment = Comment.findById(id);
+
+        if (comment == null) {
+            return notFound(error404.render(currentUser, "Kommentar nicht gefunden"));
+        }
+
+        long exerciseId = 0;
+
+        if(comment.getExercise() != null){
+            exerciseId = comment.getExercise().getId();
+        }else if(comment.getSolution() != null){
+            exerciseId = comment.getSolution().getExercise().getId();
+        }
+
+        if (currentUser.isModerator() || currentUser.getId().equals(Comment.findById(id).getUser().getId())) {
+            Comment.undoDelete(id);
+            Logger.info("Comment " + id + " undo deletion by " + currentUser.getEmail());
+            return redirect(routes.ExerciseController.renderDetail(exerciseId));
+        }
+
+        return unauthorized(error403.render(currentUser, "Keine Berechtigungen das Löschen dieses Kommentars rückgängig zu machen"));
     }
 }

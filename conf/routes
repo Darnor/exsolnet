@@ -29,6 +29,8 @@ POST        /solutions/:id/upvote                   controllers.SolutionControll
 POST        /solutions/:id/downvote                 controllers.SolutionController.processDownvote(id: Long)
 POST        /exercises/:id/solution/create          controllers.SolutionController.processCreate(id: Long)
 
+GET         /comment/:id/delete                   controllers.CommentController.processDelete(id: Long)
+GET         /comment/:id/undoDelete               controllers.CommentController.processUndo(id: Long)
 POST        /exercises/:id/updateComment            controllers.CommentController.processUpdate(id: Long)
 POST        /exercises/:id/solution/comment/create  controllers.CommentController.processCreateSolutionComment(id: Long)
 POST        /exercises/:id/comment/create           controllers.CommentController.processCreateExerciseComment(id: Long)

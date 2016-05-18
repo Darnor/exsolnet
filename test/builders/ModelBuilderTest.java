@@ -27,7 +27,7 @@ public class ModelBuilderTest extends AbstractApplicationTest {
     @Before
     public void init() {
         comments = new ArrayList<Comment>();
-        comments.add(Comment.findById(8000L));
+        comments.add(Comment.findValidById(8000L));
         exercises = new ArrayList<Exercise>();
         exercises.add(Exercise.findById(8004L));
         exercise = Exercise.findById(8004L);

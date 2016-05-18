@@ -37,6 +37,17 @@ public class Comment extends Model {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime lastchanged;
 
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    @Column(columnDefinition = "boolean NOT NULL DEFAULT TRUE")
+    private boolean valid = true;
+
     public String getContent() {
         return content;
     }
@@ -102,6 +113,17 @@ public class Comment extends Model {
      * @param id the id of the comment
      * @return the comment or null if not found.
      */
+    public static Comment findValidById(Long id) {
+        Comment comment = findById(id);
+        return (comment == null || !comment.isValid()) ? null : comment;
+    }
+
+    /**
+     * The Comment with the given id
+     * @param
+    id the id of the comment
+     * @return the comment or null if not found.
+     */
     public static Comment findById(Long id) {
         return find().byId(id);
     }
@@ -139,10 +161,40 @@ public class Comment extends Model {
      * @return the updated comment
      */
     public static Comment updateContent(Long commentId, String content){
-        Comment comment = findById(commentId);
+        Comment comment = findValidById(commentId);
         comment.setContent(content);
         comment.setLastChanged(LocalDateTime.now());
         comment.update();
         return comment;
+    }
+
+    /**
+     * deletes Comment
+     *
+     * @param id solutionId to delete
+     */
+    public static void delete(Long id) {
+        Comment comment = findValidById(id);
+        throwIfCommentNull(comment);
+        comment.setValid(false);
+        comment.save();
+    }
+
+    /**
+     * undo deletion of Comment
+     *
+     * @param id solutionId to delete
+     */
+    public static void undoDelete(Long id) {
+        Comment comment = findById(id);
+        throwIfCommentNull(comment);
+        comment.setValid(true);
+        comment.save();
+    }
+
+    private static void throwIfCommentNull(Comment comment) {
+        if (comment == null) {
+            throw new IllegalArgumentException("Invalid comment id");
+        }
     }
 }
