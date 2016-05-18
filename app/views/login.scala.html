@@ -9,7 +9,7 @@
     <form method="POST" action="@routes.LoginController.processLogin()">
         <div class="form-group">
             <label for="emailorusername">E-Mail-Adresse oder Benutzername</label>
-            <input class="form-control" name="emailorusername" id="email" required placeholder="E-Mail oder Benutzername" oninvalid="this.setCustomValidity('Bitte E-Mail oder Benutzername angeben.')">
+            <input class="form-control" name="emailorusername" id="email" required placeholder="E-Mail oder Benutzername" oninvalid="this.setCustomValidity('Bitte E-Mail oder Benutzername angeben.')" oninput="setCustomValidity('')" >
         </div>
         <div class="form-group">
             <label for="password">Passwort</label>
