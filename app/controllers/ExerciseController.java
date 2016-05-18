@@ -11,6 +11,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
+import util.ValidationUtil;
 import views.html.*;
 
 import javax.inject.Inject;
@@ -173,24 +174,25 @@ public class ExerciseController extends Controller {
         if (exercise.getUser().getId().equals(currentUser.getId()) || currentUser.isModerator()) {
             return ok(editExercise.render(currentUser, exercise, null, Tag.findTagsByType(Tag.Type.MAIN), Tag.findTagsByType(Tag.Type.NORMAL)));
         }
+
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Aufgabe zu editieren"));
     }
 
     private static void validateFormData(String title, String mainTag, String content) {
-        if (title == null || mainTag == null || content == null) {
-            throw new IllegalArgumentException("Formdata not valid. (null values)");
+        if (title.trim().isEmpty() || mainTag.trim().isEmpty() || ValidationUtil.isEmpty(content)) {
+            throw new IllegalArgumentException("Formdata not valid.");
         }
-        if (title.trim().isEmpty() || mainTag.trim().isEmpty() || content.trim().isEmpty()) {
-            throw new IllegalArgumentException("Formdata not valid. (empty values)");
+        if (ValidationUtil.containsScriptTag(content)) {
+            throw new IllegalArgumentException("skript tag not allowed inside content.");
         }
     }
 
     private static void validateSolutionFormData(String solutionContent){
-        if (solutionContent == null) {
-            throw new IllegalArgumentException("Formdata not valid. (null values)");
+        if (ValidationUtil.isEmpty(solutionContent)) {
+            throw new IllegalArgumentException("Formdata not valid.");
         }
-        if (solutionContent.trim().isEmpty()) {
-            throw new IllegalArgumentException("Formdata not valid. (empty values)");
+        if (ValidationUtil.containsScriptTag(solutionContent)) {
+            throw new IllegalArgumentException("skript tag not allowed inside solutioncontent");
         }
     }
 

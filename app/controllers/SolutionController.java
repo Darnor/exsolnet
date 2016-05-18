@@ -12,6 +12,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
+import util.ValidationUtil;
 import views.html.editSolution;
 import views.html.error403;
 import views.html.error404;
@@ -97,6 +98,13 @@ public class SolutionController extends Controller {
         return ok(editSolution.render(SessionService.getCurrentUser(), solution.getExercise(), solution));
     }
 
+    private void throwIfContentContainsScriptTag(String content) {
+        if (ValidationUtil.containsScriptTag(content)) {
+            Logger.error("Content contains script tag");
+            throw new IllegalArgumentException("skript tags not allowed in content.");
+        }
+    }
+
     /**
      * Create Exercise with new Solution
      *
@@ -107,7 +115,14 @@ public class SolutionController extends Controller {
         DynamicForm requestData = formFactory.form().bindFromRequest();
         boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
         String content = requestData.get(CONTENT_FIELD);
-        Solution.create(content, Exercise.findValidById(exerciseId), SessionService.getCurrentUser(), isOfficial);
+
+        throwIfContentContainsScriptTag(content);
+        Logger.debug("Trying to create a new solution");
+        if (!ValidationUtil.isEmpty(content)) {
+            Logger.debug("Creating solution");
+            Solution.create(content, Exercise.findValidById(exerciseId), SessionService.getCurrentUser(), isOfficial);
+        }
+
         return redirect(routes.ExerciseController.renderDetail(exerciseId));
     }
 
@@ -117,12 +132,18 @@ public class SolutionController extends Controller {
      * @param solutionId the ID of the solution
      * @return Result view of the exercise with all solutions and comments
      */
-    public Result processUpdate(Long solutionId) {
+    public Result processUpdate(long solutionId) {
         DynamicForm requestData = formFactory.form().bindFromRequest();
         boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
         String content = requestData.get(CONTENT_FIELD);
 
-        Solution.update(solutionId, content, isOfficial);
+        throwIfContentContainsScriptTag(content);
+        Logger.debug("Trying to update a solution");
+        if (!ValidationUtil.isEmpty(content)) {
+            Logger.debug("Updating solution");
+            Solution.update(solutionId, content, isOfficial);
+        }
+
         return redirect(routes.ExerciseController.renderDetail(Solution.findById(solutionId).getExercise().getId()));
     }
 
