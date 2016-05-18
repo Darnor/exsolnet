@@ -92,19 +92,19 @@ body {
     width: 100%;
 }
 
-.display-inline > div{
+.display-inline > div {
     display: inline;
 }
 
-.selected{
+.selected {
     font-weight: bold;
 }
 
-.user-section img{
+.user-section img {
     padding-right: 2rem;
 }
 
-.input-tag-longname{
+.input-tag-longname {
     color: #95979d;
 }
 
@@ -118,6 +118,12 @@ body {
     clear: both;
 }
 
-.hero-unit{
+.hero-unit {
     background-color: white;
+}
+
+.hero-picture-logo {
+    width: 20%;
+    min-width: 100px;
+    margin-left: 1em;
 }
