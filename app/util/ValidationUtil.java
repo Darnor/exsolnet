@@ -9,6 +9,6 @@ public class ValidationUtil {
     }
 
     public static boolean isEmpty(String content) {
-        return content == null || content.trim().isEmpty() || content.trim().matches("^<p>*\\s*(\n|\r|\r\n)*\\s*</p>*$");
+        return content == null || content.trim().isEmpty() || content.trim().matches("^(<p>(\\s*&nbsp;\\s*)*</p>(\n|\r|\r\n)*)+$");
     }
 }
