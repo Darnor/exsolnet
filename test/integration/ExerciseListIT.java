@@ -14,7 +14,7 @@ import static play.test.Helpers.FIREFOX;
 public class ExerciseListIT extends AbstractIntegrationTest{
     @Test
     public void testNoFilterExercises() {
-        as(FRANZ, browser -> {
+        as(FRANZ, FIREFOX, browser -> {
             browser.goTo("/exercises");
             assertThat(browser.pageSource(), matches("Ableitung 1a"));
             assertThat(browser.pageSource(), matches("An2I.*Ableiten.*Funktion.*Blubberduck.*3.*02.12.15 08:00.*0"));
@@ -23,7 +23,7 @@ public class ExerciseListIT extends AbstractIntegrationTest{
 
     @Test
     public void testGoToExercisesViaHeader() {
-        as(FRANZ, browser -> {
+        as(FRANZ, FIREFOX, browser -> {
             browser.click("a",withText("Aufgaben"));
             browser.await().atMost(1, TimeUnit.SECONDS).untilPage().isLoaded();
             assertThat(browser.pageSource(), matches("Ableitung 1a"));
@@ -33,7 +33,7 @@ public class ExerciseListIT extends AbstractIntegrationTest{
 
     @Test
     public void testTitleFilterForm() {
-        as(FRANZ, browser -> {
+        as(FRANZ, FIREFOX, browser -> {
             browser.goTo("/exercises");
             browser.fill("#title-filter").with("XXX");
             browser.submit("#submit-filter");
@@ -66,7 +66,7 @@ public class ExerciseListIT extends AbstractIntegrationTest{
 
     @Test
     public void testSortTitleDesc() {
-        as(FRANZ, browser -> {
+        as(FRANZ, FIREFOX, browser -> {
             browser.goTo("/exercises");
             browser.click("a",withText("Titel"));
             browser.await().atMost(1, TimeUnit.SECONDS).untilPage().isLoaded();

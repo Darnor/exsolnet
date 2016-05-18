@@ -39,7 +39,7 @@ public class TagListIT extends AbstractIntegrationTest {
 
     @Test
     public void filterTagsWithAD2() {
-        as(FRANZ, browser -> {
+        as(FRANZ, FIREFOX, browser -> {
             browser.goTo(TAGS_PATH);
             browser.fill("#tagfilter").with("AD2");
             browser.submit("#submit-tagfilter");
@@ -50,7 +50,7 @@ public class TagListIT extends AbstractIntegrationTest {
 
     @Test
     public void testIsSortedByNameByDefault(){
-        as(FRANZ, browser -> {
+        as(FRANZ, FIREFOX, browser -> {
             browser.goTo(TAGS_PATH);
             assertThat(browser.pageSource(), matches("Ableiten.*AD1.*AD2.*Allgemein"));
         });
@@ -58,7 +58,7 @@ public class TagListIT extends AbstractIntegrationTest {
 
     @Test
     public void testSortByNameReverse(){
-        as(FRANZ, browser -> {
+        as(FRANZ, FIREFOX, browser -> {
             browser.goTo(TAGS_PATH);
             browser.find("a", withText("Name")).click();
             browser.await().atMost(1, TimeUnit.SECONDS).untilPage().isLoaded();
@@ -68,7 +68,7 @@ public class TagListIT extends AbstractIntegrationTest {
 
     @Test
     public void testSortByExerciseCount(){
-        as(FRANZ, browser -> {
+        as(FRANZ, FIREFOX, browser -> {
             browser.goTo(TAGS_PATH);
             browser.click("#header_Aufgaben");
             browser.await().atMost(1, TimeUnit.SECONDS).untilPage().isLoaded();
@@ -78,7 +78,7 @@ public class TagListIT extends AbstractIntegrationTest {
 
     @Test
     public void testSortByTracking(){
-        as(FRANZ, browser -> {
+        as(FRANZ, FIREFOX, browser -> {
             browser.goTo(TAGS_PATH);
             browser.find("a", withText("Status")).click();
             browser.await().atMost(1, TimeUnit.SECONDS).untilPage().isLoaded();

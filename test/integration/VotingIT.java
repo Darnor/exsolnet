@@ -8,13 +8,14 @@ import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static play.test.Helpers.FIREFOX;
 
 public class VotingIT extends AbstractIntegrationTest {
 
     @Test
     public void testExerciseDownAndFollowingUpvote() {
         long exerciseId = 8011;
-        as(FRANZ, browser -> {
+        as(FRANZ, FIREFOX, browser -> {
             long oldpoints = Exercise.findValidById(exerciseId).getPoints();
             browser.goTo("/exercises/8011");
             browser.click("#downVoteExercise");
@@ -37,7 +38,7 @@ public class VotingIT extends AbstractIntegrationTest {
     @Test
     public void testSolutionUpvoteAndFollowingDownVote() {
         long solutionId = 8003;
-        as(FRANZ, browser -> {
+        as(FRANZ, FIREFOX, browser -> {
             long oldpoints = Solution.findValidById(solutionId).getPoints();
             browser.goTo("/exercises/8001");
             browser.click("#upVoteSolution" + solutionId);
@@ -60,7 +61,7 @@ public class VotingIT extends AbstractIntegrationTest {
     @Test
     public void testExerciseDoubleDownVote() {
         long exerciseId = 8011;
-        as(FRANZ, browser -> {
+        as(FRANZ, FIREFOX, browser -> {
             long oldpoints = Exercise.findValidById(exerciseId).getPoints();
             browser.goTo("/exercises/8011");
             browser.click("#downVoteExercise");
@@ -83,7 +84,7 @@ public class VotingIT extends AbstractIntegrationTest {
     @Test
     public void testSolutionDoubleUpVote() {
         long solutionId = 8001;
-        as(FRANZ, browser -> {
+        as(FRANZ, FIREFOX, browser -> {
             long oldpoints = Solution.findValidById(solutionId).getPoints();
             browser.goTo("/exercises/8000");
             browser.click("#upVoteSolution" + solutionId);

@@ -18,7 +18,7 @@
             }">
             <div class="container-fluid">
                 <div class="row">
-                    <input class="input_title" oninvalid="setCustomValidity('Bitte einen Titel setzen.')" oninput="setCustomValidity('')" required id="title" placeholder="Titel der Aufgabe" type="text" name="title" value="@exercise.getTitle"/>
+                    <input class="input_title" oninvalid="this.setCustomValidity('Bitte einen Titel setzen.')" oninput="this.setCustomValidity('')" required id="title" placeholder="Titel der Aufgabe" type="text" name="title" value="@exercise.getTitle"/>
                     <h3>Beschreibung der Aufgabe:</h3>
                     <div id="exercise_content">
                         <textarea name="content" required id="content" rows="10" cols="80">
