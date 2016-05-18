@@ -1,99 +1,77 @@
 @(user: User, exercise: Exercise)(solutionsContent: Html)
-@main(exercise.getTitle, user) {
-    <script type="text/javascript">
-            function toggler(divId) {
-                $("#" + divId).toggle();
+    @main(exercise.getTitle, user) {
+        <script type="text/javascript">
+                function toggler(divId) {
+                    $("#" + divId).toggle();
+                }
+                function toggler2(divId) {
+                    $("." + divId).toggle();
+                }
+        </script>
+        <div class="exercisedetail">
+            <h1>@exercise.getTitle</h1>
+            <p>@Html(exercise.getContent)</p>
 
-            }
+            <p class="meta">Tags: @snippets.tags(exercise.getTagsSortedByTagType)</p>
 
-            function toggler2(divId) {
-                $("." + divId).toggle();
-
-            }
-    </script>
-    <div class="exercisedetail">
-        <h1>@exercise.getTitle</h1>
-        <p>@Html(exercise.getContent)</p>
-
-
-        <p class="meta">Tags: @snippets.tags(exercise.getTagsSortedByTagType)</p>
-
-        <span><a class="meta user" href="@routes.UserController.renderUser(exercise.getUser.getId)">@snippets.gravatar(exercise.getUser, 16) @exercise.getUser.getUsername</a></span>
-        <span class="text-center meta count">
-        @exercise.getSolutions.size
-        </span>
-        <span class="meta time">
-        @if(exercise.getLastChanged == null) {
-            Eingereicht: @snippets.longDate(exercise.getTime)
-        } else {
-            Zuletzt geändert: @snippets.longDate(exercise.getLastChanged)
-        }
-        </span>
-
-        <a class="pull-right" href="#" onclick="toggler('exerciseComment')" data-toggle="tooltip" title="Kommentare anzeigen/ausblenden" >
-            Kommentare <span class="badge">@exercise.getComments.size()</span></a>
-
-        @if(user.isModerator || user.getId.equals(exercise.getUser.getId)) {
-            <a class="pull-right meta edit" id="exercise-@exercise.getId" data-toggle="tooltip" title="Bearbeiten" href="@routes.ExerciseController.renderEdit(exercise.getId)">
-                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
-        }
-
-
-        @if(user.isModerator) {
-            <a href="@routes.ExerciseController.processDelete(exercise.getId)" data-toggle="tooltip" title="Löschen" class="meta pull-right edit">
-                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-            </a>                        
-        }
-
-
-        <div class = "box">
-            @if(exercise.hasVoted(user.getId) > 0) {
-                <a id="upVoteExercise" class = "up upcolor" data-toggle="tooltip" title="Vote zurücknehmen" onclick="upVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
+            <span><a class="meta user" href="@routes.UserController.renderUser(exercise.getUser.getId)">@snippets.gravatar(exercise.getUser, 16) @exercise.getUser.getUsername</a></span>
+            <span class="text-center meta count">
+            @exercise.getSolutions.size
+            </span>
+            <span class="meta time">
+            @if(exercise.getLastChanged == null) {
+                Eingereicht: @snippets.longDate(exercise.getTime)
             } else {
-                <a id="upVoteExercise" class = "up defaultcolor" data-toggle="tooltip" title="Upvoten" onclick="upVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
+                Zuletzt geändert: @snippets.longDate(exercise.getLastChanged)
             }
-
-
-            <span id="exercisePoints" class="text-center points">
-            @exercise.getPoints
             </span>
 
-            @if(exercise.hasVoted(user.getId) < 0) {
-                <a id="downVoteExercise" class = "down downcolor" data-toggle="tooltip" title="Vote zurücknehmen" data-placement="bottom" onclick="downVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
-            } else {
-                <a id="downVoteExercise" class = "down defaultcolor" data-toggle="tooltip" title="Downvoten" data-placement="bottom" onclick="downVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
+            <a class="pull-right" href="#" onclick="toggler('exerciseComment')" data-toggle="tooltip" title="Kommentare anzeigen/ausblenden" >
+                Kommentare <span class="badge">@exercise.getComments.size()</span></a>
+
+            @if(user.isModerator || user.getId.equals(exercise.getUser.getId)) {
+                <a class="pull-right meta edit" id="exercise-@exercise.getId" data-toggle="tooltip" title="Bearbeiten" href="@routes.ExerciseController.renderEdit(exercise.getId)">
+                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
             }
+            @if(user.isModerator) {
+                <a href="@routes.ExerciseController.processDelete(exercise.getId)" data-toggle="tooltip" title="Löschen" class="meta pull-right edit">
+                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                </a>
+            }
+            <div class = "box">
+                @if(exercise.hasVoted(user.getId) > 0) {
+                    <a id="upVoteExercise" class = "up upcolor" data-toggle="tooltip" title="Vote zurücknehmen" onclick="upVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
+                } else {
+                    <a id="upVoteExercise" class = "up defaultcolor" data-toggle="tooltip" title="Upvoten" onclick="upVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
+                }
+                <span id="exercisePoints" class="text-center points">
+                @exercise.getPoints
+                </span>
+                @if(exercise.hasVoted(user.getId) < 0) {
+                    <a id="downVoteExercise" class = "down downcolor" data-toggle="tooltip" title="Vote zurücknehmen" data-placement="bottom" onclick="downVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
+                } else {
+                    <a id="downVoteExercise" class = "down defaultcolor" data-toggle="tooltip" title="Downvoten" data-placement="bottom" onclick="downVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
+                }
+            </div>
         </div>
-
-    </div>
-    <div id="exerciseComment" class="hiddenComment">
-
-
-        @exercise.getComments.map { comment =>
-
-            @snippets.comment(comment, user)
-
+        <div id="exerciseComment" class="hiddenComment">
+            @exercise.getComments.map { comment =>
+                @snippets.comment(comment, user)
+            }
+            <div class="buttondetail">
+                <form method="POST" action="@routes.CommentController.processCreateExerciseComment(exercise.getId)">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="content" name="content" placeholder="Neuer Kommentar">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default pull-right" type="submit" >Speichern</button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+        @if(user.isModerator && !user.hasSolved(exercise.getId)) {
+            <a href="@routes.SolutionController.renderCreate(exercise.getId)" class="btn btn-primary btn-lg btn-block">
+                Aufgabe Lösen</a>
         }
-        <div class="buttondetail">
-            <form method="POST" action="@routes.CommentController.processCreateExerciseComment(exercise.getId)">
-
-                <div class="input-group">
-
-                    <input type="text" class="form-control" id="content" name="content" placeholder="Neuer Kommentar">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default pull-right" type="submit" >Speichern</button>
-                    </span>
-                </div>
-            </form>
-
-
-        </div>
-
-    </div>
-    @if(user.isModerator && !user.hasSolved(exercise.getId) ) {
-        <a href="@routes.SolutionController.renderCreate(exercise.getId)" class="btn btn-primary btn-lg btn-block">
-            Aufgabe Lösen</a>
+        @solutionsContent
     }
-
-    @solutionsContent
-}
