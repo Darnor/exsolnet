@@ -37,6 +37,10 @@ public class Comment extends Model {
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime lastchanged;
 
+    @Column(columnDefinition = "boolean NOT NULL DEFAULT TRUE")
+    private boolean valid = true;
+
+
     public boolean isValid() {
         return valid;
     }
@@ -44,9 +48,6 @@ public class Comment extends Model {
     public void setValid(boolean valid) {
         this.valid = valid;
     }
-
-    @Column(columnDefinition = "boolean NOT NULL DEFAULT TRUE")
-    private boolean valid = true;
 
     public String getContent() {
         return content;

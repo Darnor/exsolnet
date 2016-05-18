@@ -19,6 +19,7 @@ import javax.inject.Inject;
 public class CommentController extends Controller {
 
     private static final String CONTENT_FIELD = "content";
+    private static final String COMMENT_NOT_FOUND = "Der Kommentar konnte nicht gefunden werden."
 
     @Inject
     FormFactory formFactory;
@@ -61,7 +62,7 @@ public class CommentController extends Controller {
         User user = SessionService.getCurrentUser();
 
         if (comment == null) {
-            return notFound(error404.render(user, "Der Kommentar konnte nicht gefunden werden."));
+            return notFound(error404.render(user, COMMENT_NOT_FOUND));
         }
 
         if (user.isModerator() || comment.getUser().getId().equals(user.getId())) {
@@ -92,7 +93,7 @@ public class CommentController extends Controller {
         User currentUser = SessionService.getCurrentUser();
 
         if (comment == null) {
-            return notFound(error404.render(currentUser, "Der Kommentar konnte nicht gefunden werden."));
+            return notFound(error404.render(currentUser, COMMENT_NOT_FOUND));
         }
 
         if(comment.getExercise() != null){
@@ -107,7 +108,7 @@ public class CommentController extends Controller {
                 Comment.delete(id);
             } catch (IllegalArgumentException e) {
                 Logger.error("Comment was not found.", e);
-                return notFound(error404.render(currentUser, "Der Kommentar wurde nicht gefunden,"));
+                return notFound(error404.render(currentUser, COMMENT_NOT_FOUND));
             }
             Logger.info("Comment " + id + " deleted by " + currentUser.getEmail());
             flash("success", "Kommentar gelöscht");
@@ -130,7 +131,7 @@ public class CommentController extends Controller {
         long exerciseId = 0;
 
         if (comment == null) {
-            return notFound(error404.render(currentUser, "Der Kommentar konnte nicht gefunden werden."));
+            return notFound(error404.render(currentUser, COMMENT_NOT_FOUND));
         }
 
         if(comment.getExercise() != null){
@@ -146,7 +147,7 @@ public class CommentController extends Controller {
                 Comment.undoDelete(id);
             } catch (IllegalArgumentException e) {
                 Logger.error("Comment was not found.", e);
-                return notFound(error404.render(currentUser, "Der Kommentar wurde nicht gefunden,"));
+                return notFound(error404.render(currentUser, COMMENT_NOT_FOUND));
             }
             Logger.info("Comment " + id + " undo deletion by " + currentUser.getEmail());
             return redirect(routes.ExerciseController.renderDetail(exerciseId));
