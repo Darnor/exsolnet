@@ -114,7 +114,7 @@ public class ExerciseTest extends AbstractApplicationTest {
 
     @Test
     public void testExerciseDeleteAndUndo() {
-        long exerciseIdToDelete = 8000L;
+        long exerciseIdToDelete = 8001L;
         assertNotNull(Exercise.findValidById(exerciseIdToDelete));
         Exercise.delete(exerciseIdToDelete);
         assertNull(Exercise.findValidById(exerciseIdToDelete));

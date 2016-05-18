@@ -70,7 +70,12 @@ public class ExerciseController extends Controller {
     public Result processDelete(Long id) {
         User currentUser = SessionService.getCurrentUser();
         if (currentUser.isModerator()) {
-            Exercise.delete(id);
+            try {
+                Exercise.delete(id);
+            } catch (IllegalArgumentException e) {
+                Logger.error("Exercise was not found.", e);
+                return notFound(error404.render(currentUser, "Die Aufgabe wurde nicht gefunden,"));
+            }
             Logger.info("Exercise " + id + " deleted by " + currentUser.getEmail());
             flash("success", "Aufgabe gelöscht");
             flash("exercise_id", "" + id);

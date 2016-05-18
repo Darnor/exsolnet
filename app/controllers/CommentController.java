@@ -89,14 +89,26 @@ public class CommentController extends Controller {
     public Result processDelete(Long id) {
         long exerciseId = 0;
         Comment comment = Comment.findValidById(id);
+        User currentUser = SessionService.getCurrentUser();
+
+        if (comment == null) {
+            return notFound(error404.render(currentUser, "Der Kommentar konnte nicht gefunden werden."));
+        }
+
         if(comment.getExercise() != null){
             exerciseId = comment.getExercise().getId();
         }else if(comment.getSolution() != null){
             exerciseId = comment.getSolution().getExercise().getId();
         }
-        User currentUser = SessionService.getCurrentUser();
+
+
         if (currentUser.isModerator() || currentUser.getId().equals(Comment.findValidById(id).getUser().getId())) {
-            Comment.delete(id);
+            try {
+                Comment.delete(id);
+            } catch (IllegalArgumentException e) {
+                Logger.error("Comment was not found.", e);
+                return notFound(error404.render(currentUser, "Der Kommentar wurde nicht gefunden,"));
+            }
             Logger.info("Comment " + id + " deleted by " + currentUser.getEmail());
             flash("success", "Kommentar gelöscht");
             flash("comment_id", "" + id);
@@ -115,11 +127,11 @@ public class CommentController extends Controller {
         User currentUser = SessionService.getCurrentUser();
         Comment comment = Comment.findById(id);
 
-        if (comment == null) {
-            return notFound(error404.render(currentUser, "Kommentar nicht gefunden"));
-        }
-
         long exerciseId = 0;
+
+        if (comment == null) {
+            return notFound(error404.render(currentUser, "Der Kommentar konnte nicht gefunden werden."));
+        }
 
         if(comment.getExercise() != null){
             exerciseId = comment.getExercise().getId();
@@ -127,8 +139,15 @@ public class CommentController extends Controller {
             exerciseId = comment.getSolution().getExercise().getId();
         }
 
+
+
         if (currentUser.isModerator() || currentUser.getId().equals(Comment.findById(id).getUser().getId())) {
-            Comment.undoDelete(id);
+            try {
+                Comment.undoDelete(id);
+            } catch (IllegalArgumentException e) {
+                Logger.error("Comment was not found.", e);
+                return notFound(error404.render(currentUser, "Der Kommentar wurde nicht gefunden,"));
+            }
             Logger.info("Comment " + id + " undo deletion by " + currentUser.getEmail());
             return redirect(routes.ExerciseController.renderDetail(exerciseId));
         }
