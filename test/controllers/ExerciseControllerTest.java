@@ -1,6 +1,7 @@
 package controllers;
 
 import helper.AbstractApplicationTest;
+import models.Exercise;
 import org.junit.Test;
 import play.mvc.Result;
 
@@ -35,7 +36,7 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
         });
     }
 
-    private void testProcessCreateForm(Map<String, String> form) {
+    private void testProcessCreateFormFail(Map<String, String> form) {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.ExerciseController.processCreate())
@@ -58,7 +59,7 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
         form.put("maintag", "AD1");
         form.put("othertag", "");
 
-        testProcessCreateForm(form);
+        testProcessCreateFormFail(form);
     }
 
     @Test
@@ -70,7 +71,7 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
         form.put("maintag", "AD1");
         form.put("othertag", "");
 
-        testProcessCreateForm(form);
+        testProcessCreateFormFail(form);
     }
 
     @Test
@@ -82,7 +83,7 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
         form.put("maintag", "AD1");
         form.put("othertag", "");
 
-        testProcessCreateForm(form);
+        testProcessCreateFormFail(form);
     }
 
     @Test
@@ -94,7 +95,7 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
         form.put("maintag", "AD1");
         form.put("othertag", "");
 
-        testProcessCreateForm(form);
+        testProcessCreateFormFail(form);
     }
 
     @Test
@@ -106,7 +107,7 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
         form.put("maintag", "AD1");
         form.put("othertag", "");
 
-        testProcessCreateForm(form);
+        testProcessCreateFormFail(form);
     }
 
     @Test
@@ -118,7 +119,7 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
         form.put("maintag", "AD1");
         form.put("othertag", "");
 
-        testProcessCreateForm(form);
+        testProcessCreateFormFail(form);
     }
 
     @Test
@@ -130,29 +131,101 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
         form.put("maintag", "");
         form.put("othertag", "");
 
-        testProcessCreateForm(form);
+        testProcessCreateFormFail(form);
+    }
+
+    @Test
+    public void testProcessCreateFormValidationOnlyScriptTag() {
+        Map<String, String> form = new HashMap<>();
+        form.put("title", "a");
+        form.put("content", "<script>alert(\"Hello from the DB side\"</script>");
+        form.put("contentsol", "a");
+        form.put("maintag", "AD1");
+        form.put("othertag", "");
+
+        testProcessCreateFormFail(form);
+    }
+
+    @Test
+    public void testProcessCreateFormValidationSolutionOnlyScriptTag() {
+        Map<String, String> form = new HashMap<>();
+        form.put("title", "a");
+        form.put("content", "a");
+        form.put("contentsol", "<script>alert(\"Hello from the DB side\"</script>");
+        form.put("maintag", "AD1");
+        form.put("othertag", "");
+
+        testProcessCreateFormFail(form);
     }
 
     @Test
     public void testProcessCreateFormWithScriptTag() {
         Map<String, String> form = new HashMap<>();
-        form.put("title", "a");
-        form.put("content", "a");
-        form.put("contentsol", "a");
-        form.put("maintag", "");
+        form.put("title", "scripting alert");
+        form.put("content", "nothing to see here.<script>alert(\"Hello from the DB side\")</script>");
+        form.put("contentsol", "blub");
+        form.put("maintag", "AD1");
         form.put("othertag", "");
 
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.ExerciseController.processCreate())
                             .bodyForm(form)
+                            .session("connected", "franz@hsr.ch")
+            );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/exercises"));
+            assertThat(result.status(), is(SEE_OTHER));
+            assertThat(Exercise.find().all().stream().filter(e -> e.getTitle().equals("scripting alert") && e.getContent().equals("nothing to see here.")).count(), is(1L));
+        });
+    }
+
+    private void testProcessUpdateFormFail(Map<String, String> form, long id) {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.ExerciseController.processUpdate(id))
+                            .bodyForm(form)
                             .session("connected", "blubberduck@hsr.ch")
             );
             Optional<String> location = result.redirectLocation();
             assertTrue(location.isPresent());
-            assertThat(location.get(), is("/exercises/create"));
+            assertThat(location.get(), is("/exercises/" + id + "/edit"));
             assertThat(result.status(), is(SEE_OTHER));
         });
+    }
+
+    @Test
+    public void testProcessUpdateFormValidationOnlyScriptTag() {
+        Map<String, String> form = new HashMap<>();
+        form.put("title", "a");
+        form.put("content", "<script>alert(\"Hello from the DB side\"</script>");
+        form.put("maintag", "AD1");
+        form.put("othertag", "");
+
+        testProcessUpdateFormFail(form, 8000);
+    }
+
+    @Test
+    public void testProcessUpdateFormValidationNoTitle() {
+        Map<String, String> form = new HashMap<>();
+        form.put("title", "");
+        form.put("content", "asdf");
+        form.put("maintag", "AD1");
+        form.put("othertag", "");
+
+        testProcessUpdateFormFail(form, 8000);
+    }
+
+    @Test
+    public void testProcessUpdateInvalidId() {
+        Map<String, String> form = new HashMap<>();
+        form.put("title", "a");
+        form.put("content", "as");
+        form.put("maintag", "AD1");
+        form.put("othertag", "");
+
+        testProcessUpdateFormFail(form, -1);
     }
 
     @Test

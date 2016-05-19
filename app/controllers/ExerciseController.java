@@ -271,7 +271,7 @@ public class ExerciseController extends Controller {
         }
 
         if (exerciseId == null) {
-            String solutionContent = requestData.get(SOLUTION_CONTENT_FIELD);
+            String solutionContent = ValidationUtil.sanitizeHtml(requestData.get(SOLUTION_CONTENT_FIELD));
             boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
             try {
                 validateSolutionFormData(solutionContent);

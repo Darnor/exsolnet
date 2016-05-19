@@ -117,12 +117,12 @@ public class SolutionController extends Controller {
     public Result processCreate(Long exerciseId) {
         DynamicForm requestData = formFactory.form().bindFromRequest();
         boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
-        String content = requestData.get(CONTENT_FIELD);
+        String content = ValidationUtil.sanitizeHtml(requestData.get(CONTENT_FIELD));
 
         Logger.debug("Trying to create a new solution");
         if (!ValidationUtil.isEmpty(content)) {
             Logger.debug("Creating solution");
-            Solution.create(ValidationUtil.sanitizeHtml(content), Exercise.findValidById(exerciseId), SessionService.getCurrentUser(), isOfficial);
+            Solution.create(content, Exercise.findValidById(exerciseId), SessionService.getCurrentUser(), isOfficial);
         }
 
         return redirect(routes.ExerciseController.renderDetail(exerciseId));
@@ -137,12 +137,12 @@ public class SolutionController extends Controller {
     public Result processUpdate(long solutionId) {
         DynamicForm requestData = formFactory.form().bindFromRequest();
         boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
-        String content = requestData.get(CONTENT_FIELD);
+        String content = ValidationUtil.sanitizeHtml(requestData.get(CONTENT_FIELD));
 
         Logger.debug("Trying to update a solution");
         if (!ValidationUtil.isEmpty(content)) {
             Logger.debug("Updating solution");
-            Solution.update(solutionId, ValidationUtil.sanitizeHtml(content), isOfficial);
+            Solution.update(solutionId, content, isOfficial);
         }
 
         return redirect(routes.ExerciseController.renderDetail(Solution.findById(solutionId).getExercise().getId()));
