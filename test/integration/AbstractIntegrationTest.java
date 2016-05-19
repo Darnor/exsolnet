@@ -26,6 +26,7 @@ public abstract class AbstractIntegrationTest extends AbstractApplicationTest {
             browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
             browser.fill("#email").with(username);
             browser.submit("#btn_login");
+            browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
             assertNotEquals("Login failed!", "/login", browser.url());
             block.accept(browser);
         });
