@@ -29,6 +29,10 @@ public class LoginController extends Controller {
         return SessionService.getCurrentUser() != null ? redirect(routes.UserController.renderDashboard()) : ok(login.render(SessionService.getCurrentUser()));
     }
 
+    /**
+     * Render info page
+     * @return Result of info page
+     */
     public Result renderInfo() {
         return ok(info.render(SessionService.getCurrentUser()));
     }
@@ -57,10 +61,23 @@ public class LoginController extends Controller {
         return redirect(routes.UserController.renderDashboard());
     }
 
+    /**
+     * Render Register, create a new user
+     * @param username the username of the user
+     * @param email the email of the user
+     * @return Result
+     */
     public Result renderRegister(String username, String email) {
         return ok(editUser.render(UserBuilder.anUser().withUsername(username).withEmail(email).build()));
     }
 
+    /**
+     * Show error for registration validation
+     * @param email the email adress of the user
+     * @param username the username of the user
+     * @param password the password of the user
+     * @param passwordCheck the password Check (password input second time) of the user
+     */
     private void setFlashError(String email, String username, String password, String passwordCheck) {
         if (User.findByEmail(email) != null || User.findByUsername(username) != null) {
             flash(FLASH_ERROR, "Benutzer existiert bereits");
@@ -83,6 +100,10 @@ public class LoginController extends Controller {
         }
     }
 
+    /**
+     * Register a user
+     * @return Result, registration error or login
+     */
     public Result processRegister() {
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String username = requestData.get("username");
