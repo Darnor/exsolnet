@@ -243,4 +243,16 @@ public class LoginControllerTest extends AbstractApplicationTest {
             assertThat(result.status(), is(OK));
         });
     }
+
+    @Test
+    public void testRenderInfo() {
+        form.clear();
+
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.LoginController.renderInfo())
+            );
+            assertThat(result.status(), is(OK));
+        });
+    }
 }
