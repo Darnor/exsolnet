@@ -1,12 +1,10 @@
 package integration;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
 
 import static helper.RegexMatcher.matches;
-import static org.fluentlenium.core.filter.FilterConstructor.withText;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNot.not;
 import static org.junit.Assert.assertThat;
@@ -61,18 +59,17 @@ public class TagListIT extends AbstractIntegrationTest {
     public void testSortByNameReverse(){
         as(FRANZ, FIREFOX, browser -> {
             browser.goTo(TAGS_PATH);
-            browser.find("a", withText("Name")).click();
+            browser.click("#sort_Name");
             browser.await().atMost(1, TimeUnit.SECONDS).untilPage().isLoaded();
             assertThat(browser.pageSource(), matches("Allgemein.*AD2.*AD1.*Ableiten"));
         });
     }
 
     @Test
-    @Ignore("FIX ME")
     public void testSortByExerciseCount(){
         as(FRANZ, FIREFOX, browser -> {
             browser.goTo(TAGS_PATH);
-            browser.click("#header_Aufgaben");
+            browser.click("#sort_Aufgaben");
             browser.await().atMost(1, TimeUnit.SECONDS).untilPage().isLoaded();
             assertThat(browser.pageSource(), matches("5.*3.*2.*1"));
         });
@@ -82,7 +79,7 @@ public class TagListIT extends AbstractIntegrationTest {
     public void testSortByTracking(){
         as(FRANZ, FIREFOX, browser -> {
             browser.goTo(TAGS_PATH);
-            browser.find("a", withText("Status")).click();
+            browser.click("#sort_Status");
             browser.await().atMost(1, TimeUnit.SECONDS).untilPage().isLoaded();
             assertThat(browser.pageSource(), matches("Nicht mehr folgen.*Nicht mehr folgen.*Folgen.*Folgen.*Folgen"));
         });

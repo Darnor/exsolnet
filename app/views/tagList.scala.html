@@ -6,14 +6,14 @@
 @link(newOrderBy: Int) = @{
     routes.TagController.renderTagList(newOrderBy, tagNameFilter)
 }
-    @**********************************
-    * Helper generating table headers *
-    ***********************************@
+@**********************************
+* Helper generating table headers *
+***********************************@
 @header(columnId: Int, title: String) = {
     <th id="header_@title" class="@if(Math.abs(currentOrderBy) == columnId) @{
         "selected"
     }">
-        <a class="btn @if(Math.abs(currentOrderBy) == columnId) @{
+        <a id="sort_@title" class="btn @if(Math.abs(currentOrderBy) == columnId) @{
             "selected"
         }" href="@link(if(currentOrderBy == columnId) -columnId else columnId)">@title
             @if(Math.abs(currentOrderBy) == columnId) @{
