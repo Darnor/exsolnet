@@ -4,7 +4,7 @@
         $(".tags-basic-multiple").select2();
         $(".tags-tokenizer").select2({
             tags: true,
-            tokenSeparators: [',', ' ']
+            tokenSeparators: [',']
         });
     });
 
