@@ -29,6 +29,11 @@ public class SolutionController extends Controller {
     @Inject
     FormFactory formFactory;
 
+    /**
+     * Upvote a solution
+     * @param solutionId the solution id
+     * @return the amount of points
+     */
     public Result processUpvote(Long solutionId) {
         Logger.info("Up Vote Solution " + solutionId);
         Solution solution = Solution.findValidById(solutionId);
@@ -36,6 +41,11 @@ public class SolutionController extends Controller {
         return ok(String.valueOf(Solution.findValidById(solutionId).getPoints()));
     }
 
+    /**
+     * Downvote a solution
+     * @param solutionId the solution id
+     * @return the amount of points
+     */
     public Result processDownvote(Long solutionId) {
         Logger.info("Down Vote Solution " + solutionId);
         Solution solution = Solution.findValidById(solutionId);
@@ -98,6 +108,10 @@ public class SolutionController extends Controller {
         return ok(editSolution.render(SessionService.getCurrentUser(), solution.getExercise(), solution));
     }
 
+    /**
+     * Script Tag Validation. Content is not allowed to contain a script tag.
+     * @param content the content to be validated.
+     */
     private void throwIfContentContainsScriptTag(String content) {
         if (ValidationUtil.containsScriptTag(content)) {
             Logger.error("Content contains script tag");
