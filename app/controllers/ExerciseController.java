@@ -68,6 +68,14 @@ public class ExerciseController extends Controller {
         return order < 0 ? result + " desc" : result;
     }
 
+    /**
+     * Validite create of a exercise with a form.
+     * No skipt tags allowed.
+     * title, maintag an content must be set.
+     * @param title the title
+     * @param mainTag the maintag
+     * @param content the content
+     */
     private static void validateFormData(String title, String mainTag, String content) {
         if (title.trim().isEmpty() || mainTag.trim().isEmpty() || ValidationUtil.isEmpty(content)) {
             throw new IllegalArgumentException("Formdata not valid.");
@@ -77,6 +85,11 @@ public class ExerciseController extends Controller {
         }
     }
 
+    /**
+     * Validate create of a solution with a form.
+     * No skript tags allowed.
+     * @param solutionContent the content
+     */
     private static void validateSolutionFormData(String solutionContent) {
         if (ValidationUtil.isEmpty(solutionContent)) {
             throw new IllegalArgumentException("Formdata not valid.");
@@ -86,20 +99,41 @@ public class ExerciseController extends Controller {
         }
     }
 
+    /**
+     * All solutions that are marked as official
+     * @param solutions the list of solutions
+     * @return the list with only official solutions
+     */
     static List<Solution> getOfficialSolutions(List<Solution> solutions) {
         return solutions.stream().filter(Solution::isOfficial).collect(Collectors.toList());
     }
 
+    /**
+     * Get n solutions from list
+     * @param solutions the list of solutions
+     * @param n the amount of solutions that shall be returned
+     * @return a new solution list with the first n elements from the given list
+     */
     static List<Solution> getFirstNoOfSolutions(List<Solution> solutions, int n) {
         return solutions.stream().limit(n).collect(Collectors.toList());
     }
 
+    /**
+     * A list of solutions sorted by time
+     * @param solutions the unsorted solution list
+     * @return the solutions sorted by time
+     */
     static List<Solution> getTimeSortedSolutions(List<Solution> solutions) {
         return solutions.stream()
                 .sorted((s1, s2) -> s2.getTime().compareTo(s1.getTime()))
                 .collect(Collectors.toList());
     }
 
+    /**
+     * A list of solutions sorted by points
+     * @param solutions the unsorted solution list
+     * @return the solutions sorted by time
+     */
     static List<Solution> getPointSortedSolutions(List<Solution> solutions) {
         return solutions.stream()
                 .sorted((s1, s2) -> s1.getPoints() > s2.getPoints() ? -1 : s1.getPoints() < s2.getPoints() ? 1 : 0)
@@ -212,6 +246,10 @@ public class ExerciseController extends Controller {
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Aufgabe zu editieren"));
     }
 
+    /**
+     * Get Exercise Data from Form and create or update the exercise
+     * @param exerciseId the exercise id if the exercise should be updated
+     */
     private void bindForm(Long exerciseId) {
         User currentUser = SessionService.getCurrentUser();
         DynamicForm requestData = formFactory.form().bindFromRequest();
@@ -288,6 +326,11 @@ public class ExerciseController extends Controller {
         return redirect(routes.ExerciseController.renderDetail(exerciseId));
     }
 
+    /**
+     * Upvote a exercise
+     * @param exerciseId the id of the exercise
+     * @return amount of points
+     */
     public Result processUpvote(Long exerciseId) {
         Logger.info("Up Vote Exercise " + exerciseId);
         Exercise exercise = Exercise.findValidById(exerciseId);
@@ -295,6 +338,11 @@ public class ExerciseController extends Controller {
         return ok(String.valueOf(Exercise.findValidById(exerciseId).getPoints()));
     }
 
+    /**
+     * Downvote a exercise
+     * @param exerciseId the id of the exercise
+     * @return amount of points
+     */
     public Result processDownvote(Long exerciseId) {
         Logger.info("Down Vote Exercise " + exerciseId);
         Exercise exercise = Exercise.findValidById(exerciseId);
