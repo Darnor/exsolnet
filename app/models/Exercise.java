@@ -235,7 +235,7 @@ public class Exercise extends Post {
         return solutions.stream().filter(s -> s.getUser().getId().equals(user.getId())).count() > 0;
     }
 
-    public Integer hasVoted(Long userId) {
+    public int hasVoted(long userId) {
         for (Vote vote : getVotes()) {
             if (vote.getUser().getId().equals(userId)) {
                 return vote.getValue();
