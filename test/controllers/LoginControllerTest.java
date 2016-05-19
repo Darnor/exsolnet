@@ -138,13 +138,7 @@ public class LoginControllerTest extends AbstractApplicationTest {
         });
     }
 
-    @Test
-    public void testRegisterFailedEmptyPassword() {
-        form.replace("username", "testUser96");
-        form.replace("email", "testUser3@test.test");
-        form.replace("password", "");
-        form.replace("password-check", "");
-
+    private void testRegisterRedirectLocationAndSession(String resultLocation, Map<String, String> resultSession) {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.LoginController.processRegister())
@@ -153,10 +147,20 @@ public class LoginControllerTest extends AbstractApplicationTest {
 
             Optional<String> location = result.redirectLocation();
             assertTrue(location.isPresent());
-            assertThat(location.get(), is("/register?username=testUser96&email=testUser3%40test.test"));
+            assertThat(location.get(), is(resultLocation));
             assertThat(result.status(), is(SEE_OTHER));
-            assertThat(result.session(), is(new HashMap<>()));
+            assertThat(result.session(), is(resultSession));
         });
+    }
+
+    @Test
+    public void testRegisterFailedEmptyPassword() {
+        form.replace("username", "testUser96");
+        form.replace("email", "testUser3@test.test");
+        form.replace("password", "");
+        form.replace("password-check", "");
+
+        testRegisterRedirectLocationAndSession("/register?username=testUser96&email=testUser3%40test.test", new HashMap<>());
     }
 
     @Test
@@ -166,17 +170,21 @@ public class LoginControllerTest extends AbstractApplicationTest {
         form.replace("password", "a");
         form.replace("password-check", "ab");
 
+        testRegisterRedirectLocationAndSession("/register?username=testUser96&email=testUser3%40test.test", new HashMap<>());
+    }
+
+    private void testLoginRedirectLocationAndSession(String resultLocation, Map<String, String> resultSession) {
         running(fakeApplication(), () -> {
             Result result = route(
-                    fakeRequest(routes.LoginController.processRegister())
+                    fakeRequest(routes.LoginController.processLogin())
                             .bodyForm(form)
             );
 
             Optional<String> location = result.redirectLocation();
             assertTrue(location.isPresent());
-            assertThat(location.get(), is("/register?username=testUser96&email=testUser3%40test.test"));
+            assertThat(location.get(), is(resultLocation));
             assertThat(result.status(), is(SEE_OTHER));
-            assertThat(result.session(), is(new HashMap<>()));
+            assertThat(result.session(), is(resultSession));
         });
     }
 
@@ -189,18 +197,7 @@ public class LoginControllerTest extends AbstractApplicationTest {
         Map<String, String> session = new HashMap<>();
         session.put("connected", "franz@hsr.ch");
 
-        running(fakeApplication(), () -> {
-            Result result = route(
-                    fakeRequest(routes.LoginController.processLogin())
-                            .bodyForm(form)
-            );
-
-            Optional<String> location = result.redirectLocation();
-            assertTrue(location.isPresent());
-            assertThat(location.get(), is("/"));
-            assertThat(result.status(), is(SEE_OTHER));
-            assertThat(result.session(), is(session));
-        });
+        testLoginRedirectLocationAndSession("/", session);
     }
 
     @Test
@@ -212,18 +209,7 @@ public class LoginControllerTest extends AbstractApplicationTest {
         Map<String, String> session = new HashMap<>();
         session.put("connected", "franz@hsr.ch");
 
-        running(fakeApplication(), () -> {
-            Result result = route(
-                    fakeRequest(routes.LoginController.processLogin())
-                            .bodyForm(form)
-            );
-
-            Optional<String> location = result.redirectLocation();
-            assertTrue(location.isPresent());
-            assertThat(location.get(), is("/"));
-            assertThat(result.status(), is(SEE_OTHER));
-            assertThat(result.session(), is(session));
-        });
+        testLoginRedirectLocationAndSession("/", session);
     }
 
     @Test

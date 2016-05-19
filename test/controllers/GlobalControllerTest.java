@@ -14,7 +14,4 @@ public class GlobalControllerTest {
             assertThat(browser.pageSource(), containsString("Seite nicht gefunden"));
         });
     }
-
-
-
 }

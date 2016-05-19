@@ -109,17 +109,6 @@ public class SolutionController extends Controller {
     }
 
     /**
-     * Script Tag Validation. Content is not allowed to contain a script tag.
-     * @param content the content to be validated.
-     */
-    private void throwIfContentContainsScriptTag(String content) {
-        if (ValidationUtil.containsScriptTag(content)) {
-            Logger.error("Content contains script tag");
-            throw new IllegalArgumentException("skript tags not allowed in content.");
-        }
-    }
-
-    /**
      * Create Exercise with new Solution
      *
      * @param exerciseId the exercise the solution is for
@@ -130,11 +119,10 @@ public class SolutionController extends Controller {
         boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
         String content = requestData.get(CONTENT_FIELD);
 
-        throwIfContentContainsScriptTag(content);
         Logger.debug("Trying to create a new solution");
         if (!ValidationUtil.isEmpty(content)) {
             Logger.debug("Creating solution");
-            Solution.create(content, Exercise.findValidById(exerciseId), SessionService.getCurrentUser(), isOfficial);
+            Solution.create(ValidationUtil.sanitizeHtml(content), Exercise.findValidById(exerciseId), SessionService.getCurrentUser(), isOfficial);
         }
 
         return redirect(routes.ExerciseController.renderDetail(exerciseId));
@@ -151,11 +139,10 @@ public class SolutionController extends Controller {
         boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
         String content = requestData.get(CONTENT_FIELD);
 
-        throwIfContentContainsScriptTag(content);
         Logger.debug("Trying to update a solution");
         if (!ValidationUtil.isEmpty(content)) {
             Logger.debug("Updating solution");
-            Solution.update(solutionId, content, isOfficial);
+            Solution.update(solutionId, ValidationUtil.sanitizeHtml(content), isOfficial);
         }
 
         return redirect(routes.ExerciseController.renderDetail(Solution.findById(solutionId).getExercise().getId()));

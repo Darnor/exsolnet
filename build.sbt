@@ -15,12 +15,10 @@ libraryDependencies ++= Seq(
 )
 
 libraryDependencies += "org.postgresql" % "postgresql" % "9.4.1208"
-
 libraryDependencies += "org.hamcrest" % "hamcrest-core" % "1.3"
 libraryDependencies += "org.mockito" % "mockito-core" % "1.10.19"
+libraryDependencies += "com.googlecode.owasp-java-html-sanitizer" % "owasp-java-html-sanitizer" % "20160422.1"
 
 jacoco.settings
-
-
 
 fork in run := true

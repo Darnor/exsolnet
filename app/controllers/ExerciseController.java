@@ -70,7 +70,6 @@ public class ExerciseController extends Controller {
 
     /**
      * Validite create of a exercise with a form.
-     * No skipt tags allowed.
      * title, maintag an content must be set.
      * @param title the title
      * @param mainTag the maintag
@@ -80,22 +79,15 @@ public class ExerciseController extends Controller {
         if (title.trim().isEmpty() || mainTag.trim().isEmpty() || ValidationUtil.isEmpty(content)) {
             throw new IllegalArgumentException("Formdata not valid.");
         }
-        if (ValidationUtil.containsScriptTag(content)) {
-            throw new IllegalArgumentException("skript tag not allowed inside content.");
-        }
     }
 
     /**
      * Validate create of a solution with a form.
-     * No skript tags allowed.
      * @param solutionContent the content
      */
     private static void validateSolutionFormData(String solutionContent) {
         if (ValidationUtil.isEmpty(solutionContent)) {
             throw new IllegalArgumentException("Formdata not valid.");
-        }
-        if (ValidationUtil.containsScriptTag(solutionContent)) {
-            throw new IllegalArgumentException("skript tag not allowed inside solutioncontent");
         }
     }
 
@@ -104,7 +96,7 @@ public class ExerciseController extends Controller {
      * @param solutions the list of solutions
      * @return the list with only official solutions
      */
-    static List<Solution> getOfficialSolutions(List<Solution> solutions) {
+    private static List<Solution> getOfficialSolutions(List<Solution> solutions) {
         return solutions.stream().filter(Solution::isOfficial).collect(Collectors.toList());
     }
 
@@ -114,7 +106,7 @@ public class ExerciseController extends Controller {
      * @param n the amount of solutions that shall be returned
      * @return a new solution list with the first n elements from the given list
      */
-    static List<Solution> getFirstNoOfSolutions(List<Solution> solutions, int n) {
+    private static List<Solution> getFirstNoOfSolutions(List<Solution> solutions, int n) {
         return solutions.stream().limit(n).collect(Collectors.toList());
     }
 
@@ -123,7 +115,7 @@ public class ExerciseController extends Controller {
      * @param solutions the unsorted solution list
      * @return the solutions sorted by time
      */
-    static List<Solution> getTimeSortedSolutions(List<Solution> solutions) {
+    private static List<Solution> getTimeSortedSolutions(List<Solution> solutions) {
         return solutions.stream()
                 .sorted((s1, s2) -> s2.getTime().compareTo(s1.getTime()))
                 .collect(Collectors.toList());
@@ -134,7 +126,7 @@ public class ExerciseController extends Controller {
      * @param solutions the unsorted solution list
      * @return the solutions sorted by time
      */
-    static List<Solution> getPointSortedSolutions(List<Solution> solutions) {
+    private static List<Solution> getPointSortedSolutions(List<Solution> solutions) {
         return solutions.stream()
                 .sorted((s1, s2) -> s1.getPoints() > s2.getPoints() ? -1 : s1.getPoints() < s2.getPoints() ? 1 : 0)
                 .collect(Collectors.toList());
@@ -254,7 +246,7 @@ public class ExerciseController extends Controller {
         User currentUser = SessionService.getCurrentUser();
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String title = requestData.get(TITLE_FIELD);
-        String content = requestData.get(EXERCISE_CONTENT_FIELD);
+        String content = ValidationUtil.sanitizeHtml(requestData.get(EXERCISE_CONTENT_FIELD));
         String mainTag = requestData.get(MAIN_TAG_FIELD);
 
         Logger.debug("Binding form with data: ");
