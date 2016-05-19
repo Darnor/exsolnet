@@ -24,6 +24,11 @@ public class CommentController extends Controller {
     @Inject
     FormFactory formFactory;
 
+    /**
+     * create a comment for a existing exercise
+     * @param exerciseId the exercise the comment shall be for
+     * @return Result for new detailview with comment or error page if not allowed
+     */
     public Result processCreateExerciseComment(Long exerciseId) {
         User currentUser = SessionService.getCurrentUser();
         Exercise exercise = Exercise.findById(exerciseId);
@@ -38,6 +43,11 @@ public class CommentController extends Controller {
         return redirect(routes.ExerciseController.renderDetail(exerciseId));
     }
 
+    /**
+     * Create a comment for a existing solution
+     * @param solutionId the solution id the comment shall be for
+     * @return the result detail view with the new comment or an errorpage if not allowed
+     */
     public Result processCreateSolutionComment(Long solutionId) {
         Solution solution = Solution.findById(solutionId);
         User currentUser = SessionService.getCurrentUser();
@@ -57,6 +67,11 @@ public class CommentController extends Controller {
         return unauthorized(error403.render(currentUser, "Keine Berechtigung diese Lösung zu kommentieren."));
     }
 
+    /**
+     * Update a existing comment
+     * @param commentId the id of the comment to be updated
+     * @return detail view with updated comment
+     */
     public Result processUpdate(Long commentId) {
         Comment comment = Comment.findValidById(commentId);
         User user = SessionService.getCurrentUser();
