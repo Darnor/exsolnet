@@ -17,15 +17,16 @@ public class SolutionIT extends AbstractIntegrationTest {
         as(FRANZ, FIREFOX, browser -> {
             String content = "Dies ist ein Test.";
             browser.goTo("/exercises/8000");
-            browser.click("a",withId("solution-8001"));
+            browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
 
+            browser.click("a", withId("solution-8001"));
             browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
 
             fillCKEditor(browser, content, "solution_content");
-
             browser.submit("#save");
+            browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
 
-            assertThat(browser.pageSource(), matches(content+"*.Zuletzt geändert:"));
+            assertThat(browser.pageSource(), matches(content + "*.Zuletzt geändert:"));
         });
     }
 
@@ -34,14 +35,14 @@ public class SolutionIT extends AbstractIntegrationTest {
         as(FRANZ, FIREFOX, browser -> {
             String content = "Dies ist ein Test.";
             browser.goTo("/exercises/8007");
+            browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
 
-            browser.click("a",withText("Aufgabe Lösen"));
-
+            browser.click("a", withText("Aufgabe Lösen"));
             browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
 
             fillCKEditor(browser, content, "solution_content");
-
             browser.submit("#save");
+            browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
 
             assertThat(browser.pageSource(), matches(content));
         });
