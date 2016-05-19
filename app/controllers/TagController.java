@@ -75,6 +75,10 @@ public class TagController extends Controller {
         return redirect(routes.TagController.renderTagList(Integer.parseInt(session(TAG_ORDER)), session(TAG_FILTER)));
     }
 
+    /**
+     * Render the overview of the tag list
+     * @return Result
+     */
     public Result renderOverview() {
         return renderTagList(1, "");
     }
@@ -93,10 +97,18 @@ public class TagController extends Controller {
         return ok(tagList.render(currentUser, tags, trackedTags, orderBy, tagNameFilter));
     }
 
+    /**
+     * Parse TagName for longname and name to json.
+     * @param tagName the name od the tag
+     * @return Result
+     */
     public Result processTagNameQuery(String tagName) {
         return ok(Json.toJson(Tag.getSuggestedTags(tagName).stream().map(t -> new TagEntry(t.getName(), t.getLongName())).collect(Collectors.toList())));
     }
 
+    /**
+     * A TagEntry containing Long name and name for namequery
+     */
     private class TagEntry {
         public final String name;
         public final String longname;

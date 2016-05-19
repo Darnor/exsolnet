@@ -21,20 +21,41 @@ public class UserController extends Controller {
     @Inject
     FormFactory formFactory;
 
+    /**
+     * Validate the Email for correct Format
+     * @param email the email to be validated
+     * @return true if email is valide. false if email is invalid.
+     */
     static boolean validateEmailFormat(String email) {
         return email.matches("^[A-Za-z.\\-_]+@[A-Za-z.\\-_]+\\.[A-Za-z]{2,}$");
     }
 
+    /**
+     * Validate the User Form if userinput is valid
+     * @param username the username
+     * @param password the password
+     * @param passwordCheck the second time the password is entered
+     * @return true if valid input
+     */
     static boolean validateUserForm(String username, String password, String passwordCheck) {
         return password.equals(passwordCheck)
                 && username.trim().length() > 0
                 && password.trim().length() > 0;
     }
 
+    /**
+     * Render the Dashboard for the current user
+     * @return Result
+     */
     public Result renderDashboard() {
         return ok(userDashboard.render(SessionService.getCurrentUser()));
     }
 
+    /**
+     * Update the information of the user
+     * @param userId the user id to be updated
+     * @return Result. Dashboard if valide. EditPage of nonvalid.
+     */
     public Result processUpdate(long userId) {
         User currentUser = SessionService.getCurrentUser();
 
@@ -64,12 +85,21 @@ public class UserController extends Controller {
         return redirect(routes.UserController.renderEdit());
     }
 
+    /**
+     * Render Edit Page for the user profile
+     * @return Result
+     */
     public Result renderEdit() {
         User currentUser = SessionService.getCurrentUser();
         Logger.debug(currentUser.getEmail() + " wants to edit the profile");
         return ok(editUser.render(currentUser));
     }
 
+    /**
+     * Render User Dashboard
+     * @param userId the id of the user that will be rendered
+     * @return Result. User Dashboard or Error Page if invalid.
+     */
     public Result renderUser(long userId) {
         User currentUser = SessionService.getCurrentUser();
         User viewedUser = User.findById(userId);
