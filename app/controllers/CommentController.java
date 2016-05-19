@@ -73,12 +73,12 @@ public class CommentController extends Controller {
             return unauthorized(error403.render(user, "Keine Berechtigung diesen Kommentar zu bearbeiten."));
         }
 
-        if (comment.getExercise()!=null) {
+        if (comment.getExercise() != null) {
             return redirect(routes.ExerciseController.renderDetail(comment.getExercise().getId()));
-        } else if(comment.getSolution() != null) {
+        } else if (comment.getSolution() != null) {
             return redirect(routes.ExerciseController.renderDetail(comment.getSolution().getExercise().getId()));
         }
-        return notFound(error404.render(user,"Der zu bearbeitete Kommentar ist keiner Aufgabe oder Lösung zugewiesen"));
+        return notFound(error404.render(user, "Der zu bearbeitete Kommentar ist keiner Aufgabe oder Lösung zugewiesen"));
     }
 
     /**
@@ -96,9 +96,9 @@ public class CommentController extends Controller {
             return notFound(error404.render(currentUser, COMMENT_NOT_FOUND));
         }
 
-        if(comment.getExercise() != null){
+        if (comment.getExercise() != null) {
             exerciseId = comment.getExercise().getId();
-        }else if(comment.getSolution() != null){
+        } else if (comment.getSolution() != null) {
             exerciseId = comment.getSolution().getExercise().getId();
         }
 
@@ -134,13 +134,11 @@ public class CommentController extends Controller {
             return notFound(error404.render(currentUser, COMMENT_NOT_FOUND));
         }
 
-        if(comment.getExercise() != null){
+        if (comment.getExercise() != null) {
             exerciseId = comment.getExercise().getId();
-        }else if(comment.getSolution() != null){
+        } else if (comment.getSolution() != null) {
             exerciseId = comment.getSolution().getExercise().getId();
         }
-
-
 
         if (currentUser.isModerator() || currentUser.getId().equals(Comment.findById(id).getUser().getId())) {
             try {

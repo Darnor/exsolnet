@@ -42,6 +42,33 @@ public class Vote extends Model {
         return find().byId(id);
     }
 
+    public static Model.Finder<Long, Vote> find() {
+        return new Finder<>(Vote.class);
+    }
+
+    public static void upvote(User user, Post post) {
+        vote(user, 1, post);
+    }
+
+    public static void downvote(User user, Post post) {
+        vote(user, -1, post);
+    }
+
+    private static void vote(User user, int value, Post post) {
+        Exercise exercise = post instanceof Exercise ? (Exercise) post : ExerciseBuilder.anExercise().build();
+        Solution solution = post instanceof Solution ? (Solution) post : SolutionBuilder.aSolution().build();
+
+        Vote vote = find().where().eq(COLUMN_USER_ID, user.getId()).and(eq(COLUMN_SOLUTION_ID, solution.getId()), eq(COLUMN_EXERCISE_ID, exercise.getId())).findUnique();
+        if (vote == null) {
+            VoteBuilder.aVote().withUser(user).withValue(value).withExercise(exercise).withSolution(solution).build().save();
+        } else if (vote.getValue() != value) {
+            vote.setValue(value);
+            vote.update();
+        } else if (vote.getValue() == value) {
+            vote.delete();
+        }
+    }
+
     public Long getId() {
         return id;
     }
@@ -80,32 +107,5 @@ public class Vote extends Model {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public static Model.Finder<Long, Vote> find() {
-        return new Finder<>(Vote.class);
-    }
-
-    public static void upvote(User user, Post post) {
-        vote(user, 1, post);
-    }
-
-    public static void downvote(User user, Post post) {
-        vote(user, -1, post);
-    }
-
-    private static void vote(User user, int value, Post post) {
-        Exercise exercise = post instanceof Exercise ? (Exercise)post : ExerciseBuilder.anExercise().build();
-        Solution solution = post instanceof Solution ? (Solution)post : SolutionBuilder.aSolution().build();
-
-        Vote vote = find().where().eq(COLUMN_USER_ID, user.getId()).and(eq(COLUMN_SOLUTION_ID, solution.getId()), eq(COLUMN_EXERCISE_ID, exercise.getId())).findUnique();
-        if (vote == null) {
-            VoteBuilder.aVote().withUser(user).withValue(value).withExercise(exercise).withSolution(solution).build().save();
-        } else if (vote.getValue() != value) {
-            vote.setValue(value);
-            vote.update();
-        } else if (vote.getValue() == value) {
-            vote.delete();
-        }
     }
 }

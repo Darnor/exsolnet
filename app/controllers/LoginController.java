@@ -22,19 +22,23 @@ public class LoginController extends Controller {
 
     /**
      * Renders login and logout fields, depending if user is logged in
+     *
      * @return Result
      */
     public Result renderLogin() {
         return SessionService.getCurrentUser() != null ? redirect(routes.UserController.renderDashboard()) : ok(login.render(SessionService.getCurrentUser()));
     }
+
     public Result renderInfo() {
         return ok(info.render(SessionService.getCurrentUser()));
     }
+
     /**
      * Parses the body and puts including Form values into User Object
      * Authenticates the user based on email and password.
      * Sets the session on the user's email
      * redirect to the user dashboard
+     *
      * @return Result
      */
     public Result processLogin() {
@@ -86,7 +90,7 @@ public class LoginController extends Controller {
         String password = requestData.get("password");
         String passwordCheck = requestData.get("password-check");
 
-        if(UserController.validateUserForm(username, password, passwordCheck) && UserController.validateEmailFormat(email) && User.findByEmail(email) == null && User.findByUsername(username) == null) {
+        if (UserController.validateUserForm(username, password, passwordCheck) && UserController.validateEmailFormat(email) && User.findByEmail(email) == null && User.findByUsername(username) == null) {
             User user = User.create(username, email, password, false);
             Logger.debug("New user with name " + user.getUsername() + " and email " + user.getEmail() + " just registered.");
             SessionService.createSession(user.getEmail());
@@ -103,6 +107,7 @@ public class LoginController extends Controller {
     /**
      * clears the current session
      * logout the user
+     *
      * @return Result
      */
     public Result processLogout() {

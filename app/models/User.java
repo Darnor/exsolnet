@@ -60,6 +60,66 @@ public class User extends Model {
     @JoinColumn(name = COLUMN_USER_ID)
     private List<Tracking> trackings;
 
+    public static Model.Finder<Long, User> find() {
+        return new Finder<>(User.class);
+    }
+
+    /**
+     * Authenticates the user depending on email/Username and password combination.
+     * Password is ignored for now, should in later stages be hashed and compared with value in database
+     * <p>
+     * CARE: password not used in this implementation
+     *
+     * @param userLogin Mail address or Username of User, who wants to login
+     * @param password  Password of User, who wants to login
+     * @return user
+     */
+    public static User authenticate(String userLogin, String password) {
+        User user = userLogin.contains("@") ? findByEmail(userLogin) : findByUsername(userLogin);
+        return user != null && user.password.equals(password) ? user : null;
+    }
+
+    /**
+     * Queries database, and returns User holding given email address
+     *
+     * @param email
+     * @return User
+     */
+    public static User findByEmail(String email) {
+        return find().where().ieq(COLUMN_EMAIL, email).findUnique();
+    }
+
+    /**
+     * Queries database, and returns User holding given username
+     *
+     * @param username
+     * @return User
+     */
+    public static User findByUsername(String username) {
+        return find().where().ieq(COLUMN_USERNAME, username).findUnique();
+    }
+
+    public static User create(String username, String email, String password, boolean isModerator) {
+        User user = UserBuilder.anUser().withUsername(username).withEmail(email).withPassword(password).withIsModerator(isModerator).build();
+        user.save();
+        return user;
+    }
+
+    public static void update(Long id, String username, String password, boolean isModerator) {
+        User user = find().byId(id);
+        if (user == null) {
+            throw new IllegalArgumentException("Not a valid user");
+        }
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setIsModerator(isModerator);
+        user.update();
+    }
+
+    public static User findById(Long id) {
+        return find().byId(id);
+    }
+
     public Long getId() {
         return id;
     }
@@ -152,50 +212,11 @@ public class User extends Model {
 
     public long getNofCompletedExercisesByTag(Tag tag) {
         return getValidSolutions().stream().filter(s -> {
-            if(s.getExercise().isValid()){
-               return s.getExercise().getTags().contains(tag);
+            if (s.getExercise().isValid()) {
+                return s.getExercise().getTags().contains(tag);
             }
             return false;
         }).count();
-    }
-
-    public static Model.Finder<Long, User> find() {
-        return new Finder<>(User.class);
-    }
-
-    /**
-     * Authenticates the user depending on email/Username and password combination.
-     * Password is ignored for now, should in later stages be hashed and compared with value in database
-     * <p>
-     * CARE: password not used in this implementation
-     *
-     * @param userLogin Mail address or Username of User, who wants to login
-     * @param password  Password of User, who wants to login
-     * @return user
-     */
-    public static User authenticate(String userLogin, String password) {
-        User user = userLogin.contains("@") ? findByEmail(userLogin) : findByUsername(userLogin);
-        return user != null && user.password.equals(password) ? user : null;
-    }
-
-    /**
-     * Queries database, and returns User holding given email address
-     *
-     * @param email
-     * @return User
-     */
-    public static User findByEmail(String email) {
-        return find().where().ieq(COLUMN_EMAIL, email).findUnique();
-    }
-
-    /**
-     * Queries database, and returns User holding given username
-     *
-     * @param username
-     * @return User
-     */
-    public static User findByUsername(String username) {
-        return find().where().ieq(COLUMN_USERNAME, username).findUnique();
     }
 
     /**
@@ -208,28 +229,7 @@ public class User extends Model {
         return getValidSolutions().stream().parallel().filter(s -> s.getExercise().getId().equals(exerciseId)).findFirst().orElse(null) != null;
     }
 
-    public static User create(String username, String email, String password, boolean isModerator) {
-        User user = UserBuilder.anUser().withUsername(username).withEmail(email).withPassword(password).withIsModerator(isModerator).build();
-        user.save();
-        return user;
-    }
-
-    public static void update(Long id, String username, String password, boolean isModerator) {
-        User user = find().byId(id);
-        if (user == null) {
-            throw new IllegalArgumentException("Not a valid user");
-        }
-        user.setUsername(username);
-        user.setPassword(password);
-        user.setIsModerator(isModerator);
-        user.update();
-    }
-
-    public static User findById(Long id) {
-        return find().byId(id);
-    }
-
-    public String getGravatarHash(){
+    public String getGravatarHash() {
         return MD5Util.md5Hex(getEmail());
     }
 

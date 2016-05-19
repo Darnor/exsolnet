@@ -59,75 +59,6 @@ public class Exercise extends Post {
     @Column(columnDefinition = "boolean NOT NULL DEFAULT TRUE", name = COLUMN_VALID)
     private boolean valid = true;
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public List<Solution> getSolutions() {
-        solutions.removeIf(solution -> !solution.isValid());
-        return Collections.unmodifiableList(solutions);
-    }
-
-    public void setSolutions(List<Solution> solutions) {
-        this.solutions = solutions;
-    }
-
-    public List<Vote> getVotes() {
-        return Collections.unmodifiableList(votes);
-    }
-
-    public void setVotes(List<Vote> votes) {
-        this.votes = votes;
-    }
-
-    public List<Comment> getComments() {
-        comments.removeIf(comment -> !comment.isValid());
-        return Collections.unmodifiableList(comments);
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    public List<Tag> getTags() {
-        return Collections.unmodifiableList(tags);
-    }
-
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
-    }
-
-    public long getPoints() {
-        return points;
-    }
-
-    public boolean isValid() {
-        return valid;
-    }
-
-    public void setValid(boolean valid) {
-        this.valid = valid;
-    }
-
-    private void fillData(String title, String content, List<Tag> tags, User user) {
-        this.setTitle(title);
-        this.setContent(content);
-        this.setUser(user);
-        this.setTags(tags);
-    }
-
     public static Exercise create(String title, String content, List<Tag> tags, User user) {
         Exercise exercise = ExerciseBuilder.anExercise().build();
         exercise.fillData(title, content, tags, user);
@@ -211,6 +142,75 @@ public class Exercise extends Post {
      */
     public static Exercise findById(Long id) {
         return find().byId(id);
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Solution> getSolutions() {
+        solutions.removeIf(solution -> !solution.isValid());
+        return Collections.unmodifiableList(solutions);
+    }
+
+    public void setSolutions(List<Solution> solutions) {
+        this.solutions = solutions;
+    }
+
+    public List<Vote> getVotes() {
+        return Collections.unmodifiableList(votes);
+    }
+
+    public void setVotes(List<Vote> votes) {
+        this.votes = votes;
+    }
+
+    public List<Comment> getComments() {
+        comments.removeIf(comment -> !comment.isValid());
+        return Collections.unmodifiableList(comments);
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public List<Tag> getTags() {
+        return Collections.unmodifiableList(tags);
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
+    public long getPoints() {
+        return points;
+    }
+
+    public boolean isValid() {
+        return valid;
+    }
+
+    public void setValid(boolean valid) {
+        this.valid = valid;
+    }
+
+    private void fillData(String title, String content, List<Tag> tags, User user) {
+        this.setTitle(title);
+        this.setContent(content);
+        this.setUser(user);
+        this.setTags(tags);
     }
 
     /**

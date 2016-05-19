@@ -23,6 +23,36 @@ public class TagController extends Controller {
     private static final String TAG_ORDER = "tagOrder";
 
     /**
+     * return a sorted list depending on the orderBy value
+     * per default the list is sorted by the first column aka the tag name
+     *
+     * @param tags        List containing tags
+     * @param trackedTags List containing the trackings for the current user
+     * @param orderBy     sort column
+     * @return the sorted List depending on orderBy
+     */
+    private static List<Tag> sortTagList(List<Tag> tags, List<Tag> trackedTags, int orderBy) {
+        tags.sort((t1, t2) -> {
+            switch (Math.abs(orderBy)) {
+                case 2:
+                    int t1ExSize = t1.getExercises().size();
+                    int t2ExSize = t2.getExercises().size();
+                    return t2ExSize - t1ExSize;
+                case 3:
+                    return trackedTags.contains(t1) ? -1 : trackedTags.contains(t2) ? 1 : 0;
+                default:
+                    return t1.getName().compareToIgnoreCase(t2.getName());
+            }
+        });
+
+        if (orderBy < 0) {
+            Collections.reverse(tags);
+        }
+
+        return tags;
+    }
+
+    /**
      * @param tagId Long containing the Tag Id which needs to be tracked or if tracked untracked
      * @return renders the tagList again
      */
@@ -45,42 +75,12 @@ public class TagController extends Controller {
         return redirect(routes.TagController.renderTagList(Integer.parseInt(session(TAG_ORDER)), session(TAG_FILTER)));
     }
 
-    /**
-     * return a sorted list depending on the orderBy value
-     * per default the list is sorted by the first column aka the tag name
-     *
-     * @param tags List containing tags
-     * @param trackedTags List containing the trackings for the current user
-     * @param orderBy sort column
-     * @return the sorted List depending on orderBy
-     */
-    private static List<Tag> sortTagList(List<Tag> tags, List<Tag> trackedTags, int orderBy) {
-        tags.sort((t1, t2) -> {
-            switch(Math.abs(orderBy)) {
-                case 2:
-                    int t1ExSize = t1.getExercises().size();
-                    int t2ExSize = t2.getExercises().size();
-                    return t2ExSize - t1ExSize;
-                case 3:
-                    return trackedTags.contains(t1) ? -1 : trackedTags.contains(t2) ? 1 : 0;
-                default:
-                    return t1.getName().compareToIgnoreCase(t2.getName());
-            }
-        });
-
-        if (orderBy < 0) {
-            Collections.reverse(tags);
-        }
-
-        return tags;
-    }
-
     public Result renderOverview() {
         return renderTagList(1, "");
     }
 
     /**
-     * @param orderBy colum to order the tags
+     * @param orderBy       colum to order the tags
      * @param tagNameFilter filter for the tags
      * @return renders the tags site
      */
@@ -94,12 +94,13 @@ public class TagController extends Controller {
     }
 
     public Result processTagNameQuery(String tagName) {
-        return ok(Json.toJson(Tag.getSuggestedTags(tagName).stream().map(t -> new TagEntry(t.getName(),t.getLongName())).collect(Collectors.toList())));
+        return ok(Json.toJson(Tag.getSuggestedTags(tagName).stream().map(t -> new TagEntry(t.getName(), t.getLongName())).collect(Collectors.toList())));
     }
 
-    private class TagEntry{
+    private class TagEntry {
         public final String name;
         public final String longname;
+
         TagEntry(String name, String longname) {
             this.name = name;
             this.longname = longname;

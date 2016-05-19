@@ -27,9 +27,6 @@ import java.util.stream.Collectors;
 @Security.Authenticated(Secured.class)
 public class ExerciseController extends Controller {
 
-    @Inject
-    FormFactory formFactory;
-
     private static final String TITLE_FIELD = "title";
     private static final String EXERCISE_CONTENT_FIELD = "content";
     private static final String SOLUTION_CONTENT_FIELD = "contentsol";
@@ -39,15 +36,11 @@ public class ExerciseController extends Controller {
     private static final String POINTS_FIELD = "points";
     private static final String TIME_FIELD = "time";
     private static final String OFFICIAL_FIELD = "isOfficial";
-
     private static final String TAG_NAME_DELIMITER = ",";
     private static final int PAGE_SIZE = 10;
-
     private static final int NO_OF_LATEST_SOLUTIONS = 2;
     private static final int NO_OF_TOP_SOLTUIONS = 1;
-
     private static final String FLASH_ERROR = "error";
-
     /**
      * Map the Id of the html exercise-table to their Model-Attribute-name
      */
@@ -59,6 +52,58 @@ public class ExerciseController extends Controller {
         tableHeaderMap.put(2, SOLUTION_COUNT_FIELD);
         tableHeaderMap.put(3, POINTS_FIELD);
         tableHeaderMap.put(4, TIME_FIELD);
+    }
+
+    @Inject
+    FormFactory formFactory;
+
+    /**
+     * Converts the order-Id to the orderBy string
+     *
+     * @param order the orderID from the HTML-table
+     * @return the order-by-attribute-string
+     */
+    static String getOrderByAttributeString(int order) {
+        String result = tableHeaderMap.get(Math.abs(order));
+        return order < 0 ? result + " desc" : result;
+    }
+
+    private static void validateFormData(String title, String mainTag, String content) {
+        if (title.trim().isEmpty() || mainTag.trim().isEmpty() || ValidationUtil.isEmpty(content)) {
+            throw new IllegalArgumentException("Formdata not valid.");
+        }
+        if (ValidationUtil.containsScriptTag(content)) {
+            throw new IllegalArgumentException("skript tag not allowed inside content.");
+        }
+    }
+
+    private static void validateSolutionFormData(String solutionContent) {
+        if (ValidationUtil.isEmpty(solutionContent)) {
+            throw new IllegalArgumentException("Formdata not valid.");
+        }
+        if (ValidationUtil.containsScriptTag(solutionContent)) {
+            throw new IllegalArgumentException("skript tag not allowed inside solutioncontent");
+        }
+    }
+
+    static List<Solution> getOfficialSolutions(List<Solution> solutions) {
+        return solutions.stream().filter(Solution::isOfficial).collect(Collectors.toList());
+    }
+
+    static List<Solution> getFirstNoOfSolutions(List<Solution> solutions, int n) {
+        return solutions.stream().limit(n).collect(Collectors.toList());
+    }
+
+    static List<Solution> getTimeSortedSolutions(List<Solution> solutions) {
+        return solutions.stream()
+                .sorted((s1, s2) -> s2.getTime().compareTo(s1.getTime()))
+                .collect(Collectors.toList());
+    }
+
+    static List<Solution> getPointSortedSolutions(List<Solution> solutions) {
+        return solutions.stream()
+                .sorted((s1, s2) -> s1.getPoints() > s2.getPoints() ? -1 : s1.getPoints() < s2.getPoints() ? 1 : 0)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -132,17 +177,6 @@ public class ExerciseController extends Controller {
     }
 
     /**
-     * Converts the order-Id to the orderBy string
-     *
-     * @param order the orderID from the HTML-table
-     * @return the order-by-attribute-string
-     */
-    static String getOrderByAttributeString(int order) {
-        String result = tableHeaderMap.get(Math.abs(order));
-        return order < 0 ? result + " desc" : result;
-    }
-
-    /**
      * render the ExerciseOverview View with given Parameters
      *
      * @param page        the Pagenumber of the list
@@ -176,24 +210,6 @@ public class ExerciseController extends Controller {
         }
 
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Aufgabe zu editieren"));
-    }
-
-    private static void validateFormData(String title, String mainTag, String content) {
-        if (title.trim().isEmpty() || mainTag.trim().isEmpty() || ValidationUtil.isEmpty(content)) {
-            throw new IllegalArgumentException("Formdata not valid.");
-        }
-        if (ValidationUtil.containsScriptTag(content)) {
-            throw new IllegalArgumentException("skript tag not allowed inside content.");
-        }
-    }
-
-    private static void validateSolutionFormData(String solutionContent){
-        if (ValidationUtil.isEmpty(solutionContent)) {
-            throw new IllegalArgumentException("Formdata not valid.");
-        }
-        if (ValidationUtil.containsScriptTag(solutionContent)) {
-            throw new IllegalArgumentException("skript tag not allowed inside solutioncontent");
-        }
     }
 
     private void bindForm(Long exerciseId) {
@@ -344,25 +360,5 @@ public class ExerciseController extends Controller {
                 latestSolutions,
                 solutions
         ));
-    }
-
-    static List<Solution> getOfficialSolutions(List<Solution> solutions) {
-        return solutions.stream().filter(Solution::isOfficial).collect(Collectors.toList());
-    }
-
-    static List<Solution> getFirstNoOfSolutions(List<Solution> solutions, int n) {
-        return solutions.stream().limit(n).collect(Collectors.toList());
-    }
-
-    static List<Solution> getTimeSortedSolutions(List<Solution> solutions) {
-        return solutions.stream()
-                .sorted((s1, s2) -> s2.getTime().compareTo(s1.getTime()))
-                .collect(Collectors.toList());
-    }
-
-    static List<Solution> getPointSortedSolutions(List<Solution> solutions) {
-        return solutions.stream()
-                .sorted((s1, s2) -> s1.getPoints() > s2.getPoints() ? -1 : s1.getPoints() < s2.getPoints() ? 1 : 0)
-                .collect(Collectors.toList());
     }
 }

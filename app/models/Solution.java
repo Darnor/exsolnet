@@ -39,6 +39,78 @@ public class Solution extends Post {
     @Column(columnDefinition = "boolean NOT NULL DEFAULT TRUE")
     private boolean valid = true;
 
+    public static Model.Finder<Long, Solution> find() {
+        return new Finder<>(Solution.class);
+    }
+
+    public static Solution create(String content, Exercise exercise, User user, Boolean isOfficial) {
+        Solution solution = SolutionBuilder.aSolution().withExercise(exercise).withContent(content).withUser(user).withIsOfficial(isOfficial).build();
+        solution.save();
+        return solution;
+    }
+
+    public static Solution create(String content, Exercise exercise, User user) {
+        return create(content, exercise, user, false);
+    }
+
+    public static Solution update(long id, String content) {
+        return update(id, content, false);
+    }
+
+    public static Solution update(long id, String content, Boolean isOfficial) {
+        Solution solution = Solution.findById(id);
+        solution.setContent(content);
+        solution.setLastChanged(LocalDateTime.now());
+        solution.setIsOfficial(isOfficial);
+        solution.update();
+        return solution;
+    }
+
+    /**
+     * the data of the solution with the given id
+     *
+     * @param id the id of the solution
+     * @return the solution from the db with the given id, null if it doesnt exist, nullpointer exception if id is null
+     */
+    public static Solution findValidById(Long id) {
+        Solution solution = find().byId(id);
+        return (solution == null || !solution.isValid()) ? null : solution;
+    }
+
+    public static Solution findById(Long id) {
+        return find().byId(id);
+    }
+
+    /**
+     * deletes Solution
+     *
+     * @param id solutionId to delete
+     */
+    public static void delete(Long id) {
+        Solution solution = findValidById(id);
+        throwIfSolutionNull(solution);
+        solution.setValid(false);
+        solution.save();
+    }
+
+    /**
+     * undo deletion of Solution
+     *
+     * @param id solutionId to delete
+     */
+    public static void undoDelete(Long id) {
+        Solution solution = findById(id);
+        throwIfSolutionNull(solution);
+        solution.setValid(true);
+        solution.save();
+    }
+
+    private static void throwIfSolutionNull(Solution solution) {
+        if (solution == null) {
+            throw new IllegalArgumentException("Invalid solution id");
+        }
+    }
+
     public User getUser() {
         return user;
     }
@@ -88,79 +160,8 @@ public class Solution extends Post {
         this.votes = votes;
     }
 
-    public static Model.Finder<Long, Solution> find() {
-        return new Finder<>(Solution.class);
-    }
-
-    public static Solution create(String content, Exercise exercise, User user, Boolean isOfficial) {
-        Solution solution = SolutionBuilder.aSolution().withExercise(exercise).withContent(content).withUser(user).withIsOfficial(isOfficial).build();
-        solution.save();
-        return solution;
-    }
-
-    public static Solution create(String content, Exercise exercise, User user) {
-        return create(content, exercise, user, false);
-    }
-
-    public static Solution update(long id, String content) {
-        return update(id,content,false);
-    }
-    public static Solution update(long id, String content, Boolean isOfficial) {
-        Solution solution = Solution.findById(id);
-        solution.setContent(content);
-        solution.setLastChanged(LocalDateTime.now());
-        solution.setIsOfficial(isOfficial);
-        solution.update();
-        return solution;
-    }
-
-    /**
-     * the data of the solution with the given id
-     *
-     * @param id the id of the solution
-     * @return the solution from the db with the given id, null if it doesnt exist, nullpointer exception if id is null
-     */
-    public static Solution findValidById(Long id) {
-        Solution solution = find().byId(id);
-        return (solution == null || !solution.isValid()) ? null : solution;
-    }
-
-    public static Solution findById(Long id) {
-        return find().byId(id);
-    }
-
     public long getPoints() {
         return points;
-    }
-
-    /**
-     * deletes Solution
-     *
-     * @param id solutionId to delete
-     */
-    public static void delete(Long id) {
-        Solution solution = findValidById(id);
-        throwIfSolutionNull(solution);
-        solution.setValid(false);
-        solution.save();
-    }
-
-    /**
-     * undo deletion of Solution
-     *
-     * @param id solutionId to delete
-     */
-    public static void undoDelete(Long id) {
-        Solution solution = findById(id);
-        throwIfSolutionNull(solution);
-        solution.setValid(true);
-        solution.save();
-    }
-
-    private static void throwIfSolutionNull(Solution solution) {
-        if (solution == null) {
-            throw new IllegalArgumentException("Invalid solution id");
-        }
     }
 
     public Integer hasVoted(Long userId) {

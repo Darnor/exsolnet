@@ -10,6 +10,7 @@ public class Secured extends Security.Authenticator {
     /**
      * takes the pending requests context and checks if a user is logged in,
      * return User if logged in, else returns null
+     *
      * @param ctx
      * @return
      */
@@ -20,6 +21,7 @@ public class Secured extends Security.Authenticator {
 
     /**
      * if not logged in, this method redirect to given route
+     *
      * @param ctx
      * @return
      */

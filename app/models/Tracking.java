@@ -6,14 +6,14 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="track")
+@Table(name = "track")
 public class Tracking extends Model {
 
     static final String COLUMN_TAG_ID = "tag_id";
     static final String COLUMN_USER_ID = "user_id";
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne

@@ -21,10 +21,6 @@ public class UserController extends Controller {
     @Inject
     FormFactory formFactory;
 
-    public Result renderDashboard() {
-        return ok(userDashboard.render(SessionService.getCurrentUser()));
-    }
-
     static boolean validateEmailFormat(String email) {
         return email.matches("^[A-Za-z.\\-_]+@[A-Za-z.\\-_]+\\.[A-Za-z]{2,}$");
     }
@@ -33,6 +29,10 @@ public class UserController extends Controller {
         return password.equals(passwordCheck)
                 && username.trim().length() > 0
                 && password.trim().length() > 0;
+    }
+
+    public Result renderDashboard() {
+        return ok(userDashboard.render(SessionService.getCurrentUser()));
     }
 
     public Result processUpdate(long userId) {
@@ -53,7 +53,7 @@ public class UserController extends Controller {
             passwordCheck = currentUser.getPassword();
         }
 
-        if(validateUserForm(username, password, passwordCheck)) {
+        if (validateUserForm(username, password, passwordCheck)) {
             Logger.debug(currentUser.getUsername() + " is now known as " + username);
             User.update(userId, username, password, false);
             Logger.debug("User updated.");

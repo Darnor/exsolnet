@@ -19,7 +19,7 @@ import java.util.concurrent.CompletionStage;
 
 import static play.mvc.Results.notFound;
 
-public class GlobalController extends DefaultHttpErrorHandler{
+public class GlobalController extends DefaultHttpErrorHandler {
 
     @Inject
     public GlobalController(Configuration configuration, Environment environment, OptionalSourceMapper sourceMapper, Provider<Router> routes) {
@@ -29,7 +29,7 @@ public class GlobalController extends DefaultHttpErrorHandler{
     @Override
     public CompletionStage<Result> onClientError(Http.RequestHeader request, int statusCode, String message) {
         return CompletableFuture.completedFuture(
-               notFound(views.html.error404.render(SessionService.getCurrentUser(), "Seite nicht gefunden"))
+                notFound(views.html.error404.render(SessionService.getCurrentUser(), "Seite nicht gefunden"))
         );
     }
 

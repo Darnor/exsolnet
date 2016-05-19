@@ -8,10 +8,10 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name="comment")
+@Table(name = "comment")
 public class Comment extends Model {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Lob
@@ -19,16 +19,16 @@ public class Comment extends Model {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     @NotNull
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="solution_id")
+    @JoinColumn(name = "solution_id")
     private Solution solution;
 
     @ManyToOne
-    @JoinColumn(name="exercise_id")
+    @JoinColumn(name = "exercise_id")
     private Exercise exercise;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -40,6 +40,103 @@ public class Comment extends Model {
     @Column(columnDefinition = "boolean NOT NULL DEFAULT TRUE")
     private boolean valid = true;
 
+    public static Model.Finder<Long, Comment> find() {
+        return new Model.Finder<>(Comment.class);
+    }
+
+    /**
+     * The Comment with the given id
+     *
+     * @param id the id of the comment
+     * @return the comment or null if not found.
+     */
+    public static Comment findValidById(Long id) {
+        Comment comment = findById(id);
+        return (comment == null || !comment.isValid()) ? null : comment;
+    }
+
+    /**
+     * The Comment with the given id
+     *
+     * @param id the id of the comment
+     * @return the comment or null if not found.
+     */
+    public static Comment findById(Long id) {
+        return find().byId(id);
+    }
+
+    /**
+     * Create new comment for a Exercise
+     *
+     * @param content  the comment
+     * @param exercise the associated exercise
+     * @param user     the user who created the comment
+     * @return the created commit
+     */
+    public static Comment create(String content, Exercise exercise, User user) {
+        Comment comment = CommentBuilder.aComment().withExercise(exercise).withContent(content).withUser(user).build();
+        comment.save();
+        return comment;
+    }
+
+    /**
+     * Create a new comment for a Solution
+     *
+     * @param content  the comment
+     * @param solution the associated solution
+     * @param user     the user who created the comment
+     * @return the created comment
+     */
+    public static Comment create(String content, Solution solution, User user) {
+        Comment comment = CommentBuilder.aComment().withSolution(solution).withContent(content).withUser(user).build();
+        comment.save();
+        return comment;
+    }
+
+    /**
+     * Update a comment with a new content
+     *
+     * @param commentId the id of the comment
+     * @param content   the new content of the comment
+     * @return the updated comment
+     */
+    public static Comment updateContent(Long commentId, String content) {
+        Comment comment = findValidById(commentId);
+        comment.setContent(content);
+        comment.setLastChanged(LocalDateTime.now());
+        comment.update();
+        return comment;
+    }
+
+    /**
+     * deletes Comment
+     *
+     * @param id commentId to delete
+     */
+    public static void delete(Long id) {
+        Comment comment = findValidById(id);
+        throwIfCommentNull(comment);
+        comment.setValid(false);
+        comment.save();
+    }
+
+    /**
+     * undo deletion of Comment
+     *
+     * @param id commentId to delete
+     */
+    public static void undoDelete(Long id) {
+        Comment comment = findById(id);
+        throwIfCommentNull(comment);
+        comment.setValid(true);
+        comment.save();
+    }
+
+    private static void throwIfCommentNull(Comment comment) {
+        if (comment == null) {
+            throw new IllegalArgumentException("Invalid comment id");
+        }
+    }
 
     public boolean isValid() {
         return valid;
@@ -103,99 +200,5 @@ public class Comment extends Model {
 
     public void setLastChanged(LocalDateTime lastchanged) {
         this.lastchanged = lastchanged;
-    }
-
-    public static Model.Finder<Long, Comment> find(){
-        return new Model.Finder<>(Comment.class);
-    }
-
-    /**
-     * The Comment with the given id
-     * @param id the id of the comment
-     * @return the comment or null if not found.
-     */
-    public static Comment findValidById(Long id) {
-        Comment comment = findById(id);
-        return (comment == null || !comment.isValid()) ? null : comment;
-    }
-
-    /**
-     * The Comment with the given id
-     * @param
-    id the id of the comment
-     * @return the comment or null if not found.
-     */
-    public static Comment findById(Long id) {
-        return find().byId(id);
-    }
-
-    /**
-     * Create new comment for a Exercise
-     * @param content the comment
-     * @param exercise the associated exercise
-     * @param user the user who created the comment
-     * @return the created commit
-     */
-    public static Comment create(String content, Exercise exercise, User user) {
-        Comment comment = CommentBuilder.aComment().withExercise(exercise).withContent(content).withUser(user).build();
-        comment.save();
-        return comment;
-    }
-
-    /**
-     * Create a new comment for a Solution
-     * @param content the comment
-     * @param solution the associated solution
-     * @param user the user who created the comment
-     * @return the created comment
-     */
-    public static Comment create(String content, Solution solution, User user) {
-        Comment comment = CommentBuilder.aComment().withSolution(solution).withContent(content).withUser(user).build();
-        comment.save();
-        return comment;
-    }
-
-    /**
-     * Update a comment with a new content
-     * @param commentId the id of the comment
-     * @param content the new content of the comment
-     * @return the updated comment
-     */
-    public static Comment updateContent(Long commentId, String content){
-        Comment comment = findValidById(commentId);
-        comment.setContent(content);
-        comment.setLastChanged(LocalDateTime.now());
-        comment.update();
-        return comment;
-    }
-
-    /**
-     * deletes Comment
-     *
-     * @param id commentId to delete
-     */
-    public static void delete(Long id) {
-        Comment comment = findValidById(id);
-        throwIfCommentNull(comment);
-        comment.setValid(false);
-        comment.save();
-    }
-
-    /**
-     * undo deletion of Comment
-     *
-     * @param id commentId to delete
-     */
-    public static void undoDelete(Long id) {
-        Comment comment = findById(id);
-        throwIfCommentNull(comment);
-        comment.setValid(true);
-        comment.save();
-    }
-
-    private static void throwIfCommentNull(Comment comment) {
-        if (comment == null) {
-            throw new IllegalArgumentException("Invalid comment id");
-        }
     }
 }
