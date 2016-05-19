@@ -56,7 +56,7 @@ public class TagController extends Controller {
      * @param tagId Long containing the Tag Id which needs to be tracked or if tracked untracked
      * @return renders the tagList again
      */
-    public Result processTrack(Long tagId) {
+    public Result processTrack(long tagId) {
         User currentUser = SessionService.getCurrentUser();
         Tag tag = Tag.findById(tagId);
 

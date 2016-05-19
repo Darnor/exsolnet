@@ -34,7 +34,7 @@ public class SolutionController extends Controller {
      * @param solutionId the solution id
      * @return the amount of points
      */
-    public Result processUpvote(Long solutionId) {
+    public Result processUpvote(long solutionId) {
         Logger.info("Up Vote Solution " + solutionId);
         Solution solution = Solution.findValidById(solutionId);
         Vote.upvote(SessionService.getCurrentUser(), solution);
@@ -46,7 +46,7 @@ public class SolutionController extends Controller {
      * @param solutionId the solution id
      * @return the amount of points
      */
-    public Result processDownvote(Long solutionId) {
+    public Result processDownvote(long solutionId) {
         Logger.info("Down Vote Solution " + solutionId);
         Solution solution = Solution.findValidById(solutionId);
         Vote.downvote(SessionService.getCurrentUser(), solution);
@@ -59,14 +59,14 @@ public class SolutionController extends Controller {
      * @param id id of to deleting solution
      * @return ok if solution has been deleted or unauthorized if user is not allowed to delete this solution
      */
-    public Result processDelete(Long id) {
+    public Result processDelete(long id) {
         long exerciseId = Solution.findValidById(id).getExercise().getId();
         User currentUser = SessionService.getCurrentUser();
         if (currentUser.isModerator() || currentUser.getId().equals(Solution.findValidById(id).getUser().getId())) {
             Solution.delete(id);
             Logger.info("Solution " + id + " deleted by " + currentUser.getEmail());
             flash("success", "Lösung gelöscht");
-            flash("solution_id", "" + id);
+            flash("solution_id", String.valueOf(id));
             return redirect(routes.ExerciseController.renderDetail(exerciseId));
         }
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Lösung löschen"));
@@ -78,7 +78,7 @@ public class SolutionController extends Controller {
      * @param id id of deleted exercise
      * @return
      */
-    public Result processUndo(Long id) {
+    public Result processUndo(long id) {
         User currentUser = SessionService.getCurrentUser();
         Solution solution = Solution.findById(id);
 
@@ -103,7 +103,7 @@ public class SolutionController extends Controller {
      * @param solutionId the id of the Solution
      * @return Result View of the detailed exercise with a edit solution formular.
      */
-    public Result renderUpdate(Long solutionId) {
+    public Result renderUpdate(long solutionId) {
         Solution solution = Solution.findById(solutionId);
         return ok(editSolution.render(SessionService.getCurrentUser(), solution.getExercise(), solution));
     }
@@ -114,7 +114,7 @@ public class SolutionController extends Controller {
      * @param exerciseId the exercise the solution is for
      * @return Result view of the exercise with all solutions and comments
      */
-    public Result processCreate(Long exerciseId) {
+    public Result processCreate(long exerciseId) {
         DynamicForm requestData = formFactory.form().bindFromRequest();
         boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
         String content = ValidationUtil.sanitizeHtml(requestData.get(CONTENT_FIELD));

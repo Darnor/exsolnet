@@ -213,7 +213,7 @@ public class CommentControllerTest extends AbstractApplicationTest {
     public void testDeleteNonExistingComment() {
         running(fakeApplication(), () -> {
             Result result = route(
-                    fakeRequest(routes.CommentController.processUndo(-1L))
+                    fakeRequest(routes.CommentController.processDelete(-1L))
                             .session("connected", "franz@hsr.ch")
             );
             assertThat(result.status(), is(NOT_FOUND));

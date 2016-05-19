@@ -139,7 +139,7 @@ public class ExerciseController extends Controller {
      * @param id id of to deleting exercise
      * @return ok if exercise has been deleted or unauthorized if user is not allowed to delete this exercise
      */
-    public Result processDelete(Long id) {
+    public Result processDelete(long id) {
         User currentUser = SessionService.getCurrentUser();
         if (currentUser.isModerator()) {
             try {
@@ -150,7 +150,7 @@ public class ExerciseController extends Controller {
             }
             Logger.info("Exercise " + id + " deleted by " + currentUser.getEmail());
             flash("success", "Aufgabe gelöscht");
-            flash("exercise_id", "" + id);
+            flash("exercise_id", String.valueOf(id));
             return redirect(routes.ExerciseController.renderOverview());
         }
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Aufgabe zu editieren"));
@@ -162,7 +162,7 @@ public class ExerciseController extends Controller {
      * @param id id of deleted exercise
      * @return
      */
-    public Result processUndo(Long id) {
+    public Result processUndo(long id) {
         User currentUser = SessionService.getCurrentUser();
         if (currentUser.isModerator()) {
             try {
@@ -323,7 +323,7 @@ public class ExerciseController extends Controller {
      * @param exerciseId the id of the exercise
      * @return amount of points
      */
-    public Result processUpvote(Long exerciseId) {
+    public Result processUpvote(long exerciseId) {
         Logger.info("Up Vote Exercise " + exerciseId);
         Exercise exercise = Exercise.findValidById(exerciseId);
         Vote.upvote(SessionService.getCurrentUser(), exercise);
@@ -335,7 +335,7 @@ public class ExerciseController extends Controller {
      * @param exerciseId the id of the exercise
      * @return amount of points
      */
-    public Result processDownvote(Long exerciseId) {
+    public Result processDownvote(long exerciseId) {
         Logger.info("Down Vote Exercise " + exerciseId);
         Exercise exercise = Exercise.findValidById(exerciseId);
         Vote.downvote(SessionService.getCurrentUser(), exercise);
@@ -350,7 +350,7 @@ public class ExerciseController extends Controller {
      * @return Result View of the Detailed Exercise with Solution Formular or SolutionsList if the User has already
      * solved the Exercise
      */
-    public Result renderDetail(Long id) {
+    public Result renderDetail(long id) {
         User user = SessionService.getCurrentUser();
         Exercise exercise = Exercise.findValidById(id);
         if (exercise != null) {
@@ -377,7 +377,7 @@ public class ExerciseController extends Controller {
      * @param exerciseId the id of the Exercise
      * @return Result view of the exercise with all solutions and comments.
      */
-    public Result renderSolutions(Long exerciseId) {
+    public Result renderSolutions(long exerciseId) {
         Exercise exercise = Exercise.findValidById(exerciseId);
         User currentUser = SessionService.getCurrentUser();
 

@@ -10,6 +10,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
+import util.ValidationUtil;
 import views.html.error403;
 import views.html.error404;
 
@@ -63,7 +64,7 @@ public class CommentController extends Controller {
             return redirect(routes.ExerciseController.renderDetail(solution.getExercise().getId()));
         }
 
-        Logger.error(currentUser.getUsername() + " is not authorized to create comment for solutionId " + solution.getId());
+        Logger.error(currentUser.getEmail() + " is not authorized to create comment for solutionId " + solution.getId());
         return unauthorized(error403.render(currentUser, "Keine Berechtigung diese Lösung zu kommentieren."));
     }
 
@@ -74,88 +75,73 @@ public class CommentController extends Controller {
      */
     public Result processUpdate(long commentId) {
         Comment comment = Comment.findValidById(commentId);
-        User user = SessionService.getCurrentUser();
-
-        if (comment == null) {
-            return notFound(error404.render(user, COMMENT_NOT_FOUND));
-        }
-
-        if (user.isModerator() || comment.getUser().getId().equals(user.getId())) {
-            Comment.updateContent(commentId, formFactory.form().bindFromRequest().get(CONTENT_FIELD));
-            Logger.debug("Comment: " + commentId + " updated with content: " + formFactory.form().bindFromRequest().get(CONTENT_FIELD));
-        } else {
-            Logger.error("User: " + user.getId() + " tried to edit comment: " + commentId + " from user: " + comment.getUser().getId());
-            return unauthorized(error403.render(user, "Keine Berechtigung diesen Kommentar zu bearbeiten."));
-        }
-
-        if (comment.getExercise() != null) {
-            return redirect(routes.ExerciseController.renderDetail(comment.getExercise().getId()));
-        } else if (comment.getSolution() != null) {
-            return redirect(routes.ExerciseController.renderDetail(comment.getSolution().getExercise().getId()));
-        }
-        return notFound(error404.render(user, "Der zu bearbeitete Kommentar ist keiner Aufgabe oder Lösung zugewiesen"));
-    }
-
-    /**
-     * deletes a comment!
-     *
-     * @param id id of to deleting comment
-     * @return ok if comment has been deleted or unauthorized if user is not allowed to delete this comment
-     */
-    public Result processDelete(long id) {
-        long exerciseId = 0;
-        Comment comment = Comment.findValidById(id);
         User currentUser = SessionService.getCurrentUser();
 
         if (comment == null) {
             return notFound(error404.render(currentUser, COMMENT_NOT_FOUND));
         }
 
-        if (comment.getExercise() != null) {
-            exerciseId = comment.getExercise().getId();
-        } else if (comment.getSolution() != null) {
-            exerciseId = comment.getSolution().getExercise().getId();
-        }
-
-
-        if (currentUser.isModerator() || currentUser.getId().equals(Comment.findValidById(id).getUser().getId())) {
-            Comment.delete(id);
-            Logger.info("Comment " + id + " deleted by " + currentUser.getEmail());
-            flash("success", "Kommentar gelöscht");
-            flash("comment_id", "" + id);
+        if (currentUser.isModerator() || comment.getUser().getId().equals(currentUser.getId())) {
+            String content = ValidationUtil.sanitizeHtml(formFactory.form().bindFromRequest().get(CONTENT_FIELD));
+            Comment.updateContent(commentId, content);
+            Logger.debug("Comment: " + commentId + " updated with content: " + content);
+            long exerciseId = comment.getExercise() == null ? comment.getSolution().getExercise().getId() : comment.getExercise().getId();
             return redirect(routes.ExerciseController.renderDetail(exerciseId));
         }
+
+        Logger.error(currentUser.getEmail() + " tried to edit commentid: " + commentId);
+        return unauthorized(error403.render(currentUser, "Keine Berechtigung diesen Kommentar zu bearbeiten."));
+    }
+
+    /**
+     * deletes a comment!
+     *
+     * @param commentId id of to deleting comment
+     * @return ok if comment has been deleted or unauthorized if user is not allowed to delete this comment
+     */
+    public Result processDelete(long commentId) {
+        Comment comment = Comment.findValidById(commentId);
+        User currentUser = SessionService.getCurrentUser();
+
+        if (comment == null) {
+            return notFound(error404.render(currentUser, COMMENT_NOT_FOUND));
+        }
+
+        if (currentUser.isModerator() || currentUser.getId().equals(Comment.findValidById(commentId).getUser().getId())) {
+            Comment.delete(commentId);
+            Logger.info("Comment " + commentId + " deleted by " + currentUser.getEmail());
+            flash("success", "Kommentar gelöscht");
+            flash("comment_id", String.valueOf(commentId));
+            long exerciseId = comment.getExercise() == null ? comment.getSolution().getExercise().getId() : comment.getExercise().getId();
+            return redirect(routes.ExerciseController.renderDetail(exerciseId));
+        }
+
+        Logger.error(currentUser.getEmail() + " tried to delete comment with id: " + commentId);
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen diesen Kommentar löschen"));
     }
 
     /**
      * undo deletion of comment
      *
-     * @param id id of deleted comment
+     * @param commentId id of deleted comment
      * @return ok if comment has been undo deleted or unauthorized if user is not allowed to undo delete this comment
      */
-    public Result processUndo(long id) {
+    public Result processUndo(long commentId) {
+        Comment comment = Comment.findById(commentId);
         User currentUser = SessionService.getCurrentUser();
-        Comment comment = Comment.findById(id);
-
-        long exerciseId = 0;
 
         if (comment == null) {
             return notFound(error404.render(currentUser, COMMENT_NOT_FOUND));
         }
 
-        if (comment.getExercise() != null) {
-            exerciseId = comment.getExercise().getId();
-        } else if (comment.getSolution() != null) {
-            exerciseId = comment.getSolution().getExercise().getId();
-        }
-
-        if (currentUser.isModerator() || currentUser.getId().equals(Comment.findById(id).getUser().getId())) {
-            Comment.undoDelete(id);
-            Logger.info("Comment " + id + " undo deletion by " + currentUser.getEmail());
+        if (currentUser.isModerator() || currentUser.getId().equals(Comment.findById(commentId).getUser().getId())) {
+            Comment.undoDelete(commentId);
+            Logger.info("Comment " + commentId + " undo deletion by " + currentUser.getEmail());
+            long exerciseId = comment.getExercise() == null ? comment.getSolution().getExercise().getId() : comment.getExercise().getId();
             return redirect(routes.ExerciseController.renderDetail(exerciseId));
         }
 
+        Logger.error(currentUser.getEmail() + " tried to undo the commentid deletion: " + commentId);
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen das Löschen dieses Kommentars rückgängig zu machen"));
     }
 }
