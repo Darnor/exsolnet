@@ -29,7 +29,7 @@ public class CommentController extends Controller {
      * @param exerciseId the exercise the comment shall be for
      * @return Result for new detailview with comment or error page if not allowed
      */
-    public Result processCreateExerciseComment(Long exerciseId) {
+    public Result processCreateExerciseComment(long exerciseId) {
         User currentUser = SessionService.getCurrentUser();
         Exercise exercise = Exercise.findById(exerciseId);
 
@@ -48,7 +48,7 @@ public class CommentController extends Controller {
      * @param solutionId the solution id the comment shall be for
      * @return the result detail view with the new comment or an errorpage if not allowed
      */
-    public Result processCreateSolutionComment(Long solutionId) {
+    public Result processCreateSolutionComment(long solutionId) {
         Solution solution = Solution.findById(solutionId);
         User currentUser = SessionService.getCurrentUser();
 
@@ -72,7 +72,7 @@ public class CommentController extends Controller {
      * @param commentId the id of the comment to be updated
      * @return detail view with updated comment
      */
-    public Result processUpdate(Long commentId) {
+    public Result processUpdate(long commentId) {
         Comment comment = Comment.findValidById(commentId);
         User user = SessionService.getCurrentUser();
 
@@ -102,7 +102,7 @@ public class CommentController extends Controller {
      * @param id id of to deleting comment
      * @return ok if comment has been deleted or unauthorized if user is not allowed to delete this comment
      */
-    public Result processDelete(Long id) {
+    public Result processDelete(long id) {
         long exerciseId = 0;
         Comment comment = Comment.findValidById(id);
         User currentUser = SessionService.getCurrentUser();
@@ -119,12 +119,7 @@ public class CommentController extends Controller {
 
 
         if (currentUser.isModerator() || currentUser.getId().equals(Comment.findValidById(id).getUser().getId())) {
-            try {
-                Comment.delete(id);
-            } catch (IllegalArgumentException e) {
-                Logger.error("Comment was not found.", e);
-                return notFound(error404.render(currentUser, COMMENT_NOT_FOUND));
-            }
+            Comment.delete(id);
             Logger.info("Comment " + id + " deleted by " + currentUser.getEmail());
             flash("success", "Kommentar gelöscht");
             flash("comment_id", "" + id);
@@ -139,7 +134,7 @@ public class CommentController extends Controller {
      * @param id id of deleted comment
      * @return ok if comment has been undo deleted or unauthorized if user is not allowed to undo delete this comment
      */
-    public Result processUndo(Long id) {
+    public Result processUndo(long id) {
         User currentUser = SessionService.getCurrentUser();
         Comment comment = Comment.findById(id);
 
@@ -156,12 +151,7 @@ public class CommentController extends Controller {
         }
 
         if (currentUser.isModerator() || currentUser.getId().equals(Comment.findById(id).getUser().getId())) {
-            try {
-                Comment.undoDelete(id);
-            } catch (IllegalArgumentException e) {
-                Logger.error("Comment was not found.", e);
-                return notFound(error404.render(currentUser, COMMENT_NOT_FOUND));
-            }
+            Comment.undoDelete(id);
             Logger.info("Comment " + id + " undo deletion by " + currentUser.getEmail());
             return redirect(routes.ExerciseController.renderDetail(exerciseId));
         }

@@ -210,6 +210,28 @@ public class CommentControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void testDeleteNonExistingComment() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.CommentController.processUndo(-1L))
+                            .session("connected", "franz@hsr.ch")
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
+    public void testUndoDeleteOtherUser() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.CommentController.processUndo(8006L))
+                            .session("connected", "franz@hsr.ch")
+            );
+            assertThat(result.status(), is(UNAUTHORIZED));
+        });
+    }
+
+    @Test
     public void testModeratorDeleteUndoNonExisting() {
         running(fakeApplication(), () -> {
             Result result = route(

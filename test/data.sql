@@ -178,6 +178,7 @@ INSERT INTO comment VALUES (8002, 'Was heisst O-Notation? noch nie gehört davon
 INSERT INTO comment VALUES (8003, 'Vielleicht wäre (was sind die Kosten) besser gewesen wie (Wie teuer ist)', 8004, NULL, 8002, '2016-04-07 18:12:55');
 INSERT INTO comment VALUES (8004, 'Du hast auch keine Ahnung von O-Notation?', 8004, 8006, NULL, '2016-04-06 11:12:55');
 INSERT INTO comment VALUES (8005, 'http://www.iamhans.com', 8001, 8000, NULL, '2016-04-04 08:03:12');
+INSERT INTO comment VALUES (8006, 'http://www.iamhans2.com', 8001, 8000, NULL, '2016-04-04 08:03:12', '2016-04-10 08:03:12', FALSE);
 --Vote
 INSERT INTO vote VALUES (8000, 1, 8002, NULL, 8000);
 INSERT INTO vote VALUES (8001, -1, 8000, NULL, 8000);
