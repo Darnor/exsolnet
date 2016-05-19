@@ -1,7 +1,6 @@
 package models;
 
 import helper.AbstractApplicationTest;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -81,23 +80,6 @@ public class TagTest extends AbstractApplicationTest {
         List<Tag> suggestedTags = Tag.getSuggestedTags("a");
         assertEquals(7, suggestedTags.size());
         assertEquals("Ableiten", suggestedTags.get(0).getName());
-    }
-
-
-    @Test
-    @Ignore("FIX ME")
-    public void testGetSuggestedMainTags(){
-        //FIXME no longer used method, redo tests
-//        assertEquals(1, Tag.getSuggestedTags("V", true).size());
-//        assertEquals("VSS", Tag.getSuggestedTags("V", true).get(0).getName());
-    }
-
-    @Test
-    @Ignore("FIX ME")
-    public void testGetSuggestedOtherTags(){
-        //FIXME no longer used method, redo tests
-//        assertEquals(1, Tag.getSuggestedTags("Abl", false).size());
-//        assertEquals("Ableiten", Tag.getSuggestedTags("Abl", false).get(0).getName());
     }
 
     @Test

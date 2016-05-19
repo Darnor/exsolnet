@@ -2,7 +2,6 @@ package models;
 
 import helper.AbstractApplicationTest;
 import helper.DatabaseHelper;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -14,12 +13,14 @@ import static org.junit.Assert.assertNull;
 public class SolutionTest extends AbstractApplicationTest {
 
     @Test
-    @Ignore("Claudia pls fix")
     public void testCreateSolutions() {
-        Solution.create("content", Exercise.findValidById(8000L), User.findByUsername("Franz"));
-        List<Solution> fromdb = Exercise.findValidById(8000L).getSolutions();
-        assertEquals("It's obviously 4", fromdb.get(0).getContent());
-        assertEquals("content", fromdb.get(1).getContent());
+        Exercise exercise = Exercise.findById(8000L);
+        assertNotNull(exercise);
+        int noOfSolutions = exercise.getSolutions().size();
+        Solution.create("content", exercise, User.findByUsername("Franz"));
+        List<Solution> fromdb = Exercise.findById(8000L).getSolutions();
+        assertEquals(1, fromdb.stream().filter(s -> s.getContent().equals("content")).count());
+        assertEquals(noOfSolutions + 1, fromdb.size());
     }
 
     @Test
