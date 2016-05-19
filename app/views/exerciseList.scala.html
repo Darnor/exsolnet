@@ -1,15 +1,17 @@
 @(user: User, currentPage: com.avaje.ebean.PagedList[Exercise], currentOrderBy: Int, currentTitleFilter: String, currentTagFilter: String)
-
 @****************************************
-* Helper generating sorting links       *
+* Helper generating sorting links *
 ****************************************@
 @link(newPage: Int, newOrderBy: Int) = @{
     routes.ExerciseController.renderList(newPage, newOrderBy, currentTitleFilter, currentTagFilter)
 }
-
 @sortingfield(orderBy: Int, title: String) = {
-    <div  class="@if(Math.abs(currentOrderBy) == orderBy) @{"selected"}">
-        <a class="btn @if(Math.abs(currentOrderBy) == orderBy) @{"selected"}" href="@link(0, if(currentOrderBy == orderBy) -orderBy else orderBy)">@title
+    <div class="@if(Math.abs(currentOrderBy) == orderBy) @{
+        "selected"
+    }">
+        <a class="btn @if(Math.abs(currentOrderBy) == orderBy) @{
+            "selected"
+        }" href="@link(0, if(currentOrderBy == orderBy) -orderBy else orderBy)">@title
             @if(Math.abs(currentOrderBy) == orderBy) @{
                 if(currentOrderBy == orderBy)
                     <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
@@ -18,10 +20,8 @@
             }</a>
     </div>
 }
-
 @main("Aufgaben", user) {
     <h1>Aufgaben Übersicht</h1>
-
     <script src="@routes.Assets.versioned("javascripts/jquery.tokeninput.js")" type="text/javascript"></script>
     <script src="@routes.Assets.versioned("javascripts/exerciselist.js")" type="text/javascript"></script>
     <form method="GET" action="@routes.ExerciseController.renderList()" class="form-horizontal">
@@ -39,7 +39,6 @@
             </div>
         </div>
     </form>
-
     Sortieren nach:
     <div class="display-inline">
         @sortingfield(1, "Titel")
@@ -47,7 +46,6 @@
         @sortingfield(3, "Bewertung")
         @sortingfield(4, "Datum")
     </div>
-
     @for(exercise <- currentPage.getList) {
         @snippets.exerciseCard(exercise, user)
     }

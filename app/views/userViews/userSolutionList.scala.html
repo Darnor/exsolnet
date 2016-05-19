@@ -1,5 +1,4 @@
 @(user: User)
-
 @if(user.getValidSolutions.size() == 0){
     <p>Du hast noch keine Aufgaben gelöst. <a href="@routes.ExerciseController.renderOverview()">Hier</a>
         findest du eine Liste von interessanten Aufgaben.</p>

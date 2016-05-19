@@ -1,68 +1,55 @@
 @(user: User, solutions: java.util.List[Solution])
-
 @for(solution <- solutions) {
-        <div class="listSolution @if(solution.isOfficial) {item-red} else {@if(user.getId == solution.getUser.getId){item-blue} else {item-green}}" id="s@solution.getId">
-            <span class="item">@Html(solution.getContent)</span>
-            <span class="meta user">@snippets.userLink(solution.getUser)</span>
-            <span class="meta time">
-                @if(solution.getLastChanged==null){
-                     Eingereicht: @snippets.longDate(solution.getTime)
-                }else{
-                     Zuletzt geändert: @snippets.longDate(solution.getLastChanged)
-                }
-            </span>
-            <a class="pull-right" href="#" data-toggle="tooltip" title="Kommentare anzeigen/ausblenden" onclick="toggler('solution@solution.getId')" >Kommentare <span class="badge">@solution.getComments.size()</span></a>
-
-            @if(user.isModerator || user.getId == solution.getUser.getId) {
-                <a class="pull-right meta edit" data-toggle="tooltip" title="Bearbeiten" id="solution-@solution.getId" href="@routes.SolutionController.renderUpdate(solution.getId)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
-
-                <a href="@routes.SolutionController.processDelete(solution.getId)" class="meta pull-right edit" data-toggle="tooltip" title="Löschen">
-                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                </a>
-            }
-            @if(solution.isOfficial){
-                <strong>
-                    <span title="Die Musterlösung ist die vom Dozenten/Ersteller abgegebene Lösung." class="meta official">Musterlösung <span class="glyphicon glyphicon-ok"></span> </span>
-                </strong>
-            }
-
-            <div class = "box">
-            @if(solution.hasVoted(user.getId)>0) {
-                <a id="upVoteSolution@solution.getId" class = "up upcolor" data-toggle="tooltip" title="Vote Zurücknehmen" onclick="upVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
+    <div class="listSolution @if(solution.isOfficial) {item-red} else {@if(user.getId == solution.getUser.getId){item-blue} else {item-green}}" id="s@solution.getId">
+        <span class="item">@Html(solution.getContent)</span>
+        <span class="meta user">@snippets.userLink(solution.getUser)</span>
+        <span class="meta time">
+            @if(solution.getLastChanged==null){
+                 Eingereicht: @snippets.longDate(solution.getTime)
             }else{
-                <a id="upVoteSolution@solution.getId" class = "up defaultcolor" data-toggle="tooltip" title="Upvoten" onclick="upVoteSolution(@solution.getId)"><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
+                 Zuletzt geändert: @snippets.longDate(solution.getLastChanged)
             }
-                <span id="solutionPoints@solution.getId" class="points">@solution.getPoints</span>
-                @if(solution.hasVoted(user.getId)<0) {
-                    <a id="downVoteSolution@solution.getId" class = "down downcolor" data-toggle="tooltip" title="Vote Zurücknehmen" data-placement="bottom" onclick="downVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
-                }else{
-                    <a id="downVoteSolution@solution.getId" class = "down defaultcolor" data-toggle="tooltip" title="Downvoten" data-placement="bottom" onclick="downVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
-                }
-            </div>
+        </span>
+        <a class="pull-right" href="#" data-toggle="tooltip" title="Kommentare anzeigen/ausblenden" onclick="toggler('solution@solution.getId')" >Kommentare <span class="badge">@solution.getComments.size()</span></a>
+        @if(user.isModerator || user.getId == solution.getUser.getId) {
+            <a class="pull-right meta edit" data-toggle="tooltip" title="Bearbeiten" id="solution-@solution.getId" href="@routes.SolutionController.renderUpdate(solution.getId)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
 
-
-
-        </div>
-        <div id="solution@solution.getId" class="hiddenComment">
-
-
-            @solution.getComments.map { comment =>
-                @snippets.comment(comment, user)
+            <a href="@routes.SolutionController.processDelete(solution.getId)" class="meta pull-right edit" data-toggle="tooltip" title="Löschen">
+                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+            </a>
+        }
+        @if(solution.isOfficial){
+            <strong>
+                <span title="Die Musterlösung ist die vom Dozenten/Ersteller abgegebene Lösung." class="meta official">Musterlösung <span class="glyphicon glyphicon-ok"></span> </span>
+            </strong>
+        }
+        <div class = "box">
+        @if(solution.hasVoted(user.getId)>0) {
+            <a id="upVoteSolution@solution.getId" class = "up upcolor" data-toggle="tooltip" title="Vote Zurücknehmen" onclick="upVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
+        }else{
+            <a id="upVoteSolution@solution.getId" class = "up defaultcolor" data-toggle="tooltip" title="Upvoten" onclick="upVoteSolution(@solution.getId)"><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
+        }
+            <span id="solutionPoints@solution.getId" class="points">@solution.getPoints</span>
+            @if(solution.hasVoted(user.getId)<0) {
+                <a id="downVoteSolution@solution.getId" class = "down downcolor" data-toggle="tooltip" title="Vote Zurücknehmen" data-placement="bottom" onclick="downVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
+            }else{
+                <a id="downVoteSolution@solution.getId" class = "down defaultcolor" data-toggle="tooltip" title="Downvoten" data-placement="bottom" onclick="downVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
             }
-
-            <div class="buttondetail">
-                <form method="POST" action="@routes.CommentController.processCreateSolutionComment(solution.getId)">
-
-                <div class="input-group">
-
-                        <input type="text" class="form-control" id="content" name="content" placeholder="Neuer Kommentar">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default pull-right" type="submit">Speichern</button>
-                        </span>
-                </div>
-                </form>
-
-            </div>
         </div>
-
-    }
+    </div>
+    <div id="solution@solution.getId" class="hiddenComment">
+        @solution.getComments.map { comment =>
+            @snippets.comment(comment, user)
+        }
+        <div class="buttondetail">
+            <form method="POST" action="@routes.CommentController.processCreateSolutionComment(solution.getId)">
+            <div class="input-group">
+                    <input type="text" class="form-control" id="content" name="content" placeholder="Neuer Kommentar">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default pull-right" type="submit">Speichern</button>
+                    </span>
+            </div>
+            </form>
+        </div>
+    </div>
+}

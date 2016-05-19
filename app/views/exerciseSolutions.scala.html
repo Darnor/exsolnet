@@ -4,17 +4,14 @@
         @if(officialSolutions.size() == 1) {<h3>Musterlösung</h3>} else { @if(officialSolutions.size() > 1) {<h3>Musterlösungen</h3>} }
         @exerciseViews.exerciseSolutionList(user, officialSolutions)
     </div>
-
     <div>
         @if(topSolutions.size() == 1) {<h3>Beste Lösung</h3>} else { @if(topSolutions.size() > 1) {<h3>Beste Lösungen</h3>} }
         @exerciseViews.exerciseSolutionList(user, topSolutions)
     </div>
-
     <div>
         @if(latestSolutions.size() == 1) {<h3>Neuste Lösung</h3>} else { @if(latestSolutions.size() > 1) {<h3>Neuste Lösungen</h3>} }
         @exerciseViews.exerciseSolutionList(user, latestSolutions)
     </div>
-
     <div>
         @if(solutions.size() == 1) {<h3>Andere Lösung</h3>} else { @if(solutions.size() > 1) {<h3>Andere Lösungen</h3>} }
         @exerciseViews.exerciseSolutionList(user, solutions)

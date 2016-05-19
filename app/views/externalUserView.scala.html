@@ -1,24 +1,20 @@
 @(user: User, viewedUser: User)
-
-@main(user.getUsername, user){
+@main(user.getUsername, user) {
     <div class="user-section">
         <div class="pull-left">
-            @snippets.gravatar(viewedUser, 100)
+        @snippets.gravatar(viewedUser, 100)
         </div>
         <h1>@viewedUser.getUsername</h1>
         <p>@viewedUser.getPoints Punkte</p>
     </div>
-
     <div class="followed-tags clear-both">
         <h3>Gefolgte Tags:</h3>
         @userViews.followedTags(user, viewedUser)
     </div>
-
     <div class="recent-comments">
         <h3>Letzte Kommentare:</h3>
         @userViews.recentComments(user, viewedUser)
     </div>
-
     <div class="user-exercises">
         <h3>Erstellte Aufgaben</h3>
         @userViews.userExerciseList(user, viewedUser)

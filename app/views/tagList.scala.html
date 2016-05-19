@@ -1,19 +1,21 @@
 @import java.util
 @(user: User, tags: util.List[Tag], trackedTags: util.List[Tag], currentOrderBy: Int, tagNameFilter: String)
-
 @****************************************
-* Helper generating navigation links    *
+* Helper generating navigation links *
 ****************************************@
 @link(newOrderBy: Int) = @{
     routes.TagController.renderTagList(newOrderBy, tagNameFilter)
 }
-
-@**********************************
-* Helper generating table headers *
-***********************************@
+    @**********************************
+    * Helper generating table headers *
+    ***********************************@
 @header(columnId: Int, title: String) = {
-    <th id="header_@title" class="@if(Math.abs(currentOrderBy) == columnId) @{"selected"}">
-        <a class="btn @if(Math.abs(currentOrderBy) == columnId) @{"selected"}" href="@link(if(currentOrderBy == columnId) -columnId else columnId)">@title
+    <th id="header_@title" class="@if(Math.abs(currentOrderBy) == columnId) @{
+        "selected"
+    }">
+        <a class="btn @if(Math.abs(currentOrderBy) == columnId) @{
+            "selected"
+        }" href="@link(if(currentOrderBy == columnId) -columnId else columnId)">@title
             @if(Math.abs(currentOrderBy) == columnId) @{
                 if(currentOrderBy == columnId)
                     <span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span>
@@ -22,9 +24,7 @@
             }</a>
     </th>
 }
-
-@main("Module & Tags", user){
-
+@main("Module & Tags", user) {
     <h1>Module &amp; Tags</h1>
     <form action="@routes.TagController.renderTagList()" class="form-inline" role="form">
         <div class="form-group">
@@ -33,7 +33,6 @@
         </div>
         <input type="submit" id="submit-tagfilter" value="Suche" class="btn btn-primary"/>
     </form>
-
     <table class="table table-striped">
         <thead class="thead-inverse">
             <tr>
@@ -43,21 +42,24 @@
             </tr>
         </thead>
         <tbody>
-
-        @tags.map{ tag =>
+        @tags.map { tag =>
             <tr>
                 <td>
-                    <a href="@routes.ExerciseController.renderList(0, 0, "", tag.getName)">@tag.getName</a> @if(tag.getLongName){ <span class="input-tag-longname">- @tag.getLongName</span>}
+                    <a href="@routes.ExerciseController.renderList(0, 0, "", tag.getName)">@tag.getName</a> @if(tag.getLongName) {
+                    <span class="input-tag-longname">- @tag.getLongName</span>
+                }
                 </td>
+                <td> @tag.getExercises.size </td>
                 <td>
-                    @tag.getExercises.size
-                </td>
-                <td>
-                        <input type="hidden" name="tag" id="tag_@tag.getId" value="@tag.getName" />
-                        <input type="submit" onclick="trackTag(@tag.getId)"
-                            @if(trackedTags.contains(tag)) { value="Nicht mehr folgen" class="btn btn-success btn-block" } else { value="Folgen" class="btn btn-primary btn-block" }
-                            id="track_@tag.getId"
-                        />
+                    <input type="hidden" name="tag" id="tag_@tag.getId" value="@tag.getName" />
+                    <input type="submit" onclick="trackTag(@tag.getId)"
+                        @if(trackedTags.contains(tag)) {
+                            value="Nicht mehr folgen" class="btn btn-success btn-block"
+                        } else {
+                            value="Folgen" class="btn btn-primary btn-block"
+                        }
+                    id="track_@tag.getId"
+                    />
                 </td>
             </tr>
         }

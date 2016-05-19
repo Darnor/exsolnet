@@ -1,5 +1,4 @@
 @(user: User, viewedUser: User)
-
 @if(user == viewedUser && viewedUser.getValidExercises.size == 0){
     <p>Du hast noch keine Aufgaben erstellt. Klicke <a href="@routes.ExerciseController.renderCreate()">hier</a>,
         um eine neue Aufgabe zu erstellen.</p>

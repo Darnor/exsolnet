@@ -1,33 +1,29 @@
 @(user: User)
-
-@main(user.getUsername, user){
-
+@main(user.getUsername, user) {
     <div class="user-section">
         <div class="pull-left">
-            @snippets.gravatar(user, 100)
+        @snippets.gravatar(user, 100)
         </div>
         <h1>@user.getUsername</h1>
         <form>
-            <button formmethod="GET" type="submit" id="btn_edit" class="btn btn-default" formaction="@routes.UserController.renderEdit()">Profil Bearbeiten</button>
-            <button formmethod="POST" type="submit" id="btn_logout" class="btn btn-default" formaction="@routes.LoginController.processLogout()">Logout</button>
+            <button formmethod="GET" type="submit" id="btn_edit" class="btn btn-default" formaction="@routes.UserController.renderEdit()">
+                Profil Bearbeiten</button>
+            <button formmethod="POST" type="submit" id="btn_logout" class="btn btn-default" formaction="@routes.LoginController.processLogout()">
+                Logout</button>
         </form>
     </div>
-
     <div class="followed-tags clear-both">
-        <h3 style="clear:both">Deine gefolgten Tags</h3>
+        <h3 style="clear: both">Deine gefolgten Tags</h3>
         @userViews.followedTags(user, user)
     </div>
-
     <div class="recent-comments">
         <h3>Neue Kommentare auf deine Beiträge</h3>
         @userViews.recentComments(user, user)
     </div>
-
     <div class="my-exercises">
         <h3>Deine erstellten Aufgaben</h3>
         @userViews.userExerciseList(user, user)
     </div>
-
     <div class="my-solutions">
         <h3>Deine erstellten Lösungen</h3>
         @userViews.userSolutionList(user)

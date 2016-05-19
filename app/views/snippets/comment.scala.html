@@ -1,6 +1,5 @@
 @(comment: Comment, user: User)
 <div class="commentdetail">
-
     <div class="editcomment@comment.getId">
         <span class="item">
             @comment.getContent
@@ -13,7 +12,6 @@
                 </a>
             }
         </span>
-
         <span class="meta user"> @snippets.userLink(comment.getUser) </span>
         <span class="meta time">
             @if(comment.getLastChanged==null){

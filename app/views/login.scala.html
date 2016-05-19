@@ -1,5 +1,4 @@
 @(user: User)
-
 @main("Login", user) {
     <div class="span12 hero-unit">
         <img src="@routes.Assets.versioned("images/logo.png")" class="img-rounded pull-right hero-picture-logo" alt="Exsolnet Logo">
@@ -12,7 +11,6 @@
             </a>
         </p>
     </div>
-
     <form method="POST" action="@routes.LoginController.processLogin()">
         <div class="form-group">
             <label for="emailorusername">E-Mail-Adresse oder Benutzername</label>
@@ -24,6 +22,6 @@
         </div>
         <button type="submit" id="btn_login" class="btn btn-default">Login</button>
     </form>
-
-    <div>Falls du noch kein Login besitzt, kannst du dich <a href="@routes.LoginController.renderRegister()">hier</a> registrieren.</div>
+    <div>Falls du noch kein Login besitzt, kannst du dich <a href="@routes.LoginController.renderRegister()">hier</a>
+        registrieren.</div>
 }
