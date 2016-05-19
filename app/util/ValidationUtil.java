@@ -2,6 +2,7 @@ package util;
 
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
+import org.owasp.html.Sanitizers;
 
 import java.util.regex.Pattern;
 
@@ -14,7 +15,10 @@ public class ValidationUtil {
             .allowStyling()
             .allowAttributes("class").matching(Pattern.compile("[a-zA-Z0-9\\s,\\-_]+")).globally()
             .requireRelNofollowOnLinks()
-            .toFactory();
+            .toFactory()
+            .and(Sanitizers.LINKS)
+            .and(Sanitizers.TABLES)
+            .and(Sanitizers.IMAGES);
 
     private ValidationUtil() {}
 
