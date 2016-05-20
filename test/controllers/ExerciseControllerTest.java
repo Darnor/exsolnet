@@ -233,7 +233,28 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
             );
             assertThat(result.status(), is(NOT_FOUND));
         });
+    }
 
+    @Test
+    public void testProcessUpvoteInvalidId() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.ExerciseController.processUpvote(-1))
+                            .session("connected", "blubberduck@hsr.ch")
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
+    public void testProcessDownvoteInvalidId() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.ExerciseController.processDownvote(-1))
+                            .session("connected", "blubberduck@hsr.ch")
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
     }
 
     @Test

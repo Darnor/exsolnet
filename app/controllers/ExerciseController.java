@@ -389,9 +389,10 @@ public class ExerciseController extends Controller {
         User user = getCurrentUser();
         Exercise exercise = Exercise.findValidById(id);
         if (exercise != null) {
-            return (user.hasSolved(id) || user.isModerator()) ? renderSolutions(id) : renderExerciseNotSolved(id);
+            return (user.hasSolved(id) || user.isModerator()) ? renderSolutions(user, exercise) : renderExerciseNotSolved(user, exercise);
         }
 
+        Logger.error(LOG_EXERCISE_NOT_FOUND);
         return notFound(error404.render(user, EXERCISE_NOT_FOUND));
     }
 
@@ -399,28 +400,22 @@ public class ExerciseController extends Controller {
      * renders the exercise details with an Info (like you have to solve the exercise first before looking
      * at other solutions
      *
-     * @param exerciseId the id of the Exercise
+     * @param currentUser the currently logged in user
+     * @param exercise the exercise to render
      * @return Result View of the detailed exercise with no Solution and an Info
      */
-    public Result renderExerciseNotSolved(long exerciseId) {
-        return ok(exerciseNotSolved.render(getCurrentUser(), Exercise.findValidById(exerciseId)));
+    private Result renderExerciseNotSolved(User currentUser, Exercise exercise) {
+        return ok(exerciseNotSolved.render(currentUser, exercise));
     }
 
     /**
      * renders the exercise details with all solutions and comments
      *
-     * @param exerciseId the id of the Exercise
+     * @param currentUser the currently logged in user
+     * @param exercise the exercise to render
      * @return Result view of the exercise with all solutions and comments.
      */
-    public Result renderSolutions(long exerciseId) {
-        Exercise exercise = Exercise.findValidById(exerciseId);
-        User currentUser = getCurrentUser();
-
-        if (exercise == null) {
-            Logger.error(LOG_EXERCISE_NOT_FOUND);
-            return notFound(error404.render(currentUser, EXERCISE_NOT_FOUND));
-        }
-
+    private Result renderSolutions(User currentUser, Exercise exercise) {
         List<Solution> solutions = getPointSortedSolutions(exercise.getValidSolutions());
 
         List<Solution> officialSolutions = getOfficialSolutions(solutions);
