@@ -115,7 +115,6 @@ public class Comment extends Model {
      */
     public static void delete(Long id) {
         Comment comment = findValidById(id);
-        throwIfCommentNull(comment);
         comment.setValid(false);
         comment.save();
     }
@@ -127,15 +126,8 @@ public class Comment extends Model {
      */
     public static void undoDelete(Long id) {
         Comment comment = findById(id);
-        throwIfCommentNull(comment);
         comment.setValid(true);
         comment.save();
-    }
-
-    private static void throwIfCommentNull(Comment comment) {
-        if (comment == null) {
-            throw new IllegalArgumentException("Invalid comment id");
-        }
     }
 
     public boolean isValid() {
