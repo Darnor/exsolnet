@@ -1,13 +1,13 @@
 @(user: User, exercise: Exercise)
 @exerciseDetail(user, exercise) {
-    @if(exercise.getSolutions.size() == 0){
+    @if(exercise.getValidSolutions.size() == 0){
         <p>Es gibt noch keine Lösungen für diese Aufgabe. Sei jetzt der erste Benutzer, der eine Lösung für diese Aufgabe erstellt!</p>
     }
-    @if(exercise.getSolutions.size() == 1){
+    @if(exercise.getValidSolutions.size() == 1){
         <p>Diese Aufgabe besitzt eine Lösung. Um diese Lösung einsehen zu können, musst du erst deine eigene Lösung erstellen</p>
     }
-    @if(exercise.getSolutions.size() >= 2){
-        <p>Diese Aufgabe besitzt bereits @exercise.getSolutions.size() Lösungen. Um diese Lösungen einsehen zu können, musst du erst deine eigene Lösung erstellen</p>
+    @if(exercise.getValidSolutions.size() >= 2){
+        <p>Diese Aufgabe besitzt bereits @exercise.getValidSolutions.size() Lösungen. Um diese Lösungen einsehen zu können, musst du erst deine eigene Lösung erstellen</p>
     }
     <a href="@routes.SolutionController.renderCreate(exercise.getId())" class="btn btn-primary btn-lg btn-block">Aufgabe Lösen</a>
 }

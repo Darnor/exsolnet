@@ -14,7 +14,7 @@
         <p class="meta">Tags: @snippets.tags(exercise.getTagsSortedByTagType)</p>
         <span><a class="meta user" href="@routes.UserController.renderUser(exercise.getUser.getId)">@snippets.gravatar(exercise.getUser, 16) @exercise.getUser.getUsername</a></span>
         <span class="text-center meta count">
-        @exercise.getSolutions.size
+        @exercise.getValidSolutions.size
         </span>
         <span class="meta time">
         @if(exercise.getLastChanged == null) {
@@ -35,7 +35,7 @@
             </a>
         }
         <div class = "box">
-            @if(exercise.hasVoted(user.getId) > 0) {
+            @if(exercise.getUserVoteValue(user.getId) > 0) {
                 <a id="upVoteExercise" class = "up upcolor" data-toggle="tooltip" title="Vote zurücknehmen" onclick="upVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
             } else {
                 <a id="upVoteExercise" class = "up defaultcolor" data-toggle="tooltip" title="Upvoten" onclick="upVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
@@ -43,7 +43,7 @@
             <span id="exercisePoints" class="text-center points">
             @exercise.getPoints
             </span>
-            @if(exercise.hasVoted(user.getId) < 0) {
+            @if(exercise.getUserVoteValue(user.getId) < 0) {
                 <a id="downVoteExercise" class = "down downcolor" data-toggle="tooltip" title="Vote zurücknehmen" data-placement="bottom" onclick="downVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
             } else {
                 <a id="downVoteExercise" class = "down defaultcolor" data-toggle="tooltip" title="Downvoten" data-placement="bottom" onclick="downVoteExercise(@exercise.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>

@@ -381,7 +381,7 @@ public class ExerciseController extends Controller {
         Exercise exercise = Exercise.findValidById(exerciseId);
         User currentUser = SessionService.getCurrentUser();
 
-        List<Solution> solutions = getPointSortedSolutions(exercise.getSolutions());
+        List<Solution> solutions = getPointSortedSolutions(exercise.getValidSolutions());
 
         List<Solution> officialSolutions = getOfficialSolutions(solutions);
         solutions.removeAll(officialSolutions);

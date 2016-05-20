@@ -160,7 +160,7 @@ public class Exercise extends Post {
         this.user = user;
     }
 
-    public List<Solution> getSolutions() {
+    public List<Solution> getValidSolutions() {
         solutions.removeIf(solution -> !solution.isValid());
         return Collections.unmodifiableList(solutions);
     }
@@ -232,24 +232,26 @@ public class Exercise extends Post {
      * @return whether this exercise is solved by given user
      */
     public boolean isSolvedBy(User user) {
-        return solutions.stream().filter(s -> s.getUser().getId().equals(user.getId())).count() > 0;
+        return getValidSolutions().stream()
+                .parallel()
+                .map(s -> s.getUser().getId().equals(user.getId()))
+                .filter(t -> t)
+                .findFirst().orElse(false);
     }
 
-    public int hasVoted(long userId) {
-        for (Vote vote : getVotes()) {
-            if (vote.getUser().getId().equals(userId)) {
-                return vote.getValue();
-            }
-        }
-        return 0;
+    public int getUserVoteValue(long userId) {
+        return getVotes().stream()
+                .parallel()
+                .filter(v -> v.getUser().getId().equals(userId))
+                .map(Vote::getValue)
+                .findFirst().orElse(0);
     }
 
     public Boolean hasOfficial() {
-        for (Solution s : solutions) {
-            if (s.isOfficial() && s.isValid()) {
-                return true;
-            }
-        }
-        return false;
+        return getValidSolutions().stream()
+                .parallel()
+                .map(Solution::isOfficial)
+                .filter(t -> t)
+                .findFirst().orElse(false);
     }
 }

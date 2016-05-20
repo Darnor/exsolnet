@@ -74,7 +74,7 @@ public class ModelBuilderTest extends AbstractApplicationTest {
         Assert.assertEquals(null, exercise.getLastChanged());
         Assert.assertEquals(true, exercise.isValid());
         Assert.assertEquals(comments.get(0).getId(), exercise.getComments().get(0).getId());
-        Assert.assertEquals(solutions.get(0).getId(), exercise.getSolutions().get(0).getId());
+        Assert.assertEquals(solutions.get(0).getId(), exercise.getValidSolutions().get(0).getId());
         Assert.assertEquals(tags.get(0).getId(), exercise.getTags().get(0).getId());
         Assert.assertEquals(votes.get(0).getId(), exercise.getVotes().get(0).getId());
         Assert.assertEquals(user.getId(), exercise.getUser().getId());

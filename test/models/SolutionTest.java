@@ -16,9 +16,9 @@ public class SolutionTest extends AbstractApplicationTest {
     public void testCreateSolutions() {
         Exercise exercise = Exercise.findById(8000L);
         assertNotNull(exercise);
-        int noOfSolutions = exercise.getSolutions().size();
+        int noOfSolutions = exercise.getValidSolutions().size();
         Solution.create("content", exercise, User.findByUsername("Franz"));
-        List<Solution> fromdb = Exercise.findById(8000L).getSolutions();
+        List<Solution> fromdb = Exercise.findById(8000L).getValidSolutions();
         assertEquals(1, fromdb.stream().filter(s -> s.getContent().equals("content")).count());
         assertEquals(noOfSolutions + 1, fromdb.size());
     }
