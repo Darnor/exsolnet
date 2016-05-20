@@ -37,6 +37,7 @@ INSERT INTO exoluser VALUES (8011, 'Marco', 'marco@hsr.ch', '', false);
 INSERT INTO exoluser VALUES (8001, 'Hans', 'hans@hsr.ch', '', false);
 INSERT INTO exoluser VALUES (8004, 'p', 'katherina@hsr.ch', '', false);
 INSERT INTO exoluser VALUES (8002, 'Blubberduck', 'blubberduck@hsr.ch', '', true);
+INSERT INTO exoluser VALUES (7999, 'Peter', 'peter@hsr.ch', 'totallysecure', true);
 --Exercise
 INSERT INTO exercise VALUES (8004, '<p>Was ist der Nachteil von Quicksort?</p>', '2016-02-17 12:03:12', NULL, 'Quicksort', 8003);
 INSERT INTO exercise VALUES (8003, '<p>Welche Sortierungsmethode ist die Beste?</p>', '2016-02-17 05:52:16', NULL, 'Sortieren', 8003);

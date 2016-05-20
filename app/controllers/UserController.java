@@ -68,15 +68,17 @@ public class UserController extends Controller {
         String username = requestData.get("username");
         String password = requestData.get("password");
         String passwordCheck = requestData.get("password-check");
+        boolean isModerator = currentUser.isModerator();
 
         if (password.equals(passwordCheck) && password.isEmpty()) {
+            Logger.debug("Empty password, don't update it.");
             password = currentUser.getPassword();
             passwordCheck = currentUser.getPassword();
         }
 
         if (validateUserForm(username, password, passwordCheck)) {
             Logger.debug(currentUser.getUsername() + " is now known as " + username);
-            User.update(userId, username, password, false);
+            User.update(userId, username, password, isModerator);
             Logger.debug("User updated.");
             return redirect(routes.UserController.renderDashboard());
         }

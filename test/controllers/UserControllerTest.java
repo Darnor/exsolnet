@@ -2,8 +2,6 @@ package controllers;
 
 import helper.AbstractApplicationTest;
 import models.User;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import play.mvc.Result;
 
@@ -18,24 +16,14 @@ import static play.test.Helpers.*;
 
 public class UserControllerTest extends AbstractApplicationTest {
 
-    Map<String, String> form;
-
-    @Before
-    public void setUp() {
-        form = new HashMap<>();
+    @Test
+    public void testAuthorizedUserUpdate() {
+        Map<String, String> form = new HashMap<>();
         form.put("username", "Alfred93");
         form.put("email", "alfred.alfredo@hsr.ch");
         form.put("password", "a");
         form.put("password-check", "a");
-    }
 
-    @After
-    public void cleanUp() {
-        form = null;
-    }
-
-    @Test
-    public void testAuthorizedUserUpdate() {
         running(fakeApplication(), () -> {
             assertNotNull(User.findByEmail("hans@hsr.ch"));
             assertNull(User.findByEmail(form.get("email")));
@@ -58,8 +46,42 @@ public class UserControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void testAuthorizedUserUpdateNonModeratirIsStillNonModerator() {
+        Map<String, String> form = new HashMap<>();
+        form.put("username", "Jusuf");
+        form.put("email", "jus.uf@hsr.ch");
+        form.put("password", "a");
+        form.put("password-check", "a");
+
+        running(fakeApplication(), () -> {
+            assertNotNull(User.findByEmail("tony@hsr.ch"));
+            assertNull(User.findByEmail(form.get("email")));
+            assertNull(User.findByUsername(form.get("username")));
+            Result result = route(
+                    fakeRequest(routes.UserController.processUpdate(8008))
+                            .session("connected", "tony@hsr.ch")
+                            .bodyForm(form)
+            );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/"));
+            assertThat(result.status(), is(SEE_OTHER));
+            User user = User.findByUsername(form.get("username"));
+            assertNotNull(User.findByEmail("tony@hsr.ch"));
+            assertNull(User.findByUsername("tony"));
+            assertNotNull(user);
+            assertThat(user.getUsername(), is(form.get("username")));
+            assertThat(user.isModerator(), is(false));
+        });
+    }
+
+    @Test
     public void testAuthorizedFailedUserUpdate() {
-        form.replace("username", "");
+        Map<String, String> form = new HashMap<>();
+        form.put("username", "");
+        form.put("email", "alfred.alfredo@hsr.ch");
+        form.put("password", "a");
+        form.put("password-check", "a");
 
         running(fakeApplication(), () -> {
             Result result = route(
@@ -76,9 +98,45 @@ public class UserControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void testAuthorizedUserUpdateOnlyUsername() {
+        Map<String, String> form = new HashMap<>();
+        form.put("username", "Norbi94");
+        form.put("email", "nerbert.norberto@hsr.ch");
+        form.put("password", "");
+        form.put("password-check", "");
+
+        running(fakeApplication(), () -> {
+            User originalUser = User.findByEmail("peter@hsr.ch");
+            assertNotNull(originalUser);
+            assertNull(User.findByEmail(form.get("email")));
+            assertNull(User.findByUsername(form.get("username")));
+            String originalPassword = originalUser.getPassword();
+            Result result = route(
+                    fakeRequest(routes.UserController.processUpdate(7999))
+                            .session("connected", "peter@hsr.ch")
+                            .bodyForm(form)
+            );
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/"));
+            assertThat(result.status(), is(SEE_OTHER));
+            User user = User.findByUsername(form.get("username"));
+            assertNotNull(User.findByEmail("peter@hsr.ch"));
+            assertNull(User.findByUsername("peter"));
+            assertNotNull(user);
+            assertThat(user.getUsername(), is(form.get("username")));
+            assertThat(user.getPassword(), is(originalPassword));
+            assertThat(user.isModerator(), is(true));
+        });
+    }
+
+    @Test
     public void testNotAuthorizedUserUpdate() {
-        form.replace("username", "Antonius96");
-        form.replace("email", "antoniues.antoni@hsr.ch");
+        Map<String, String> form = new HashMap<>();
+        form.put("username", "Antonius96");
+        form.put("email", "antonius.antoni@hsr.ch");
+        form.put("password", "a");
+        form.put("password-check", "a");
 
         running(fakeApplication(), () -> {
             Result result = route(
