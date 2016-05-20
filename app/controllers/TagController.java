@@ -4,6 +4,7 @@ import models.Tag;
 import models.Tracking;
 import models.User;
 import models.builders.TrackingBuilder;
+import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -61,6 +62,7 @@ public class TagController extends Controller {
         Tag tag = Tag.findById(tagId);
 
         if (tag == null) {
+            Logger.error("Tag to track was not found.");
             return notFound(error404.render(currentUser, "Das zu trackende Tag wurde nicht gefunden."));
         }
 

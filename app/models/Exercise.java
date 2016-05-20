@@ -66,15 +66,8 @@ public class Exercise extends Post {
         return exercise;
     }
 
-    private static void throwIfExerciseNull(Exercise exercise) {
-        if (exercise == null) {
-            throw new IllegalArgumentException("Invalid exercise id");
-        }
-    }
-
     public static Exercise update(long id, String title, String content, List<Tag> tags, User user) {
         Exercise exercise = findValidById(id);
-        throwIfExerciseNull(exercise);
         exercise.fillData(title, content, tags, user);
         exercise.setLastChanged(LocalDateTime.now());
         exercise.update();
@@ -88,14 +81,12 @@ public class Exercise extends Post {
      */
     public static void delete(long id) {
         Exercise exercise = findValidById(id);
-        throwIfExerciseNull(exercise);
         exercise.setValid(false);
         exercise.save();
     }
 
     public static void undoDelete(long id) {
         Exercise exercise = findById(id);
-        throwIfExerciseNull(exercise);
         exercise.setValid(true);
         exercise.save();
     }

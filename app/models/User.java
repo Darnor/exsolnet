@@ -107,9 +107,6 @@ public class User extends Model {
 
     public static void update(Long id, String username, String password, boolean isModerator) {
         User user = find().byId(id);
-        if (user == null) {
-            throw new IllegalArgumentException("Not a valid user");
-        }
         user.setUsername(username);
         user.setPassword(password);
         user.setIsModerator(isModerator);

@@ -24,13 +24,13 @@
             </strong>
         }
         <div class = "box">
-        @if(solution.hasVoted(user.getId)>0) {
+        @if(solution.getUserVoteValue(user.getId)>0) {
             <a id="upVoteSolution@solution.getId" class = "up upcolor" data-toggle="tooltip" title="Vote Zurücknehmen" onclick="upVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
         }else{
             <a id="upVoteSolution@solution.getId" class = "up defaultcolor" data-toggle="tooltip" title="Upvoten" onclick="upVoteSolution(@solution.getId)"><span class="glyphicon glyphicon-chevron-up glyphicon-larg"/></a>
         }
             <span id="solutionPoints@solution.getId" class="points">@solution.getPoints</span>
-            @if(solution.hasVoted(user.getId)<0) {
+            @if(solution.getUserVoteValue(user.getId)<0) {
                 <a id="downVoteSolution@solution.getId" class = "down downcolor" data-toggle="tooltip" title="Vote Zurücknehmen" data-placement="bottom" onclick="downVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>
             }else{
                 <a id="downVoteSolution@solution.getId" class = "down defaultcolor" data-toggle="tooltip" title="Downvoten" data-placement="bottom" onclick="downVoteSolution(@solution.getId)" ><span class="glyphicon glyphicon-chevron-down glyphicon-larg"/></a>

@@ -11,7 +11,6 @@ import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import services.SessionService;
 import util.ValidationUtil;
 import views.html.editSolution;
 import views.html.error403;
@@ -19,12 +18,15 @@ import views.html.error404;
 
 import javax.inject.Inject;
 
+import static services.SessionService.getCurrentUser;
+
 @Security.Authenticated(Secured.class)
 public class SolutionController extends Controller {
 
     private static final String CONTENT_FIELD = "content";
     private static final String OFFICIAL_FIELD = "isOfficial";
 
+    private static final String SOLUTION_NOT_FOUND = "Lösung nicht gefunden.";
 
     @Inject
     FormFactory formFactory;
@@ -36,8 +38,14 @@ public class SolutionController extends Controller {
      */
     public Result processUpvote(long solutionId) {
         Logger.info("Up Vote Solution " + solutionId);
+        User currentUser = getCurrentUser();
         Solution solution = Solution.findValidById(solutionId);
-        Vote.upvote(SessionService.getCurrentUser(), solution);
+
+        if (solution == null) {
+            return notFound(error404.render(currentUser, SOLUTION_NOT_FOUND));
+        }
+
+        Vote.upvote(currentUser, solution);
         return ok(String.valueOf(Solution.findValidById(solutionId).getPoints()));
     }
 
@@ -48,8 +56,15 @@ public class SolutionController extends Controller {
      */
     public Result processDownvote(long solutionId) {
         Logger.info("Down Vote Solution " + solutionId);
+
+        User currentUser = getCurrentUser();
         Solution solution = Solution.findValidById(solutionId);
-        Vote.downvote(SessionService.getCurrentUser(), solution);
+
+        if (solution == null) {
+            return notFound(error404.render(currentUser, SOLUTION_NOT_FOUND));
+        }
+
+        Vote.downvote(currentUser, solution);
         return ok(String.valueOf(Solution.findValidById(solutionId).getPoints()));
     }
 
@@ -60,14 +75,19 @@ public class SolutionController extends Controller {
      * @return ok if solution has been deleted or unauthorized if user is not allowed to delete this solution
      */
     public Result processDelete(long id) {
-        long exerciseId = Solution.findValidById(id).getExercise().getId();
-        User currentUser = SessionService.getCurrentUser();
-        if (currentUser.isModerator() || currentUser.getId().equals(Solution.findValidById(id).getUser().getId())) {
+        User currentUser = getCurrentUser();
+        Solution solution = Solution.findValidById(id);
+
+        if (solution == null) {
+            return notFound(error404.render(currentUser, SOLUTION_NOT_FOUND));
+        }
+
+        if (currentUser.isModerator() || currentUser.getId().equals(solution.getUser().getId())) {
             Solution.delete(id);
             Logger.info("Solution " + id + " deleted by " + currentUser.getEmail());
             flash("success", "Lösung gelöscht");
             flash("solution_id", String.valueOf(id));
-            return redirect(routes.ExerciseController.renderDetail(exerciseId));
+            return redirect(routes.ExerciseController.renderDetail(solution.getExercise().getId()));
         }
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen diese Lösung löschen"));
     }
@@ -79,19 +99,17 @@ public class SolutionController extends Controller {
      * @return
      */
     public Result processUndo(long id) {
-        User currentUser = SessionService.getCurrentUser();
+        User currentUser = getCurrentUser();
         Solution solution = Solution.findById(id);
 
         if (solution == null) {
-            return notFound(error404.render(currentUser, "Lösung nicht gefunden"));
+            return notFound(error404.render(currentUser, SOLUTION_NOT_FOUND));
         }
-
-        long exerciseId = solution.getExercise().getId();
 
         if (currentUser.isModerator() || currentUser.getId().equals(Solution.findById(id).getUser().getId())) {
             Solution.undoDelete(id);
             Logger.info("Solution " + id + " undo deletion by " + currentUser.getEmail());
-            return redirect(routes.ExerciseController.renderDetail(exerciseId));
+            return redirect(routes.ExerciseController.renderDetail(solution.getExercise().getId()));
         }
 
         return unauthorized(error403.render(currentUser, "Keine Berechtigungen das Löschen dieser Lösung rückgängig zu machen"));
@@ -105,7 +123,7 @@ public class SolutionController extends Controller {
      */
     public Result renderUpdate(long solutionId) {
         Solution solution = Solution.findById(solutionId);
-        return ok(editSolution.render(SessionService.getCurrentUser(), solution.getExercise(), solution));
+        return ok(editSolution.render(getCurrentUser(), solution.getExercise(), solution));
     }
 
     /**
@@ -122,7 +140,7 @@ public class SolutionController extends Controller {
         Logger.debug("Trying to create a new solution");
         if (!ValidationUtil.isEmpty(content)) {
             Logger.debug("Creating solution");
-            Solution.create(content, Exercise.findValidById(exerciseId), SessionService.getCurrentUser(), isOfficial);
+            Solution.create(content, Exercise.findValidById(exerciseId), getCurrentUser(), isOfficial);
         }
 
         return redirect(routes.ExerciseController.renderDetail(exerciseId));
@@ -155,6 +173,6 @@ public class SolutionController extends Controller {
      * @return Result View of the detailed exercise with a create solution formular.
      */
     public Result renderCreate(long exerciseId) {
-        return ok(editSolution.render(SessionService.getCurrentUser(), Exercise.findValidById(exerciseId), SolutionBuilder.aSolution().build()));
+        return ok(editSolution.render(getCurrentUser(), Exercise.findValidById(exerciseId), SolutionBuilder.aSolution().build()));
     }
 }

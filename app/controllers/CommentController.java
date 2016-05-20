@@ -78,6 +78,7 @@ public class CommentController extends Controller {
         User currentUser = SessionService.getCurrentUser();
 
         if (comment == null) {
+            Logger.error("Error while updating a comment: Comment not found.");
             return notFound(error404.render(currentUser, COMMENT_NOT_FOUND));
         }
 
@@ -104,6 +105,7 @@ public class CommentController extends Controller {
         User currentUser = SessionService.getCurrentUser();
 
         if (comment == null) {
+            Logger.error("Error while deleting a comment: Comment not found.");
             return notFound(error404.render(currentUser, COMMENT_NOT_FOUND));
         }
 
@@ -131,6 +133,7 @@ public class CommentController extends Controller {
         User currentUser = SessionService.getCurrentUser();
 
         if (comment == null) {
+            Logger.error("Error while undoing a comment deletion: Comment not found.");
             return notFound(error404.render(currentUser, COMMENT_NOT_FOUND));
         }
 

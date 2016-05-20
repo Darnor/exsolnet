@@ -83,11 +83,6 @@ public class UserTest extends AbstractApplicationTest {
         assertFalse("Franz has not solved Exercise 8007", ex.isSolvedBy(franz));
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testUpdateNonExistingIdThrows() {
-        User.update(-1L, "a", "b", false);
-    }
-
     @Test
     public void testGetNoOfCompletedExercisesValidOnly() {
         Tag t1 = TagBuilder.aTag().withId(1L).build();

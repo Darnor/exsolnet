@@ -72,7 +72,7 @@ public class Solution extends Post {
      * @param id the id of the solution
      * @return the solution from the db with the given id, null if it doesnt exist, nullpointer exception if id is null
      */
-    public static Solution findValidById(Long id) {
+    public static Solution findValidById(long id) {
         Solution solution = find().byId(id);
         return (solution == null || !solution.isValid()) ? null : solution;
     }
@@ -86,9 +86,8 @@ public class Solution extends Post {
      *
      * @param id solutionId to delete
      */
-    public static void delete(Long id) {
+    public static void delete(long id) {
         Solution solution = findValidById(id);
-        throwIfSolutionNull(solution);
         solution.setValid(false);
         solution.save();
     }
@@ -98,17 +97,10 @@ public class Solution extends Post {
      *
      * @param id solutionId to delete
      */
-    public static void undoDelete(Long id) {
+    public static void undoDelete(long id) {
         Solution solution = findById(id);
-        throwIfSolutionNull(solution);
         solution.setValid(true);
         solution.save();
-    }
-
-    private static void throwIfSolutionNull(Solution solution) {
-        if (solution == null) {
-            throw new IllegalArgumentException("Invalid solution id");
-        }
     }
 
     public User getUser() {
@@ -164,12 +156,11 @@ public class Solution extends Post {
         return points;
     }
 
-    public Integer hasVoted(Long userId) {
-        for (Vote vote : getVotes()) {
-            if (vote.getUser().getId().equals(userId)) {
-                return vote.getValue();
-            }
-        }
-        return 0;
+    public int getUserVoteValue(long userId) {
+        return getVotes().stream()
+                .parallel()
+                .filter(v -> v.getUser().getId().equals(userId))
+                .map(Vote::getValue)
+                .findFirst().orElse(0);
     }
 }

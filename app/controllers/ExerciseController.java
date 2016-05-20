@@ -10,7 +10,6 @@ import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import services.SessionService;
 import util.ValidationUtil;
 import views.html.*;
 
@@ -19,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static services.SessionService.getCurrentUser;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -36,11 +37,19 @@ public class ExerciseController extends Controller {
     private static final String POINTS_FIELD = "points";
     private static final String TIME_FIELD = "time";
     private static final String OFFICIAL_FIELD = "isOfficial";
+
     private static final String TAG_NAME_DELIMITER = ",";
+
     private static final int PAGE_SIZE = 10;
+
     private static final int NO_OF_LATEST_SOLUTIONS = 2;
     private static final int NO_OF_TOP_SOLTUIONS = 1;
+
     private static final String FLASH_ERROR = "error";
+
+    private static final String EXERCISE_NOT_FOUND = "Die Übung konnte nicht gefunden werden.";
+    private static final String LOG_EXERCISE_NOT_FOUND = "Exercise was not found.";
+
     /**
      * Map the Id of the html exercise-table to their Model-Attribute-name
      */
@@ -140,14 +149,16 @@ public class ExerciseController extends Controller {
      * @return ok if exercise has been deleted or unauthorized if user is not allowed to delete this exercise
      */
     public Result processDelete(long id) {
-        User currentUser = SessionService.getCurrentUser();
+        User currentUser = getCurrentUser();
+        Exercise exercise = Exercise.findValidById(id);
+
+        if (exercise == null) {
+            Logger.error(LOG_EXERCISE_NOT_FOUND);
+            return notFound(error404.render(currentUser, EXERCISE_NOT_FOUND));
+        }
+
         if (currentUser.isModerator()) {
-            try {
-                Exercise.delete(id);
-            } catch (IllegalArgumentException e) {
-                Logger.error("Exercise was not found.", e);
-                return notFound(error404.render(currentUser, "Die Aufgabe wurde nicht gefunden,"));
-            }
+            Exercise.delete(id);
             Logger.info("Exercise " + id + " deleted by " + currentUser.getEmail());
             flash("success", "Aufgabe gelöscht");
             flash("exercise_id", String.valueOf(id));
@@ -163,14 +174,16 @@ public class ExerciseController extends Controller {
      * @return
      */
     public Result processUndo(long id) {
-        User currentUser = SessionService.getCurrentUser();
+        User currentUser = getCurrentUser();
+        Exercise exercise = Exercise.findById(id);
+
+        if (exercise == null) {
+            Logger.error(LOG_EXERCISE_NOT_FOUND);
+            return notFound(error404.render(currentUser, EXERCISE_NOT_FOUND));
+        }
+
         if (currentUser.isModerator()) {
-            try {
-                Exercise.undoDelete(id);
-            } catch (IllegalArgumentException e) {
-                Logger.error("Exercise was not found.", e);
-                return notFound(error404.render(currentUser, "Die Aufgabe wurde nicht gefunden,"));
-            }
+            Exercise.undoDelete(id);
             Logger.info("Exercise " + id + " undo deletion by " + currentUser.getEmail());
             return redirect(routes.ExerciseController.renderDetail(id));
         }
@@ -185,7 +198,7 @@ public class ExerciseController extends Controller {
      */
     public Result renderCreate() {
         return ok(editExercise.render(
-                SessionService.getCurrentUser(),
+                getCurrentUser(),
                 ExerciseBuilder.anExercise().build(),
                 SolutionBuilder.aSolution().build(),
                 Tag.findTagsByType(Tag.Type.MAIN),
@@ -214,7 +227,7 @@ public class ExerciseController extends Controller {
     public Result renderList(int page, int order, String titleFilter, String tagFilter) {
         String orderBy = getOrderByAttributeString(order);
         PagedList<Exercise> exercises = Exercise.getPagedList(page, orderBy, titleFilter, tagFilter.split(TAG_NAME_DELIMITER), PAGE_SIZE);
-        return ok(exerciseList.render(SessionService.getCurrentUser(), exercises, order, titleFilter, tagFilter));
+        return ok(exerciseList.render(getCurrentUser(), exercises, order, titleFilter, tagFilter));
     }
 
     /**
@@ -224,11 +237,12 @@ public class ExerciseController extends Controller {
      * @return redered exercise
      */
     public Result renderEdit(long id) {
-        User currentUser = SessionService.getCurrentUser();
+        User currentUser = getCurrentUser();
         Exercise exercise = Exercise.findValidById(id);
 
         if (exercise == null) {
-            return notFound(error404.render(currentUser, "Aufgabe nicht gefunden"));
+            Logger.error(LOG_EXERCISE_NOT_FOUND);
+            return notFound(error404.render(currentUser, EXERCISE_NOT_FOUND));
         }
 
         if (exercise.getUser().getId().equals(currentUser.getId()) || currentUser.isModerator()) {
@@ -243,7 +257,7 @@ public class ExerciseController extends Controller {
      * @param exerciseId the exercise id if the exercise should be updated
      */
     private void bindForm(Long exerciseId) {
-        User currentUser = SessionService.getCurrentUser();
+        User currentUser = getCurrentUser();
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String title = requestData.get(TITLE_FIELD);
         String content = ValidationUtil.sanitizeHtml(requestData.get(EXERCISE_CONTENT_FIELD));
@@ -309,6 +323,13 @@ public class ExerciseController extends Controller {
      * @return redirect to the exercise overview
      */
     public Result processUpdate(long exerciseId) {
+        Exercise exercise = Exercise.findValidById(exerciseId);
+
+        if (exercise == null) {
+            Logger.error(LOG_EXERCISE_NOT_FOUND);
+            return notFound(error404.render(getCurrentUser(), EXERCISE_NOT_FOUND));
+        }
+
         try {
             bindForm(exerciseId);
         } catch (IllegalArgumentException e) {
@@ -324,9 +345,16 @@ public class ExerciseController extends Controller {
      * @return amount of points
      */
     public Result processUpvote(long exerciseId) {
-        Logger.info("Up Vote Exercise " + exerciseId);
+        User currentUser = getCurrentUser();
         Exercise exercise = Exercise.findValidById(exerciseId);
-        Vote.upvote(SessionService.getCurrentUser(), exercise);
+
+        if (exercise == null) {
+            Logger.error(LOG_EXERCISE_NOT_FOUND);
+            return notFound(error404.render(currentUser, EXERCISE_NOT_FOUND));
+        }
+
+        Logger.info("Up Vote Exercise " + exerciseId);
+        Vote.upvote(currentUser, exercise);
         return ok(String.valueOf(Exercise.findValidById(exerciseId).getPoints()));
     }
 
@@ -336,9 +364,16 @@ public class ExerciseController extends Controller {
      * @return amount of points
      */
     public Result processDownvote(long exerciseId) {
-        Logger.info("Down Vote Exercise " + exerciseId);
+        User currentUser = getCurrentUser();
         Exercise exercise = Exercise.findValidById(exerciseId);
-        Vote.downvote(SessionService.getCurrentUser(), exercise);
+
+        if (exercise == null) {
+            Logger.error(LOG_EXERCISE_NOT_FOUND);
+            return notFound(error404.render(currentUser, EXERCISE_NOT_FOUND));
+        }
+
+        Logger.info("Down Vote Exercise " + exerciseId);
+        Vote.downvote(currentUser, exercise);
         return ok(String.valueOf(Exercise.findValidById(exerciseId).getPoints()));
     }
 
@@ -351,13 +386,13 @@ public class ExerciseController extends Controller {
      * solved the Exercise
      */
     public Result renderDetail(long id) {
-        User user = SessionService.getCurrentUser();
+        User user = getCurrentUser();
         Exercise exercise = Exercise.findValidById(id);
         if (exercise != null) {
             return (user.hasSolved(id) || user.isModerator()) ? renderSolutions(id) : renderExerciseNotSolved(id);
         }
 
-        return notFound(error404.render(user, "Diese Aufgabe existiert nicht"));
+        return notFound(error404.render(user, EXERCISE_NOT_FOUND));
     }
 
     /**
@@ -368,7 +403,7 @@ public class ExerciseController extends Controller {
      * @return Result View of the detailed exercise with no Solution and an Info
      */
     public Result renderExerciseNotSolved(long exerciseId) {
-        return ok(exerciseNotSolved.render(SessionService.getCurrentUser(), Exercise.findValidById(exerciseId)));
+        return ok(exerciseNotSolved.render(getCurrentUser(), Exercise.findValidById(exerciseId)));
     }
 
     /**
@@ -379,7 +414,12 @@ public class ExerciseController extends Controller {
      */
     public Result renderSolutions(long exerciseId) {
         Exercise exercise = Exercise.findValidById(exerciseId);
-        User currentUser = SessionService.getCurrentUser();
+        User currentUser = getCurrentUser();
+
+        if (exercise == null) {
+            Logger.error(LOG_EXERCISE_NOT_FOUND);
+            return notFound(error404.render(currentUser, EXERCISE_NOT_FOUND));
+        }
 
         List<Solution> solutions = getPointSortedSolutions(exercise.getValidSolutions());
 
