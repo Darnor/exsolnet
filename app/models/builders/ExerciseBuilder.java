@@ -15,6 +15,7 @@ public class ExerciseBuilder {
     private Long id;
     private String content;
     private LocalDateTime time = LocalDateTime.now();
+    private boolean isValid = true;
 
     private ExerciseBuilder() {
     }
@@ -68,8 +69,13 @@ public class ExerciseBuilder {
         return this;
     }
 
+    public ExerciseBuilder withIsValid(boolean isValid) {
+        this.isValid = isValid;
+        return this;
+    }
+
     public ExerciseBuilder but() {
-        return anExercise().withTitle(title).withSolutions(solutions).withVotes(votes).withTags(tags).withUser(user).withComments(comments).withId(id).withContent(content).withTime(time);
+        return anExercise().withTitle(title).withSolutions(solutions).withVotes(votes).withTags(tags).withUser(user).withComments(comments).withId(id).withContent(content).withTime(time).withIsValid(isValid);
     }
 
     public Exercise build() {
@@ -83,6 +89,7 @@ public class ExerciseBuilder {
         exercise.setId(id);
         exercise.setContent(content);
         exercise.setTime(time);
+        exercise.setValid(isValid);
         return exercise;
     }
 }
