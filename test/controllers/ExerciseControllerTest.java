@@ -181,16 +181,16 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
         });
     }
 
-    private void testProcessUpdateFormFail(Map<String, String> form, long id) {
+    private void testProcessUpdateFormFail(Map<String, String> form) {
         running(fakeApplication(), () -> {
             Result result = route(
-                    fakeRequest(routes.ExerciseController.processUpdate(id))
+                    fakeRequest(routes.ExerciseController.processUpdate(8000))
                             .bodyForm(form)
                             .session("connected", "blubberduck@hsr.ch")
             );
             Optional<String> location = result.redirectLocation();
             assertTrue(location.isPresent());
-            assertThat(location.get(), is("/exercises/" + id + "/edit"));
+            assertThat(location.get(), is("/exercises/8000/edit"));
             assertThat(result.status(), is(SEE_OTHER));
         });
     }
@@ -203,7 +203,7 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
         form.put("maintag", "AD1");
         form.put("othertag", "");
 
-        testProcessUpdateFormFail(form, 8000);
+        testProcessUpdateFormFail(form);
     }
 
     @Test
@@ -214,7 +214,7 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
         form.put("maintag", "AD1");
         form.put("othertag", "");
 
-        testProcessUpdateFormFail(form, 8000);
+        testProcessUpdateFormFail(form);
     }
 
     @Test
@@ -225,7 +225,15 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
         form.put("maintag", "AD1");
         form.put("othertag", "");
 
-        testProcessUpdateFormFail(form, -1);
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.ExerciseController.processUpdate(-1))
+                            .bodyForm(form)
+                            .session("connected", "blubberduck@hsr.ch")
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+
     }
 
     @Test
@@ -293,7 +301,7 @@ public class ExerciseControllerTest extends AbstractApplicationTest {
                     fakeRequest(routes.ExerciseController.processUndo(-1L))
                             .session("connected", "franz@hsr.ch")
             );
-            assertThat(result.status(), is(UNAUTHORIZED));
+            assertThat(result.status(), is(NOT_FOUND));
         });
     }
 
