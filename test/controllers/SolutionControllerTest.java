@@ -155,7 +155,7 @@ public class SolutionControllerTest extends AbstractApplicationTest {
                     fakeRequest(routes.SolutionController.processUndo(-1L))
                             .session("connected", "franz@hsr.ch")
             );
-            assertThat(result.status(), is(UNAUTHORIZED));
+            assertThat(result.status(), is(NOT_FOUND));
         });
     }
 
