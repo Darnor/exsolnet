@@ -18,6 +18,7 @@ import views.html.error404;
 
 import javax.inject.Inject;
 
+import static models.Exercise.findValidById;
 import static services.SessionService.getCurrentUser;
 
 @Security.Authenticated(Secured.class)
@@ -27,6 +28,7 @@ public class SolutionController extends Controller {
     private static final String OFFICIAL_FIELD = "isOfficial";
 
     private static final String SOLUTION_NOT_FOUND = "Lösung nicht gefunden.";
+    private static final String LOG_SOLUTION_NOT_FOUND = "Solution not found.";
 
     @Inject
     FormFactory formFactory;
@@ -42,6 +44,7 @@ public class SolutionController extends Controller {
         Solution solution = Solution.findValidById(solutionId);
 
         if (solution == null) {
+            Logger.error(LOG_SOLUTION_NOT_FOUND);
             return notFound(error404.render(currentUser, SOLUTION_NOT_FOUND));
         }
 
@@ -61,6 +64,7 @@ public class SolutionController extends Controller {
         Solution solution = Solution.findValidById(solutionId);
 
         if (solution == null) {
+            Logger.error(LOG_SOLUTION_NOT_FOUND);
             return notFound(error404.render(currentUser, SOLUTION_NOT_FOUND));
         }
 
@@ -79,6 +83,7 @@ public class SolutionController extends Controller {
         Solution solution = Solution.findValidById(id);
 
         if (solution == null) {
+            Logger.error(LOG_SOLUTION_NOT_FOUND);
             return notFound(error404.render(currentUser, SOLUTION_NOT_FOUND));
         }
 
@@ -103,6 +108,7 @@ public class SolutionController extends Controller {
         Solution solution = Solution.findById(id);
 
         if (solution == null) {
+            Logger.error(LOG_SOLUTION_NOT_FOUND);
             return notFound(error404.render(currentUser, SOLUTION_NOT_FOUND));
         }
 
@@ -122,8 +128,15 @@ public class SolutionController extends Controller {
      * @return Result View of the detailed exercise with a edit solution formular.
      */
     public Result renderUpdate(long solutionId) {
-        Solution solution = Solution.findById(solutionId);
-        return ok(editSolution.render(getCurrentUser(), solution.getExercise(), solution));
+        User currentUser = getCurrentUser();
+        Solution solution = Solution.findValidById(solutionId);
+
+        if (solution == null) {
+            Logger.error(LOG_SOLUTION_NOT_FOUND);
+            return notFound(error404.render(currentUser, SOLUTION_NOT_FOUND));
+        }
+
+        return ok(editSolution.render(currentUser, solution.getExercise(), solution));
     }
 
     /**
@@ -133,6 +146,14 @@ public class SolutionController extends Controller {
      * @return Result view of the exercise with all solutions and comments
      */
     public Result processCreate(long exerciseId) {
+        User currentUser = getCurrentUser();
+        Exercise exercise = findValidById(exerciseId);
+
+        if (exercise == null) {
+            Logger.error(LOG_SOLUTION_NOT_FOUND);
+            return notFound(error404.render(currentUser, "Aufgabe konnte nicht gefunden werden."));
+        }
+
         DynamicForm requestData = formFactory.form().bindFromRequest();
         boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
         String content = ValidationUtil.sanitizeHtml(requestData.get(CONTENT_FIELD));
@@ -140,7 +161,7 @@ public class SolutionController extends Controller {
         Logger.debug("Trying to create a new solution");
         if (!ValidationUtil.isEmpty(content)) {
             Logger.debug("Creating solution");
-            Solution.create(content, Exercise.findValidById(exerciseId), getCurrentUser(), isOfficial);
+            Solution.create(content, exercise, currentUser, isOfficial);
         }
 
         return redirect(routes.ExerciseController.renderDetail(exerciseId));
@@ -153,6 +174,13 @@ public class SolutionController extends Controller {
      * @return Result view of the exercise with all solutions and comments
      */
     public Result processUpdate(long solutionId) {
+        Solution solution = Solution.findValidById(solutionId);
+
+        if (solution == null) {
+            Logger.error(LOG_SOLUTION_NOT_FOUND);
+            return notFound(error404.render(getCurrentUser(), SOLUTION_NOT_FOUND));
+        }
+
         DynamicForm requestData = formFactory.form().bindFromRequest();
         boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
         String content = ValidationUtil.sanitizeHtml(requestData.get(CONTENT_FIELD));
@@ -163,7 +191,7 @@ public class SolutionController extends Controller {
             Solution.update(solutionId, content, isOfficial);
         }
 
-        return redirect(routes.ExerciseController.renderDetail(Solution.findById(solutionId).getExercise().getId()));
+        return redirect(routes.ExerciseController.renderDetail(solution.getExercise().getId()));
     }
 
     /**
@@ -173,6 +201,14 @@ public class SolutionController extends Controller {
      * @return Result View of the detailed exercise with a create solution formular.
      */
     public Result renderCreate(long exerciseId) {
-        return ok(editSolution.render(getCurrentUser(), Exercise.findValidById(exerciseId), SolutionBuilder.aSolution().build()));
+        User currentUser = getCurrentUser();
+        Exercise exercise = findValidById(exerciseId);
+
+        if (exercise == null) {
+            Logger.error("Exercise not found.");
+            return notFound(error404.render(currentUser, "Aufgabe konnte nicht gefunden werden."));
+        }
+
+        return ok(editSolution.render(currentUser, exercise, SolutionBuilder.aSolution().build()));
     }
 }

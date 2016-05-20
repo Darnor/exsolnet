@@ -47,6 +47,61 @@ public class SolutionControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void testDeleteNonExisting() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.SolutionController.processDelete(-1L))
+                            .session("connected", "franz@hsr.ch")
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
+    public void testProcessUpdateNonExisting() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.SolutionController.processUpdate(-1L))
+                            .session("connected", "franz@hsr.ch")
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
+    public void testRenderUpdateNonExisting() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.SolutionController.renderUpdate(-1L))
+                            .session("connected", "franz@hsr.ch")
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
+    public void testProcessCreateNonExisting() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.SolutionController.processCreate(-1L))
+                            .session("connected", "franz@hsr.ch")
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
+    public void testRenderCreateNonExisting() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.SolutionController.renderCreate(-1L))
+                            .session("connected", "franz@hsr.ch")
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
     public void testNonModeratorDeleteUndo() {
         running(fakeApplication(), () -> {
             Result result = route(
@@ -87,6 +142,39 @@ public class SolutionControllerTest extends AbstractApplicationTest {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.SolutionController.processUndo(-1L))
+                            .session("connected", "franz@hsr.ch")
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
+    public void testRenderUpdateInvalidId() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.SolutionController.processUndo(-1L))
+                            .session("connected", "franz@hsr.ch")
+            );
+            assertThat(result.status(), is(UNAUTHORIZED));
+        });
+    }
+
+    @Test
+    public void testUpvoteNonExisting() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.SolutionController.processUpvote(-1L))
+                            .session("connected", "franz@hsr.ch")
+            );
+            assertThat(result.status(), is(NOT_FOUND));
+        });
+    }
+
+    @Test
+    public void testDownvoteNonExisting() {
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.SolutionController.processDownvote(-1L))
                             .session("connected", "franz@hsr.ch")
             );
             assertThat(result.status(), is(NOT_FOUND));
