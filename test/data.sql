@@ -85,7 +85,7 @@ INSERT INTO exercise VALUES (8005, '<p>In einem Code gibt es diverse Stellen mit
 <p>b) Welche Design-&Auml;nderungen empfehlen Sie?</p>', '2016-03-18 14:52:03', NULL, 'Error Handling Design', 8008);
 INSERT INTO exercise VALUES (8006, '<p>Entwerfen Sie ein Error-Handling Policy f&uuml;r Ihr Engineering-Projekt. Legen Sie dabei fest, wie Sie Exceptions, Assertions und Logging verwenden wollen.</p>
 
-<p>Falls Sie kein Engineering-Projekt haben, verwenden Sie das kleine Java Beispiel-Projekt ImageGallery aus der Vorlage.</p>', '2016-03-18 15:02:14', NULL, 'Erro Handling Policy', 8008);
+<p>Falls Sie kein Engineering-Projekt haben, verwenden Sie das kleine Java Beispiel-Projekt ImageGallery aus der Vorlage.</p>', '2016-03-18 15:02:14', NULL, 'Error Handling Policy', 8008);
 INSERT INTO exercise VALUES (8002, '<p>Wie teuer ist eine Suchoperation eines AVL-Trees mit n Elementen?</p>
 
 <p>L&ouml;sung in O-Notation angeben.</p>', '2016-02-17 23:55:34', NULL, 'AVL-Tree Suchkosten', 8002);
