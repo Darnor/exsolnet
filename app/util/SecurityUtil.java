@@ -35,7 +35,7 @@ public class SecurityUtil {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
 
-    public static boolean checkPassowrd(String candidate, String hashed) {
+    public static boolean checkPassword(String candidate, String hashed) {
        return BCrypt.checkpw(candidate, hashed);
     }
 }

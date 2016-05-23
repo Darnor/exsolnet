@@ -77,7 +77,7 @@ public class User extends Model {
      */
     public static User authenticate(String userLogin, String password) {
         User user = userLogin.contains("@") ? findByEmail(userLogin) : findByUsername(userLogin);
-        return user != null && SecurityUtil.checkPassowrd(password, user.getPassword()) ? user : null;
+        return user != null && SecurityUtil.checkPassword(password, user.getPassword()) ? user : null;
     }
 
     /**
