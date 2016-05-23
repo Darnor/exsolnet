@@ -50,39 +50,51 @@ INSERT INTO exercise VALUES (8012, '<p>Besuche meine super Website: http://www.i
 INSERT INTO exercise VALUES (8008, '<p>Was bedeutet TDD genau?</p>', '2016-04-01 09:24:24', NULL, 'TDD Definition', 8008);
 INSERT INTO exercise VALUES (8009, '<p>Was ist ein Unit Test?</p>', '2016-04-01 09:27:12', NULL, 'Unit Testing', 8008);
 INSERT INTO exercise VALUES (8010, '<p>Was ist der Unterschied zwischen einem System Test und einem Unit Test?</p>', '2016-04-02 14:07:12', NULL, 'System Test vs. Unit Test', 8005);
-INSERT INTO exercise VALUES (8005, '<p>In einem Code gibt es diverse Stellen mit &bdquo;Catch-All&ldquo; von Exceptions. Die Absicht dahinter ist es, die Software fehlertolerant zu halten.</p>
+INSERT INTO exercise VALUES (8005, '<p>In einem Code gibt es diverse Stellen mit „Catch-All“ von Exceptions. Die Absicht dahinter ist es, die Software fehlertolerant zu halten.</p>
 
-<p>DataSet load() {<br />
-&nbsp; try {<br />
-&nbsp; &nbsp; // read logic<br />
-&nbsp; } catch (Exception e) {<br />
-&nbsp;&nbsp; &nbsp;return null;<br />
-&nbsp; }<br />
-}</p>
+<table style="width:750px">
+	<tbody><tr><td>
+			<p><tt>DataSet load() {<!-- --><br />
+			    try {<!-- --><br />
+			        // read logic<br />
+			    } catch (Exception e) {<!-- --><br />
+			        return null;<br />
+			    }<br />
+			}</tt></p>
 
-<p>DataSet filter(DataSet d) {<br />
-&nbsp; try {<br />
-&nbsp;&nbsp;&nbsp; // filter logic<br />
-&nbsp; } catch (Exception e) {<br />
-&nbsp;&nbsp;&nbsp; return null;<br />
-&nbsp; }<br />
-}</p>
+			<p> </p>
+			</td><td>
+			<p><tt>DataSet filter(DataSet d) {<!-- --><br />
+			    try {<!-- --><br />
+			        // filter logic<br />
+			    } catch (Exception e) {<!-- --><br />
+			        return null;<br />
+			    }<br />
+			}</tt></p>
 
-<p>void save(DataSet d) {<br />
-&nbsp; try {<br />
-&nbsp;&nbsp;&nbsp; // save to file<br />
-&nbsp; } catch (Exception e) { }<br />
-}</p>
+			<p> </p>
+			</td></tr><tr><td>
+			<p><tt>void save(DataSet d) {<!-- --><br />
+			    try {<!-- --><br />
+			        // save to file<br />
+			    } catch (Exception e) { }<br />
+			}</tt></p>
 
-<p>void controlLoop() {<br />
-&nbsp; while(&hellip;) {<br />
-&nbsp;&nbsp;&nbsp; // wait for condition save(filter(load());<br />
-&nbsp; }<br />
-}</p>
+			<p> </p>
+			</td><td>
+			<p><tt>void controlLoop() {<!-- --><br />
+			    while(…) {<!-- --><br />
+			        // wait for condition save(filter(load());<br />
+			      }<br />
+			}</tt></p>
+
+			<p> </p>
+			</td></tr></tbody>
+</table>
 
 <p>a) Welche Probleme sehen Sie bei diesem Exception Handling Design?</p>
 
-<p>b) Welche Design-&Auml;nderungen empfehlen Sie?</p>', '2016-03-18 14:52:03', NULL, 'Error Handling Design', 8008);
+<p>b) Welche Design-Änderungen empfehlen Sie?</p>', '2016-03-18 14:52:03', NULL, 'Error Handling Design', 8008);
 INSERT INTO exercise VALUES (8006, '<p>Entwerfen Sie ein Error-Handling Policy f&uuml;r Ihr Engineering-Projekt. Legen Sie dabei fest, wie Sie Exceptions, Assertions und Logging verwenden wollen.</p>
 
 <p>Falls Sie kein Engineering-Projekt haben, verwenden Sie das kleine Java Beispiel-Projekt ImageGallery aus der Vorlage.</p>', '2016-03-18 15:02:14', NULL, 'Error Handling Policy', 8008);
