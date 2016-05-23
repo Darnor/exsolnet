@@ -9,7 +9,7 @@
         <div class="form-group">
             <label class="control-label col-sm-3" for="username">Benutzername:</label>
             <div class="col-sm-8">
-                <input required id="username" class="form-control" type="text" name="username" value="@user.getUsername" data-min-length="1" oninvalid="this.setCustomValidity('Benutzername darf nicht leer sein.')" oninput="this.setCustomValidity('')" placeholder="Franz"/>
+                <input required id="username" class="form-control" type="text" name="username" value="@user.getUsername" data-min-length="1" oninvalid="this.setCustomValidity('Benutzername darf nicht leer sein.')" oninput="this.setCustomValidity('')" placeholder="Benutzername"/>
             </div>
         </div>
         @if(user.getId == null) {
