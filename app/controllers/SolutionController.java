@@ -11,7 +11,7 @@ import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import util.ValidationUtil;
+import util.SecurityUtil;
 import views.html.editSolution;
 import views.html.error403;
 import views.html.error404;
@@ -156,10 +156,10 @@ public class SolutionController extends Controller {
 
         DynamicForm requestData = formFactory.form().bindFromRequest();
         boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
-        String content = ValidationUtil.sanitizeHtml(requestData.get(CONTENT_FIELD));
+        String content = SecurityUtil.sanitizeHtml(requestData.get(CONTENT_FIELD));
 
         Logger.debug("Trying to create a new solution");
-        if (!ValidationUtil.isEmpty(content)) {
+        if (!SecurityUtil.isEmpty(content)) {
             Logger.debug("Creating solution");
             Solution.create(content, exercise, currentUser, isOfficial);
         }
@@ -183,10 +183,10 @@ public class SolutionController extends Controller {
 
         DynamicForm requestData = formFactory.form().bindFromRequest();
         boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
-        String content = ValidationUtil.sanitizeHtml(requestData.get(CONTENT_FIELD));
+        String content = SecurityUtil.sanitizeHtml(requestData.get(CONTENT_FIELD));
 
         Logger.debug("Trying to update a solution");
-        if (!ValidationUtil.isEmpty(content)) {
+        if (!SecurityUtil.isEmpty(content)) {
             Logger.debug("Updating solution");
             Solution.update(solutionId, content, isOfficial);
         }

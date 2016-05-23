@@ -192,7 +192,7 @@ public class LoginControllerTest extends AbstractApplicationTest {
     public void testUserLoginValidEmail() {
         form.clear();
         form.put("emailorusername", "franz@hsr.ch");
-        form.put("password", "");
+        form.put("password", "a");
 
         Map<String, String> session = new HashMap<>();
         session.put("connected", "franz@hsr.ch");
@@ -204,7 +204,7 @@ public class LoginControllerTest extends AbstractApplicationTest {
     public void testUserLoginValidUserName() {
         form.clear();
         form.put("emailorusername", "franz");
-        form.put("password", "");
+        form.put("password", "a");
 
         Map<String, String> session = new HashMap<>();
         session.put("connected", "franz@hsr.ch");

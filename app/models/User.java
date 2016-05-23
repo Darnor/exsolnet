@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 import com.avaje.ebean.annotation.Formula;
 import models.builders.UserBuilder;
 import util.MD5Util;
+import util.SecurityUtil;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -76,7 +77,7 @@ public class User extends Model {
      */
     public static User authenticate(String userLogin, String password) {
         User user = userLogin.contains("@") ? findByEmail(userLogin) : findByUsername(userLogin);
-        return user != null && user.password.equals(password) ? user : null;
+        return user != null && SecurityUtil.checkPassowrd(password, user.getPassword()) ? user : null;
     }
 
     /**
@@ -100,7 +101,7 @@ public class User extends Model {
     }
 
     public static User create(String username, String email, String password, boolean isModerator) {
-        User user = UserBuilder.anUser().withUsername(username).withEmail(email).withPassword(password).withIsModerator(isModerator).build();
+        User user = UserBuilder.anUser().withUsername(username).withEmail(email).withPassword(SecurityUtil.hashPassword(password)).withIsModerator(isModerator).build();
         user.save();
         return user;
     }
@@ -108,7 +109,9 @@ public class User extends Model {
     public static void update(Long id, String username, String password, boolean isModerator) {
         User user = find().byId(id);
         user.setUsername(username);
-        user.setPassword(password);
+        if (password != null) {
+            user.setPassword(SecurityUtil.hashPassword(password));
+        }
         user.setIsModerator(isModerator);
         user.update();
     }

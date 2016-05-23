@@ -10,7 +10,7 @@ import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
-import util.ValidationUtil;
+import util.SecurityUtil;
 import views.html.*;
 
 import javax.inject.Inject;
@@ -85,7 +85,7 @@ public class ExerciseController extends Controller {
      * @param content the content
      */
     private static void validateFormData(String title, String mainTag, String content) {
-        if (title.trim().isEmpty() || mainTag.trim().isEmpty() || ValidationUtil.isEmpty(content)) {
+        if (title.trim().isEmpty() || mainTag.trim().isEmpty() || SecurityUtil.isEmpty(content)) {
             throw new IllegalArgumentException("Formdata not valid.");
         }
     }
@@ -95,7 +95,7 @@ public class ExerciseController extends Controller {
      * @param solutionContent the content
      */
     private static void validateSolutionFormData(String solutionContent) {
-        if (ValidationUtil.isEmpty(solutionContent)) {
+        if (SecurityUtil.isEmpty(solutionContent)) {
             throw new IllegalArgumentException("Formdata not valid.");
         }
     }
@@ -260,7 +260,7 @@ public class ExerciseController extends Controller {
         User currentUser = getCurrentUser();
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String title = requestData.get(TITLE_FIELD);
-        String content = ValidationUtil.sanitizeHtml(requestData.get(EXERCISE_CONTENT_FIELD));
+        String content = SecurityUtil.sanitizeHtml(requestData.get(EXERCISE_CONTENT_FIELD));
         String mainTag = requestData.get(MAIN_TAG_FIELD);
 
         Logger.debug("Binding form with data: ");
@@ -285,7 +285,7 @@ public class ExerciseController extends Controller {
         }
 
         if (exerciseId == null) {
-            String solutionContent = ValidationUtil.sanitizeHtml(requestData.get(SOLUTION_CONTENT_FIELD));
+            String solutionContent = SecurityUtil.sanitizeHtml(requestData.get(SOLUTION_CONTENT_FIELD));
             boolean isOfficial = "on".equals(requestData.get(OFFICIAL_FIELD));
             try {
                 validateSolutionFormData(solutionContent);

@@ -23,7 +23,7 @@ public class UserTest extends AbstractApplicationTest {
         assertNotNull(existingUser);
         Long userId = existingUser.getId();
 
-        User user = User.authenticate(testemail, "");
+        User user = User.authenticate(testemail, "a");
 
         assertEquals(testemail,user.getEmail());
         assertEquals(userId, user.getId());
@@ -36,7 +36,7 @@ public class UserTest extends AbstractApplicationTest {
         assertNotNull(existingUser);
         Long userId = existingUser.getId();
 
-        User user = User.authenticate(testusername, "");
+        User user = User.authenticate(testusername, "a");
 
         assertEquals(testusername,user.getUsername());
         assertEquals(userId, user.getId());

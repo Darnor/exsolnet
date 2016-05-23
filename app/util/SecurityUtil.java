@@ -1,12 +1,13 @@
 package util;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
 import org.owasp.html.Sanitizers;
 
 import java.util.regex.Pattern;
 
-public class ValidationUtil {
+public class SecurityUtil {
 
     private static final PolicyFactory SANITIZE_POLICY = new HtmlPolicyBuilder()
             .allowCommonBlockElements()
@@ -20,7 +21,7 @@ public class ValidationUtil {
             .and(Sanitizers.TABLES)
             .and(Sanitizers.IMAGES);
 
-    private ValidationUtil() {}
+    private SecurityUtil() {}
 
     public static String sanitizeHtml(String content) {
         return SANITIZE_POLICY.sanitize(content);
@@ -28,5 +29,13 @@ public class ValidationUtil {
 
     public static boolean isEmpty(String content) {
         return content.trim().matches("^((<p>)*\\s*(&nbsp;)*\\s*(</p>)*(\r|\n|\r\n)*)+$");
+    }
+
+    public static String hashPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt(12));
+    }
+
+    public static boolean checkPassowrd(String candidate, String hashed) {
+       return BCrypt.checkpw(candidate, hashed);
     }
 }

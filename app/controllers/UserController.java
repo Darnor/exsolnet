@@ -70,20 +70,23 @@ public class UserController extends Controller {
         String passwordCheck = requestData.get("password-check");
         boolean isModerator = currentUser.isModerator();
 
-        if (password.equals(passwordCheck) && password.isEmpty()) {
+        if (password.equals(passwordCheck) && password.isEmpty() && !username.trim().isEmpty()) {
             Logger.debug("Empty password, don't update it.");
-            password = currentUser.getPassword();
-            passwordCheck = currentUser.getPassword();
+            User.update(userId, username, null, isModerator);
+            flash("success", "Benutzername wurde angepasst. Passwort ist immernoch das gleiche.");
+            return redirect(routes.UserController.renderDashboard());
         }
 
         if (validateUserForm(username, password, passwordCheck)) {
             Logger.debug(currentUser.getUsername() + " is now known as " + username);
             User.update(userId, username, password, isModerator);
             Logger.debug("User updated.");
+            flash("success", "Benutzername und/oder Passwort wurde angepasst.");
             return redirect(routes.UserController.renderDashboard());
         }
 
         Logger.error("New userdata could not be verified, redirecting to the edit page again.");
+        flash("error", "Benutzerdaten konnten nicht angepasst werden.");
         return redirect(routes.UserController.renderEdit());
     }
 

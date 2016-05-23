@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
 public class RegexMatcher extends SubstringMatcher{
     private final Pattern pattern;
 
-    protected RegexMatcher(String substring) {
+    private RegexMatcher(String substring) {
         super(substring);
         this.pattern = Pattern.compile(substring, Pattern.MULTILINE | Pattern.DOTALL);
     }

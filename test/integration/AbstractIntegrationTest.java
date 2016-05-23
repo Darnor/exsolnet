@@ -23,6 +23,7 @@ abstract class AbstractIntegrationTest extends AbstractApplicationTest {
             Logger.debug("Connecting as user: " + username);
             browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
             browser.fill("#email").with(username);
+            browser.fill("#password").with("a");
             browser.submit("#btn_login");
             browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
             assertNotEquals("Login failed!", "/login", browser.url());

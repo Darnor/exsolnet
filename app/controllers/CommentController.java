@@ -10,7 +10,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.SessionService;
-import util.ValidationUtil;
+import util.SecurityUtil;
 import views.html.error403;
 import views.html.error404;
 
@@ -83,7 +83,7 @@ public class CommentController extends Controller {
         }
 
         if (currentUser.isModerator() || comment.getUser().getId().equals(currentUser.getId())) {
-            String content = ValidationUtil.sanitizeHtml(formFactory.form().bindFromRequest().get(CONTENT_FIELD));
+            String content = SecurityUtil.sanitizeHtml(formFactory.form().bindFromRequest().get(CONTENT_FIELD));
             Comment.updateContent(commentId, content);
             Logger.debug("Comment: " + commentId + " updated with content: " + content);
             long exerciseId = comment.getExercise() == null ? comment.getSolution().getExercise().getId() : comment.getExercise().getId();

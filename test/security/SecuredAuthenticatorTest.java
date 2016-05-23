@@ -66,10 +66,10 @@ public class SecuredAuthenticatorTest extends AbstractApplicationTest {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.LoginController.processLogin())
-                            .bodyForm(ImmutableMap.of(
-                                    "emailorusername", "Franz",
-                                    "password", ""
-                                ))
+                        .bodyForm(ImmutableMap.of(
+                                "emailorusername", "Franz",
+                                "password", "a"
+                            ))
             );
             assertThat(result.session().get(SessionService.KEY_USEREMAIL), is("franz@hsr.ch"));
             assertThat(result.status(), is(SEE_OTHER));
