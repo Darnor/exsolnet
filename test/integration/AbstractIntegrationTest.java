@@ -15,10 +15,13 @@ import static play.test.Helpers.*;
 
 abstract class AbstractIntegrationTest extends AbstractApplicationTest {
     static final String FRANZ = "Franz";
+    static final int RETRYCOUNTER = 100;
 
     static void as(String username, Class<? extends WebDriver> driver, final Consumer<TestBrowser> block) {
         running(testServer(3333, fakeApplication()), driver, browser -> {
+            int count = 0;
             do {
+                count++;
                 try {
                     browser.goTo("http://localhost:3333/");
                     Logger.debug("Connecting as user: " + username);
@@ -32,7 +35,7 @@ abstract class AbstractIntegrationTest extends AbstractApplicationTest {
                 } catch (Exception exception) {
                     //ignore
                 }
-            } while (browser.url().equals("/login"));
+            } while (browser.url().equals("/login") & count < RETRYCOUNTER);
         });
     }
 
@@ -51,6 +54,7 @@ abstract class AbstractIntegrationTest extends AbstractApplicationTest {
 
         });
     }
+
 
 
     static void fillTagTokenElements(TestBrowser browser, WebElement element, String tag) {
