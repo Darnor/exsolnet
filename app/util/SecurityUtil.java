@@ -36,6 +36,6 @@ public class SecurityUtil {
     }
 
     public static boolean checkPassword(String candidate, String hashed) {
-       return BCrypt.checkpw(candidate, hashed);
+        return BCrypt.checkpw(candidate, hashed);
     }
 }

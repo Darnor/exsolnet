@@ -6,12 +6,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import play.mvc.Result;
+import util.SecurityUtil;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -27,8 +29,8 @@ public class LoginControllerTest extends AbstractApplicationTest {
         form = new HashMap<>();
         form.put("username", "testUser99");
         form.put("email", "testUser@test.test");
-        form.put("password", "a");
-        form.put("password-check", "a");
+        form.put("password", "b");
+        form.put("password-check", "b");
     }
 
     @After
@@ -56,6 +58,8 @@ public class LoginControllerTest extends AbstractApplicationTest {
             User user = User.findByEmail("testUser@test.test");
             assertNotNull(user);
             assertThat(user.getUsername(), is("testUser99"));
+            assertThat(user.getPassword(), is(not(form.get("password"))));
+            assertTrue(SecurityUtil.checkPassword(form.get("password"), user.getPassword()));
         });
     }
 
