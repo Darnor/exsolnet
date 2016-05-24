@@ -39,8 +39,12 @@ public class UserController extends Controller {
      */
     static boolean validateUserForm(String username, String password, String passwordCheck) {
         return password.equals(passwordCheck)
-                && username.trim().length() > 0
-                && password.trim().length() > 0;
+                && password.trim().length() > 0
+                && validateUsernameFormat(username);
+    }
+
+    private static boolean validateUsernameFormat(String username) {
+        return !username.trim().isEmpty() && username.matches("[A-Za-z0-9_\\-]{4,}");
     }
 
     /**
@@ -70,7 +74,7 @@ public class UserController extends Controller {
         String passwordCheck = requestData.get("password-check");
         boolean isModerator = currentUser.isModerator();
 
-        if (password.equals(passwordCheck) && password.isEmpty() && !username.trim().isEmpty()) {
+        if (password.equals(passwordCheck) && password.isEmpty() && validateUsernameFormat(username)) {
             Logger.debug("Empty password, don't update it.");
             User.update(userId, username, null, isModerator);
             flash("success", "Benutzername wurde angepasst. Passwort ist immernoch das gleiche.");

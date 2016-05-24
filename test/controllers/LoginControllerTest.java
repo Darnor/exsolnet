@@ -106,6 +106,46 @@ public class LoginControllerTest extends AbstractApplicationTest {
     }
 
     @Test
+    public void testRegisterFailedWrongUsernameFormat() {
+        form.replace("username", "testUser--asdf123/'");
+        form.replace("email", "testUser2@test.test");
+
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.LoginController.processRegister())
+                            .bodyForm(form)
+            );
+
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/register?username=testUser--asdf123%2F%27&email=testUser2%40test.test"));
+            assertThat(result.status(), is(SEE_OTHER));
+            assertThat(result.session(), is(new HashMap<>()));
+            assertNull(User.findByEmail("testUser2@test.test"));
+        });
+    }
+
+    @Test
+    public void testRegisterFailedWrongUsernameTooShort() {
+        form.replace("username", "tes");
+        form.replace("email", "testUser2@test.test");
+
+        running(fakeApplication(), () -> {
+            Result result = route(
+                    fakeRequest(routes.LoginController.processRegister())
+                            .bodyForm(form)
+            );
+
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/register?username=tes&email=testUser2%40test.test"));
+            assertThat(result.status(), is(SEE_OTHER));
+            assertThat(result.session(), is(new HashMap<>()));
+            assertNull(User.findByEmail("testUser2@test.test"));
+        });
+    }
+
+    @Test
     public void testRegisterFailedEmptyEmail() {
         form.replace("username", "testUser98");
         form.replace("email", "");

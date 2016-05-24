@@ -75,14 +75,7 @@ public class UserControllerTest extends AbstractApplicationTest {
         });
     }
 
-    @Test
-    public void testAuthorizedFailedUserUpdate() {
-        Map<String, String> form = new HashMap<>();
-        form.put("username", "");
-        form.put("email", "alfred.alfredo@hsr.ch");
-        form.put("password", "a");
-        form.put("password-check", "a");
-
+    private void testFailedUserUpdate(Map<String, String> form) {
         running(fakeApplication(), () -> {
             Result result = route(
                     fakeRequest(routes.UserController.processUpdate(8000))
@@ -95,6 +88,28 @@ public class UserControllerTest extends AbstractApplicationTest {
             assertThat(result.status(), is(SEE_OTHER));
             assertNotNull(User.findByEmail("franz@hsr.ch"));
         });
+    }
+
+    @Test
+    public void testAuthorizedFailedUserUpdateEmptyUsername() {
+        Map<String, String> form = new HashMap<>();
+        form.put("username", "");
+        form.put("email", "alfred.alfredo@hsr.ch");
+        form.put("password", "a");
+        form.put("password-check", "a");
+
+        testFailedUserUpdate(form);
+    }
+
+    @Test
+    public void testAuthorizedFailedUserUpdateWrongUsernameFormat() {
+        Map<String, String> form = new HashMap<>();
+        form.put("username", "<script>alert('hallo')</script>");
+        form.put("email", "alfred.alfredo@hsr.ch");
+        form.put("password", "a");
+        form.put("password-check", "a");
+
+        testFailedUserUpdate(form);
     }
 
     @Test

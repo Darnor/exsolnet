@@ -9,7 +9,7 @@
         <div class="form-group">
             <label class="control-label col-sm-3" for="username">Benutzername:</label>
             <div class="col-sm-8">
-                <input required id="username" class="form-control" type="text" name="username" value="@user.getUsername" data-min-length="1" oninvalid="this.setCustomValidity('Benutzername darf nicht leer sein.')" oninput="this.setCustomValidity('')" placeholder="Benutzername"/>
+                <input required id="username" class="form-control" type="text" name="username" value="@user.getUsername" pattern="[A-Za-z0-9_\-]{4,}" oninvalid="this.setCustomValidity('Benutzername muss mindestens 4 Zeichen lang sein und darf nur die Buchstaben von A bis Z und Zahlen 0 bis 9 sowie _ und - enthalten.')" oninput="this.setCustomValidity('')" placeholder="Benutzername"/>
             </div>
         </div>
         @if(user.getId == null) {
