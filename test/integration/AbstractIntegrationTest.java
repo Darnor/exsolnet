@@ -26,7 +26,11 @@ abstract class AbstractIntegrationTest extends AbstractApplicationTest {
                 if (count > 0) {
                     Logger.error("Failed to login on try number: " + count);
                 }
-                login(browser, username, block);
+                try {
+                    login(browser, username, block);
+                } catch (Exception e) {
+                    //ignore exception
+                }
             } while (browser.url().equals("/login") && count++ < RETRY_COUNTER);
             Logger.debug("Number of retries: " + count);
         });
@@ -38,7 +42,7 @@ abstract class AbstractIntegrationTest extends AbstractApplicationTest {
         });
     }
 
-    private static void login(TestBrowser browser, String username,  final Consumer<TestBrowser> block) {
+    private static void login(TestBrowser browser, String username, final Consumer<TestBrowser> block) {
         browser.goTo("http://localhost:3333/");
         Logger.debug("Connecting as user: " + username);
         browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
