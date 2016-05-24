@@ -5,7 +5,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import play.Application;
 import play.Logger;
 import play.test.TestBrowser;
 
@@ -15,30 +14,31 @@ import java.util.function.Consumer;
 import static play.test.Helpers.*;
 
 abstract class AbstractIntegrationTest extends AbstractApplicationTest {
+
+    private static final int RETRY_COUNTER = 100;
+
     static final String FRANZ = "Franz";
-    static final int RETRYCOUNTER = 100;
 
     static void as(String username, Class<? extends WebDriver> driver, final Consumer<TestBrowser> block) {
         running(testServer(3333, fakeApplication()), driver, browser -> {
             int count = 0;
             do {
-                count++;
-                try {
-                    login(browser,username,block);
-                } catch (Exception exception) {
-                    //ignore
+                if (count > 0) {
+                    Logger.error("Failed to login on try number: " + count);
                 }
-            } while (browser.url().equals("/login") & count < RETRYCOUNTER);
+                login(browser,username,block);
+            } while (browser.url().equals("/login") & count++ < RETRY_COUNTER);
+            Logger.debug("Number of retries: " + count);
         });
     }
 
-    static void as_noretry(String username, Class<? extends WebDriver> driver, final Consumer<TestBrowser> block) {
+    static void asNoRetry(String username, Class<? extends WebDriver> driver, final Consumer<TestBrowser> block) {
         running(testServer(3333, fakeApplication()), driver, browser -> {
             login(browser,username,block);
         });
     }
 
-    private static void login(TestBrowser browser, String username,  final Consumer<TestBrowser> block){
+    private static void login(TestBrowser browser, String username,  final Consumer<TestBrowser> block) {
         browser.goTo("http://localhost:3333/");
         Logger.debug("Connecting as user: " + username);
         browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
@@ -46,7 +46,6 @@ abstract class AbstractIntegrationTest extends AbstractApplicationTest {
         browser.fill("#password").with("a");
         browser.submit("#btn_login");
         browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
-        //assertNotEquals("Login failed!", "/login", browser.url());
         block.accept(browser);
     }
 
