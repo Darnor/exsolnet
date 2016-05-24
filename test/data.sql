@@ -32,10 +32,10 @@ INSERT INTO exoluser VALUES (8007, 'Angela', 'angela@hsr.ch', '$2a$12$OEcmJKwpW5
 INSERT INTO exoluser VALUES (8008, 'Tony', 'tony@hsr.ch', '$2a$12$RcoXGB5q8B3xIGrcCFdYdefXn3cYSU/UcI2MmYIG.pZTL.DLs.RbW', false);
 INSERT INTO exoluser VALUES (8009, 'Sandro', 'sandro@hsr.ch', '$2a$12$FTcbwydVDmTt9YHablAyPOYbkt0w6JsWv6vmqgZzLMBdAfQOFR/o2', false);
 INSERT INTO exoluser VALUES (8010, 'Mario', 'mario@hsr.ch', '$2a$12$LHHGXNqF99je6K2ACptvpePzwl//RzKtnUQETjVuTpyQplwHnorvS', false);
-INSERT INTO exoluser VALUES (8012, 'Lorem Ipsum', 'lorem.ipsum@hsr.ch', '$2a$12$P5DSpwywV9tOYbGJ/2w8eee9V2.kU4pE4iET9rmu7uH79EPSANPoK', false);
+INSERT INTO exoluser VALUES (8012, 'Lorem-Ipsum', 'lorem.ipsum@hsr.ch', '$2a$12$P5DSpwywV9tOYbGJ/2w8eee9V2.kU4pE4iET9rmu7uH79EPSANPoK', false);
 INSERT INTO exoluser VALUES (8011, 'Marco', 'marco@hsr.ch', '$2a$12$K2r79a8b88X.YmakKR10reU3ngTv1d1TpfK98s7SJxvETaDxIbjvS', false);
 INSERT INTO exoluser VALUES (8001, 'Hans', 'hans@hsr.ch', '$2a$12$Y8yFVcrS.BcdjlniWfWgZuuiGU6QeUaPN9gWi7Ms4anra2RmIuJQS', false);
-INSERT INTO exoluser VALUES (8004, 'p', 'katherina@hsr.ch', '$2a$12$lSYO9a221LtC18HpeU4ndOiG.ZuhJgQXItUqrqCfakFaq2u9PDiIK', false);
+INSERT INTO exoluser VALUES (8004, 'Katherina', 'katherina@hsr.ch', '$2a$12$lSYO9a221LtC18HpeU4ndOiG.ZuhJgQXItUqrqCfakFaq2u9PDiIK', false);
 INSERT INTO exoluser VALUES (8002, 'Blubberduck', 'blubberduck@hsr.ch', '$2a$12$0BoHiNClrxHvImcS7BT9uu2hQw961uybiT9tYVj189/v5CndUCeX.', true);
 INSERT INTO exoluser VALUES (7999, 'Peter', 'peter@hsr.ch', '$2a$12$XBz1dUkmjRHFWvUemK3XDezSN81m/UmlV1MMrf2tdwa4UGL4Y/sgG', true);
 --Exercise
