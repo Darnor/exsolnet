@@ -13,7 +13,7 @@ public class LoginLogoutIT extends AbstractIntegrationTest {
     @Test
     public void integrationTest() {
         //as method includes login
-        as("Franz", FIREFOX, browser -> {
+        as_noretry("Franz", FIREFOX, browser -> {
             browser.goTo("/login");
             assertThat(browser.pageSource(), containsString("Franz"));
             browser.click("#btn_logout");
