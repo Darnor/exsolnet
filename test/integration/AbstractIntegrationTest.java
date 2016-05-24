@@ -26,15 +26,15 @@ abstract class AbstractIntegrationTest extends AbstractApplicationTest {
                 if (count > 0) {
                     Logger.error("Failed to login on try number: " + count);
                 }
-                login(browser,username,block);
-            } while (browser.url().equals("/login") & count++ < RETRY_COUNTER);
+                login(browser, username, block);
+            } while (browser.url().equals("/login") && count++ < RETRY_COUNTER);
             Logger.debug("Number of retries: " + count);
         });
     }
 
     static void asNoRetry(String username, Class<? extends WebDriver> driver, final Consumer<TestBrowser> block) {
         running(testServer(3333, fakeApplication()), driver, browser -> {
-            login(browser,username,block);
+            login(browser, username, block);
         });
     }
 
