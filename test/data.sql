@@ -64,7 +64,6 @@ INSERT INTO exercise VALUES (8005, '<p>In einem Code gibt es diverse Stellen mit
 			&nbsp; }<br />
 			}</tt></p>
 
-			<p>&Acirc;&nbsp;</p>
 			</td>
 			<td>
 			<p><tt>DataSet filter(DataSet d) {<!-- --><br />
@@ -75,7 +74,6 @@ INSERT INTO exercise VALUES (8005, '<p>In einem Code gibt es diverse Stellen mit
 			&nbsp; }<br />
 			}</tt></p>
 
-			<p>&Acirc;&nbsp;</p>
 			</td>
 		</tr>
 		<tr>
