@@ -23,13 +23,8 @@ abstract class AbstractIntegrationTest extends AbstractApplicationTest {
         running(testServer(3333, fakeApplication()), driver, browser -> {
             int count = 0;
             do {
-                if (count > 0) {
-                    Logger.error("Failed to login on try number: " + count );
-                    browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
-                }
                 try {
-                    login(browser, username, block);
-                    browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
+                    login(browser, username);
                 } catch (Exception e) {
                     Logger.error("Exception while trying to login.", e);
                 }
@@ -37,16 +32,19 @@ abstract class AbstractIntegrationTest extends AbstractApplicationTest {
 
             Logger.debug("Number of retries: " + count);
             Logger.debug("Current url: " + browser.url());
+
+            block.accept(browser);
         });
     }
 
     static void asNoRetry(String username, Class<? extends WebDriver> driver, final Consumer<TestBrowser> block) {
         running(testServer(3333, fakeApplication()), driver, browser -> {
-            login(browser, username, block);
+            login(browser, username);
+            block.accept(browser);
         });
     }
 
-    private static void login(TestBrowser browser, String username, final Consumer<TestBrowser> block) {
+    private static void login(TestBrowser browser, String username) {
         browser.goTo("http://localhost:3333/");
         Logger.debug("Connecting as user: " + username);
         browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
@@ -54,7 +52,6 @@ abstract class AbstractIntegrationTest extends AbstractApplicationTest {
         browser.fill("#password").with("a");
         browser.submit("#btn_login");
         browser.await().atMost(2, TimeUnit.SECONDS).untilPage().isLoaded();
-        block.accept(browser);
     }
 
 
