@@ -29,7 +29,7 @@ abstract class AbstractIntegrationTest extends AbstractApplicationTest {
                 try {
                     login(browser, username, block);
                 } catch (Exception e) {
-                    //ignore exception
+                    Logger.error("Exception while trying to login.", e);
                 }
             } while (browser.url().equals("/login") && count++ < RETRY_COUNTER);
             Logger.debug("Number of retries: " + count);
