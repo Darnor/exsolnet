@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static helper.RegexMatcher.matches;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -41,7 +42,7 @@ public class CommentControllerTest extends AbstractApplicationTest {
             );
             Optional<String> location = result.redirectLocation();
             assertTrue(location.isPresent());
-            assertThat(location.get(), is("/exercises/8000"));
+            assertThat(location.get(), matches("/exercises/8000"));
             assertThat(result.status(), is(SEE_OTHER));
         });
     }
@@ -104,7 +105,7 @@ public class CommentControllerTest extends AbstractApplicationTest {
             );
             Optional<String> location = result.redirectLocation();
             assertTrue(location.isPresent());
-            assertThat(location.get(), is("/exercises/8001"));
+            assertThat(location.get(), matches("/exercises/8001"));
             assertThat(result.status(), is(SEE_OTHER));
         });
     }
