@@ -22,5 +22,6 @@
             prePopulate: currentTagFilter,
             theme: "facebook"
         });
+
     });
 })($);

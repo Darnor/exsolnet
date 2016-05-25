@@ -8,6 +8,7 @@
                 $("." + divId).toggle();
             }
     </script>
+    <script src="@routes.Assets.versioned("javascripts/exerciseDetails.js")" type="text/javascript"></script>
     <div class="exercisedetail">
         <h1>@exercise.getTitle</h1>
         <p>@Html(exercise.getContent)</p>

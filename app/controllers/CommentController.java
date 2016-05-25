@@ -41,7 +41,7 @@ public class CommentController extends Controller {
 
         Logger.debug("New comment created by user " + currentUser.getUsername());
         Comment.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), Exercise.findById(exerciseId), currentUser);
-        return redirect(routes.ExerciseController.renderDetail(exerciseId));
+        return redirect(routes.ExerciseController.renderDetail(exerciseId).url() + "#q");
     }
 
     /**
@@ -61,7 +61,7 @@ public class CommentController extends Controller {
         if (currentUser.isModerator() || currentUser.hasSolved(solution.getExercise().getId())) {
             Logger.debug("New comment created by user " + currentUser.getUsername());
             Comment.create(formFactory.form().bindFromRequest().get(CONTENT_FIELD), solution, currentUser);
-            return redirect(routes.ExerciseController.renderDetail(solution.getExercise().getId()));
+            return redirect(routes.ExerciseController.renderDetail(solution.getExercise().getId()).url() + "#s"+solutionId);
         }
 
         Logger.error(currentUser.getEmail() + " is not authorized to create comment for solutionId " + solution.getId());

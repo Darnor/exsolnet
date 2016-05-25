@@ -14,9 +14,11 @@
                             @snippets.userLink(comment.getUser)
                             auf
                             @if(comment.getExercise != null) {
-                                <a href="@routes.ExerciseController.renderDetail(comment.getExercise.getId)">@comment.getExercise.getTitle</a>
+                                <a href="@routes.ExerciseController.renderDetail(comment.getExercise.getId)#q/c@comment.getId">@comment.getExercise.getTitle</a>
                             } else {
-                                deine Lösung zu <a href="@routes.ExerciseController.renderDetail(comment.getSolution.getExercise.getId)">@comment.getSolution.getExercise.getTitle</a>
+                                <a href="@routes.ExerciseController.renderDetail(comment.getSolution.getExercise.getId)#s@comment.getSolution.getId/c@comment.getId">
+                                    eine Lösung zu @comment.getSolution.getExercise.getTitle
+                                </a>
                             }
                             -
                             @snippets.longDate(comment.getTime)
