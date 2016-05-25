@@ -23,9 +23,6 @@ abstract class AbstractIntegrationTest extends AbstractApplicationTest {
         running(testServer(3333, fakeApplication()), driver, browser -> {
             int count = 0;
             do {
-                if (count > 0) {
-                    Logger.error("Failed to login on try number: " + count);
-                }
                 try {
                     login(browser, username, block);
                 } catch (Exception e) {
@@ -33,6 +30,7 @@ abstract class AbstractIntegrationTest extends AbstractApplicationTest {
                 }
             } while (browser.url().equals("/login") && count++ < RETRY_COUNTER);
             Logger.debug("Number of retries: " + count);
+            Logger.debug("Current url: " + browser.url());
         });
     }
 
