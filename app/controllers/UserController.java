@@ -18,6 +18,8 @@ import javax.inject.Inject;
 @Security.Authenticated(Secured.class)
 public class UserController extends Controller {
 
+    public static final String EMAIL_FORMAT = "^[0-9A-Za-z.\\-_]+@[0-9A-Za-z.\\-_]+\\.[0-9A-Za-z]{2,}$";
+
     @Inject
     FormFactory formFactory;
 
@@ -27,7 +29,7 @@ public class UserController extends Controller {
      * @return true if email is valide. false if email is invalid.
      */
     static boolean validateEmailFormat(String email) {
-        return email.matches("^[A-Za-z.\\-_]+@[A-Za-z.\\-_]+\\.[A-Za-z]{2,}$");
+        return email.matches(EMAIL_FORMAT);
     }
 
     /**
