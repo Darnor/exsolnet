@@ -1,6 +1,6 @@
 name := """exsolnet"""
 
-version := "0.2"
+version := "0.4"
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava, PlayEbean)
 
