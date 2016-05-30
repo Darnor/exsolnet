@@ -1,4 +1,4 @@
-@(user: User)
+@(user: User, restrictedDomain: String = "")
 @main(user.getEmail, if(user.getId == null) {  null } else { user }) {
     <form class="form-horizontal" role="form" method="POST" action="
         @if(user.getId == null) {
@@ -16,8 +16,13 @@
             <div class="form-group">
                 <label class="control-label col-sm-3" for="email">Email:</label>
                 <div class="col-sm-8">
-                    <input required id="email" class="form-control" type="text" name="email" data-error="Email Adresse ist nicht gültig." value="@user.getEmail"
-                    pattern="@UserController.EMAIL_FORMAT" oninvalid="this.setCustomValidity('Emailformat ist nicht gültig.')" oninput="this.setCustomValidity('')" placeholder="Email"/>
+                    @if(restrictedDomain == "") {
+                        <input required id="email" class="form-control" type="text" name="email" data-error="Email Adresse ist nicht gültig." value="@user.getEmail"
+                        pattern="@UserController.EMAIL_FORMAT" oninvalid="this.setCustomValidity('Emailformat ist nicht gültig.')" oninput="this.setCustomValidity('')" placeholder="Email"/>
+                    } else {
+                        <input required id="email" class="form-control inline" type="text" name="email" data-error="Email Adresse ist nicht gültig." value="@user.getEmail" placeholder="Email"/>
+                        @restrictedDomain
+                    }
                 </div>
             </div>
         }

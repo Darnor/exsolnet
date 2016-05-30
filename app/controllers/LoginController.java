@@ -3,6 +3,7 @@ package controllers;
 import com.google.inject.Inject;
 import models.User;
 import models.builders.UserBuilder;
+import play.Configuration;
 import play.Logger;
 import play.data.DynamicForm;
 import play.data.FormFactory;
@@ -19,6 +20,9 @@ public class LoginController extends Controller {
 
     @Inject
     FormFactory formFactory;
+
+    @Inject
+    Configuration configuration;
 
     /**
      * Renders login and logout fields, depending if user is logged in
@@ -68,7 +72,7 @@ public class LoginController extends Controller {
      * @return Result
      */
     public Result renderRegister(String username, String email) {
-        return ok(editUser.render(UserBuilder.anUser().withUsername(username).withEmail(email).build()));
+        return ok(editUser.render(UserBuilder.anUser().withUsername(username).withEmail(email).build(), getRestrictedDomain()));
     }
 
     /**
@@ -100,6 +104,10 @@ public class LoginController extends Controller {
         }
     }
 
+    private String getRestrictedDomain(){
+        return configuration.getString("exsolnet.restrictedDomain", "");
+    }
+
     /**
      * Register a user
      * @return Result, registration error or login
@@ -107,7 +115,8 @@ public class LoginController extends Controller {
     public Result processRegister() {
         DynamicForm requestData = formFactory.form().bindFromRequest();
         String username = requestData.get("username");
-        String email = requestData.get("email");
+        String originalEmail = requestData.get("email");
+        String email = requestData.get("email") + getRestrictedDomain();
         String password = requestData.get("password");
         String passwordCheck = requestData.get("password-check");
 
@@ -122,7 +131,7 @@ public class LoginController extends Controller {
 
         setFlashError(email, username, password, passwordCheck);
 
-        return redirect(routes.LoginController.renderRegister(username, email));
+        return redirect(routes.LoginController.renderRegister(username, originalEmail));
     }
 
     /**

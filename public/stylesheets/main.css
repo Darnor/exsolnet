@@ -138,3 +138,8 @@ body {
 .commentdetail.highlight{
     background-color: orange;
 }
+
+.form-control.inline{
+    width: 50%;
+    display:inline;
+}

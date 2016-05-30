@@ -103,7 +103,7 @@ public class UserController extends Controller {
     public Result renderEdit() {
         User currentUser = SessionService.getCurrentUser();
         Logger.debug(currentUser.getEmail() + " wants to edit the profile");
-        return ok(editUser.render(currentUser));
+        return ok(editUser.render(currentUser, ""));
     }
 
     /**

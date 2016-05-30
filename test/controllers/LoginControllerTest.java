@@ -4,6 +4,7 @@ import helper.AbstractApplicationTest;
 import models.User;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import play.mvc.Result;
 import util.SecurityUtil;
@@ -15,9 +16,7 @@ import java.util.Optional;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static play.test.Helpers.*;
 
 public class LoginControllerTest extends AbstractApplicationTest {
@@ -58,6 +57,38 @@ public class LoginControllerTest extends AbstractApplicationTest {
             User user = User.findByEmail("testUser@test.test");
             assertNotNull(user);
             assertThat(user.getUsername(), is("testUser99"));
+            assertThat(user.getPassword(), is(not(form.get("password"))));
+            assertTrue(SecurityUtil.checkPassword(form.get("password"), user.getPassword()));
+        });
+    }
+
+    @Test
+    @Ignore("Can't get this to work...")
+    public void testRegisterNewUserRestricted() {
+        Map<String, String> session = new HashMap<>();
+        session.put("connected", "testUser111@test.test");
+
+        Map<String, String> config = new HashMap<>();
+        config.put("exsolnet.restrictedDomain", "@test.test");
+
+        form.put("email", "testUser111");
+        form.put("username", "testUser111");
+
+        running(fakeApplication(), () -> {
+            assertNull(User.findByEmail("testUser111@test.test"));
+            Result result = route(
+                    fakeRequest(routes.LoginController.processRegister())
+                            .bodyForm(form)
+            );
+
+            Optional<String> location = result.redirectLocation();
+            assertTrue(location.isPresent());
+            assertThat(location.get(), is("/"));
+            assertThat(result.status(), is(SEE_OTHER));
+            assertThat(result.session(), is(session));
+            User user = User.findByEmail("testUser111@test.test");
+            assertNotNull(user);
+            assertThat(user.getUsername(), is("testUser111"));
             assertThat(user.getPassword(), is(not(form.get("password"))));
             assertTrue(SecurityUtil.checkPassword(form.get("password"), user.getPassword()));
         });
