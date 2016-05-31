@@ -46,6 +46,7 @@ GET         /register                               controllers.LoginController.
 POST        /register                               controllers.LoginController.processRegister
 POST        /login                                  controllers.LoginController.processLogin
 POST        /logout                                 controllers.LoginController.processLogout
+GET         /verify/:id/:code                       controllers.LoginController.processVerify(id: Long, code: java.lang.String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                           controllers.Assets.versioned(path="/public", file: Asset)

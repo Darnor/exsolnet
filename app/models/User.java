@@ -8,6 +8,7 @@ import util.SecurityUtil;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,6 +62,10 @@ public class User extends Model {
     @JoinColumn(name = COLUMN_USER_ID)
     private List<Tracking> trackings;
 
+    @Basic
+    private String verificationCode;
+
+
     public static Model.Finder<Long, User> find() {
         return new Finder<>(User.class);
     }
@@ -100,8 +105,9 @@ public class User extends Model {
         return find().where().ieq(COLUMN_USERNAME, username).findUnique();
     }
 
-    public static User create(String username, String email, String password, boolean isModerator) {
+    public static User create(String username, String email, String password, boolean isModerator) throws UnsupportedEncodingException {
         User user = UserBuilder.anUser().withUsername(username).withEmail(email).withPassword(SecurityUtil.hashPassword(password)).withIsModerator(isModerator).build();
+        user.setVerificationCode(SecurityUtil.generateVerificationCode());
         user.save();
         return user;
     }
@@ -205,6 +211,15 @@ public class User extends Model {
     public long getPoints() {
         return points;
     }
+    
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
 
     public List<Tag> getTrackedTags() {
         return trackings.stream().map(Tracking::getTag).collect(Collectors.toList());

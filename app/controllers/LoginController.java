@@ -10,6 +10,8 @@ import play.data.FormFactory;
 import play.mvc.Controller;
 import play.mvc.Result;
 import services.SessionService;
+import util.Mail;
+import util.SecurityUtil;
 import views.html.editUser;
 import views.html.info;
 import views.html.login;
@@ -17,12 +19,16 @@ import views.html.login;
 public class LoginController extends Controller {
 
     private static final String FLASH_ERROR = "error";
+    private static final String FLASH_SUCCESS = "success";
 
     @Inject
     FormFactory formFactory;
 
     @Inject
     Configuration configuration;
+
+    @Inject
+    Mail mailer;
 
     /**
      * Renders login and logout fields, depending if user is logged in
@@ -57,6 +63,11 @@ public class LoginController extends Controller {
         if (user == null) {
             Logger.warn(name + " failed to log in.");
             flash(FLASH_ERROR, "Falscher Benutzername oder Passwort");
+            return redirect(routes.LoginController.renderLogin());
+        }
+        if (user.getVerificationCode() != null){
+            Logger.warn(name + " tried to log in, but wasn't verified");
+            flash(FLASH_ERROR, "Dein Konto ist noch nicht aktiviert. Schau in deinen Posteingang."); //TODO: resend function?
             return redirect(routes.LoginController.renderLogin());
         }
 
@@ -121,10 +132,16 @@ public class LoginController extends Controller {
         String passwordCheck = requestData.get("password-check");
 
         if (UserController.validateUserForm(username, password, passwordCheck) && UserController.validateEmailFormat(email) && User.findByEmail(email) == null && User.findByUsername(username) == null) {
-            User user = User.create(username, email, password, false);
-            Logger.debug("New user with name " + user.getUsername() + " and email " + user.getEmail() + " just registered.");
-            SessionService.createSession(user.getEmail());
-            return redirect(routes.UserController.renderDashboard());
+            try {
+                User user = User.create(username, email, password, false);
+                mailer.sendVerificationEmail(user);
+                Logger.debug("New user with name " + user.getUsername() + " and email " + user.getEmail() + " just registered, awaiting verification.");
+                flash(FLASH_SUCCESS, "Eine Verifizierungs-Mail wurde an "+user.getEmail()+" versandt. Bitte schau in deinen Posteingang. Sollte keine Mail auftauchen, schau auch im Spam-Ordner nach.");
+                return redirect(routes.LoginController.renderLogin());
+            } catch (Exception e){
+                Logger.error("Could not create verification code!", e);
+                return internalServerError(views.html.error500.render(null, ""));
+            }
         }
 
         Logger.debug("Registration failed. Reloading with username and email.");
@@ -132,6 +149,19 @@ public class LoginController extends Controller {
         setFlashError(email, username, password, passwordCheck);
 
         return redirect(routes.LoginController.renderRegister(username, originalEmail));
+    }
+
+    public Result processVerify(long userId, String code){
+        User user = User.findById(userId);
+        if(user.getVerificationCode().equals(code)){
+            user.setVerificationCode(null);
+            user.save();
+            SessionService.createSession(user.getEmail());
+            return redirect(routes.UserController.renderDashboard());
+        } else {
+            flash(FLASH_ERROR, "Der angegebene Verifizierunscode ist ungültig.");
+            return redirect(routes.LoginController.renderLogin());
+        }
     }
 
     /**

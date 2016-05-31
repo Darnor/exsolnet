@@ -19,6 +19,7 @@ libraryDependencies += "org.hamcrest" % "hamcrest-core" % "1.3"
 libraryDependencies += "org.mockito" % "mockito-core" % "1.10.19"
 libraryDependencies += "com.googlecode.owasp-java-html-sanitizer" % "owasp-java-html-sanitizer" % "20160422.1"
 libraryDependencies += "de.svenkubiak" % "jBCrypt" % "0.4.1"
+libraryDependencies += "org.apache.commons" % "commons-email" % "1.4"
 
 jacoco.settings
 

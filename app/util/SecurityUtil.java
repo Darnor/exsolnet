@@ -1,10 +1,14 @@
 package util;
 
+import org.apache.xerces.impl.dv.util.Base64;
 import org.mindrot.jbcrypt.BCrypt;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
 import org.owasp.html.Sanitizers;
 
+import java.io.UnsupportedEncodingException;
+import java.security.SecureRandom;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 public class SecurityUtil {
@@ -37,5 +41,12 @@ public class SecurityUtil {
 
     public static boolean checkPassword(String candidate, String hashed) {
         return BCrypt.checkpw(candidate, hashed);
+    }
+
+    public static String generateVerificationCode() throws UnsupportedEncodingException {
+        Random ran = new SecureRandom();
+        byte [] salt = new byte[32];
+        ran.nextBytes(salt);
+        return Base64.encode(salt).replaceAll("[^a-zA-Z0-9]", "");
     }
 }
