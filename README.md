@@ -10,3 +10,10 @@ run the commands in createdb.sql on your psql console
 run the application over activator ( run )
 
 or import the project into your intellij IDEA and create a play framework run configuration
+
+
+## Host this Application on Ubuntu
+
+install postgres v9.4<
+
+run the commands in createdb.sql on your psql console

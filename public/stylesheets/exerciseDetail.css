@@ -203,8 +203,6 @@
 
 .box > .up:hover {
     color: #00FF00;
-    font-size: 1.1em;
-    text-shadow: 0px 2px 2px black;
     cursor: pointer;
 }
 
@@ -219,8 +217,6 @@
 
 .box > .down:hover {
     color: #FF6600;
-    font-size: 1.1em;
-    text-shadow: 0px 2px 2px black;
     cursor: pointer;
 }
 
@@ -232,4 +228,8 @@
 .glyphicon {
 
     font-size: 1.5em;
+}
+
+.comment-link {
+    cursor: pointer;
 }

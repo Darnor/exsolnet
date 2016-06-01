@@ -10,7 +10,7 @@
                  Zuletzt geändert: @snippets.longDate(solution.getLastChanged)
             }
         </span>
-        <a class="pull-right" href="#" data-toggle="tooltip" title="Kommentare anzeigen/ausblenden" onclick="toggler('solution@solution.getId')" >Kommentare <span class="badge">@solution.getComments.size()</span></a>
+        <a class="pull-right comment-link" data-toggle="tooltip" title="Kommentare anzeigen/ausblenden" onclick="toggler('solution@solution.getId')" >Kommentare <span class="badge">@solution.getComments.size()</span></a>
         @if(user.isModerator || user.getId == solution.getUser.getId) {
             <a class="pull-right meta edit" data-toggle="tooltip" title="Bearbeiten" id="solution-@solution.getId" href="@routes.SolutionController.renderUpdate(solution.getId)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a>
 

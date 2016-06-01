@@ -24,7 +24,7 @@
             Zuletzt geändert: @snippets.longDate(exercise.getLastChanged)
         }
         </span>
-        <a class="pull-right" href="#" onclick="toggler('exerciseComment')" data-toggle="tooltip" title="Kommentare anzeigen/ausblenden" >
+        <a class="pull-right comment-link" onclick="toggler('exerciseComment')" data-toggle="tooltip" title="Kommentare anzeigen/ausblenden" >
             Kommentare <span class="badge">@exercise.getComments.size()</span></a>
         @if(user.isModerator || user.getId.equals(exercise.getUser.getId)) {
             <a class="pull-right meta edit" id="exercise-@exercise.getId" data-toggle="tooltip" title="Bearbeiten" href="@routes.ExerciseController.renderEdit(exercise.getId)">
