@@ -1,7 +1,6 @@
 # exsolnet
-Online platform to provide any exercises and to share your solution. Based on a voting-system inspired by StackOverflow.
+Modifizierte Version des README fuer EPJ Projektabgabe
 
-The exsolnet application  is currently only available in german - i18n is yet to be implemented.
 
 ## Requirements
 install postgres v9.4<
@@ -11,12 +10,14 @@ run the commands in createdb.sql on your psql console
 # Development
 Run the app with `sbt run`
 
-Run tests with `sbt test`
+Run tests with `sbt test` (this will also insert some test data into the database)
 
-* For the selenium tests to work you might need to downgrade your firefox (The newest version sometimes does not work with selenium)
+* For the selenium tests to work you might need to downgrade your firefox (Selenium sometimes fails to communicate with newer verions of firefox)
+
+Alternatively you can use IntelliJ IDEA Ultimate play integration to run it from IDE.
 
 # Deployment
-Build the app with `sbt dist` and unpack the resulting ./target/universal/exsolnet-xxx.zip on your server.
+Build the app with `sbt dist` and unpack the resulting ./target/universal/exsolnet-xxx.zip on your server. EPJ: Hab ich schon laufen gelassen
 
 Run it with
 
