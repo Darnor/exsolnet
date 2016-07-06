@@ -7,9 +7,11 @@ import models.builders.SolutionBuilder;
 import play.Logger;
 import play.data.DynamicForm;
 import play.data.FormFactory;
+import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import util.FormBodyParser;
 import util.SecurityUtil;
 import views.html.*;
 
@@ -306,6 +308,7 @@ public class ExerciseController extends Controller {
      *
      * @return redirect to the exercise overview
      */
+    @BodyParser.Of(FormBodyParser.class)
     public Result processCreate() {
         try {
             bindForm(null);
@@ -322,6 +325,7 @@ public class ExerciseController extends Controller {
      * @param exerciseId the id of the exercise to be updated.
      * @return redirect to the exercise overview
      */
+    @BodyParser.Of(FormBodyParser.class)
     public Result processUpdate(long exerciseId) {
         Exercise exercise = Exercise.findValidById(exerciseId);
 
